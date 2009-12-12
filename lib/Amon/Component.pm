@@ -1,0 +1,77 @@
+package Amon::Component;
+use strict;
+use warnings;
+use base 'Exporter';
+our @EXPORT = qw/render detach req/;
+
+=item req()
+
+Return request class.
+
+=cut
+sub req() { $Amon::_req }
+
+=item param($name)
+
+Get query/body parameter. 
+
+=cut
+sub param { $Amon::_req->param(@_) }
+
+=item current_url()
+
+Get current url.
+
+=cut
+sub current_url() {
+    my $req      = $Amon::_req->request;
+    my $env      = $req->{env};
+    my $protocol = 'http';
+    my $port     = $env->{SERVER_PORT} || 80;
+    my $url      = "http://" . $req->header('Host');
+    $url .= "$env->{PATH_INFO}";
+    $url .= '?' . $env->{QUERY_STRING};
+}
+
+=item render($path, @args)
+
+Render template by L<Text::MicroTemplate>.
+
+=cut
+sub render {
+    my $res = Amon::V::__load(@_);
+    return [
+        200,
+        [
+            'Content-Type'   => 'text/html; charset=UTF-8',
+            'Content-Length' => length($res)
+        ],
+        [$res]
+    ];
+}
+
+=item redirect($location)
+
+Output redirect response.
+
+=cut
+sub redirect($) {
+    my $location = shift;
+    return [
+        302,
+        ['Location' => $location],
+        []
+    ];
+}
+
+=item detach([$status, $headers, $body])
+
+Detach context and return PSGI response.
+
+=cut
+sub detach {
+    $Amon::_base->call_trigger("BEFORE_DETACH", $_[0]);
+    die $_[0];
+}
+
+1;
