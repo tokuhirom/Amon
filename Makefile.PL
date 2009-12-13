@@ -12,5 +12,6 @@ requires 'UNIVERSAL::require';
 requires 'Exporter';
 
 tests 't/*.t t/*/*.t t/*/*/*.t';
+install_script 'bin/amon-setup.pl';
 
 WriteAll;
