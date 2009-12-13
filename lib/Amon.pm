@@ -1,6 +1,7 @@
 package Amon;
 use strict;
 use warnings;
+use 5.008001;
 use Module::Pluggable::Object;
 use Plack::Request;
 use UNIVERSAL::require;
@@ -97,4 +98,12 @@ Amon - lightweight web application framework
 
     Fast
     Easy to use
+
+=head1 AUTHOR
+
+Tokuhiro Matsuno
+
+=head1 LICENSE
+
+This library is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
 
