@@ -12,6 +12,7 @@ our $VERSION = 0.01;
 our $_req;
 our $_base;
 our $_basedir;
+our $_global_config;
 
 sub import {
     my $caller = caller(0);
@@ -33,7 +34,7 @@ sub import {
 }
 
 sub _app {
-    my ($class, $basedir) = @_;
+    my ($class, $basedir, $config) = @_;
     $basedir ||= './';
 
     my $dispatcher = "${class}::Dispatcher";
@@ -44,6 +45,7 @@ sub _app {
             local $_basedir = $basedir;
             local $_req = Plack::Request->new($env);
             local $_base = $class;
+            local $_global_config = $config; 
             my $rule = $dispatcher->match($_req);
             my $action = $rule->{action};
             my $controller = "${class}::C::" . $rule->{controller};

@@ -2,7 +2,25 @@ package Amon::Component;
 use strict;
 use warnings;
 use base 'Exporter';
-our @EXPORT = qw/render detach req/;
+our @EXPORT = qw/render detach req global_config config redirect/;
+
+=item global_config()
+
+get global configuration
+
+=cut
+sub global_config { $Amon::_global_config }
+
+=item config()
+
+Get configuration for caller module.
+
+=cut
+sub config {
+    my $pkg = caller(0);
+    $pkg =~ s/^${Amon::_base}(::)?//;
+    return $Amon::_global_config->{$pkg};
+}
 
 =item req()
 
