@@ -20,9 +20,9 @@ sub import {
 
     # load classes
     Module::Pluggable::Object->new(
-        'require' => 1, search_path => "${caller}\::C"
+        'require' => 1, search_path => "${caller}\::Web::C"
     )->plugins;
-    "${caller}::Dispatcher"->use or die $@;
+    "${caller}::Web::Dispatcher"->use or die $@;
 
     strict->import;
     warnings->import;
@@ -42,7 +42,7 @@ sub _app {
     my ($class, $basedir, $config) = @_;
     $basedir ||= './';
 
-    my $dispatcher = "${class}::Dispatcher";
+    my $dispatcher = "${class}::Web::Dispatcher";
 
     return sub {
         my $env = shift;
@@ -63,6 +63,8 @@ sub _app {
 }
 
 =item MyApp->add_trigger($hook, $code);
+
+register hook.
 
 =cut
 sub _add_trigger {

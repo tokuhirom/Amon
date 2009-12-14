@@ -1,4 +1,4 @@
-package Amon::Dispatcher;
+package Amon::Web::Dispatcher;
 use strict;
 use warnings;
 use Amon::Component;
@@ -14,8 +14,7 @@ sub import {
 
 sub call {
     my ($controller, $action, @args) = @_;
-    $controller = "${Amon::_base}::C::$controller";
-    $controller->$action(@args);
+    "${Amon::_base}::Web::C::$controller"->$action(@args);
 }
 
 1;

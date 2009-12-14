@@ -24,10 +24,10 @@ use Amon (
 package $name::V::MT::Context;
 use Amon::V::MT::Context;
 1;
--- lib/$name/Dispatcher.pm
+-- lib/$name/Web/Dispatcher.pm
 % my $perlver = shift;
-package $name::Dispatcher;
-use Amon::Dispatcher;
+package $name::Web::Dispatcher;
+use Amon::Web::Dispatcher;
 % if ($perlver eq '5.10') {
 use feature 'switch';
 
@@ -54,9 +54,9 @@ sub dispatch {
 % }
 
 1;
--- lib/$name/C/Root.pm
-package $name::C::Root;
-use Amon::C;
+-- lib/$name/Web/C/Root.pm
+package $name::Web::C::Root;
+use Amon::Web::C;
 
 sub index {
     render("index.mt");
@@ -98,7 +98,7 @@ sub main {
     _mkpath "lib/$name/";
     _mkpath "lib/$name/V";
     _mkpath "lib/$name/V/MT";
-    _mkpath "lib/$name/C";
+    _mkpath "lib/$name/Web/C";
     _mkpath "lib/$name/M";
     _mkpath "tmpl";
     _mkpath "t";

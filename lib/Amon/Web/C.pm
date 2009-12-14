@@ -1,4 +1,4 @@
-package Amon::C;
+package Amon::Web::C;
 use strict;
 use warnings;
 use Amon::Component;
