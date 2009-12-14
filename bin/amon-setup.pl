@@ -99,6 +99,7 @@ sub main {
     _mkpath "lib/$name/V";
     _mkpath "lib/$name/V/MT";
     _mkpath "lib/$name/C";
+    _mkpath "lib/$name/M";
     _mkpath "tmpl";
 
     my $conf = _parse_conf($confsrc);

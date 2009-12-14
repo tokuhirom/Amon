@@ -104,7 +104,7 @@ sub res_404 {
 }
 
 sub model($) {
-    "${Amon::_base}::Model::$_[0]"
+    "${Amon::_base}::M::$_[0]"
 }
 
 1;
