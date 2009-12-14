@@ -1,5 +1,5 @@
-package SampleApp::Dispatcher;
-use Amon::Dispatcher;
+package SampleApp::Web::Dispatcher;
+use Amon::Web::Dispatcher;
 use feature 'switch';
 
 sub dispatch {

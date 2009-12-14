@@ -3,16 +3,15 @@ use strict;
 use warnings;
 use base 'Exporter';
 use Text::MicroTemplate 'encoded_string';
-use Amon::Component;
+use Amon::Web::Component;
 
-our @EXPORT = qw/block extends encoded_string/;
+our @EXPORT = (qw/block extends encoded_string/, @Amon::Web::Component::ISA);
 
 sub import {
     strict->import;
     warnings->import;
 
     __PACKAGE__->export_to_level(1);
-    Amon::Component->export_to_level(1);
 }
 
 # following code is taken from Text::MicroTemplate::Extended by typester++.

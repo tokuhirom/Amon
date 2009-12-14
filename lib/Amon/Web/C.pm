@@ -1,12 +1,12 @@
 package Amon::Web::C;
 use strict;
 use warnings;
-use Amon::Component;
+use Amon::Web::Component;
 
 sub import {
     strict->import;
     warnings->import;
-    Amon::Component->export_to_level(1);
+    Amon::Web::Component->export_to_level(1);
 }
 
 1;
