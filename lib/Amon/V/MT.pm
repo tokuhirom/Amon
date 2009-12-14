@@ -23,7 +23,6 @@ sub render {
 # user can override this method.
 sub resolve_tmpl_path {
     my $file = shift;
-    warn $Amon::_basedir;
     File::Spec->catfile($Amon::_basedir, 'tmpl', $file);
 }
 
