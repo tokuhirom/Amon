@@ -101,6 +101,7 @@ sub main {
     _mkpath "lib/$name/C";
     _mkpath "lib/$name/M";
     _mkpath "tmpl";
+    _mkpath "t";
 
     my $conf = _parse_conf($confsrc);
     while (my ($file, $tmpl) = each %$conf) {
