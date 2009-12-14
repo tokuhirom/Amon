@@ -1,4 +1,4 @@
-package Amon::V::Context;
+package Amon::V::MT::Context;
 use strict;
 use warnings;
 use base 'Exporter';
@@ -17,7 +17,7 @@ sub import {
 
 # following code is taken from Text::MicroTemplate::Extended by typester++.
 sub extends {
-    $Amon::V::render_context->{extends} = $_[0];
+    $Amon::V::MT::render_context->{extends} = $_[0];
 }
 
 sub block {
@@ -27,18 +27,18 @@ sub block {
 
     my $block;
     if (defined $code) {
-        $block = $Amon::V::render_context->{blocks}{$name} ||= {
-            context_ref => ${"${Amon::_base}::V::Context::_MTREF"},
+        $block = $Amon::V::MT::render_context->{blocks}{$name} ||= {
+            context_ref => ${"${Amon::_base}::V::MT::Context::_MTREF"},
             code        => ref($code) eq 'CODE' ? $code : sub { return $code },
         };
     }
     else {
-        $block = $Amon::V::render_context->{blocks}{$name}
+        $block = $Amon::V::MT::render_context->{blocks}{$name}
             or die qq[block "$name" does not define];
     }
 
-    if (!$Amon::V::render_context->{extends}) { # if base template.
-        my $current_ref = ${"${Amon::_base}::V::Context::_MTREF"};
+    if (!$Amon::V::MT::render_context->{extends}) { # if base template.
+        my $current_ref = ${"${Amon::_base}::V::MT::Context::_MTREF"};
         my $block_ref   = $block->{context_ref};
 
         my $rendered = $$current_ref || '';

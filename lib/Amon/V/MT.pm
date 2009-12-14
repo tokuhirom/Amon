@@ -1,29 +1,40 @@
-package Amon::V;
+package Amon::V::MT;
 use strict;
 use warnings;
 use Text::MicroTemplate;
 use File::Spec;
 use FindBin;
+use UNIVERSAL::require;
 
 our $render_context;
 
-sub mt_cache_dir {
-    File::Spec->catfile(File::Spec->tmpdir(), "amon.$].$Amon::VERSION");
+sub import {
+    my ($class, $base) = @_;
+    "${base}::V::MT::Context"->use or die $@;
 }
 
-sub tmpl_dir {
-    File::Spec->catfile($Amon::_basedir, 'tmpl');
-}
-
-sub __load {
+# entry point
+sub render {
+    my $class = shift;
     local $render_context = {};
     __load_internal(@_);
+}
+
+# user can override this method.
+sub resolve_tmpl_path {
+    my $file = shift;
+    warn $Amon::_basedir;
+    File::Spec->catfile($Amon::_basedir, 'tmpl', $file);
+}
+
+sub _mt_cache_dir {
+    File::Spec->catfile(File::Spec->tmpdir(), "amon.$].$Amon::VERSION");
 }
 
 sub __load_internal {
     my ($path, @params) = @_;
     if (0 && __use_cache($path)) {
-        my $tmplfname = mt_cache_dir() . "/$path.c";
+        my $tmplfname = _mt_cache_dir() . "/$path.c";
 
         open my $fh, '<', $tmplfname or die "Can't read template file: ${tmplfname}($!)";
         my $tmplsrc = do { local $/; <$fh> };
@@ -42,7 +53,7 @@ sub __compile {
     my ($path, @params) = @_;
 
     my $mt = Text::MicroTemplate->new(
-        package_name => "$Amon::_base\::V::Context",
+        package_name => "${Amon::_base}::V::MT::Context",
     );
     __build_file($mt, $path);
     my $code = __eval_builder($mt->code);
@@ -62,8 +73,7 @@ sub __compile {
 
 sub __build_file {
     my ($mt, $file) = @_;
-    my $path = tmpl_dir();
-    my $filepath = $path . '/' . $file;
+    my $filepath = resolve_tmpl_path($file);
 
     open my $fh, "<:utf8", $filepath
         or Carp::croak("Can't open template file :$filepath:$!");
@@ -76,14 +86,14 @@ sub __build_file {
 sub __eval_builder {
     my $code = shift;
     return <<"...";
-package $Amon::_base\::V::Context;
+package $Amon::_base\::V::MT::Context;
 #line 1
 sub {
     my \$out = Text::MicroTemplate::encoded_string((
         $code
     )->(\@_));
-    if (my \$parent = delete \$Amon::V::render_context->{extends}) {
-        \$out = Amon::V::__load_internal(\$parent);
+    if (my \$parent = delete \$Amon::V::MT::render_context->{extends}) {
+        \$out = Amon::V::MT::__load_internal(\$parent);
     }
     \$out;
 }
@@ -93,7 +103,7 @@ sub {
 sub __update_cache {
     my ($path, $code) = @_;
 
-    my $cache_path = mt_cache_dir();
+    my $cache_path = _mt_cache_dir();
     foreach my $p (split '/', $path) {
         mkdir $cache_path;
         $cache_path .= "/$p";
@@ -108,8 +118,8 @@ sub __update_cache {
 
 sub __use_cache {
     my ($path) = @_;
-    my $cache_dir = mt_cache_dir();
-    my @orig = stat tmpl_dir() . "/$path"
+    my $cache_dir = _mt_cache_dir();
+    my @orig = stat resolve_tmpl_path($path)
         or return;
     my @cached = stat "$cache_dir/${path}.c"
         or return;

@@ -16,11 +16,13 @@ pod2usage(1) if $help;
 my $confsrc = <<'...';
 -- lib/$name.pm
 package $name;
-use Amon;
+use Amon (
+  view_class => 'MT',
+);
 1;
--- lib/$name/V/Context.pm
-package $name::V::Context;
-use Amon::V::Context;
+-- lib/$name/V/MT/Context.pm
+package $name::V::MT::Context;
+use Amon::V::MT::Context;
 1;
 -- lib/$name/Dispatcher.pm
 % my $perlver = shift;
@@ -95,6 +97,7 @@ sub main {
     chdir $distname or die $!;
     _mkpath "lib/$name/";
     _mkpath "lib/$name/V";
+    _mkpath "lib/$name/V/MT";
     _mkpath "lib/$name/C";
     _mkpath "tmpl";
 

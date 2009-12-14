@@ -57,7 +57,7 @@ Render template by L<Text::MicroTemplate>.
 
 =cut
 sub render {
-    my $res = Amon::V::__load(@_);
+    my $res = $Amon::_base->view_class->render(@_);
     return detach([
         200,
         [

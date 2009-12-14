@@ -5,7 +5,6 @@ use 5.008001;
 use Module::Pluggable::Object;
 use Plack::Request;
 use UNIVERSAL::require;
-use Amon::V;
 use Try::Tiny;
 
 our $VERSION = 0.01;
@@ -16,22 +15,27 @@ our $_basedir;
 our $_global_config;
 
 sub import {
+    my ($class, %args) = @_;
     my $caller = caller(0);
 
     # load classes
     Module::Pluggable::Object->new(
         'require' => 1, search_path => "${caller}\::C"
     )->plugins;
-    "${caller}::V::Context"->use or die $@;
     "${caller}::Dispatcher"->use or die $@;
 
     strict->import;
     warnings->import;
 
+    my $view_class = $args{view_class} or die "missing configuration: view_class";
+    $view_class = ($view_class =~ s/^\+// ? $view_class : "Amon::V::$view_class");
+    $view_class->use($caller) or die $@;
+
     no strict 'refs';
     *{"${caller}::app"} = \&_app;
     *{"${caller}::add_trigger"} = \&_add_trigger;
     *{"${caller}::call_trigger"} = \&_call_trigger;
+    *{"${caller}::view_class"} = sub { $view_class };
 }
 
 sub _app {
