@@ -32,4 +32,3 @@ test_psgi
 
 chdir $cwd;
 done_testing;
-

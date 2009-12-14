@@ -23,19 +23,22 @@ Amon::Manual::Tutorial.ja - Amon 日本語チュートリアル
 
 雛形のディレクトリ構造は以下のようになっています。非常にシンプルでわかりやすい構造です。
 
-  .
-  |-- Hello.psgi
-  |-- lib
-  |   |-- Hello
-  |   |   |-- C
-  |   |   |   `-- Root.pm
-  |   |   |-- Dispatcher.pm
-  |   |   `-- V
-  |   |       `-- Context.pm
-  |   `-- Hello.pm
-  `-- tmpl
-      |-- base.mt
-      `-- index.mt
+    .
+    |-- Hello.psgi
+    |-- lib
+    |   |-- Hello
+    |   |   |-- C
+    |   |   |   `-- Root.pm
+    |   |   |-- Dispatcher.pm
+    |   |   |-- M
+    |   |   `-- V
+    |   |       `-- MT
+    |   |           `-- Context.pm
+    |   `-- Hello.pm
+    |-- t
+    `-- tmpl
+        |-- base.mt
+        `-- index.mt
 
 Amon のアプリケーションを起動させるには L<plackup> コマンドを利用します。
 
