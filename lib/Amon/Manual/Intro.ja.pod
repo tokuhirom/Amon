@@ -1,0 +1,26 @@
+=head1 NAME
+
+Amon::Manual::Intro.ja - Amon への導入
+
+=head1 DESCRIPTION
+
+Amon 特徴は以下のとおり
+
+=over 4
+
+=item L<PSGI>対応
+
+今はやりの L<PSGI> に対応しています。
+
+=item XS への依存なし
+
+pure perl のモジュールだけで構成されているので、XS がつかえない環境でも安心。
+
+=item 薄いレイヤー
+
+Amon は Model の制約などは導入しません。自由です。
+
+=back
+
+=cut
+

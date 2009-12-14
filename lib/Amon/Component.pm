@@ -2,7 +2,7 @@ package Amon::Component;
 use strict;
 use warnings;
 use base 'Exporter';
-our @EXPORT = qw/render detach req global_config config redirect/;
+our @EXPORT = qw/render detach req global_config config redirect res_404/;
 
 =item global_config()
 
@@ -58,14 +58,14 @@ Render template by L<Text::MicroTemplate>.
 =cut
 sub render {
     my $res = Amon::V::__load(@_);
-    return [
+    return detach([
         200,
         [
             'Content-Type'   => 'text/html; charset=UTF-8',
             'Content-Length' => length($res)
         ],
         [$res]
-    ];
+    ]);
 }
 
 =item redirect($location)
@@ -75,11 +75,11 @@ Output redirect response.
 =cut
 sub redirect($) {
     my $location = shift;
-    return [
+    return detach([
         302,
         ['Location' => $location],
         []
-    ];
+    ]);
 }
 
 =item detach([$status, $headers, $body])
@@ -87,9 +87,20 @@ sub redirect($) {
 Detach context and return PSGI response.
 
 =cut
-sub detach {
+sub detach($) {
     $Amon::_base->call_trigger("BEFORE_DETACH", $_[0]);
     die $_[0];
+}
+
+sub res_404 {
+    my $text = shift || "404 Not Found";
+    detach(
+        [
+            404,
+            ['Content-Length' => length($text)],
+            [$text],
+        ]
+    );
 }
 
 1;

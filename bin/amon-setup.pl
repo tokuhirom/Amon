@@ -1,3 +1,4 @@
+#!/usr/bin/perl
 use strict;
 use warnings;
 use File::Path qw/mkpath/;
@@ -13,8 +14,20 @@ use Amon::V::Context;
 1;
 -- lib/$name/Dispatcher.pm
 package $name::Dispatcher;
-use HTTPx::Dispatcher;
-connect '' => {controller => 'Root', action => 'index'};
+use Amon::Dispatcher;
+
+sub dispatch {
+    my ($class, $req) = @_;
+    given ($req->uri->path) {
+        when ('/') {
+            call("Root", 'index');
+        }
+        default {
+            res_404();
+        }
+    }
+}
+
 1;
 -- lib/$name/C/Root.pm
 package $name::C::Root;
@@ -65,7 +78,7 @@ sub main {
     my $conf = _parse_conf($confsrc);
     while (my ($file, $tmpl) = each %$conf) {
         $file =~ s/(\$\w+)/$1/gee;
-        $tmpl =~ s/(\$\w+)/$1/gee;
+        $tmpl =~ s/(\$name)/$1/gee;
 
         print "writing $file\n";
         open my $fh, '>', $file or die "Can't open file($file):$!";

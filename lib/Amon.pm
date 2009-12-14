@@ -1,7 +1,7 @@
 package Amon;
 use strict;
 use warnings;
-use 5.008001;
+use 5.010;
 use Module::Pluggable::Object;
 use Plack::Request;
 use UNIVERSAL::require;
@@ -46,11 +46,8 @@ sub _app {
             local $_basedir = $basedir;
             local $_req = Plack::Request->new($env);
             local $_base = $class;
-            local $_global_config = $config; 
-            my $rule = $dispatcher->match($_req);
-            my $action = $rule->{action};
-            my $controller = "${class}::C::" . $rule->{controller};
-            return $controller->$action($rule);
+            local $_global_config = $config;
+            $dispatcher->dispatch($_req);
         } catch {
             if (ref $_ && ref $_ eq 'ARRAY') {
                 return $_;

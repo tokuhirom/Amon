@@ -1,0 +1,6 @@
+Amon - Yet another web application framework
+============================================
+
+- Support PSGI/Plack
+- Thin layer.
+- lightweight
