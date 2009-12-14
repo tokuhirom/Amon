@@ -11,14 +11,14 @@ our @EXPORT = (qw/req param current_url render res_404 detach/, @Amon::Component
 Return request class.
 
 =cut
-sub req() { $Amon::_req }
+sub req() { $Amon::Web::_req }
 
 =item param($name)
 
 Get query/body parameter.
 
 =cut
-sub param { $Amon::_req->param(@_) }
+sub param { $Amon::Web::_req->param(@_) }
 
 =item current_url()
 
@@ -26,7 +26,7 @@ Get current url.
 
 =cut
 sub current_url() {
-    my $req      = $Amon::_req->request;
+    my $req      = $Amon::Web::_req->request;
     my $env      = $req->{env};
     my $protocol = 'http';
     my $port     = $env->{SERVER_PORT} || 80;
@@ -41,7 +41,7 @@ Render template by L<Text::MicroTemplate>.
 
 =cut
 sub render {
-    my $res = $Amon::_base->view_class->render(@_);
+    my $res = "${Amon::_base}::Web"->view_class->render(@_);
     return detach([
         200,
         [
@@ -72,7 +72,7 @@ Detach context and return PSGI response.
 
 =cut
 sub detach($) {
-    $Amon::_base->call_trigger("BEFORE_DETACH", $_[0]);
+    "${Amon::_base}::Web"->call_trigger("BEFORE_DETACH", $_[0]);
     die $_[0];
 }
 

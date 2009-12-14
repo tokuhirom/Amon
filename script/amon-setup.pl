@@ -16,7 +16,11 @@ pod2usage(1) if $help;
 my $confsrc = <<'...';
 -- lib/$name.pm
 package $name;
-use Amon (
+use Amon;
+1;
+-- lib/$name/Web.pm
+package $name::Web;
+use Amon::Web (
   view_class => 'MT',
 );
 1;
@@ -79,7 +83,8 @@ sub index {
 </html>
 -- $name.psgi
 use $name;
-$name->app("./");
+use $name::Web;
+$name::Web->app("./");
 ...
 
 &main;exit;
