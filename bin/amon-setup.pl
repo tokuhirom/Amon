@@ -2,6 +2,16 @@
 use strict;
 use warnings;
 use File::Path qw/mkpath/;
+use Getopt::Long;
+use Pod::Usage;
+use Text::MicroTemplate ':all';
+
+my $perlver = $] >= 5.010000 ? '5.10' : '5.8';
+GetOptions(
+    'perlver=s' => \$perlver,
+    'help' => \my $help,
+) or pod2usage(0);
+pod2usage(1) if $help;
 
 my $confsrc = <<'...';
 -- lib/$name.pm
@@ -13,12 +23,15 @@ package $name::V::Context;
 use Amon::V::Context;
 1;
 -- lib/$name/Dispatcher.pm
+% my $perlver = shift;
 package $name::Dispatcher;
 use Amon::Dispatcher;
+% if ($perlver eq '5.10') {
+use feature 'switch';
 
 sub dispatch {
     my ($class, $req) = @_;
-    given ($req->uri->path) {
+    given ($req->path_info) {
         when ('/') {
             call("Root", 'index');
         }
@@ -27,6 +40,16 @@ sub dispatch {
         }
     }
 }
+% } else {
+sub dispatch {
+    my ($class, $req) = @_;
+    if ($req->path_info eq '/') {
+        call("Root", 'index');
+    } else {
+        res_404();
+    }
+}
+% }
 
 1;
 -- lib/$name/C/Root.pm
@@ -79,10 +102,17 @@ sub main {
     while (my ($file, $tmpl) = each %$conf) {
         $file =~ s/(\$\w+)/$1/gee;
         $tmpl =~ s/(\$name)/$1/gee;
+        my $code = Text::MicroTemplate->new(
+            tag_start => '[%',
+            tag_end   => '%]',
+            line_start => '%',
+            template => $tmpl,
+        )->build;
+        my $res = $code->($perlver)->as_string;
 
         print "writing $file\n";
         open my $fh, '>', $file or die "Can't open file($file):$!";
-        print $fh $tmpl;
+        print $fh $res;
         close $fh;
     }
 }

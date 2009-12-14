@@ -1,5 +1,4 @@
 use inc::Module::Install;
-use 5.01000;
 
 all_from 'lib/Amon.pm';
 license 'perl';
