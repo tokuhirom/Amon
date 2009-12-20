@@ -111,6 +111,9 @@ test_psgi
     };
 
 done_testing;
+-- .gitignore
+Makefile
+inc/
 ...
 
 &main;exit;
