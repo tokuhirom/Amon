@@ -5,7 +5,7 @@ use base 'Exporter';
 use Text::MicroTemplate 'encoded_string';
 use Amon::Web::Component;
 
-our @EXPORT = (qw/block extends encoded_string/, @Amon::Web::Component::ISA);
+our @EXPORT = (qw/block extends encoded_string/, @Amon::Web::Component::EXPORT);
 
 sub import {
     strict->import;
