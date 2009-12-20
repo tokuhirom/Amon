@@ -37,24 +37,24 @@ use Amon::Web::Dispatcher;
 use feature 'switch';
 
 sub dispatch {
-my ($class, $req) = @_;
-given ($req->path_info) {
-    when ('/') {
-        call("Root", 'index');
+    my ($class, $req) = @_;
+    given ($req->path_info) {
+        when ('/') {
+            call("Root", 'index');
+        }
+        default {
+            res_404();
+        }
     }
-    default {
-        res_404();
-    }
-}
 }
 % } else {
 sub dispatch {
-my ($class, $req) = @_;
-if ($req->path_info eq '/') {
-    call("Root", 'index');
-} else {
-    res_404();
-}
+    my ($class, $req) = @_;
+    if ($req->path_info eq '/') {
+        call("Root", 'index');
+    } else {
+        res_404();
+    }
 }
 % }
 
@@ -94,48 +94,66 @@ tests 't/*.t t/*/*.t t/*/*/*.t';
 requires 'Amon';
 
 WriteAll;
+-- t/01_root.t
+use strict;
+use warnings;
+use Plack::Test;
+use Plack::Util;
+use Test::More;
+
+test_psgi
+    app => Plack::Util::load_psgi '<?= $dist ?>.psgi',
+    client => sub {
+        my $cb = shift;
+        my $req = HTTP::Request->new(GET => 'http://localhost/');
+        my $res = $cb->($req);
+        is $res->code, 200;
+    };
+
+done_testing;
 ...
 
 &main;exit;
 
 sub _mkpath {
-my $d = shift;
-print "mkdir $d\n";
-mkpath $d;
+    my $d = shift;
+    print "mkdir $d\n";
+    mkpath $d;
 }
 
 sub main {
-$module = shift @ARGV or pod2usage(0);
-$module =~ s!-!::!g;
+    $module = shift @ARGV or pod2usage(0);
+    $module =~ s!-!::!g;
 
-# $module = "Foo::Bar"
-# $dist   = "Foo-Bar"
-# $path   = "Foo/Bar"
-my @pkg  = split /::/, $module;
-my $dist = join "-", @pkg;
-my $path = join "/", @pkg;
+    # $module = "Foo::Bar"
+    # $dist   = "Foo-Bar"
+    # $path   = "Foo/Bar"
+    my @pkg  = split /::/, $module;
+    my $dist = join "-", @pkg;
+    my $path = join "/", @pkg;
 
-mkdir $dist or die $!;
-chdir $dist or die $!;
-_mkpath "lib/$path";
-_mkpath "lib/$path/V";
-_mkpath "lib/$path/V/MT";
-_mkpath "lib/$path/Web/C";
-_mkpath "lib/$path/M";
-_mkpath "tmpl";
-_mkpath "t";
+    mkdir $dist or die $!;
+    chdir $dist or die $!;
+    _mkpath "lib/$path";
+    _mkpath "lib/$path/V";
+    _mkpath "lib/$path/V/MT";
+    _mkpath "lib/$path/Web/C";
+    _mkpath "lib/$path/M";
+    _mkpath "tmpl";
+    _mkpath "t";
 
-my $conf = _parse_conf($confsrc);
-while (my ($file, $tmpl) = each %$conf) {
-    $file =~ s/(\$\w+)/$1/gee;
-    my $code = Text::MicroTemplate->new(
-        tag_start => '[%',
-        tag_end   => '%]',
-        line_start => '%',
-        template => $tmpl,
-    )->code;
-    my $sub = eval "package main;our \$module; sub { Text::MicroTemplate::encoded_string(($code)->(\@_))}";
-    die $@ if $@;
+    my $conf = _parse_conf($confsrc);
+    while (my ($file, $tmpl) = each %$conf) {
+        $file =~ s/(\$\w+)/$1/gee;
+        my $code = Text::MicroTemplate->new(
+            tag_start => '[%',
+            tag_end   => '%]',
+            line_start => '%',
+            template => $tmpl,
+        )->code;
+        my $sub = eval "package main;our \$module; sub { Text::MicroTemplate::encoded_string(($code)->(\@_))}";
+        die $@ if $@;
+
         my $res = $sub->($perlver)->as_string;
 
         print "writing $file\n";
