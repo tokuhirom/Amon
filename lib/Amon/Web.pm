@@ -39,6 +39,7 @@ sub _app {
     my ($class, $basedir, $config) = @_;
     (my $base_class = $class) =~ s/::Web//;
     $basedir ||= './';
+    $config ||= {};
 
     my $dispatcher = "${base_class}::Web::Dispatcher";
 
