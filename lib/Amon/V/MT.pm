@@ -27,7 +27,7 @@ sub resolve_tmpl_path {
 }
 
 sub _mt_cache_dir {
-    File::Spec->catfile(File::Spec->tmpdir(), "amon.$].$Amon::VERSION");
+    File::Spec->catfile(File::Spec->tmpdir(), "amon.$>.$Amon::VERSION");
 }
 
 sub __load_internal {
