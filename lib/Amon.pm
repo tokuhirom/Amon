@@ -8,6 +8,7 @@ our $VERSION = 0.01;
 our $_base;
 our $_basedir;
 our $_global_config;
+our $_registrar;
 
 1;
 __END__

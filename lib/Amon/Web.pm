@@ -5,6 +5,7 @@ use Module::Pluggable::Object;
 use Plack::Request;
 use UNIVERSAL::require;
 use Try::Tiny;
+use Amon;
 
 our $_req;
 
@@ -47,6 +48,7 @@ sub _app {
             local $Amon::_basedir = $basedir;
             local $Amon::_base = $base_class;
             local $Amon::_global_config = $config;
+            local $Amon::_registrar = +{};
             local $_req = Plack::Request->new($env);
             $dispatcher->dispatch($_req);
         } catch {

@@ -4,7 +4,7 @@ use warnings;
 use base 'Exporter';
 use Amon::Component;
 
-our @EXPORT = (qw/req param current_url render res_404 detach/, @Amon::Component::EXPORT);
+our @EXPORT = (qw/req param current_url render redirect res_404 detach/, @Amon::Component::EXPORT);
 
 =item req()
 
@@ -59,9 +59,13 @@ Output redirect response.
 =cut
 sub redirect($) {
     my $location = shift;
+    my $url = req()->base;
+    $url =~ s!/+$!!;
+    $location =~ s!^/+([^/])!/$1!;
+    $url .= $location;
     return detach([
         302,
-        ['Location' => $location],
+        ['Location' => $url],
         []
     ]);
 }
