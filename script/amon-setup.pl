@@ -22,7 +22,7 @@ use Amon;
 -- lib/$path/Web.pm
 package [%= $module %]::Web;
 use Amon::Web (
-view_class => 'MT',
+    view_class => 'MT',
 );
 1;
 -- lib/$path/V/MT/Context.pm
@@ -64,7 +64,7 @@ package [%= $module %]::Web::C::Root;
 use Amon::Web::C;
 
 sub index {
-render("index.mt");
+    render("index.mt");
 }
 
 1;
@@ -86,6 +86,14 @@ render("index.mt");
 use [%= $module %];
 use [%= $module %]::Web;
 [%= $module %]::Web->app("./");
+-- Makefile.PL
+use inc::Module::Install;
+all_from "lib/[%= $path %].pm";
+
+tests 't/*.t t/*/*.t t/*/*/*.t';
+requires 'Amon';
+
+WriteAll;
 ...
 
 &main;exit;
