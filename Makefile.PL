@@ -10,6 +10,7 @@ requires 'Text::MicroTemplate';
 requires 'Try::Tiny';
 requires 'UNIVERSAL::require';
 requires 'Exporter';
+requires 'DBI';
 
 tests 't/*.t t/*/*.t t/*/*/*.t';
 install_script 'script/amon-setup.pl';
