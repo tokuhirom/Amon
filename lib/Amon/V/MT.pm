@@ -4,13 +4,14 @@ use warnings;
 use Text::MicroTemplate;
 use File::Spec;
 use FindBin;
-use UNIVERSAL::require;
 
 our $render_context;
 
 sub import {
     my ($class, $base) = @_;
-    "${base}::V::MT::Context"->use or die $@;
+    my $klass = "${base}::V::MT::Context";
+    Amon::Util::load_class($klass);
+    $klass->import();
 }
 
 # entry point

@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use base 'Exporter';
 our @EXPORT = qw/global_config config model/;
-use UNIVERSAL::require;
+use Amon::Util;
 
 =item global_config()
 
@@ -32,7 +32,7 @@ sub model($) {
     my $name = shift;
     $Amon::_registrar->{"M::$name"} ||= do {
         my $klass = "${Amon::_base}::M::$name";
-        $klass->use or die $@;
+        Amon::Util::load_class($klass);
         my $conf = global_config->{"M::$name"};
         $klass->new($conf ? $conf : ());
     };

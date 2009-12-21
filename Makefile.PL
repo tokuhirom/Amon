@@ -8,7 +8,6 @@ requires 'Plack::Request';
 requires 'Plack';
 requires 'Text::MicroTemplate';
 requires 'Try::Tiny';
-requires 'UNIVERSAL::require';
 requires 'Exporter';
 requires 'DBI';
 

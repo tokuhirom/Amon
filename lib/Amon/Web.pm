@@ -2,10 +2,10 @@ package Amon::Web;
 use strict;
 use warnings;
 use Module::Pluggable::Object;
-use UNIVERSAL::require;
 use Try::Tiny;
 use Amon;
 use Amon::Web::Request;
+use Amon::Util;
 
 our $_req;
 
@@ -17,7 +17,7 @@ sub import {
     Module::Pluggable::Object->new(
         'require' => 1, search_path => "${caller}\::C"
     )->plugins;
-    "${caller}::Dispatcher"->use or die $@;
+    Amon::Util::load_class("${caller}::Dispatcher");
 
     strict->import;
     warnings->import;
@@ -26,7 +26,8 @@ sub import {
 
     my $view_class = $args{view_class} or die "missing configuration: view_class";
     $view_class = ($view_class =~ s/^\+// ? $view_class : "Amon::V::$view_class");
-    $view_class->use($base_class) or die $@;
+    Amon::Util::load_class($view_class);
+    $view_class->import($base_class);
 
     no strict 'refs';
     *{"${caller}::app"} = \&_app;
