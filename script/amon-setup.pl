@@ -101,8 +101,9 @@ use Plack::Test;
 use Plack::Util;
 use Test::More;
 
+my $app = Plack::Util::load_psgi '[%= $dist %].psgi';
 test_psgi
-    app => Plack::Util::load_psgi '<?= $dist ?>.psgi',
+    app => $app,
     client => sub {
         my $cb = shift;
         my $req = HTTP::Request->new(GET => 'http://localhost/');

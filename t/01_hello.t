@@ -8,27 +8,27 @@ use Plack::Util;
 use Plack::Test;
 use Cwd;
 use Test::More;
+use App::Prove;
 
-my $cwd = Cwd::cwd;
+&main; done_testing; exit;
 
-my $dir = tempdir(CLEANUP => 1);
-chdir $dir or die $!;
-unshift @INC, File::Spec->catfile($dir, 'Hello', 'lib');
+sub main {
+    my $old_cwd = Cwd::cwd;
+        &main_test;
+    chdir $old_cwd;
+}
 
-my $setup = File::Spec->catfile($FindBin::Bin, '..', 'script', 'amon-setup.pl');
-my $libdir = File::Spec->catfile($FindBin::Bin, '..', 'lib');
-!system $^X, '-I', $libdir, $setup, 'Hello' or die $!;
-chdir 'Hello' or die $!;
+sub main_test {
+    my $dir = tempdir(CLEANUP => 1);
+    chdir $dir or die $!;
+    unshift @INC, File::Spec->catfile($dir, 'Hello', 'lib');
 
-my $app = do 'Hello.psgi' or die "Cannot compile .psgi: $@";
-test_psgi
-    app => $app,
-    client => sub {
-        my $cb = shift;
-        my $req = HTTP::Request->new(GET => 'http://localhost/');
-        my $res = $cb->($req);
-        like $res->content, qr/hello, Amon world!/;
-    };
+    my $setup = File::Spec->catfile($FindBin::Bin, '..', 'script', 'amon-setup.pl');
+    my $libdir = File::Spec->catfile($FindBin::Bin, '..', 'lib');
+    !system $^X, '-I', $libdir, $setup, 'Hello' or die $!;
+    chdir 'Hello' or die $!;
 
-chdir $cwd;
-done_testing;
+    my $app = App::Prove->new();
+    $app->process_args('-Ilib', <t/*.t>);
+    ok($app->run);
+}
