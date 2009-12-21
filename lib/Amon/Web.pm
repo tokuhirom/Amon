@@ -15,7 +15,7 @@ sub import {
 
     # load classes
     Module::Pluggable::Object->new(
-        'require' => 1, search_path => "${caller}\::C"
+        'require' => 1, search_path => "${caller}::C"
     )->plugins;
     Amon::Util::load_class("${caller}::Dispatcher");
 
