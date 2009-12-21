@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use Test::More;
 use Amon::M::DBI;
-use Test::Requires 'DBD::SQLite';
+use Test::Requires 'DBI', 'DBD::SQLite';
 
 my $m = Amon::M::DBI->new({
     connect_info => [
