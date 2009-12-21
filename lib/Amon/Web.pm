@@ -2,10 +2,10 @@ package Amon::Web;
 use strict;
 use warnings;
 use Module::Pluggable::Object;
-use Plack::Request;
 use UNIVERSAL::require;
 use Try::Tiny;
 use Amon;
+use Amon::Web::Request;
 
 our $_req;
 
@@ -50,7 +50,7 @@ sub _app {
             local $Amon::_base = $base_class;
             local $Amon::_global_config = $config;
             local $Amon::_registrar = +{};
-            local $_req = Plack::Request->new($env);
+            local $_req = Amon::Web::Request->new($env);
             $dispatcher->dispatch($_req);
         } catch {
             if (ref $_ && ref $_ eq 'ARRAY') {
