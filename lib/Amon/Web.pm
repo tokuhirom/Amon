@@ -29,6 +29,9 @@ sub import {
         $_;
     };
 
+    my $request_class = $args{request_class} || 'Amon::Web::Request';
+    Amon::Util::load_class($request_class);
+
     my $view_class = $args{view_class} or die "missing configuration: view_class";
     $view_class = ($view_class =~ s/^\+// ? $view_class : "Amon::V::$view_class");
     Amon::Util::load_class($view_class);
@@ -40,6 +43,7 @@ sub import {
     *{"${caller}::call_trigger"} = \&_call_trigger;
     *{"${caller}::view_class"} = sub { $view_class };
     *{"${caller}::base_class"} = sub { $base_class };
+    *{"${caller}::request_class"} = sub { $request_class };
 }
 
 sub _app {
@@ -49,6 +53,7 @@ sub _app {
     $config ||= {};
 
     my $dispatcher = "${class}::Dispatcher";
+    my $request_class = $class->request_class;
 
     return sub {
         my $env = shift;
@@ -57,7 +62,7 @@ sub _app {
             local $Amon::_base = $base_class;
             local $Amon::_global_config = $config;
             local $Amon::_registrar = +{};
-            local $_req = Amon::Web::Request->new($env); # TODO: extensibility for request class
+            local $_req = $request_class->new($env);
             local $_web_base = $class;
             $dispatcher->dispatch($_req);
         } catch {
@@ -70,6 +75,7 @@ sub _app {
     };
 }
 
+# TODO: move these following functions to Amon::Trigger
 =item MyApp->add_trigger($hook, $code);
 
 register hook.
