@@ -27,7 +27,7 @@ sub render {
 # user can override this method.
 sub resolve_tmpl_path {
     my ($class, $file) = @_;
-    File::Spec->catfile($Amon::_basedir, 'tmpl', $file);
+    File::Spec->catfile($Amon::_base->base_dir, 'tmpl', $file);
 }
 
 sub _mt_cache_dir {

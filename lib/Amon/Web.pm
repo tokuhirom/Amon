@@ -39,16 +39,15 @@ sub import {
     Amon::Trigger->export_to_level(1);
 
     no strict 'refs';
-    *{"${caller}::app"} = \&_app;
+    *{"${caller}::app"}                = \&_app;
     *{"${caller}::default_view_class"} = sub { $default_view_class };
-    *{"${caller}::base_class"} = sub { $base_class };
-    *{"${caller}::request_class"} = sub { $request_class };
+    *{"${caller}::base_class"}         = sub { $base_class };
+    *{"${caller}::request_class"}      = sub { $request_class };
 }
 
 sub _app {
-    my ($class, $basedir, $config) = @_;
+    my ($class, $config) = @_;
     my $base_class = $class->base_class;
-    $basedir ||= './';
     $config ||= {};
 
     my $dispatcher = "${class}::Dispatcher";
@@ -57,7 +56,6 @@ sub _app {
     return sub {
         my $env = shift;
         try {
-            local $Amon::_basedir = $basedir;
             local $Amon::_base = $base_class;
             local $Amon::_global_config = $config;
             local $Amon::_registrar = +{};
