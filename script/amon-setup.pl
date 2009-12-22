@@ -109,6 +109,7 @@ test_psgi
         my $req = HTTP::Request->new(GET => 'http://localhost/');
         my $res = $cb->($req);
         is $res->code, 200;
+        diag $res->content if $res->code != 200;
     };
 
 done_testing;
