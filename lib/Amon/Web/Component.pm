@@ -41,7 +41,7 @@ Render template by L<Text::MicroTemplate>.
 
 =cut
 sub render {
-    my $res = "${Amon::_base}::Web"->view_class->render(@_);
+    my $res = $Amon::Web::_web_base->view_class->render(@_);
     return detach([
         200,
         [
@@ -76,7 +76,7 @@ Detach context and return PSGI response.
 
 =cut
 sub detach($) {
-    "${Amon::_base}::Web"->call_trigger("BEFORE_DETACH", $_[0]);
+    $Amon::Web::_web_base->call_trigger("BEFORE_DETACH", $_[0]);
     die $_[0];
 }
 

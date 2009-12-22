@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use lib 't/SampleApp/lib';
+use lib 't/apps/SampleApp/lib';
 
 package SampleApp;
 use Test::More;

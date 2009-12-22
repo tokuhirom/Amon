@@ -8,6 +8,7 @@ use Amon::Web::Request;
 use Amon::Util;
 
 our $_req;
+our $_web_base;
 
 sub import {
     my ($class, %args) = @_;
@@ -22,7 +23,11 @@ sub import {
     strict->import;
     warnings->import;
 
-    (my $base_class = $caller) =~ s/::Web//;
+    my $base_class = $args{base_class} || do {
+        local $_ = $caller;
+        s/::Web(?:::.+)$//;
+        $_;
+    };
 
     my $view_class = $args{view_class} or die "missing configuration: view_class";
     $view_class = ($view_class =~ s/^\+// ? $view_class : "Amon::V::$view_class");
@@ -34,15 +39,16 @@ sub import {
     *{"${caller}::add_trigger"} = \&_add_trigger;
     *{"${caller}::call_trigger"} = \&_call_trigger;
     *{"${caller}::view_class"} = sub { $view_class };
+    *{"${caller}::base_class"} = sub { $base_class };
 }
 
 sub _app {
     my ($class, $basedir, $config) = @_;
-    (my $base_class = $class) =~ s/::Web//;
+    my $base_class = $class->base_class;
     $basedir ||= './';
     $config ||= {};
 
-    my $dispatcher = "${base_class}::Web::Dispatcher";
+    my $dispatcher = "${class}::Dispatcher";
 
     return sub {
         my $env = shift;
@@ -51,7 +57,8 @@ sub _app {
             local $Amon::_base = $base_class;
             local $Amon::_global_config = $config;
             local $Amon::_registrar = +{};
-            local $_req = Amon::Web::Request->new($env);
+            local $_req = Amon::Web::Request->new($env); # TODO: extensibility for request class
+            local $_web_base = $class;
             $dispatcher->dispatch($_req);
         } catch {
             if (ref $_ && ref $_ eq 'ARRAY') {

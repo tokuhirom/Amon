@@ -23,6 +23,7 @@ use Amon;
 package [%= $module %]::Web;
 use Amon::Web (
     view_class => 'MT',
+    base_class => '[%= $module %]',
 );
 1;
 -- lib/$path/V/MT/Context.pm
