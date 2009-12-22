@@ -6,6 +6,7 @@ use Try::Tiny;
 use Amon;
 use Amon::Web::Request;
 use Amon::Util;
+require Amon::Trigger;
 
 our $_req;
 our $_web_base;
@@ -37,10 +38,10 @@ sub import {
     Amon::Util::load_class($view_class);
     $view_class->import($base_class);
 
+    Amon::Trigger->export_to_level(1);
+
     no strict 'refs';
     *{"${caller}::app"} = \&_app;
-    *{"${caller}::add_trigger"} = \&_add_trigger;
-    *{"${caller}::call_trigger"} = \&_call_trigger;
     *{"${caller}::view_class"} = sub { $view_class };
     *{"${caller}::base_class"} = sub { $base_class };
     *{"${caller}::request_class"} = sub { $request_class };
@@ -73,31 +74,6 @@ sub _app {
             }
         }
     };
-}
-
-# TODO: move these following functions to Amon::Trigger
-=item MyApp->add_trigger($hook, $code);
-
-register hook.
-
-=cut
-sub _add_trigger {
-    my ($class, $hook, $code) = @_;
-    no strict 'refs';
-    push @{${"${class}::_trigger"}->{$hook}}, $code;
-}
-
-=item MyApp->call_trigger($hook, @args);
-
-internal use only
-
-=cut
-sub _call_trigger {
-    my ($class, $hook, @args) = @_;
-    no strict 'refs';
-    for my $code (@{${"${class}::_trigger"}->{$hook} || []}) {
-        $code->(@args);
-    }
 }
 
 1;
