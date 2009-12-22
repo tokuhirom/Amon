@@ -26,7 +26,7 @@ Amon::M::DBIxSkinny - DBIx::Skinny wrapper for Amon
   };
 
   # in your controller
-  model("DB")->get('user' => 1);
+  model("DB")->get('user' => {id => 1});
 
 =head1 DESCRIPTION
 
