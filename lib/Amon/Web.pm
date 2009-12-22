@@ -34,8 +34,7 @@ sub import {
     Amon::Util::load_class($request_class);
 
     my $view_class = $args{view_class} or die "missing configuration: view_class";
-    $view_class = ($view_class =~ s/^\+// ? $view_class : "Amon::V::$view_class");
-    Amon::Util::load_class($view_class);
+    $view_class = Amon::Util::load_class($view_class, "Amon::V");
     $view_class->import($base_class);
 
     Amon::Trigger->export_to_level(1);
