@@ -33,15 +33,14 @@ sub import {
     my $request_class = $args{request_class} || 'Amon::Web::Request';
     Amon::Util::load_class($request_class);
 
-    my $view_class = $args{view_class} or die "missing configuration: view_class";
-    $view_class = Amon::Util::load_class($view_class, "Amon::V");
-    $view_class->import($base_class);
+    my $default_view_class = $args{default_view_class} or die "missing configuration: default_view_class";
+    Amon::Util::load_class($default_view_class);
 
     Amon::Trigger->export_to_level(1);
 
     no strict 'refs';
     *{"${caller}::app"} = \&_app;
-    *{"${caller}::view_class"} = sub { $view_class };
+    *{"${caller}::default_view_class"} = sub { $default_view_class };
     *{"${caller}::base_class"} = sub { $base_class };
     *{"${caller}::request_class"} = sub { $request_class };
 }

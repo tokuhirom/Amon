@@ -22,9 +22,13 @@ use Amon;
 -- lib/$path/Web.pm
 package [%= $module %]::Web;
 use Amon::Web (
-    view_class => 'MT',
-    base_class => '[%= $module %]',
+    default_view_class => '[%= $module %]::V::MT',
+    base_class         => '[%= $module %]',
 );
+1;
+-- lib/$path/V/MT.pm
+package [%= $module %]::V::MT;
+use Amon::V::MT;
 1;
 -- lib/$path/V/MT/Context.pm
 package [%= $module %]::V::MT::Context;
