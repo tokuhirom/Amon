@@ -2,6 +2,7 @@ package Amon::Util;
 use strict;
 use warnings;
 
+# taken from Plack::Util, because this method will use by CLI.
 {
     my $loaded;
     sub load_class {
