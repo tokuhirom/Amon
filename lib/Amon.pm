@@ -24,8 +24,8 @@ sub base_dir {
         my $path = $class;
         $path =~ s!::!/!g;
         my $libpath = $INC{"$path.pm"};
-        $libpath =~ s!lib/$path\.pm$!!;
-        $libpath;
+        $libpath =~ s!(?:blib/)?lib/$path\.pm$!!;
+        $libpath || './';
     };
 }
 
