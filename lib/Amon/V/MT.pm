@@ -4,6 +4,7 @@ use warnings;
 use Text::MicroTemplate;
 use File::Spec;
 use FindBin;
+use Amon::Util;
 
 our $render_context;
 
@@ -136,3 +137,23 @@ sub __use_cache {
 
 
 1;
+__END__
+
+=head1 NAME
+
+Amon::V::MT - Amon Text::MicroTemplate View Class
+
+=head1 SYNOPSIS
+
+    package MyApp::V::MT;
+    use Amon::V::MT;
+    1;
+
+=head1 DESCRIPTION
+
+=head1 SEE ALSO
+
+L<Text::MicroTemplate>, L<Amon>
+
+=cut
+
