@@ -23,9 +23,12 @@ sub base_dir {
     ${"${class}::_base_dir"} ||= do {
         my $path = $class;
         $path =~ s!::!/!g;
-        my $libpath = $INC{"$path.pm"};
-        $libpath =~ s!(?:blib/)?lib/$path\.pm$!!;
-        $libpath || './';
+        if (my $libpath = $INC{"$path.pm"}) {
+            $libpath =~ s!(?:blib/)?lib/$path\.pm$!!;
+            $libpath || './';
+        } else {
+            './'
+        }
     };
 }
 
