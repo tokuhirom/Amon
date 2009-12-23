@@ -23,19 +23,24 @@ Amon::Manual::Tutorial.ja - Amon 日本語チュートリアル
 
 雛形のディレクトリ構造は以下のようになっています。非常にシンプルでわかりやすい構造です。
 
-    .
+    Hello
     |-- Hello.psgi
+    |-- Makefile.PL
     |-- lib
     |   |-- Hello
-    |   |   |-- C
-    |   |   |   `-- Root.pm
-    |   |   |-- Dispatcher.pm
     |   |   |-- M
-    |   |   `-- V
-    |   |       `-- MT
-    |   |           `-- Context.pm
+    |   |   |-- V
+    |   |   |   |-- MT
+    |   |   |   |   `-- Context.pm
+    |   |   |   `-- MT.pm
+    |   |   |-- Web
+    |   |   |   |-- C
+    |   |   |   |   `-- Root.pm
+    |   |   |   `-- Dispatcher.pm
+    |   |   `-- Web.pm
     |   `-- Hello.pm
     |-- t
+    |   `-- 01_root.t
     `-- tmpl
         |-- base.mt
         `-- index.mt

@@ -26,13 +26,11 @@ __END__
     1;
 
     # in your configuration
-    Your::Web->app(
-        '/path/to/base' => {
-            'M::DBI' => {
-                connect_info => [
-                    'dbi:SQLite:', '', ''
-                ],
-            }
+    Your::Web->app({
+        'M::DBI' => {
+            connect_info => [
+                'dbi:SQLite:', '', ''
+            ],
         }
-    );
+    });
 
