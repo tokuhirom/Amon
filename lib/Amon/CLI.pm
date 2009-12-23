@@ -17,9 +17,13 @@ sub import {
 }
 
 sub setup {
-    my ($class, $conf) = @_;
-    my $base_class = $class->base_class();
-    ${"${base_class}::_global_config"} = $conf;
+    my ($class, ) = @_;
+    my $base_class = $class->base_class;
+    my $config = $base_class->config_class()->instance;
+
+    no strict 'refs';
+    ${"${base_class}::_base"} = $base_class;
+    ${"${base_class}::_global_config"} = $config;
 }
 
 1;
