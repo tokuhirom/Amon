@@ -23,4 +23,10 @@ use warnings;
     }
 }
 
+sub class2env {
+    my $class = shift || '';
+    $class =~ s/::/_/g;
+    return uc($class);
+}
+
 1;

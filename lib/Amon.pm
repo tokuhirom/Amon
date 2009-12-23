@@ -1,6 +1,7 @@
 package Amon;
 use strict;
 use warnings;
+use Amon::Util;
 use 5.008001;
 
 our $VERSION = 0.01;
@@ -10,9 +11,14 @@ our $_global_config;
 our $_registrar;
 
 sub import {
-    my $class = shift;
+    my ($class, %args) = @_;
     my $caller = caller(0);
+
+    my $config_class = $args{config_class} || "${class}::Config";
+    Amon::Util::load_class($config_class);
+
     no strict 'refs';
+    *{"${caller}::config_class"}       = sub { $config_class };
     unshift @{"${caller}::ISA"}, $class;
 }
 

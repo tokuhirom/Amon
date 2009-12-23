@@ -49,7 +49,7 @@ sub import {
 sub _app {
     my ($class, $config) = @_;
     my $base_class = $class->base_class;
-    $config ||= {};
+    $config ||= $base_class->config_class->instance;
 
     my $dispatcher = "${class}::Dispatcher";
     my $request_class = $class->request_class;

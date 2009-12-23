@@ -30,6 +30,10 @@ use Amon::Web (
 package [%= $module %]::V::MT;
 use Amon::V::MT;
 1;
+-- lib/$path/Config.pm
+package [%= $module %]::Config;
+use Amon::Config;
+1;
 -- lib/$path/V/MT/Context.pm
 package [%= $module %]::V::MT::Context;
 use Amon::V::MT::Context;
