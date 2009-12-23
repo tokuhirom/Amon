@@ -27,7 +27,7 @@ sub import {
 sub base_dir {
     my $class = shift;
     no strict 'refs';
-    *{"${class}::base_dir"} = sub {
+    ${"${class}::_base_dir"} ||= do {
         my $path = $class;
         $path =~ s!::!/!g;
         if (my $libpath = $INC{"$path.pm"}) {
