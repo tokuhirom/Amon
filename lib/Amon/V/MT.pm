@@ -17,6 +17,11 @@ sub import {
     unshift @{"${caller}::ISA"}, $class;
 }
 
+sub new {
+    my ($class, $conf) = @_;
+    bless {}, $class;
+}
+
 # entry point
 sub render {
     my $class = shift;

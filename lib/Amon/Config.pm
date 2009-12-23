@@ -3,11 +3,13 @@ use strict;
 use warnings;
 use File::Spec;
 use Amon::Util;
-require Class::Singleton; # preload
+use base qw/Class::Singleton/;
 
 sub import {
     my ($class, %args) = @_;
     my $caller = caller(0);
+    return if $caller eq 'main';
+
     my $base_class = $args{base_class} || do {
         local $_ = $caller;
         s/::Config(?:::.+)?//;
@@ -26,7 +28,7 @@ sub import {
     my $common_name = $args{common_name} || 'common';
 
     no strict 'refs';
-    unshift @{"${caller}::ISA"}, 'Class::Singleton';
+    unshift @{"${caller}::ISA"}, $class;
     *{"${caller}::common_name"}   = sub { $common_name };
     *{"${caller}::config_name"}   = sub { $config_name };
     *{"${caller}::config_dir"}    = sub { $config_dir };
