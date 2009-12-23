@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use Amon::Util;
 use 5.008001;
+use File::Spec;
 
 our $VERSION = 0.01;
 
@@ -26,14 +27,14 @@ sub import {
 sub base_dir {
     my $class = shift;
     no strict 'refs';
-    ${"${class}::_base_dir"} ||= do {
+    *{"${class}::base_dir"} = sub {
         my $path = $class;
         $path =~ s!::!/!g;
         if (my $libpath = $INC{"$path.pm"}) {
             $libpath =~ s!(?:blib/)?lib/$path\.pm$!!;
-            $libpath || './';
+            File::Spec->rel2abs($libpath || './');
         } else {
-            './'
+            File::Spec->rel2abs('./');
         }
     };
 }
