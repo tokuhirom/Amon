@@ -29,6 +29,7 @@ sub import {
         s/::Web(?:::.+)$//;
         $_;
     };
+    Amon::Util::load_class($base_class);
 
     my $request_class = $args{request_class} || 'Amon::Web::Request';
     Amon::Util::load_class($request_class);
