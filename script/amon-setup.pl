@@ -94,7 +94,7 @@ sub index {
 -- $dist.psgi
 use [%= $module %];
 use [%= $module %]::Web;
-[%= $module %]::Web->app("./");
+[%= $module %]::Web->app();
 -- Makefile.PL
 use inc::Module::Install;
 all_from "lib/[%= $path %].pm";
