@@ -35,3 +35,23 @@ sub render {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Amon::V::TT - Amon Template-Toolkit View Class
+
+=head1 SYNOPSIS
+
+    package MyApp::V::TT;
+    use Amon::V::TT;
+    1;
+
+=head1 DESCRIPTION
+
+=head1 SEE ALSO
+
+L<Template>, L<Amon>
+
+=cut
+
