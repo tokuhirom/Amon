@@ -9,6 +9,7 @@ requires 'Plack'                     => 0.9023;
 requires 'Text::MicroTemplate'       => 0.10;
 requires 'Try::Tiny'                 => 0.02;
 requires 'Exporter';
+requires 'Class::Singleton';
 
 test_requires 'Test::Requires';
 
