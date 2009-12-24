@@ -52,12 +52,23 @@ sub model($) {
     my $klass = "@{[ ref $self ]}::M::$name";
     $self->{_components}->{$klass} ||= do {
         Amon::Util::load_class($klass);
-        my $conf = $self->config->{"M::$name"};
-        $klass->new($conf ? $conf : ());
+        my $config = $self->config()->{"M::$name"};
+        $klass->new($config ? $config : ());
     };
 }
 
-sub config   { $_[0]->config_class->instance }
+sub config  {
+    my $self = $_[0];
+    my $cc = $self->config_class;
+    Amon::Util::load_class($cc);
+    my $conf = $cc->instance;
+    no strict 'refs';
+    no warnings 'redefine';
+    *{"@{[ ref $self ]}::config"} = sub {
+        $conf
+    };
+    return $conf;
+}
 
 # web related accessors
 sub web_base { $_[0]->{web_base} }

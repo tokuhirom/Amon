@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use File::Spec;
 use Amon::Util;
-use base qw/Class::Singleton/;
+use Class::Singleton;
 
 sub import {
     my ($class, %args) = @_;
@@ -15,7 +15,6 @@ sub import {
         s/::Config(?:::.+)?//;
         $_;
     };
-    Amon::Util::load_class($base_class);
     my $loader = Amon::Util::load_class($args{loader} || 'Perl', 'Amon::Config::Loader');
     my $config_name = $args{config_name} || do {
         my $envname = Amon::Util::class2env($base_class);
@@ -25,11 +24,12 @@ sub import {
     my $common_name = $args{common_name} || 'common';
 
     no strict 'refs';
-    unshift @{"${caller}::ISA"}, $class;
+    unshift @{"${caller}::ISA"}, 'Class::Singleton';
     *{"${caller}::common_name"}   = sub { $common_name };
     *{"${caller}::config_name"}   = sub { $config_name };
     *{"${caller}::config_dir"}    = sub {
         $args{config_dir} || do {
+            Amon::Util::load_class($base_class);
             File::Spec->catdir($base_class->base_dir, 'config');
         };
     };
