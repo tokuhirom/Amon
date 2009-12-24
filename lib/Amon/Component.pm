@@ -7,12 +7,6 @@ use Amon::Util;
 
 sub global_config { $Amon::_global_config }
 
-sub config {
-    my $pkg = caller(0);
-    $pkg =~ s/^${Amon::_base}(::)?//;
-    return $Amon::_global_config->{$pkg};
-}
-
 sub model($) {
     my $name = shift;
     $Amon::_registrar->{"M::$name"} ||= do {
@@ -44,15 +38,15 @@ Amon::Component - Amon Component Class
 
 get global configuration
 
-=item config()
-
-Get configuration for caller module.
-
 =item model($model)
 
 get the model class name.
 
 =back
+
+=head1 SEE ALSO
+
+L<Amon>
 
 =cut
 
