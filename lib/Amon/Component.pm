@@ -5,29 +5,14 @@ use base 'Exporter';
 our @EXPORT = qw/global_config config model/;
 use Amon::Util;
 
-=item global_config()
-
-get global configuration
-
-=cut
 sub global_config { $Amon::_global_config }
 
-=item config()
-
-Get configuration for caller module.
-
-=cut
 sub config {
     my $pkg = caller(0);
     $pkg =~ s/^${Amon::_base}(::)?//;
     return $Amon::_global_config->{$pkg};
 }
 
-=item model($model)
-
-get the model class name.
-
-=cut
 sub model($) {
     my $name = shift;
     $Amon::_registrar->{"M::$name"} ||= do {
@@ -39,3 +24,35 @@ sub model($) {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Amon::Component - Amon Component Class
+
+=head1 SYNOPSIS
+
+    use Amon::Component;
+
+=head1 DESCRIPTION
+
+=head1 FUNCITIONS
+
+=over 4
+
+=item global_config()
+
+get global configuration
+
+=item config()
+
+Get configuration for caller module.
+
+=item model($model)
+
+get the model class name.
+
+=back
+
+=cut
+
