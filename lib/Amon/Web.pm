@@ -3,7 +3,6 @@ use strict;
 use warnings;
 use Module::Pluggable::Object;
 use Try::Tiny;
-use Amon;
 use Amon::Web::Request;
 use Amon::Util;
 require Amon::Trigger;
