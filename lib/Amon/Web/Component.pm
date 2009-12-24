@@ -6,40 +6,20 @@ use Amon::Component;
 
 our @EXPORT = (qw/req param current_url render redirect res_404 detach/, @Amon::Component::EXPORT);
 
-=item req()
-
-Return request class.
-
-=cut
 sub req() { Amon->context->request }
 
-=item param($name)
-
-Get query/body parameter.
-
-=cut
 sub param { req->param(@_) }
 
-=item current_url()
-
-Get current url.
-
-=cut
 sub current_url() {
     my $req      = req;
     my $env      = $req->{env};
     my $protocol = 'http';
     my $port     = $env->{SERVER_PORT} || 80;
     my $url      = "http://" . $req->header('Host');
-    $url .= "$env->{PATH_INFO}";
-    $url .= '?' . $env->{QUERY_STRING};
+    $url .= $env->{PATH_INFO};
+    $url .= '?' . $env->{QUERY_STRING} if $env->{QUERY_STRING};
 }
 
-=item render($path, @args)
-
-Render template by L<Text::MicroTemplate>.
-
-=cut
 sub render {
     my $c = Amon->context;
     my $view_class = $c->web_base->default_view_class;
@@ -59,11 +39,6 @@ sub render {
     ]);
 }
 
-=item redirect($location)
-
-Output redirect response.
-
-=cut
 sub redirect($) {
     my $location = shift;
     my $url = req()->base;
@@ -77,11 +52,6 @@ sub redirect($) {
     ]);
 }
 
-=item detach([$status, $headers, $body])
-
-Detach context and return PSGI response.
-
-=cut
 sub detach($) {
     Amon->context->web_base->call_trigger("BEFORE_DETACH", $_[0]);
     die $_[0];
@@ -99,3 +69,40 @@ sub res_404 {
 }
 
 1;
+__END__
+
+=head1 name
+
+Amon::Web::Component - amon web component
+
+=head1 FUNCTIONS
+
+=over 4
+
+=item req()
+
+Return request class.
+
+=item param($name)
+
+Get query/body parameter.
+
+=item current_url()
+
+Get current url.
+
+=item render($path, @args)
+
+Render template by L<Text::MicroTemplate>.
+
+=item redirect($location)
+
+Output redirect response.
+
+=item detach([$status, $headers, $body])
+
+Detach context and return PSGI response.
+
+=back
+
+=cut
