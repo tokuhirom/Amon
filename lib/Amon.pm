@@ -46,12 +46,11 @@ sub base_dir {
 }
 
 sub model($) {
-    my ($self, ) = @_;
-    my $name = shift;
+    my ($self, $name) = @_;
     my $klass = "@{[ ref $self ]}::M::$name";
     $self->{_components}->{$klass} ||= do {
         Amon::Util::load_class($klass);
-        my $conf = $self->config_class->instance->{"M::$name"};
+        my $conf = $self->config->{"M::$name"};
         $klass->new($conf ? $conf : ());
     };
 }
