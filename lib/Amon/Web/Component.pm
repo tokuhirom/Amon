@@ -43,11 +43,11 @@ Render template by L<Text::MicroTemplate>.
 sub render {
     my $c = Amon->context;
     my $view_class = $c->web_base->default_view_class;
-    my $view = $c->{_components} ||= do {
+    my $view = ($c->{_components}->{view_class} ||= do {
         (my $suffix = $view_class) =~ s/^@{[ ref $c ]}:://;
         my $conf = $c->config->{suffix};
         $view_class->new($conf ? $conf : ());
-    };
+    });
     my $res = $view->render(@_);
     return detach([
         200,
