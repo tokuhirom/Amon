@@ -7,9 +7,7 @@ sub merge {
     my ($class, $original, @config) = @_;
     my %res = %$original;
     for my $conf (@config) {
-        while (my ($k, $v) = each %$conf) {
-            $res{$k} = $v unless exists $res{$k};
-        }
+        %res = (%res, %$conf);
     }
     \%res;
 }
