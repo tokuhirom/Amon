@@ -14,6 +14,7 @@ requires 'Class::Singleton';
 test_requires 'Test::Requires';
 
 tests 't/*.t t/*/*.t t/*/*/*.t';
+recursive_author_tests('xt');
 install_script 'script/amon-setup.pl';
 auto_include;
 auto_install;

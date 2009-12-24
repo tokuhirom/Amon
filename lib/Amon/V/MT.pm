@@ -50,7 +50,7 @@ sub __load_internal {
         close $fh;
 
         local $@;
-        my $tmplcode = eval $tmplsrc;
+        my $tmplcode = eval $tmplsrc; ## no critic.
         die $@ if $@;
         return $tmplcode->(@params);
     } else {
@@ -71,7 +71,7 @@ sub __compile {
             print STDERR $mt->_error(shift, 4, $render_context->{caller});
         };
 
-        my $ret = eval $code;
+        my $ret = eval $code; ## no critic.
         die "template compilation error\n$@" if $@;
         $ret;
     };
