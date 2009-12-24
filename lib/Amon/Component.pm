@@ -21,7 +21,7 @@ Amon::Component - Amon Component Class
 
 =head1 DESCRIPTION
 
-=head1 FUNCITIONS
+=head1 FUNCTIONS
 
 =over 4
 

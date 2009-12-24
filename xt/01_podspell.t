@@ -32,3 +32,10 @@ maki
 TODO
 kazuhooku
 FAQ
+Amon
+DBI
+PSGI
+URL
+XS
+env
+.pm

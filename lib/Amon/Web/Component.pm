@@ -88,7 +88,7 @@ __END__
 
 =head1 name
 
-Amon::Web::Component - amon web component
+Amon::Web::Component - Amon web component
 
 =head1 FUNCTIONS
 
@@ -104,7 +104,7 @@ Get query/body parameter.
 
 =item current_url()
 
-Get current url.
+Get current URL.
 
 =item render($path, @args)
 

@@ -52,7 +52,7 @@ Constructs a class name and C<require> the class. Throws an exception
 if the .pm file for the class is not found, just with the built-in                    C<require>.
 
 If C<$prefix> is set, the class name is prepended to the C<$class>
-unless C<$class> begins with C<+> sign, which means the class name isalready fully qualified.
+unless C<$class> begins with C<+> sign, which means the class name is already fully qualified.
 
   my $class = Amon::Util::load_class("Foo");                   # Foo  my $class = Plack::Util::load_class("Baz", "Foo::Bar");       # Foo::Bar::Baz
   my $class = Amon::Util::load_class("+XYZ::ZZZ", "Foo::Bar"); # XYZ::ZZZ
