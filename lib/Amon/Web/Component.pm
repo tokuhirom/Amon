@@ -3,8 +3,9 @@ use strict;
 use warnings;
 use base 'Exporter';
 use Amon::Component;
+use URI::WithBase;
 
-our @EXPORT = (qw/req param current_url render redirect res_404 detach/, @Amon::Component::EXPORT);
+our @EXPORT = (qw/req param current_url render redirect res_404 detach uri_for/, @Amon::Component::EXPORT);
 
 sub req() { Amon->context->request }
 
@@ -37,6 +38,20 @@ sub render {
         ],
         [$res]
     ]);
+}
+
+sub uri_for {
+    my ($path, $query) = @_;
+    my $root = req->{env}->{SCRIPT_NAME} || '/';
+    $root =~ s{([^/])$}{$1/};
+    $path =~ s{^/}{};
+
+    my @q;
+    while (my ($key, $val) = each %$query) {
+        $val = join '', map { /^[a-zA-Z0-9_.!~*'()-]$/ ? $_ : '%' . uc(unpack('H2', $_)) } split //, $val;
+        push @q, "${key}=${val}";
+    }
+    $root . $path . (scalar @q ? '?' . join('&', @q) : '');
 }
 
 sub redirect($) {
