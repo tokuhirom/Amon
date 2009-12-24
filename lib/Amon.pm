@@ -6,10 +6,11 @@ use 5.008001;
 use File::Spec;
 
 our $VERSION = 0.01;
-
-our $_base;
-our $_global_config;
-our $_registrar;
+{
+    our $_context;
+    sub context { $_context }
+    sub set_context { $_context = $_[1] }
+}
 
 sub import {
     my ($class, %args) = @_;
@@ -21,6 +22,11 @@ sub import {
     no strict 'refs';
     *{"${caller}::config_class"}       = sub { $config_class };
     unshift @{"${caller}::ISA"}, $class;
+}
+
+sub new {
+    my ($class, %args) = @_;
+    bless {%args}, $class;
 }
 
 # OVERWRITABLE
@@ -38,6 +44,23 @@ sub base_dir {
         }
     };
 }
+
+sub model($) {
+    my ($self, ) = @_;
+    my $name = shift;
+    my $klass = "@{[ ref $self ]}::M::$name";
+    $self->{_components}->{$klass} ||= do {
+        Amon::Util::load_class($klass);
+        my $conf = $self->config_class->instance->{"M::$name"};
+        $klass->new($conf ? $conf : ());
+    };
+}
+
+sub config   { $_[0]->config_class->instance }
+
+# web related accessors
+sub web_base { $_[0]->{web_base} }
+sub request  { $_[0]->{request}  }
 
 1;
 __END__

@@ -5,17 +5,8 @@ use base 'Exporter';
 our @EXPORT = qw/global_config model/;
 use Amon::Util;
 
-sub global_config { $Amon::_global_config ||= $Amon::_base->config_class->instance }
-
-sub model($) {
-    my $name = shift;
-    my $klass = "${Amon::_base}::M::$name";
-    $Amon::_registrar->{$klass} ||= do {
-        Amon::Util::load_class($klass);
-        my $conf = global_config->{"M::$name"};
-        $klass->new($conf ? $conf : ());
-    };
-}
+sub global_config () { Amon->context->config_class->instance }
+sub model ($) { Amon->context->model(@_) }
 
 1;
 __END__

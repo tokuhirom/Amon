@@ -14,7 +14,7 @@ sub import {
 
 sub call {
     my ($controller, $action, @args) = @_;
-    "${Amon::Web::_web_base}::C::$controller"->$action(@args);
+    "@{[ Amon->context->web_base ]}::C::$controller"->$action(@args);
 }
 
 1;

@@ -18,12 +18,9 @@ sub import {
 
 sub setup {
     my ($class, ) = @_;
-    my $base_class = $class->base_class;
-    my $config = $base_class->config_class()->instance;
-
-    no strict 'refs';
-    ${"${base_class}::_base"} = $base_class;
-    ${"${base_class}::_global_config"} = $config;
+    my $c = $class->base_class->new();
+    Amon->set_context($c);
+    return $c;
 }
 
 1;
@@ -43,10 +40,9 @@ __END__
             dsn => 'dbi:SQLite:'
         }
     };
-    MyApp::CLI->setup(
+    my $c = MyApp::CLI->setup(
         $conf,
     );
 
-    my ($row) = model("DB")->get(user => 1);
+    my ($row) = $c->model("DB")->get(user => 1);
     print $row->name, "\n";
-

@@ -8,9 +8,6 @@ use Amon::Web::Request;
 use Amon::Util;
 require Amon::Trigger;
 
-our $_req;
-our $_web_base;
-
 sub import {
     my ($class, %args) = @_;
     my $caller = caller(0);
@@ -57,12 +54,12 @@ sub _app {
     return sub {
         my $env = shift;
         try {
-            local $Amon::_base = $base_class;
-            local $Amon::_global_config = $config;
-            local $Amon::_registrar = +{};
-            local $_req = $request_class->new($env);
-            local $_web_base = $class;
-            $dispatcher->dispatch($_req);
+            my $req = $request_class->new($env);
+            local $Amon::_context = $base_class->new(
+                request  => $req,
+                web_base => $class,
+            );
+            $dispatcher->dispatch($req);
         } catch {
             if (ref $_ && ref $_ eq 'ARRAY') {
                 return $_;

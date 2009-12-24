@@ -27,7 +27,7 @@ sub block {
     my $block;
     if (defined $code) {
         $block = $Amon::V::MT::render_context->{blocks}{$name} ||= {
-            context_ref => ${"${Amon::_base}::V::MT::Context::_MTREF"},
+            context_ref => ${"@{[ ref Amon->context ]}::V::MT::Context::_MTREF"},
             code        => ref($code) eq 'CODE' ? $code : sub { return $code },
         };
     }
@@ -37,7 +37,7 @@ sub block {
     }
 
     if (!$Amon::V::MT::render_context->{extends}) { # if base template.
-        my $current_ref = ${"${Amon::_base}::V::MT::Context::_MTREF"};
+        my $current_ref = ${"@{[ ref Amon->context ]}::V::MT::Context::_MTREF"};
         my $block_ref   = $block->{context_ref};
 
         my $rendered = $$current_ref || '';

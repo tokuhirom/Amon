@@ -33,7 +33,7 @@ sub render {
 # user can override this method.
 sub resolve_tmpl_path {
     my ($class, $file) = @_;
-    File::Spec->catfile($Amon::_base->base_dir, 'tmpl', $file);
+    File::Spec->catfile(Amon->context->base_dir, 'tmpl', $file);
 }
 
 sub _mt_cache_dir {
@@ -62,7 +62,7 @@ sub __compile {
     my ($class, $path, @params) = @_;
 
     my $mt = Text::MicroTemplate->new(
-        package_name => "${Amon::_base}::V::MT::Context",
+        package_name => "@{[ ref Amon->context ]}::V::MT::Context",
     );
     $class->__build_file($mt, $path);
     my $code = $class->__eval_builder($mt->code);
@@ -95,14 +95,14 @@ sub __build_file {
 sub __eval_builder {
     my ($class, $code) = @_;
     return <<"...";
-package $Amon::_base\::V::MT::Context;
+package @{[ ref Amon->context ]}\::V::MT::Context;
 #line 1
 sub {
     my \$out = Text::MicroTemplate::encoded_string((
         $code
     )->(\@_));
     if (my \$parent = delete \$Amon::V::MT::render_context->{extends}) {
-        \$out = $Amon::_base\::V::MT->__load_internal(\$parent);
+        \$out = @{[ ref Amon->context ]}\::V::MT->__load_internal(\$parent);
     }
     \$out;
 }
