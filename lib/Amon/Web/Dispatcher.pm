@@ -18,3 +18,42 @@ sub call {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Amon::Web::Dispatcher - Amon Dispatcher class
+
+=head1 SYNOPSIS
+
+    package MyApp::Web::Dispatcher;
+    use Amon::Web::Dispatcher;
+    use 5.010;
+    sub dispatch {
+        my ($class, $req) = @_;
+        given ([$req->method, $req->uri]) {
+             when (['GET', '/']) {
+                 call('Root', 'index');
+             }
+             when (['POST', '/post']) {
+                 call('Entry', 'post');
+                 # or
+                 MyApp::C::Entry->post($req);
+             }
+             default {
+                 res_404(); # return 404 response
+             }
+        }
+    }
+
+=head1 DESCRIPTION
+
+This is a base class of dispatcher.
+
+=head1 SEE ALSO
+
+L<Amon>
+
+=cut
+
+

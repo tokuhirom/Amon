@@ -19,6 +19,10 @@ sub dbh {
 1;
 __END__
 
+=head1 NAME
+
+Amon::M::DBI - Amon DBI Model Class
+
 =head1 SYNOPSIS
 
     package Your::M::DBI;
@@ -33,4 +37,10 @@ __END__
             ],
         }
     });
+
+=head1 SEE ALSO
+
+L<DBI>, L<Amon>
+
+=cut
 
