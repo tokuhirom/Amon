@@ -37,12 +37,13 @@ sub new {
 # OVERWRITABLE
 sub base_dir {
     my $class = shift;
+    $class = ref $class if ref $class;
     no strict 'refs';
     ${"${class}::_base_dir"} ||= do {
         my $path = $class;
         $path =~ s!::!/!g;
         if (my $libpath = $INC{"$path.pm"}) {
-            $libpath =~ s!(?:blib/)?lib/$path\.pm$!!;
+            $libpath =~ s!(?:blib/)?lib/+$path\.pm$!!;
             File::Spec->rel2abs($libpath || './');
         } else {
             File::Spec->rel2abs('./');
