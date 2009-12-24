@@ -11,14 +11,14 @@ sub import {
     my ($class, %args) = @_;
     my $caller = caller(0);
 
+    strict->import;
+    warnings->import;
+
     # load classes
     Module::Pluggable::Object->new(
         'require' => 1, search_path => "${caller}::C"
     )->plugins;
     Amon::Util::load_class("${caller}::Dispatcher");
-
-    strict->import;
-    warnings->import;
 
     my $base_class = $args{base_class} || do {
         local $_ = $caller;

@@ -12,6 +12,8 @@ sub import {
     my ($class, $base) = @_;
     my $caller = caller(0);
     my $klass = "${caller}::Context"; # FIXME: configurable class name
+    strict->import;
+    warnings->import;
     Amon::Util::load_class($klass);
     $klass->import();
     no strict 'refs';

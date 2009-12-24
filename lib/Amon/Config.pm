@@ -10,6 +10,9 @@ sub import {
     my $caller = caller(0);
     return if $caller eq 'main';
 
+    strict->import;
+    warnings->import;
+
     my $base_class = $args{base_class} || do {
         local $_ = $caller;
         s/::Config(?:::.+)?//;

@@ -101,6 +101,7 @@ all_from "lib/[%= $path %].pm";
 
 tests 't/*.t t/*/*.t t/*/*/*.t';
 requires 'Amon';
+recursive_author_requires('xt');
 
 WriteAll;
 -- config/common.pl
@@ -125,6 +126,80 @@ test_psgi
     };
 
 done_testing;
+-- t/02_mech.t
+use strict;
+use warnings;
+use Plack::Test;
+use Plack::Util;
+use Test::More;
+use Test::Requires 'Test::WWW::Mechanize::PSGI';
+
+my $app = Plack::Util::load_psgi '[%= $dist %].psgi';
+
+my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
+$mech->get_ok('/');
+
+done_testing;
+-- xt/01_podspell.t
+use Test::More;
+eval q{ use Test::Spelling };
+plan skip_all => "Test::Spelling is not installed." if $@;
+add_stopwords(map { split /[\s\:\-]/ } <DATA>);
+$ENV{LANG} = 'C';
+all_pod_files_spelling_ok('lib');
+__DATA__
+[%= $module %]
+Tokuhiro Matsuno
+Test::TCP
+tokuhirom
+AAJKLFJEF
+GMAIL
+COM
+Tatsuhiko
+Miyagawa
+Kazuhiro
+Osawa
+lestrrat
+typester
+cho45
+charsbar
+coji
+clouder
+gunyarakun
+hio_d
+hirose31
+ikebe
+kan
+kazeburo
+daisuke
+maki
+TODO
+kazuhooku
+FAQ
+Amon
+DBI
+PSGI
+URL
+XS
+env
+.pm
+-- xt/02_perlcritic.t
+use strict;
+use Test::More;
+eval q{ use Test::Perl::Critic -profile => 'xt/perlcriticrc' };
+plan skip_all => "Test::Perl::Critic is not installed." if $@;
+all_critic_ok('lib');
+-- xt/03_pod.t
+use Test::More;
+eval "use Test::Pod 1.00";
+plan skip_all => "Test::Pod 1.00 required for testing POD" if $@;
+all_pod_files_ok();
+-- xt/perlcriticrc
+[TestingAndDebugging::ProhibitNoStrict]
+allow=refs
+[-Subroutines::ProhibitSubroutinePrototypes]
+[TestingAndDebugging::RequireUseStrict]
+equivalent_modules = Mouse Mouse::Role Moose Amon Amon::Web Amon::Web::C Amon::V::MT::Context Amon::Web::Dispatcher Amon::V::MT Amon::Config
 -- .gitignore
 Makefile
 inc/
@@ -158,6 +233,7 @@ sub main {
     _mkpath "lib/$path/M";
     _mkpath "tmpl";
     _mkpath "t";
+    _mkpath "xt";
     _mkpath 'config';
 
     my $conf = _parse_conf($confsrc);

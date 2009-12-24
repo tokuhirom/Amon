@@ -29,6 +29,6 @@ sub main_test {
     chdir 'Hello' or die $!;
 
     my $app = App::Prove->new();
-    $app->process_args('-Ilib', '-I'.File::Spec->catfile($FindBin::Bin, '..', 'lib'), <t/*.t>);
+    $app->process_args('-Ilib', '-I'.File::Spec->catfile($FindBin::Bin, '..', 'lib'), <t/*.t>, <xt/*.t>);
     ok($app->run);
 }

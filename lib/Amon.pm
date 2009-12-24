@@ -16,6 +16,9 @@ sub import {
     my ($class, %args) = @_;
     my $caller = caller(0);
 
+    strict->import;
+    warnings->import;
+
     my $config_class = $args{config_class} || "${caller}::Config";
     Amon::Util::load_class($config_class);
 
