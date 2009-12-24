@@ -8,7 +8,7 @@ sub load {
     my $config_name = $config_class->config_name;
     my $common_name = $config_class->common_name();
 
-    my $common = eval { do File::Spec->catfile($config_dir, "$common_name.pl") } || {};
+    my $common = do( File::Spec->catfile($config_dir, "$common_name.pl") ) || {};
     my $detail = $config_name ? do File::Spec->catfile($config_dir, "$config_name.pl") : {};
 
     return $config_class->merge($common, $detail);
