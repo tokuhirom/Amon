@@ -2,15 +2,15 @@ package Amon::Component;
 use strict;
 use warnings;
 use base 'Exporter';
-our @EXPORT = qw/global_config config model/;
+our @EXPORT = qw/global_config model/;
 use Amon::Util;
 
-sub global_config { $Amon::_global_config }
+sub global_config { $Amon::_global_config ||= $Amon::_base->config_class->instance }
 
 sub model($) {
     my $name = shift;
-    $Amon::_registrar->{"M::$name"} ||= do {
-        my $klass = "${Amon::_base}::M::$name";
+    my $klass = "${Amon::_base}::M::$name";
+    $Amon::_registrar->{$klass} ||= do {
         Amon::Util::load_class($klass);
         my $conf = global_config->{"M::$name"};
         $klass->new($conf ? $conf : ());
