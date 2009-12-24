@@ -30,3 +30,51 @@ sub class2env {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Amon::Util - Amon Utility Class
+
+=head1 DESCRIPTION
+
+This is a utility functions for L<Amon>.
+
+=head1 FUNCTIONS
+
+=over 4
+
+=item Amon::Util::load_class($class, [$prefix])
+
+  my $class = Amon::Util::load_class($class [, $prefix ]);
+
+Constructs a class name and C<require> the class. Throws an exception
+if the .pm file for the class is not found, just with the built-in                    C<require>.
+
+If C<$prefix> is set, the class name is prepended to the C<$class>
+unless C<$class> begins with C<+> sign, which means the class name isalready fully qualified.
+
+  my $class = Amon::Util::load_class("Foo");                   # Foo  my $class = Plack::Util::load_class("Baz", "Foo::Bar");       # Foo::Bar::Baz
+  my $class = Amon::Util::load_class("+XYZ::ZZZ", "Foo::Bar"); # XYZ::ZZZ
+
+=item Amon::Util::class2env
+
+Returns the environment name for class.
+
+    MyApp becomes MyApp
+    My::App becomes MY_APP
+
+=back
+
+=head1 THANKS TO
+
+load_class is taken from L<Plack::Util>.
+
+class2env is taken from L<Catalyst::Utils>.
+
+=head1 SEE ALSO
+
+L<Catalyst::Utils>, L<Plack::Util>
+
+=cut
+
