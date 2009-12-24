@@ -43,8 +43,10 @@ sub import {
 }
 
 sub _app {
-    my ($class) = @_;
+    my ($class, %args) = @_;
     my $base_class = $class->base_class;
+    no strict 'refs';
+    local *{"${base_class}::config"} = $args{config} ? sub { $args{config} } : $base_class->config;
 
     my $dispatcher = "${class}::Dispatcher";
     my $request_class = $class->request_class;
