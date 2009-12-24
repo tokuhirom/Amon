@@ -16,12 +16,14 @@ sub import {
     my ($class, %args) = @_;
     my $caller = caller(0);
 
-    my $config_class = $args{config_class} || "${class}::Config";
+    my $config_class = $args{config_class} || "${caller}::Config";
     Amon::Util::load_class($config_class);
 
     no strict 'refs';
     *{"${caller}::config_class"}       = sub { $config_class };
-    unshift @{"${caller}::ISA"}, $class;
+    for my $meth (qw/new base_dir model config web_base request/) {
+        *{"${caller}::${meth}"} = *{"${class}::${meth}"};
+    }
 }
 
 sub new {

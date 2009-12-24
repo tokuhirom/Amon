@@ -103,6 +103,9 @@ tests 't/*.t t/*/*.t t/*/*/*.t';
 requires 'Amon';
 
 WriteAll;
+-- config/common.pl
++{
+};
 -- t/01_root.t
 use strict;
 use warnings;
@@ -155,6 +158,7 @@ sub main {
     _mkpath "lib/$path/M";
     _mkpath "tmpl";
     _mkpath "t";
+    _mkpath 'config';
 
     my $conf = _parse_conf($confsrc);
     while (my ($file, $tmpl) = each %$conf) {

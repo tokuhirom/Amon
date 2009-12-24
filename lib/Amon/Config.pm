@@ -17,9 +17,6 @@ sub import {
     };
     Amon::Util::load_class($base_class);
     my $loader = Amon::Util::load_class($args{loader} || 'Perl', 'Amon::Config::Loader');
-    my $config_dir = $args{config_dir} || do {
-        File::Spec->catdir($base_class->base_dir, 'config');
-    };
     my $config_name = $args{config_name} || do {
         my $envname = Amon::Util::class2env($base_class);
         $ENV{"${envname}_CONFIG_NAME"};
@@ -31,7 +28,11 @@ sub import {
     unshift @{"${caller}::ISA"}, $class;
     *{"${caller}::common_name"}   = sub { $common_name };
     *{"${caller}::config_name"}   = sub { $config_name };
-    *{"${caller}::config_dir"}    = sub { $config_dir };
+    *{"${caller}::config_dir"}    = sub {
+        $args{config_dir} || do {
+            File::Spec->catdir($base_class->base_dir, 'config');
+        };
+    };
     *{"${caller}::merge"}         = $merger->can('merge');
     *{"${caller}::_new_instance"} = sub { $loader->load($caller) };
 }
