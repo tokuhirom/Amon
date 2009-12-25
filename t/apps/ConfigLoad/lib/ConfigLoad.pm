@@ -1,3 +1,5 @@
 package ConfigLoad;
-use Amon;
+use Amon (
+    config_class => 'ConfigLoad::Config',
+);
 1;

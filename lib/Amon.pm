@@ -19,12 +19,27 @@ sub import {
     strict->import;
     warnings->import;
 
-    my $config_class = $args{config_class} || "${caller}::Config";
-    Amon::Util::load_class($config_class);
 
     no strict 'refs';
-    *{"${caller}::config_class"}       = sub { $config_class };
-    for my $meth (qw/new base_dir model config web_base request/) {
+    if (my $config_class = $args{config_class}) {
+        Amon::Util::load_class($config_class);
+        *{"${caller}::config_class"}       = sub { $config_class };
+        *{"${caller}::config"} = sub {
+            my $self = $_[0];
+            my $cc = $self->config_class;
+            Amon::Util::load_class($cc);
+            my $conf = $cc->instance;
+            no strict 'refs';
+            no warnings 'redefine';
+            *{"@{[ ref $self ]}::config"} = sub {
+                $conf
+            };
+            return $conf;
+        };
+    } else {
+        *{"${caller}::config"} = sub { +{ } };
+    }
+    for my $meth (qw/new base_dir model web_base request/) {
         *{"${caller}::${meth}"} = *{"${class}::${meth}"};
     }
 }
@@ -59,19 +74,6 @@ sub model($) {
         my $config = $self->config()->{"M::$name"};
         $klass->new($config ? $config : ());
     };
-}
-
-sub config  {
-    my $self = $_[0];
-    my $cc = $self->config_class;
-    Amon::Util::load_class($cc);
-    my $conf = $cc->instance;
-    no strict 'refs';
-    no warnings 'redefine';
-    *{"@{[ ref $self ]}::config"} = sub {
-        $conf
-    };
-    return $conf;
 }
 
 # web related accessors
