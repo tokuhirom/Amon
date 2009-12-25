@@ -22,7 +22,7 @@ sub import {
 
     my $base_class = $args{base_class} || do {
         local $_ = $caller;
-        s/::Web(?:::.+)$//;
+        s/::Web(?:::.+)?$//;
         $_;
     };
     Amon::Util::load_class($base_class);
