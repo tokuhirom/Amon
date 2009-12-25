@@ -46,13 +46,13 @@ sub _app {
     my ($class, %args) = @_;
     my $base_class = $class->base_class;
     no strict 'refs';
-    local *{"${base_class}::config"} = $args{config} ? sub { $args{config} } : *{"${base_class}::config"};
 
     my $dispatcher = "${class}::Dispatcher";
     my $request_class = $class->request_class;
 
     return sub {
         my $env = shift;
+        local *{"${base_class}::config"} = $args{config} ? sub { $args{config} } : *{"${base_class}::config"};
         try {
             my $req = $request_class->new($env);
             local $Amon::_context = $base_class->new(
