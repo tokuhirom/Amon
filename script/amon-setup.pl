@@ -101,7 +101,7 @@ all_from "lib/[%= $path %].pm";
 
 tests 't/*.t t/*/*.t t/*/*/*.t';
 requires 'Amon';
-recursive_author_requires('xt');
+recursive_author_tests('xt');
 
 WriteAll;
 -- config/common.pl
