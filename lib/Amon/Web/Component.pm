@@ -30,7 +30,7 @@ sub render {
         $view_class->new($conf ? $conf : ());
     });
     my $res = $view->render(@_);
-    utf8::encode($res) if utf8::is_utf8($res);
+    utf8::encode($res);
     return detach([
         200,
         [
