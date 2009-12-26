@@ -46,6 +46,7 @@ sub _app {
     my ($class, %args) = @_;
     my $base_class = $class->base_class;
     no strict 'refs';
+    no warnings 'redefine';
 
     my $dispatcher = "${class}::Dispatcher";
     my $request_class = $class->request_class;
