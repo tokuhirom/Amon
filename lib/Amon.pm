@@ -71,7 +71,7 @@ sub component {
     my $klass = "@{[ ref $self ]}::$name";
     $self->{_components}->{$klass} ||= do {
         Amon::Util::load_class($klass);
-        my $config = $self->config()->{"M::$name"};
+        my $config = $self->config()->{$name};
         $klass->new($config ? $config : ());
     };
 }
