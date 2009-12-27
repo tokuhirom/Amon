@@ -30,10 +30,6 @@ use Amon::Web (
 package [%= $module %]::V::MT;
 use Amon::V::MT;
 1;
--- lib/$path/Config.pm
-package [%= $module %]::Config;
-use Amon::Config;
-1;
 -- lib/$path/V/MT/Context.pm
 package [%= $module %]::V::MT::Context;
 use Amon::V::MT::Context;
@@ -104,9 +100,6 @@ requires 'Amon';
 recursive_author_tests('xt');
 
 WriteAll;
--- config/common.pl
-+{
-};
 -- t/01_root.t
 use strict;
 use warnings;
@@ -234,7 +227,6 @@ sub main {
     _mkpath "tmpl";
     _mkpath "t";
     _mkpath "xt";
-    _mkpath 'config';
 
     my $conf = _parse_conf($confsrc);
     while (my ($file, $tmpl) = each %$conf) {
