@@ -22,7 +22,7 @@ use Amon;
 -- lib/$path/Web.pm
 package [%= $module %]::Web;
 use Amon::Web (
-    default_view_class => '[%= $module %]::V::MT',
+    default_view_class => 'MT',
     base_class         => '[%= $module %]',
 );
 1;

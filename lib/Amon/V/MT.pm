@@ -22,20 +22,27 @@ sub import {
 
 sub new {
     my ($class, $conf) = @_;
-    bless {}, $class;
+    my $include_path = $conf->{include_path} || [File::Spec->catfile(Amon->context->base_dir, 'tmpl')];
+    bless {include_path => $include_path}, $class;
 }
 
 # entry point
 sub render {
-    my $class = shift;
-    local $render_context = {};
-    $class->__load_internal(@_);
+    my $self = shift;
+    local $render_context = {
+        c => $self,
+    };
+    $self->__load_internal(@_);
 }
 
 # user can override this method.
 sub resolve_tmpl_path {
-    my ($class, $file) = @_;
-    File::Spec->catfile(Amon->context->base_dir, 'tmpl', $file);
+    my ($self, $file) = @_;
+    for my $inc (@{$self->{include_path}}) {
+        my $path = File::Spec->catfile($inc, $file);
+        return $path if -f $path;
+    }
+    return;
 }
 
 sub _mt_cache_dir {
@@ -43,9 +50,9 @@ sub _mt_cache_dir {
 }
 
 sub __load_internal {
-    my ($class, $path, @params) = @_;
-    if (0 && $class->__use_cache($path)) {
-        my $tmplfname = $class->_mt_cache_dir() . "/$path.c";
+    my ($self, $path, @params) = @_;
+    if (0 && $self->__use_cache($path)) {
+        my $tmplfname = $self->_mt_cache_dir() . "/$path.c";
 
         open my $fh, '<', $tmplfname or die "Can't read template file: ${tmplfname}($!)";
         my $tmplsrc = do { local $/; <$fh> };
@@ -56,18 +63,18 @@ sub __load_internal {
         die $@ if $@;
         return $tmplcode->(@params);
     } else {
-        return $class->__compile($path, @params);
+        return $self->__compile($path, @params);
     }
 }
 
 sub __compile {
-    my ($class, $path, @params) = @_;
+    my ($self, $path, @params) = @_;
 
     my $mt = Text::MicroTemplate->new(
         package_name => "@{[ ref Amon->context ]}::V::MT::Context",
     );
-    $class->__build_file($mt, $path);
-    my $code = $class->__eval_builder($mt->code);
+    $self->__build_file($mt, $path);
+    my $code = $self->__eval_builder($mt->code);
     my $compiled = do {
         local $SIG{__WARN__} = sub {
             print STDERR $mt->_error(shift, 4, $render_context->{caller});
@@ -78,13 +85,13 @@ sub __compile {
         $ret;
     };
     my $out = $compiled->(@params);
-    $class->__update_cache($path, $code);
+    $self->__update_cache($path, $code);
     return $out;
 }
 
 sub __build_file {
-    my ($class, $mt, $file) = @_;
-    my $filepath = $class->resolve_tmpl_path($file);
+    my ($self, $mt, $file) = @_;
+    my $filepath = $self->resolve_tmpl_path($file) or Carp::croak("Can't find template: $file");
 
     open my $fh, "<:utf8", $filepath
         or Carp::croak("Can't open template file :$filepath:$!");
@@ -95,7 +102,7 @@ sub __build_file {
 }
 
 sub __eval_builder {
-    my ($class, $code) = @_;
+    my ($self, $code) = @_;
     return <<"...";
 package @{[ ref Amon->context ]}\::V::MT::Context;
 #line 1
@@ -104,7 +111,7 @@ sub {
         $code
     )->(\@_));
     if (my \$parent = delete \$Amon::V::MT::render_context->{extends}) {
-        \$out = @{[ ref Amon->context ]}\::V::MT->__load_internal(\$parent);
+        \$out = \$Amon::V::MT::render_context->{c}->__load_internal(\$parent);
     }
     \$out;
 }
@@ -112,9 +119,9 @@ sub {
 }
 
 sub __update_cache {
-    my ($class, $path, $code) = @_;
+    my ($self, $path, $code) = @_;
 
-    my $cache_path = $class->_mt_cache_dir();
+    my $cache_path = $self->_mt_cache_dir();
     foreach my $p (split '/', $path) {
         mkdir $cache_path;
         $cache_path .= "/$p";
@@ -128,9 +135,10 @@ sub __update_cache {
 }
 
 sub __use_cache {
-    my ($class, $path) = @_;
-    my $cache_dir = $class->_mt_cache_dir();
-    my @orig = stat $class->resolve_tmpl_path($path)
+    my ($self, $path) = @_;
+    my $cache_dir = $self->_mt_cache_dir();
+    my $src = $self->resolve_tmpl_path($path) or return;
+    my @orig = stat $src
         or return;
     my @cached = stat "$cache_dir/${path}.c"
         or return;

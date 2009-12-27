@@ -39,7 +39,7 @@ sub import {
     } else {
         *{"${caller}::config"} = sub { +{ } };
     }
-    for my $meth (qw/new base_dir model web_base request/) {
+    for my $meth (qw/new base_dir component model view web_base request/) {
         *{"${caller}::${meth}"} = *{"${class}::${meth}"};
     }
 }
@@ -66,14 +66,24 @@ sub base_dir {
     };
 }
 
-sub model($) {
+sub component {
     my ($self, $name) = @_;
-    my $klass = "@{[ ref $self ]}::M::$name";
+    my $klass = "@{[ ref $self ]}::$name";
     $self->{_components}->{$klass} ||= do {
         Amon::Util::load_class($klass);
         my $config = $self->config()->{"M::$name"};
         $klass->new($config ? $config : ());
     };
+}
+
+sub model {
+    my ($self, $name) = @_;
+    $self->component("M::$name");
+}
+
+sub view {
+    my ($self, $name) = @_;
+    $self->component("V::$name");
 }
 
 # web related accessors
