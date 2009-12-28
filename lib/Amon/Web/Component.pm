@@ -5,21 +5,11 @@ use base 'Exporter';
 use Amon::Component;
 use URI::WithBase;
 
-our @EXPORT = (qw/req param current_url render redirect res_404 detach uri_for/, @Amon::Component::EXPORT);
+our @EXPORT = (qw/req param render redirect res_404 detach uri_for/, @Amon::Component::EXPORT);
 
 sub req() { Amon->context->request }
 
 sub param { req->param(@_) }
-
-sub current_url() {
-    my $req      = req;
-    my $env      = $req->{env};
-    my $protocol = 'http';
-    my $port     = $env->{SERVER_PORT} || 80;
-    my $url      = "http://" . $req->header('Host');
-    $url .= $env->{PATH_INFO};
-    $url .= '?' . $env->{QUERY_STRING} if $env->{QUERY_STRING};
-}
 
 sub render {
     my $c = Amon->context;
@@ -99,10 +89,6 @@ Return request class.
 =item param($name)
 
 Get query/body parameter.
-
-=item current_url()
-
-Get current URL.
 
 =item render($path, @args)
 
