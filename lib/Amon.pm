@@ -5,7 +5,7 @@ use Amon::Util;
 use 5.008001;
 use File::Spec;
 
-our $VERSION = 0.01;
+our $VERSION = 0.02;
 {
     our $_context;
     sub context { $_context }
