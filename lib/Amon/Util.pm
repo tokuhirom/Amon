@@ -29,6 +29,17 @@ sub class2env {
     return uc($class);
 }
 
+sub base_dir($) {
+    my $path = shift;
+    $path =~ s!::!/!g;
+    if (my $libpath = $INC{"$path.pm"}) {
+        $libpath =~ s!(?:blib/)?lib/+$path\.pm$!!;
+        File::Spec->rel2abs($libpath || './');
+    } else {
+        File::Spec->rel2abs('./');
+    }
+}
+
 1;
 __END__
 

@@ -19,7 +19,6 @@ sub import {
     strict->import;
     warnings->import;
 
-
     no strict 'refs';
     if (my $config_class = $args{config_class}) {
         Amon::Util::load_class($config_class);
@@ -39,7 +38,9 @@ sub import {
     } else {
         *{"${caller}::config"} = sub { +{ } };
     }
-    for my $meth (qw/new base_dir component model view web_base request/) {
+    my $base_dir = Amon::Util::base_dir($caller);
+    *{"${caller}::base_dir"} = sub { $base_dir };
+    for my $meth (qw/new component model view web_base request/) {
         *{"${caller}::${meth}"} = *{"${class}::${meth}"};
     }
 }
@@ -47,23 +48,6 @@ sub import {
 sub new {
     my ($class, %args) = @_;
     bless {%args}, $class;
-}
-
-# OVERWRITABLE
-sub base_dir {
-    my $class = shift;
-    $class = ref $class if ref $class;
-    no strict 'refs';
-    ${"${class}::_base_dir"} ||= do {
-        my $path = $class;
-        $path =~ s!::!/!g;
-        if (my $libpath = $INC{"$path.pm"}) {
-            $libpath =~ s!(?:blib/)?lib/+$path\.pm$!!;
-            File::Spec->rel2abs($libpath || './');
-        } else {
-            File::Spec->rel2abs('./');
-        }
-    };
 }
 
 sub component {
