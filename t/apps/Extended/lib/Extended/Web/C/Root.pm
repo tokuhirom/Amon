@@ -5,4 +5,8 @@ sub index {
     render("index.mt");
 }
 
+sub die {
+    die "OKAY";
+}
+
 1;

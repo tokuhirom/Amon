@@ -65,6 +65,7 @@ sub _app {
             if (ref $_ && ref $_ eq 'ARRAY') {
                 return $_;
             } else {
+                local $SIG{__DIE__} = 'default'; # do not overwrite $trace in Middleware::StackTrace
                 die $_; # rethrow
             }
         }

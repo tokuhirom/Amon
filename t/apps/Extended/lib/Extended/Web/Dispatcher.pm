@@ -8,6 +8,9 @@ sub dispatch {
         when ('/') {
             call("Root", 'index');
         }
+        when ('/die') {
+            call("Root", 'die');
+        }
         default {
             res_404();
         }
