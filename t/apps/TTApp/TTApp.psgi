@@ -1,3 +1,3 @@
 use TTApp;
 use TTApp::Web;
-TTApp::Web->app();
+TTApp::Web->to_app();

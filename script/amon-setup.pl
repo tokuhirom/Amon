@@ -104,7 +104,7 @@ builder {
     enable 'Plack::Middleware::Static',
         path => qr{^/static/},
         root => './htdocs/';
-    [%= $module %]::Web->app();
+    [%= $module %]::Web->to_app();
 };
 -- Makefile.PL
 use inc::Module::Install;

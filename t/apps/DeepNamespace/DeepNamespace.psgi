@@ -1,3 +1,3 @@
 use DeepNamespace;
 use DeepNamespace::Web::User;
-DeepNamespace::Web::User->app();
+DeepNamespace::Web::User->to_app();

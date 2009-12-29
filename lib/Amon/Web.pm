@@ -36,13 +36,13 @@ sub import {
     Amon::Trigger->export_to_level(1);
 
     no strict 'refs';
-    *{"${caller}::app"}                = \&_app;
+    *{"${caller}::to_app"}             = \&_to_app;
     *{"${caller}::default_view_class"} = sub { $default_view_class };
     *{"${caller}::base_class"}         = sub { $base_class };
     *{"${caller}::request_class"}      = sub { $request_class };
 }
 
-sub _app {
+sub _to_app {
     my ($class, %args) = @_;
     my $base_class = $class->base_class;
     no strict 'refs';

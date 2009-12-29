@@ -1,3 +1,3 @@
 use Extended;
 use Extended::Web;
-Extended::Web->app();
+Extended::Web->to_app();

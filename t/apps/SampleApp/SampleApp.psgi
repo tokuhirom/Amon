@@ -1,2 +1,2 @@
 use SampleApp;
-SampleApp->app("./");
+SampleApp->to_app();
