@@ -1,4 +1,4 @@
-package Amon::Component;
+package Amon::Declare;
 use strict;
 use warnings;
 use base 'Exporter';
@@ -13,11 +13,11 @@ __END__
 
 =head1 NAME
 
-Amon::Component - Amon Component Class
+Amon::Declare - Amon Declare Class
 
 =head1 SYNOPSIS
 
-    use Amon::Component;
+    use Amon::Declare;
 
 =head1 DESCRIPTION
 

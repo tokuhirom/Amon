@@ -1,11 +1,11 @@
-package Amon::Web::Component;
+package Amon::Web::Declare;
 use strict;
 use warnings;
 use base 'Exporter';
-use Amon::Component;
+use Amon::Declare;
 use URI::WithBase;
 
-our @EXPORT = (qw/req param render redirect res_404 detach uri_for/, @Amon::Component::EXPORT);
+our @EXPORT = (qw/req param render redirect res_404 detach uri_for/, @Amon::Declare::EXPORT);
 
 sub req() { Amon->context->request }
 
@@ -76,7 +76,7 @@ __END__
 
 =head1 name
 
-Amon::Web::Component - Amon web component
+Amon::Web::Declare - Amon web component
 
 =head1 FUNCTIONS
 

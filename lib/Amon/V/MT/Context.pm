@@ -3,9 +3,9 @@ use strict;
 use warnings;
 use base 'Exporter';
 use Text::MicroTemplate 'encoded_string';
-use Amon::Web::Component;
+use Amon::Web::Declare;
 
-our @EXPORT = (qw/block extends encoded_string/, @Amon::Web::Component::EXPORT);
+our @EXPORT = (qw/block extends encoded_string/, @Amon::Web::Declare::EXPORT);
 
 sub import {
     strict->import;
