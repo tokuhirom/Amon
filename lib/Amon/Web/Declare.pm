@@ -5,18 +5,14 @@ use base 'Exporter';
 use Amon::Declare;
 use URI::WithBase;
 
-our @EXPORT = (qw/req param render redirect res_404 detach uri_for/, @Amon::Declare::EXPORT);
+our @EXPORT = (qw/req param render render_partial redirect res_404 detach uri_for/, @Amon::Declare::EXPORT);
 
 sub req() { Amon->context->request }
 
 sub param { req->param(@_) }
 
 sub render {
-    my $c = Amon->context;
-    my $view_class = $c->web_base->default_view_class;
-    (my $suffix = $view_class) =~ s/^@{[ ref $c ]}:://;
-    my $view = $c->view($suffix);
-    my $res = $view->render(@_);
+    my $res = render_partial(@_);
     utf8::encode($res);
     return detach([
         200,
@@ -26,6 +22,12 @@ sub render {
         ],
         [$res]
     ]);
+}
+
+sub render_partial {
+    my $c = Amon->context;
+    my $view_class = $c->web_base->default_view_class;
+    return $c->view($view_class)->render(@_);
 }
 
 sub uri_for {
