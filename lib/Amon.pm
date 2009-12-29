@@ -20,27 +20,9 @@ sub import {
     warnings->import;
 
     no strict 'refs';
-    if (my $config_class = $args{config_class}) {
-        Amon::Util::load_class($config_class);
-        *{"${caller}::config_class"}       = sub { $config_class };
-        *{"${caller}::config"} = sub {
-            my $self = $_[0];
-            my $cc = $self->config_class;
-            Amon::Util::load_class($cc);
-            my $conf = $cc->instance;
-            no strict 'refs';
-            no warnings 'redefine';
-            *{"@{[ ref $self ]}::config"} = sub {
-                $conf
-            };
-            return $conf;
-        };
-    } else {
-        *{"${caller}::config"} = sub { +{ } };
-    }
     my $base_dir = Amon::Util::base_dir($caller);
     *{"${caller}::base_dir"} = sub { $base_dir };
-    for my $meth (qw/new component model view web_base request/) {
+    for my $meth (qw/new config component model view web_base request/) {
         *{"${caller}::${meth}"} = *{"${class}::${meth}"};
     }
 }
@@ -49,6 +31,8 @@ sub new {
     my ($class, %args) = @_;
     bless {%args}, $class;
 }
+
+sub config { $_[0]->{config} || +{} }
 
 sub component {
     my ($self, $name) = @_;
