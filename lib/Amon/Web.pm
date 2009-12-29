@@ -53,12 +53,12 @@ sub _app {
 
     return sub {
         my $env = shift;
-        local *{"${base_class}::config"} = $args{config} ? sub { $args{config} } : *{"${base_class}::config"};
         try {
             my $req = $request_class->new($env);
             local $Amon::_context = $base_class->new(
                 request  => $req,
                 web_base => $class,
+                config   => $args{config},
             );
             $dispatcher->dispatch($req);
         } catch {

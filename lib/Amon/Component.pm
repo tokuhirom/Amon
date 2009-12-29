@@ -2,11 +2,11 @@ package Amon::Component;
 use strict;
 use warnings;
 use base 'Exporter';
-our @EXPORT = qw/global_config model/;
+our @EXPORT = qw/config model/;
 use Amon::Util;
 
-sub global_config () { Amon->context->config_class->instance }
-sub model ($) { Amon->context->model(@_) }
+sub config ()  { Amon->context->config    }
+sub model  ($) { Amon->context->model(@_) }
 
 1;
 __END__
@@ -25,9 +25,9 @@ Amon::Component - Amon Component Class
 
 =over 4
 
-=item global_config()
+=item config()
 
-get global configuration
+get configuration from context object.
 
 =item model($model)
 

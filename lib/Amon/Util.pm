@@ -1,6 +1,7 @@
 package Amon::Util;
 use strict;
 use warnings;
+use File::Spec;
 
 # taken from Plack::Util, because this method will use by CLI.
 {
