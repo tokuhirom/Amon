@@ -8,43 +8,17 @@ Amon::Manual::Tutorial.jaで作成した、Helloというアプリケーショ�
 
 =head2 CSSを読み込めるようにする
 
-ディレクトリを作成します。
+Amon では、静的なコンテンツは htdocs/static/ に配置することになっています。
+静的コンテンツは Plack::Middleware::Static により配信されます。
 
-    $ mkdir -p htdocs/static/css/
-
-今作成した、ディレクトリの中にcssを作成してみましょう。
+CSS は htdocs/static/css/ におきます。
+デフォルトでは main.css という CSS がよみこまれます。このファイルを編集してみましょう。
 
     body {
         width: 800px;
         margin: 0px auto;
         border: solid 1px #00f;
     }
-
-次にHello.psgiを以下のように編集します
-
-   use Hello;
-   use Hello::Web;
-   
-   use Plack::Builder;
-   
-   my $app = Hello::Web->app("./");
-   builder {
-       enable "Static", path => qr!^/static!, root => './htdocs';
-       $app;
-   }
-
-次にtmpl/base.mtからcssにlinkしましょう
-
-    <!doctype html>
-    <html>
-    <head>
-    <link rel="stylesheet" type="text/css" href="/static/css/amon.css" />
-    <title><? block title => 'Amon' ?></title>
-    </head>
-    <body>
-    <? block content => 'body here' ?>
-    </body>
-    </html>
 
 そして前回と同じく L<plackup> コマンドを利用し起動しましょう。
 

@@ -78,19 +78,34 @@ sub index {
 ? block title => 'amon page';
 ? block content => sub { 'hello, Amon world!' };
 -- tmpl/base.mt
-<!doctype html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title><? block title => 'Amon' ?></title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title><? block title => 'Amon' ?></title>
+    <meta http-equiv="Content-Style-Type" content="text/css" />  
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />  
+    <link href="<?= uri_for('/static/css/main.css') ?>" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
-<? block content => 'body here' ?>
+<div id="wrapper">
+    <? block content => 'body here' ?>
+</div>
 </body>
 </html>
+-- htdocs/static/css/main.css
+body {
+}
 -- $dist.psgi
-use [%= $module %];
 use [%= $module %]::Web;
-[%= $module %]::Web->app();
+use Plack::Builder;
+
+builder {
+    enable 'Plack::Middleware::Static',
+        path => qr{^/static/},
+        root => './htdocs/';
+    [%= $module %]::Web->app();
+};
 -- Makefile.PL
 use inc::Module::Install;
 all_from "lib/[%= $path %].pm";
@@ -227,6 +242,8 @@ sub main {
     _mkpath "tmpl";
     _mkpath "t";
     _mkpath "xt";
+    _mkpath "htdocs/static/css/";
+    _mkpath "htdocs/static/img/";
 
     my $conf = _parse_conf($confsrc);
     while (my ($file, $tmpl) = each %$conf) {
