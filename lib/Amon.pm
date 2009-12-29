@@ -21,7 +21,7 @@ sub import {
     no strict 'refs';
     my $base_dir = Amon::Util::base_dir($caller);
     *{"${caller}::base_dir"} = sub { $base_dir };
-    for my $meth (qw/new config component model view web_base request/) {
+    for my $meth (qw/new config component model view web_base request bootstrap/) {
         *{"${caller}::${meth}"} = *{"${class}::${meth}"};
     }
 }
@@ -35,7 +35,7 @@ sub new {
 sub bootstrap {
     my $class = shift;
     my $self = $class->new(@_);
-    $class->set_context($self);
+    Amon->set_context($self);
     return $self;
 }
 
