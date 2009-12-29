@@ -3,7 +3,6 @@ use strict;
 use warnings;
 use Amon::Util;
 use 5.008001;
-use File::Spec;
 
 our $VERSION = 0.02;
 {
@@ -30,6 +29,14 @@ sub import {
 sub new {
     my ($class, %args) = @_;
     bless {%args}, $class;
+}
+
+# for CLI
+sub bootstrap {
+    my $class = shift;
+    my $self = $class->new(@_);
+    $class->set_context($self);
+    return $self;
 }
 
 sub config { $_[0]->{config} || +{} }
