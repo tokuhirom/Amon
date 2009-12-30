@@ -9,21 +9,28 @@ use Amon::Util;
 our $render_context;
 
 sub import {
-    my ($class, $base) = @_;
+    my ($class, %args) = @_;
     my $caller = caller(0);
     my $klass = "${caller}::Context"; # FIXME: configurable class name
     strict->import;
     warnings->import;
+    my $default_cache_dir  = $args{default_cache_dir} || do {
+        (my $key = $caller) =~ s/::/-/g;
+        File::Spec->catfile(File::Spec->tmpdir(), "amon.$>.$Amon::VERSION.$key");
+    };
     Amon::Util::load_class($klass);
     $klass->import();
     no strict 'refs';
     unshift @{"${caller}::ISA"}, $class;
+    *{"${caller}::default_cache_dir"} = sub { $default_cache_dir };
 }
 
 sub new {
     my ($class, $conf) = @_;
     my $include_path = $conf->{include_path} || [File::Spec->catfile(Amon->context->base_dir, 'tmpl')];
-    bless {include_path => $include_path}, $class;
+    my $cache_dir  = $conf->{cache_dir} || $class->default_cache_dir;
+
+    bless {include_path => $include_path, cache_dir => $cache_dir}, $class;
 }
 
 # entry point
@@ -45,14 +52,10 @@ sub resolve_tmpl_path {
     return;
 }
 
-sub _mt_cache_dir {
-    File::Spec->catfile(File::Spec->tmpdir(), "amon.$>.$Amon::VERSION");
-}
-
 sub __load_internal {
     my ($self, $path, @params) = @_;
     if ($self->__use_cache($path)) {
-        my $tmplfname = $self->_mt_cache_dir() . "/$path.c";
+        my $tmplfname = $self->{cache_dir} . "/$path.c";
 
         open my $fh, '<', $tmplfname or die "Can't read template file: ${tmplfname}($!)";
         my $tmplsrc = do { local $/; <$fh> };
@@ -121,26 +124,25 @@ sub {
 sub __update_cache {
     my ($self, $path, $code) = @_;
 
-    my $cache_path = $self->_mt_cache_dir();
+    my $cache_dir = $self->{cache_dir};
     foreach my $p (split '/', $path) {
-        mkdir $cache_path;
-        $cache_path .= "/$p";
+        mkdir $cache_dir;
+        $cache_dir .= "/$p";
     }
-    $cache_path .= '.c';
+    $cache_dir .= '.c';
 
-    open my $fh, '>:utf8', $cache_path
-        or die "Can't open template cache file for writing: $cache_path($!)";
+    open my $fh, '>:utf8', $cache_dir
+        or die "Can't open template cache file for writing: $cache_dir($!)";
     print $fh $code;
     close $fh;
 }
 
 sub __use_cache {
     my ($self, $path) = @_;
-    my $cache_dir = $self->_mt_cache_dir();
     my $src = $self->resolve_tmpl_path($path) or return;
     my @orig = stat $src
         or return;
-    my @cached = stat "$cache_dir/${path}.c"
+    my @cached = stat "$self->{cache_dir}/${path}.c"
         or return;
     return $orig[9] < $cached[9];
 }
