@@ -51,7 +51,7 @@ sub _mt_cache_dir {
 
 sub __load_internal {
     my ($self, $path, @params) = @_;
-    if (0 && $self->__use_cache($path)) {
+    if ($self->__use_cache($path)) {
         my $tmplfname = $self->_mt_cache_dir() . "/$path.c";
 
         open my $fh, '<', $tmplfname or die "Can't read template file: ${tmplfname}($!)";
