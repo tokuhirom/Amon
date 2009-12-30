@@ -5,8 +5,16 @@ use Text::MicroTemplate;
 use File::Spec;
 use FindBin;
 use Amon::Util;
+use Try::Tiny;
+require Amon;
+use constant { # bitmask
+    CACHE_FILE      => 1,
+    CACHE_MEMORY    => 2,
+    CACHE_NO_CHECK  => 4,
+};
 
 our $render_context;
+our $_MEMORY_CACHE;
 
 sub import {
     my ($class, %args) = @_;
@@ -18,8 +26,13 @@ sub import {
         (my $key = $caller) =~ s/::/-/g;
         File::Spec->catfile(File::Spec->tmpdir(), "amon.$>.$Amon::VERSION.$key");
     };
-    Amon::Util::load_class($klass);
-    $klass->import();
+    try {
+        Amon::Util::load_class($klass);
+    } catch {
+        unless (/^Can't locate /) {
+            die $_;
+        }
+    };
     no strict 'refs';
     unshift @{"${caller}::ISA"}, $class;
     *{"${caller}::default_cache_dir"} = sub { $default_cache_dir };
@@ -28,9 +41,13 @@ sub import {
 sub new {
     my ($class, $conf) = @_;
     my $include_path = $conf->{include_path} || [File::Spec->catfile(Amon->context->base_dir, 'tmpl')];
-    my $cache_dir  = $conf->{cache_dir} || $class->default_cache_dir;
+       $include_path = [$include_path] unless ref $include_path;
 
-    bless {include_path => $include_path, cache_dir => $cache_dir}, $class;
+    bless {
+        include_path => $include_path,
+        cache_dir    => $conf->{cache_dir} || $class->default_cache_dir,
+        cache_mode   => exists($conf->{cache_mode}) ? $conf->{cache_mode} : CACHE_FILE,
+    }, $class;
 }
 
 # entry point
@@ -54,7 +71,19 @@ sub resolve_tmpl_path {
 
 sub __load_internal {
     my ($self, $path, @params) = @_;
-    if ($self->__use_cache($path)) {
+    my $cache_mode = $self->{cache_mode};
+
+    if (($cache_mode & CACHE_MEMORY) && ($cache_mode & CACHE_NO_CHECK) && (my $code = $_MEMORY_CACHE->{ref $self}->{$path}->[0])) {
+        # This branch is high-priority. That requires high-performance, person use this!
+        return $code->(@params);
+    }
+
+    my $filepath = $self->resolve_tmpl_path($path) or Carp::croak("Can't find template '$path' from " . join(', ', map { qq{'$_'} } @{$self->{include_path}}));
+    my @filepath_stat = stat($filepath) or Carp::croak("Can't find template: $filepath: $!");
+    my $filepath_mtime = $filepath_stat[9];
+    if (($cache_mode & CACHE_MEMORY) && $self->_has_fresh_memory_cache($path, $filepath_mtime)) {
+        return $_MEMORY_CACHE->{ref $self}->{$path}->[0]->(@params);
+    } elsif (($cache_mode & CACHE_FILE) && $self->_has_fresh_file_cache($path, $filepath_mtime)) {
         my $tmplfname = $self->{cache_dir} . "/$path.c";
 
         open my $fh, '<', $tmplfname or die "Can't read template file: ${tmplfname}($!)";
@@ -66,17 +95,17 @@ sub __load_internal {
         die $@ if $@;
         return $tmplcode->(@params);
     } else {
-        return $self->__compile($path, @params);
+        return $self->__compile($path, $filepath, $filepath_mtime, @params);
     }
 }
 
 sub __compile {
-    my ($self, $path, @params) = @_;
+    my ($self, $path, $filepath, $filepath_mtime, @params) = @_;
 
     my $mt = Text::MicroTemplate->new(
         package_name => "@{[ ref Amon->context ]}::V::MT::Context",
     );
-    $self->__build_file($mt, $path);
+    $self->_build_file($mt, $filepath);
     my $code = $self->__eval_builder($mt->code);
     my $compiled = do {
         local $SIG{__WARN__} = sub {
@@ -88,13 +117,19 @@ sub __compile {
         $ret;
     };
     my $out = $compiled->(@params);
-    $self->__update_cache($path, $code);
+    if ($self->{cache_mode} & CACHE_MEMORY) {
+        $_MEMORY_CACHE->{ref $self}->{$path} = [
+            $compiled,
+            $filepath_mtime,
+        ];
+    } elsif ($self->{cache_mode} & CACHE_FILE) {
+        $self->_update_file_cache($path, $code);
+    }
     return $out;
 }
 
-sub __build_file {
-    my ($self, $mt, $file) = @_;
-    my $filepath = $self->resolve_tmpl_path($file) or Carp::croak("Can't find template: $file");
+sub _build_file {
+    my ($self, $mt, $filepath) = @_;
 
     open my $fh, "<:utf8", $filepath
         or Carp::croak("Can't open template file :$filepath:$!");
@@ -121,7 +156,7 @@ sub {
 ...
 }
 
-sub __update_cache {
+sub _update_file_cache {
     my ($self, $path, $code) = @_;
 
     my $cache_dir = $self->{cache_dir};
@@ -131,22 +166,28 @@ sub __update_cache {
     }
     $cache_dir .= '.c';
 
+    # TODO: flock required?
     open my $fh, '>:utf8', $cache_dir
         or die "Can't open template cache file for writing: $cache_dir($!)";
     print $fh $code;
     close $fh;
 }
 
-sub __use_cache {
-    my ($self, $path) = @_;
-    my $src = $self->resolve_tmpl_path($path) or return;
-    my @orig = stat $src
-        or return;
-    my @cached = stat "$self->{cache_dir}/${path}.c"
-        or return;
-    return $orig[9] < $cached[9];
+sub _has_fresh_memory_cache {
+    my ($self, $path, $filepath_mtime) = @_;
+    my $cache_mtime = $_MEMORY_CACHE->{ref $self}->{$path}->[1]
+            or return;
+    return $filepath_mtime == $cache_mtime;
 }
 
+sub _has_fresh_file_cache {
+    my ($self, $path, $filepath_mtime) = @_;
+    return 1 if $self->{cache_mode} & CACHE_NO_CHECK;
+
+    my @cached = stat "$self->{cache_dir}/${path}.c"
+        or return;
+    return $filepath_mtime < $cached[9];
+}
 
 1;
 __END__
