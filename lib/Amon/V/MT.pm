@@ -166,7 +166,7 @@ sub _update_file_cache {
     }
     $cache_dir .= '.c';
 
-    # TODO: flock required?
+    # XXX flock required?
     open my $fh, '>:utf8', $cache_dir
         or die "Can't open template cache file for writing: $cache_dir($!)";
     print $fh $code;
