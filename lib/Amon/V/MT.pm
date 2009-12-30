@@ -19,7 +19,7 @@ our $_MEMORY_CACHE;
 sub import {
     my ($class, %args) = @_;
     my $caller = caller(0);
-    my $klass = "${caller}::Context"; # FIXME: configurable class name
+    my $klass = $args{context_class} || "${caller}::Context";
     strict->import;
     warnings->import;
     my $default_cache_dir  = $args{default_cache_dir} || do {
