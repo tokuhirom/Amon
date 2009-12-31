@@ -2,7 +2,7 @@ package Amon;
 use strict;
 use warnings;
 use Amon::Util;
-use 5.008001;
+use 5.008003;
 
 our $VERSION = 0.02;
 {
