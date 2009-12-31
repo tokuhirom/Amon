@@ -55,12 +55,13 @@ sub _to_app {
         my $env = shift;
         try {
             my $req = $request_class->new($env);
-            local $Amon::_context = $base_class->new(
+            my $c = $base_class->new(
                 request  => $req,
                 web_base => $class,
                 config   => $args{config},
             );
-            $dispatcher->dispatch($req);
+            local $Amon::_context = $c;
+            $dispatcher->dispatch($req, $c);
         } catch {
             if (ref $_ && ref $_ eq 'ARRAY') {
                 return $_;
