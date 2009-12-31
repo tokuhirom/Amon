@@ -2,11 +2,12 @@ package Amon::Declare;
 use strict;
 use warnings;
 use base 'Exporter';
-our @EXPORT = qw/config model/;
+our @EXPORT = qw/config model view/;
 use Amon::Util;
 
 sub config ()  { Amon->context->config    }
-sub model  ($) { Amon->context->model(@_) }
+sub model ($)     { Amon->context->model(@_) }
+sub view ($)      { Amon->context->view(@_) }
 
 1;
 __END__
