@@ -9,6 +9,7 @@ requires 'Plack'                     => 0.9023;
 requires 'Text::MicroTemplate'       => 0.10;
 requires 'Try::Tiny'                 => 0.02;
 requires 'Test::More'                => 0.88; # 0.88 or later is required for done_testing!
+requires 'HTTPx::Dispatcher'         => 0.07;
 requires 'Exporter';
 
 test_requires 'Test::Requires';

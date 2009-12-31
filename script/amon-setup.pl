@@ -37,8 +37,8 @@ use Amon::V::MT::Context;
 -- lib/$path/Web/Dispatcher.pm
 % my $perlver = shift;
 package [%= $module %]::Web::Dispatcher;
-use Amon::Web::Dispatcher;
 % if ($perlver eq '5.10') {
+use Amon::Web::Dispatcher;
 use feature 'switch';
 
 sub dispatch {
@@ -53,14 +53,8 @@ sub dispatch {
     }
 }
 % } else {
-sub dispatch {
-    my ($class, $req) = @_;
-    if ($req->path_info eq '/') {
-        call("Root", 'index');
-    } else {
-        res_404();
-    }
-}
+use Amon::Web::Dispatcher::HTTPxDispatcher;
+connect '' => {controller => 'Root', action => 'index'};
 % }
 
 1;
