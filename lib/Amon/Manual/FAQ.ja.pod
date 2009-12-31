@@ -4,6 +4,8 @@ Amon::Manual::FAQ.ja - Amon FAQ
 
 =over 4
 
-=item
+=item ベーシック認証をかけたいのですが
+
+L<Plack::Middleware::Auth::Basic> をつかいましょう。Amon レベルではベーシック認証はサポートしていません。
 
 =back
