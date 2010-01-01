@@ -18,7 +18,9 @@ sub import {
     Module::Pluggable::Object->new(
         'require' => 1, search_path => "${caller}::C"
     )->plugins;
-    Amon::Util::load_class("${caller}::Dispatcher");
+
+    my $dispatcher_class = $args{dispatcher_class} || "${caller}::Dispatcher";
+    Amon::Util::load_class($dispatcher_class);
 
     my $base_class = $args{base_class} || do {
         local $_ = $caller;
@@ -58,6 +60,7 @@ sub import {
     *{"${caller}::default_view_class"} = sub { $default_view_class };
     *{"${caller}::base_class"}         = sub { $base_class };
     *{"${caller}::request_class"}      = sub { $request_class };
+    *{"${caller}::dispatcher_class"}   = sub { $dispatcher_class };
     *{"${caller}::encoding"}           = $encoding;
     *{"${caller}::html_content_type"}  = $html_content_type;
 }
@@ -68,7 +71,7 @@ sub _to_app {
     no strict 'refs';
     no warnings 'redefine';
 
-    my $dispatcher = "${class}::Dispatcher";
+    my $dispatcher    = $class->dispatcher_class;
     my $request_class = $class->request_class;
 
     return sub {
