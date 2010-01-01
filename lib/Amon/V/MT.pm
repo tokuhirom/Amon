@@ -18,24 +18,28 @@ our $_MEMORY_CACHE;
 
 sub import {
     my ($class, %args) = @_;
-    my $caller = caller(0);
-    my $klass = $args{context_class} || "${caller}::Context";
+
     strict->import;
     warnings->import;
+
+    my $caller = caller(0);
+
     my $default_cache_dir  = $args{default_cache_dir} || do {
         (my $key = $caller) =~ s/::/-/g;
         File::Spec->catfile(File::Spec->tmpdir(), "amon.$>.$Amon::VERSION.$key");
     };
+
+    my $context_class = $args{context_class} || "${caller}::Context";
     try {
-        Amon::Util::load_class($klass);
+        Amon::Util::load_class($context_class);
     } catch {
-        unless (/^Can't locate /) {
-            die $_;
-        }
+        die $_ unless /^Can't locate /;
     };
+
     no strict 'refs';
     unshift @{"${caller}::ISA"}, $class;
     *{"${caller}::default_cache_dir"} = sub { $default_cache_dir };
+    *{"${caller}::context_class"}     = sub { $context_class     };
 }
 
 sub new {
@@ -103,7 +107,7 @@ sub __compile {
     my ($self, $path, $filepath, $filepath_mtime, @params) = @_;
 
     my $mt = Text::MicroTemplate->new(
-        package_name => "@{[ ref Amon->context ]}::V::MT::Context",
+        package_name => $self->context_class,
     );
     $self->_build_file($mt, $filepath);
     my $code = $self->__eval_builder($mt->code);
@@ -142,7 +146,7 @@ sub _build_file {
 sub __eval_builder {
     my ($self, $code) = @_;
     return <<"...";
-package @{[ ref Amon->context ]}\::V::MT::Context;
+package @{[ $self->context_class ]};
 #line 1
 sub {
     my \$out = Text::MicroTemplate::encoded_string((
