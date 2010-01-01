@@ -1,13 +1,12 @@
 package Amon::V::MT;
 use strict;
 use warnings;
-use base qw/Class::Data::Inheritable/;
 use Text::MicroTemplate;
 use File::Spec;
 use FindBin;
 use Amon::Util;
 use Try::Tiny;
-require Amon::V::MT::Context;
+require Amon;
 use constant { # bitmask
     CACHE_FILE      => 1,
     CACHE_MEMORY    => 2,
@@ -16,14 +15,27 @@ use constant { # bitmask
 
 our $render_context;
 our $_MEMORY_CACHE;
-our $VERSION = 0.01;
 
-__PACKAGE__->mk_classdata('context_class' => 'Amon::V::MT::Context');
-
-sub load_context_class {
-    my ($class, $context_class) = @_;
-    $class->context_class($context_class);
-    Amon::Util::load_class($context_class);
+sub import {
+    my ($class, %args) = @_;
+    my $caller = caller(0);
+    my $klass = $args{context_class} || "${caller}::Context";
+    strict->import;
+    warnings->import;
+    my $default_cache_dir  = $args{default_cache_dir} || do {
+        (my $key = $caller) =~ s/::/-/g;
+        File::Spec->catfile(File::Spec->tmpdir(), "amon.$>.$Amon::VERSION.$key");
+    };
+    try {
+        Amon::Util::load_class($klass);
+    } catch {
+        unless (/^Can't locate /) {
+            die $_;
+        }
+    };
+    no strict 'refs';
+    unshift @{"${caller}::ISA"}, $class;
+    *{"${caller}::default_cache_dir"} = sub { $default_cache_dir };
 }
 
 sub new {
@@ -33,15 +45,9 @@ sub new {
 
     bless {
         include_path => $include_path,
-        cache_dir    => $conf->{cache_dir} || $class->default_cache_dir(),
-        cache_mode   => exists($conf->{cache_mode}) ? $conf->{cache_mode} : 0,
+        cache_dir    => $conf->{cache_dir} || $class->default_cache_dir,
+        cache_mode   => exists($conf->{cache_mode}) ? $conf->{cache_mode} : CACHE_FILE,
     }, $class;
-}
-
-sub default_cache_dir {
-    my ($class) = @_;
-    (my $key = $class) =~ s/::/-/g;
-    File::Spec->catfile(File::Spec->tmpdir(), "amon.$>.$VERSION.$key");
 }
 
 # entry point
@@ -97,7 +103,7 @@ sub __compile {
     my ($self, $path, $filepath, $filepath_mtime, @params) = @_;
 
     my $mt = Text::MicroTemplate->new(
-        package_name => $self->context_class,
+        package_name => "@{[ ref Amon->context ]}::V::MT::Context",
     );
     $self->_build_file($mt, $filepath);
     my $code = $self->__eval_builder($mt->code);
@@ -136,7 +142,7 @@ sub _build_file {
 sub __eval_builder {
     my ($self, $code) = @_;
     return <<"...";
-package @{[ $self->context_class ]};
+package @{[ ref Amon->context ]}\::V::MT::Context;
 #line 1
 sub {
     my \$out = Text::MicroTemplate::encoded_string((
@@ -193,10 +199,7 @@ Amon::V::MT - Amon Text::MicroTemplate View Class
 =head1 SYNOPSIS
 
     package MyApp::V::MT;
-    use strict;
-    use warnings;
-    use base qw/Amon::V::MT/;
-    __PACKAGE__->load_context_class('MyApp::V::MT::Context');
+    use Amon::V::MT;
     1;
 
 =head1 DESCRIPTION

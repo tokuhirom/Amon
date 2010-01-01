@@ -4,7 +4,6 @@ use FindBin qw($Bin);
 use autodie;
 
 my @dist = (
-    'NoPaste'   => q{git://github.com/tokuhirom/p5-OreOre-NoPaste.git},
     'Inamode13'   => q{git://github.com/tokuhirom/Inamode13.git},
 );
 

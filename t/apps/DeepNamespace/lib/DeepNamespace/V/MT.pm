@@ -1,3 +1,3 @@
 package DeepNamespace::V::MT;
-use base qw(Amon::V::MT);
+use Amon::V::MT;
 1;
