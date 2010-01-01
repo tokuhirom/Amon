@@ -28,7 +28,10 @@ use Amon::Web (
 1;
 -- lib/$path/V/MT.pm
 package [%= $module %]::V::MT;
-use Amon::V::MT;
+use strict;
+use warnings;
+use base qw/Amon::V::MT/;
+__PACKAGE__->load_context_class('[%= $module %]::V::MT::Context');
 1;
 -- lib/$path/V/MT/Context.pm
 package [%= $module %]::V::MT::Context;
@@ -201,7 +204,7 @@ all_pod_files_ok();
 allow=refs
 [-Subroutines::ProhibitSubroutinePrototypes]
 [TestingAndDebugging::RequireUseStrict]
-equivalent_modules = Mouse Mouse::Role Moose Amon Amon::Web Amon::Web::C Amon::V::MT::Context Amon::Web::Dispatcher Amon::V::MT Amon::Config
+equivalent_modules = Mouse Mouse::Role Moose Amon Amon::Web Amon::Web::C Amon::V::MT::Context Amon::Web::Dispatcher Amon::Config
 -- .gitignore
 Makefile
 inc/
