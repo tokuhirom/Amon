@@ -57,7 +57,8 @@ sub model {
 }
 
 sub view {
-    my ($self, $name) = @_;
+    my $self = shift;
+    my $name = @_ == 1 ? $_[0] : $self->web_base->default_view_class;
     $self->component("V::$name");
 }
 

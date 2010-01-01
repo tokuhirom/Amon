@@ -25,9 +25,7 @@ sub render {
 }
 
 sub render_partial {
-    my $c = Amon->context;
-    my $view_class = $c->web_base->default_view_class;
-    return $c->view($view_class)->render(@_);
+    return Amon->context->view()->render(@_);
 }
 
 sub uri_for {
