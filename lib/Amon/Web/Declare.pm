@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use base 'Exporter';
 use Amon::Declare;
-use URI::WithBase;
+use Encode ();
 
 our @EXPORT = (qw/req param render render_partial redirect res_404 detach uri_for/, @Amon::Declare::EXPORT);
 
@@ -12,15 +12,18 @@ sub req() { Amon->context->request }
 sub param { req->param(@_) }
 
 sub render {
-    my $res = render_partial(@_);
-    utf8::encode($res);
+    my $c = Amon->context;
+    my $web_base = $c->web_base;
+    my $html = $c->view()->render(@_);
+       $html = Encode::encode($web_base->encoding, $html);
+    my $content_type = $web_base->html_content_type();
     return detach([
         200,
         [
-            'Content-Type'   => 'text/html; charset=UTF-8',
-            'Content-Length' => length($res)
+            'Content-Type'   => $content_type,
+            'Content-Length' => length($html)
         ],
-        [$res]
+        [$html]
     ]);
 }
 

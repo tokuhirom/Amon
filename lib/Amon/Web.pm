@@ -33,6 +33,24 @@ sub import {
     my $default_view_class = $args{default_view_class} or die "missing configuration: default_view_class";
     Amon::Util::load_class($default_view_class, "${base_class}::V");
 
+    my $html_content_type = do {
+        my $hct = $args{html_content_type};
+        if ($hct) {
+            ref $hct ? $hct : sub { $hct };
+        } else {
+            sub { 'text/html; charset=UTF-8' };
+        }
+    };
+
+    my $encoding = do {
+        my $encoding = $args{encoding};
+        if ($encoding) {
+            ref $encoding ? $encoding : sub { $encoding };
+        } else {
+            sub { 'utf-8' };
+        }
+    };
+
     Amon::Trigger->export_to_level(1);
 
     no strict 'refs';
@@ -40,6 +58,8 @@ sub import {
     *{"${caller}::default_view_class"} = sub { $default_view_class };
     *{"${caller}::base_class"}         = sub { $base_class };
     *{"${caller}::request_class"}      = sub { $request_class };
+    *{"${caller}::encoding"}           = $encoding;
+    *{"${caller}::html_content_type"}  = $html_content_type;
 }
 
 sub _to_app {
@@ -50,16 +70,16 @@ sub _to_app {
 
     my $dispatcher = "${class}::Dispatcher";
     my $request_class = $class->request_class;
+    my $c = $base_class->new(
+        web_base => $class,
+        config   => $args{config},
+    );
 
     return sub {
         my $env = shift;
         try {
             my $req = $request_class->new($env);
-            my $c = $base_class->new(
-                request  => $req,
-                web_base => $class,
-                config   => $args{config},
-            );
+            $c->{request} = $req;
             local $Amon::_context = $c;
             $dispatcher->dispatch($req, $c);
         } catch {
