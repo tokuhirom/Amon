@@ -19,9 +19,12 @@ sub import {
     warnings->import;
 
     no strict 'refs';
+    require Class::Accessor::Fast;
+    unshift @{"${caller}::ISA"}, 'Class::Accessor::Fast';
     my $base_dir = Amon::Util::base_dir($caller);
     *{"${caller}::base_dir"} = sub { $base_dir };
-    for my $meth (qw/new config component model view web_base request bootstrap/) {
+    $caller->mk_accessors(qw/web_base request response/);
+    for my $meth (qw/new config component model view bootstrap/) {
         *{"${caller}::${meth}"} = *{"${class}::${meth}"};
     }
 }
@@ -61,10 +64,6 @@ sub view {
     my $name = @_ == 1 ? $_[0] : $self->web_base->default_view_class;
     $self->component("V::$name");
 }
-
-# web related accessors
-sub web_base { $_[0]->{web_base} }
-sub request  { $_[0]->{request}  }
 
 1;
 __END__

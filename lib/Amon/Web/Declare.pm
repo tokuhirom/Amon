@@ -5,7 +5,7 @@ use base 'Exporter';
 use Amon::Declare;
 use Encode ();
 
-our @EXPORT = (qw/req param render render_partial redirect res_404 detach uri_for/, @Amon::Declare::EXPORT);
+our @EXPORT = (qw/req param render render_partial redirect res_404 uri_for/, @Amon::Declare::EXPORT);
 
 sub req() { Amon->context->request }
 
@@ -17,7 +17,7 @@ sub render {
     my $html = $c->view()->render(@_);
        $html = Encode::encode($web_base->encoding, $html);
     my $content_type = $web_base->html_content_type();
-    return detach([
+    $c->response([
         200,
         [
             'Content-Type'   => $content_type,
@@ -46,32 +46,27 @@ sub uri_for {
 }
 
 sub redirect($) {
+    my $c = Amon->context;
     my $location = shift;
-    my $url = req()->base;
+    my $url = $c->request->base;
     $url =~ s!/+$!!;
     $location =~ s!^/+([^/])!/$1!;
     $url .= $location;
-    return detach([
+    $c->response([
         302,
         ['Location' => $url],
         []
     ]);
 }
 
-sub detach($) {
-    Amon->context->web_base->call_trigger("BEFORE_DETACH", $_[0]);
-    die $_[0];
-}
-
 sub res_404 {
     my $text = shift || "404 Not Found";
-    detach(
-        [
-            404,
-            ['Content-Length' => length($text)],
-            [$text],
-        ]
-    );
+    my $c = Amon->context;
+    $c->response([
+        404,
+        ['Content-Length' => length($text)],
+        [$text],
+    ]);
 }
 
 1;

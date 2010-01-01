@@ -73,23 +73,18 @@ sub _to_app {
 
     return sub {
         my $env = shift;
-        try {
-            my $req = $request_class->new($env);
-            my $c = $base_class->new(
-                web_base => $class,
-                config   => $args{config},
-                request  => $req,
-            );
-            local $Amon::_context = $c;
-            $dispatcher->dispatch($req, $c);
-        } catch {
-            if (ref $_ && ref $_ eq 'ARRAY') {
-                return $_;
-            } else {
-                local $SIG{__DIE__} = 'default'; # do not overwrite $trace in Middleware::StackTrace
-                die $_; # rethrow
-            }
-        }
+
+        my $req = $request_class->new($env);
+        my $c = $base_class->new(
+            web_base => $class,
+            config   => $args{config},
+            request  => $req,
+        );
+        local $Amon::_context = $c;
+        $dispatcher->dispatch($req, $c);
+        my $res = $c->response()
+                    or die "response is not generated";
+        return $res;
     };
 }
 
