@@ -1,0 +1,65 @@
+=head1 NAME
+
+Amon::Manual::Mobile.ja - Amon でケータイ対応
+
+=head1 DESCRIPTION
+
+Amon でサックリとケータイ対応する方法についての解説です。
+
+=head1 HOW TO ADD MOBILE PHONE SUPPORT
+
+=head2 HTTP::MobileAgent との連携
+
+    package MyApp::Request;
+    use base qw/Amon::Request/;
+    use HTTP::MobileAgent;
+    sub mobile_agent { $_[0]->{mobile_agent} ||= HTTP::MobileAgent->new($_[0]->headers) }
+    1;
+
+として、カスタムリクエストクラスを作成します。こうすることにより、
+HTTP::MobileAgent を気軽につかえるようになります。
+
+次に、これを利用するために、以下のように記述します。
+
+    package MyApp::Web;
+    use Amon::Web (
+        request_class => 'MyApp::Request',
+    );
+    1;
+
+=head2 Encode::JP::Mobile との連携
+
+絵文字を扱うには L<Encode::JP::Mobile> をつかうとよいでしょう。HTML のエンコーディ
+ングと Content-Type を以下のように設定しましょう。
+
+    package MyApp::Web;
+    use HTTP::MobileAgent::Plugin::Charset;
+    use Encode::JP::Mobile;
+    use Amon::Web (
+        request_class => 'MyApp::Request',
+        html_content_type => sub {
+              my $ma = Amon->context->request->mobile_agent;
+              my $ct  = $ma->is_docomo ? 'application/xhtml+xml;charset=' : 'text/html;charset=';
+                 $ct .= $ma->can_display_utf8 ? 'utf-8' : 'Shift_JIS';
+                 $ct;
+        },
+        encoding => sub {
+             Amon->context->request->mobile_agent->encoding;
+        },
+    );
+    1;
+
+=head2 CSS のインライン化
+
+TBD
+
+=head2 セッション
+
+TBD
+
+=head2 画像
+
+TBD
+
+=cut
+
