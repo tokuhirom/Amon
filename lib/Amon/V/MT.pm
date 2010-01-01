@@ -12,6 +12,7 @@ use constant { # bitmask
     CACHE_MEMORY    => 2,
     CACHE_NO_CHECK  => 4,
 };
+our $VERSION = 0.01;
 
 our $render_context;
 our $_MEMORY_CACHE;
@@ -24,11 +25,6 @@ sub import {
 
     my $caller = caller(0);
 
-    my $default_cache_dir  = $args{default_cache_dir} || do {
-        (my $key = $caller) =~ s/::/-/g;
-        File::Spec->catfile(File::Spec->tmpdir(), "amon.$>.$Amon::VERSION.$key");
-    };
-
     my $context_class = $args{context_class} || "${caller}::Context";
     try {
         Amon::Util::load_class($context_class);
@@ -38,7 +34,6 @@ sub import {
 
     no strict 'refs';
     unshift @{"${caller}::ISA"}, $class;
-    *{"${caller}::default_cache_dir"} = sub { $default_cache_dir };
     *{"${caller}::context_class"}     = sub { $context_class     };
 }
 
@@ -49,10 +44,17 @@ sub new {
 
     bless {
         include_path => $include_path,
-        cache_dir    => $conf->{cache_dir} || $class->default_cache_dir,
-        cache_mode   => exists($conf->{cache_mode}) ? $conf->{cache_mode} : CACHE_FILE,
+        cache_dir    => $conf->{cache_dir} || $class->default_cache_dir(),
+        cache_mode   => exists($conf->{cache_mode}) ? $conf->{cache_mode} : 0,
     }, $class;
 }
+
+sub default_cache_dir {
+    my $class = shift;
+    (my $key = $class) =~ s/::/-/g;
+    File::Spec->catfile(File::Spec->tmpdir(), "amon.$>.$VERSION.$key");
+}
+
 
 # entry point
 sub render {
