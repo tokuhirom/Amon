@@ -5,12 +5,14 @@ use base qw/Exporter/;
 require HTTPx::Dispatcher;
 use Amon::Web::Declare;
 
-our @EXPORT = qw/dispatch/;
+our @EXPORT = qw/dispatch new/;
 
 sub import {
     HTTPx::Dispatcher->export_to_level(1);
     __PACKAGE__->export_to_level(1);
 }
+
+sub new { bless {}, shift }
 
 sub dispatch {
     my ($class, $req) = @_;

@@ -20,12 +20,6 @@ our $VERSION = 0.01;
 
 __PACKAGE__->mk_classdata('context_class' => 'Amon::V::MT::Context');
 
-sub load_context_class {
-    my ($class, $context_class) = @_;
-    $class->context_class($context_class);
-    Amon::Util::load_class($context_class);
-}
-
 sub new {
     my ($class, $conf) = @_;
     my $include_path = $conf->{include_path} || [File::Spec->catfile(Amon->context->base_dir, 'tmpl')];
@@ -196,7 +190,6 @@ Amon::V::MT - Amon Text::MicroTemplate View Class
     use strict;
     use warnings;
     use base qw/Amon::V::MT/;
-    __PACKAGE__->load_context_class('MyApp::V::MT::Context');
     1;
 
 =head1 DESCRIPTION

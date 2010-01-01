@@ -1,7 +1,7 @@
 package Extended::Web;
-use Amon::Web (
-    default_view_class => 'MT',
-    base_class => 'Extended',
-    request_class => 'Extended::Web::Request',
-);
+use strict;
+use warnings;
+use base qw/Amon::Web/;
+__PACKAGE__->base_class('Extended');
+__PACKAGE__->request_class('Extended::Web::Request');
 1;

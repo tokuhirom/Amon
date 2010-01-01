@@ -17,21 +17,24 @@ pod2usage(1) if $help;
 my $confsrc = <<'...';
 -- lib/$path.pm
 package [%= $module %];
-use Amon;
+use strict;
+use warnings;
+use base qw/Amon/;
 1;
 -- lib/$path/Web.pm
 package [%= $module %]::Web;
-use Amon::Web (
-    default_view_class => 'MT',
-    base_class         => '[%= $module %]',
-);
+use strict;
+use warnings;
+use base qw/Amon::Web/;
+__PACKAGE__->base_class('[%= $module %]');
 1;
 -- lib/$path/V/MT.pm
 package [%= $module %]::V::MT;
 use strict;
 use warnings;
 use base qw/Amon::V::MT/;
-__PACKAGE__->load_context_class('[%= $module %]::V::MT::Context');
+use [%= $module %]::V::MT::Context;
+__PACKAGE__->context_class('[%= $module %]::V::MT::Context');
 1;
 -- lib/$path/V/MT/Context.pm
 package [%= $module %]::V::MT::Context;
