@@ -11,7 +11,6 @@ requires 'Try::Tiny'                 => 0.02;
 requires 'Test::More'                => 0.88; # 0.88 or later is required for done_testing!
 requires 'HTTPx::Dispatcher'         => 0.07;
 requires 'Exporter';
-requires 'Class::Data::Inheritable';
 
 test_requires 'Test::Requires';
 

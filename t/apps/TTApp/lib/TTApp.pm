@@ -1,3 +1,3 @@
 package TTApp;
-use base qw(Amon);
+use Amon;
 1;

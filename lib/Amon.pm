@@ -11,16 +11,19 @@ our $VERSION = 0.02;
     sub set_context { $_context = $_[1] }
 }
 
-sub base_dir {
-    my $class = shift;
-    my $base_dir = Amon::Util::base_dir($class);
-    {
-        # memoize
-        no strict 'refs';
-        no warnings 'redefine';
-        *{"${class}::base_dir"} = sub { $base_dir };
-    };
-    return $base_dir;
+sub import {
+    my ($class, %args) = @_;
+    my $caller = caller(0);
+
+    strict->import;
+    warnings->import;
+
+    no strict 'refs';
+    my $base_dir = Amon::Util::base_dir($caller);
+    *{"${caller}::base_dir"} = sub { $base_dir };
+    for my $meth (qw/new config component model view web_base request bootstrap/) {
+        *{"${caller}::${meth}"} = *{"${class}::${meth}"};
+    }
 }
 
 sub new {

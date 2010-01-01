@@ -1,3 +1,3 @@
 package DeepNamespace;
-use base qw(Amon);
+use Amon;
 1;

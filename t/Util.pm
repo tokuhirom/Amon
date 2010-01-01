@@ -15,8 +15,7 @@ sub run_app_test {
     chdir "t/apps/$name/" or die $!;
 
     my $app = App::Prove->new();
-    warn File::Spec->catfile($FindBin::Bin, '..', 'lib');
-    $app->process_args('-Ilib', '-I'.File::Spec->catfile($FindBin::Bin, '..', '..', 'lib'), <t/*.t>);
+    $app->process_args('-Ilib', '-I'.File::Spec->catfile($FindBin::Bin, '..', 'lib'), <t/*.t>);
     ok($app->run);
     done_testing;
 }

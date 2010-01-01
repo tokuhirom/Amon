@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Amon::Web::Declare;
 use base 'Exporter';
-our @EXPORT = qw/call new/;
+our @EXPORT = qw/call/;
 
 sub import {
     strict->import;
@@ -11,8 +11,6 @@ sub import {
     Amon::Web::Declare->export_to_level(1);
     __PACKAGE__->export_to_level(1);
 }
-
-sub new { bless {}, shift }
 
 sub call {
     my ($controller, $action, @args) = @_;

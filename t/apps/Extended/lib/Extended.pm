@@ -1,3 +1,3 @@
 package Extended;
-use base qw(Amon);
+use Amon;
 1;
