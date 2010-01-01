@@ -1,7 +1,10 @@
 package Amon::Util;
 use strict;
 use warnings;
+use base qw/Exporter/;
 use File::Spec;
+
+our @EXPORT = qw/add_method load_class/;
 
 # taken from Plack::Util, because this method will use by CLI.
 {
@@ -22,6 +25,12 @@ use File::Spec;
 
         return $class;
     }
+}
+
+sub add_method {
+    my ($klass, $method, $code) = @_;
+    no strict 'refs';
+    *{"${klass}::${method}"} = $code;
 }
 
 sub class2env {
