@@ -70,16 +70,16 @@ sub _to_app {
 
     my $dispatcher = "${class}::Dispatcher";
     my $request_class = $class->request_class;
-    my $c = $base_class->new(
-        web_base => $class,
-        config   => $args{config},
-    );
 
     return sub {
         my $env = shift;
         try {
             my $req = $request_class->new($env);
-            $c->{request} = $req;
+            my $c = $base_class->new(
+                web_base => $class,
+                config   => $args{config},
+                request  => $req,
+            );
             local $Amon::_context = $c;
             $dispatcher->dispatch($req, $c);
         } catch {
