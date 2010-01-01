@@ -96,16 +96,24 @@ sub index {
 </body>
 </html>
 -- htdocs/static/css/main.css
-* {
-    margin: 0;
-}
+/* reset.css */
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin:0;padding:0;border:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;}
+body {line-height:1.5;}
+table {border-collapse:separate;border-spacing:0;}
+caption, th, td {text-align:left;font-weight:normal;}
+table, td, th {vertical-align:middle;}
+blockquote:before, blockquote:after, q:before, q:after {content:"";}
+blockquote, q {quotes:"" "";}
+a img {border:none;}
 
+/* main */
 html,body {height:100%;}
 body > #Container {height:auto;}
 
 body {
     background-image: url(http://lab.rails2u.com/bgmaker/slash.png?margin=3&linecolor=FF0084&bgcolor=000000);
     color: white;
+    font-family: "メイリオ","Hiragino Kaku Gothic Pro","ヒラギノ角ゴ Pro W3","ＭＳ Ｐゴシック","Osaka",sans-selif;
 }
 
 #Container {
@@ -124,7 +132,7 @@ body {
 
 #Header {
     background-image: url(http://lab.rails2u.com/bgmaker/gradation.png?margin=3&linecolor=FF0084&bgcolor=000000);
-    height: 40px;
+    height: 50px;
     font-size: 36px;
     padding: 2px;
     text-align: center;
