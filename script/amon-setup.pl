@@ -82,14 +82,92 @@ sub index {
     <link href="<?= uri_for('/static/css/main.css') ?>" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
-<div id="wrapper">
-    <? block content => 'body here' ?>
-</div>
+    <div id="Container">
+        <div id="Header">
+            <a href="<?= uri_for('/') ?>">Amon Startup Page</a>
+        </div>
+        <div id="Content">
+            <? block content => 'body here' ?>
+        </div>
+        <div id="FooterContainer"><div id="Footer">
+            Powered by Amon
+        </div></div>
+    </div>
 </body>
 </html>
 -- htdocs/static/css/main.css
-body {
+* {
+    margin: 0;
 }
+
+html,body {height:100%;}
+body > #Container {height:auto;}
+
+body {
+    background-image: url(http://lab.rails2u.com/bgmaker/slash.png?margin=3&linecolor=FF0084&bgcolor=000000);
+    color: white;
+}
+
+#Container {
+    width: 780px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
+    border-left: black solid 1px;
+    border-right: black solid 1px;
+    margin-top: 0px;
+    height: 100%;
+    min-height:100%;
+    background-color: white;
+    color: black;
+}
+
+#Header {
+    background-image: url(http://lab.rails2u.com/bgmaker/gradation.png?margin=3&linecolor=FF0084&bgcolor=000000);
+    height: 40px;
+    font-size: 36px;
+    padding: 2px;
+    text-align: center;
+}
+
+#Header a {
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#Content {
+    padding: 10px;
+}
+form.nopaste {
+    text-align: center;
+}
+form.nopaste textarea {
+    width: 80%;
+    margin: auto;
+}
+form.nopaste p.submit-btn input {
+    margin: 10px;
+    font-size: 900%;
+    height: 40px;
+    width: 100px;
+}
+
+#FooterContainer {
+    border-top: 1px solid black;
+    font-size: 10px;
+    color: black;
+    position:absolute;
+    bottom:0px;
+    height:20px;
+    width:780px;
+}
+#Footer {
+    text-align: right;
+    padding-right: 10px;
+    padding-top: 2px;
+}
+
 -- $dist.psgi
 use [%= $module %]::Web;
 use Plack::Builder;
