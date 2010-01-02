@@ -52,32 +52,30 @@ sub request           { $_[0]->{request} }
 sub to_app {
     my ($class, %args) = @_;
 
-    my $dispatcher    = $class->dispatcher_class;
-    my $request_class = $class->request_class;
-    my $c = $class->new(
+    my $self = $class->new(
         config   => $args{config},
     );
+    return sub { $self->run(shift) };
+}
 
-    return sub {
-        my $env = shift;
+sub run {
+    my ($self, $env) = @_;
 
-        my $req = $request_class->new($env);
-        local $c->{request} = $req;
-        local $Amon::_context = $c;
+    my $req = $self->request_class->new($env);
+    local $self->{request} = $req;
+    local $Amon::_context = $self;
 
-        my $response;
-        for my $code ($c->get_trigger_code('BEFORE_DISPATCH')) {
-            $response = $code->();
-            last if $response;
-        }
-        unless ($response) {
-            $response = $dispatcher->dispatch($req, $c)
-                    or die "response is not generated";
-        }
-        $c->call_trigger('AFTER_DISPATCH' => $response);
-
-        return $response;
-    };
+    my $response;
+    for my $code ($self->get_trigger_code('BEFORE_DISPATCH')) {
+        $response = $code->();
+        last if $response;
+    }
+    unless ($response) {
+        $response = $self->dispatcher_class->dispatch($req, $self)
+            or die "response is not generated";
+    }
+    $self->call_trigger('AFTER_DISPATCH' => $response);
+    return $response;
 }
 
 1;
