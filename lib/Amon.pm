@@ -27,6 +27,8 @@ sub import {
 
         my $base_dir = Amon::Util::base_dir($caller);
         *{"${caller}::base_dir"} = sub { $base_dir };
+
+        *{"${caller}::base_class"} = sub { $caller };
     }
 }
 
@@ -48,8 +50,7 @@ sub config { $_[0]->{config} || +{} }
 
 sub component {
     my ($self, $name) = @_;
-    my $namespace = $self->can('base_class') ? $self->base_class : ref $self;
-    my $klass = "${namespace}::$name";
+    my $klass = "@{[ $self->base_class ]}::$name";
     $self->{_components}->{$klass} ||= do {
         Amon::Util::load_class($klass);
         my $config = $self->config()->{$name};
