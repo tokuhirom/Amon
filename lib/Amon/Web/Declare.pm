@@ -14,10 +14,9 @@ sub param_decoded { req->param_decoded(@_) }
 
 sub render {
     my $c = Amon->context;
-    my $web_base = $c->web_base;
     my $html = $c->view()->render(@_);
-       $html = Encode::encode($web_base->encoding, $html);
-    my $content_type = $web_base->html_content_type();
+       $html = Encode::encode($c->encoding, $html);
+    my $content_type = $c->html_content_type();
     return [
         200,
         [

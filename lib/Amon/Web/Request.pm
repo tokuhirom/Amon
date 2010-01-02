@@ -7,7 +7,7 @@ use Encode ();
 sub param_decoded {
     my ($self, $param) = @_;
     return wantarray ? () : undef unless exists $self->parameters->{$param};
-    my $encoding = Amon->context->web_base->encoding;
+    my $encoding = Amon->context->encoding;
     if ( ref $self->parameters->{$param} eq 'ARRAY' ) {
         return wantarray()
             ? (map { Encode::decode($encoding, $_) } @{ $self->parameters->{$param} })

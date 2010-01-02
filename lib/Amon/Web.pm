@@ -40,16 +40,17 @@ sub import {
         add_method($caller, 'default_view_class', sub { $default_view_class });
 
         no strict 'refs';
+        unshift @{"${caller}::ISA"}, $base_class;
         unshift @{"${caller}::ISA"}, $class;
     }
 }
 
 sub html_content_type { 'text/html; charset=UTF-8' }
 sub encoding          { 'utf-8' }
+sub request           { $_[0]->{request} }
 
 sub to_app {
     my ($class, %args) = @_;
-    my $base_class = $class->base_class;
 
     my $dispatcher    = $class->dispatcher_class;
     my $request_class = $class->request_class;
@@ -58,8 +59,7 @@ sub to_app {
         my $env = shift;
 
         my $req = $request_class->new($env);
-        my $c = $base_class->new(
-            web_base => $class,
+        my $c = $class->new(
             config   => $args{config},
             request  => $req,
         );

@@ -13,8 +13,6 @@ our $VERSION = 0.02;
     sub set_context { $_context = $_[1] }
 }
 
-__PACKAGE__->mk_accessors(qw/web_base request/);
-
 sub import {
     my $class = shift;
 
@@ -33,7 +31,8 @@ sub import {
 }
 
 sub new {
-    my ($class, %args) = @_;
+    my $class = shift;
+    my %args = @_ == 1 ? %{$_[0]} : @_;
     bless {%args}, $class;
 }
 
@@ -49,7 +48,8 @@ sub config { $_[0]->{config} || +{} }
 
 sub component {
     my ($self, $name) = @_;
-    my $klass = "@{[ ref $self ]}::$name";
+    my $namespace = $self->can('base_class') ? $self->base_class : ref $self;
+    my $klass = "${namespace}::$name";
     $self->{_components}->{$klass} ||= do {
         Amon::Util::load_class($klass);
         my $config = $self->config()->{$name};
@@ -64,7 +64,7 @@ sub model {
 
 sub view {
     my $self = shift;
-    my $name = @_ == 1 ? $_[0] : $self->web_base->default_view_class;
+    my $name = @_ == 1 ? $_[0] : $self->default_view_class;
     $self->component("V::$name");
 }
 

@@ -16,7 +16,7 @@ sub dispatch {
     my ($class, $req) = @_;
     my $ret = $class->match($req);
     if ($ret) {
-        my $klass = "@{[ Amon->context->web_base ]}::C::$ret->{controller}";
+        my $klass = "@{[ ref Amon->context ]}::C::$ret->{controller}";
         my $action = $ret->{action};
         return $klass->$action($ret->{args});
     } else {

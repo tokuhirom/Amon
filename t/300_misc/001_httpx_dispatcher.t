@@ -18,11 +18,15 @@ use Test::More;
 }
 
 {
-    package MyApp;
-    use Amon -base;
+    package MyApp::Web;
+    use Amon::Web -base => (
+        base_class => 'Amon',
+        dispatcher_class => 'Amon::Web::Dispatcher',
+        default_view_class => 'MT',
+    );
 }
 
-my $c = MyApp->bootstrap(web_base => 'MyApp::Web');
+my $c = MyApp::Web->bootstrap();
 
 my $req = Plack::Request->new({PATH_INFO => '/blog/2009/01'});
 my $ret = MyApp::Web::Dispatcher->dispatch($req);
