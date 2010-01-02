@@ -54,15 +54,15 @@ sub to_app {
 
     my $dispatcher    = $class->dispatcher_class;
     my $request_class = $class->request_class;
+    my $c = $class->new(
+        config   => $args{config},
+    );
 
     return sub {
         my $env = shift;
 
         my $req = $request_class->new($env);
-        my $c = $class->new(
-            config   => $args{config},
-            request  => $req,
-        );
+        local $c->{request} = $req;
         local $Amon::_context = $c;
 
         my $response;
@@ -76,17 +76,8 @@ sub to_app {
         }
         $c->call_trigger('AFTER_DISPATCH' => $response);
 
-        $c->_destroy_me();
-
         return $response;
     };
-}
-
-
-sub _destroy_me {
-    my $self = shift;
-    # paranoia: guard against cyclic reference
-    delete $self->{$_} for keys %$self;
 }
 
 1;
