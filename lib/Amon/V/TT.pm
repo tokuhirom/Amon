@@ -5,10 +5,12 @@ use File::Spec;
 use Template;
 
 sub import {
-    my ($class, %args) = @_;
-    my $caller = caller(0);
-    no strict 'refs';
-    unshift @{"${caller}::ISA"}, $class;
+    my $class = shift;
+    if (@_>0 && shift eq '-base') {
+        my $caller = caller(0);
+        no strict 'refs';
+        unshift @{"${caller}::ISA"}, $class;
+    }
 }
 
 sub new {

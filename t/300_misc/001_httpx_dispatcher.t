@@ -19,7 +19,7 @@ use Test::More;
 
 {
     package MyApp;
-    use Amon;
+    use Amon -base;
 }
 
 my $c = MyApp->bootstrap(web_base => 'MyApp::Web');

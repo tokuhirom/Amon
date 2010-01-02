@@ -1,3 +1,3 @@
 package DeepNamespace;
-use Amon;
+use Amon -base;
 1;

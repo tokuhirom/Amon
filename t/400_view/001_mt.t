@@ -5,7 +5,7 @@ use File::Spec;
 use Test::More;
 {
     package MyApp::V::MT;
-    use Amon::V::MT;
+    use Amon::V::MT -base;
 }
 
 for my $cache_mode (1..6) {

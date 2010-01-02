@@ -18,23 +18,25 @@ our $render_context;
 our $_MEMORY_CACHE;
 
 sub import {
-    my ($class, %args) = @_;
+    my $class = shift;
+    if (@_>0 && shift eq '-base') {
+        strict->import;
+        warnings->import;
 
-    strict->import;
-    warnings->import;
+        my %args = @_;
+        my $caller = caller(0);
 
-    my $caller = caller(0);
+        my $context_class = $args{context_class} || "${caller}::Context";
+        try {
+            Amon::Util::load_class($context_class);
+        } catch {
+            die $_ unless /^Can't locate /;
+        };
 
-    my $context_class = $args{context_class} || "${caller}::Context";
-    try {
-        Amon::Util::load_class($context_class);
-    } catch {
-        die $_ unless /^Can't locate /;
-    };
-
-    no strict 'refs';
-    unshift @{"${caller}::ISA"}, $class;
-    *{"${caller}::context_class"}     = sub { $context_class     };
+        no strict 'refs';
+        unshift @{"${caller}::ISA"}, $class;
+        *{"${caller}::context_class"} = sub { $context_class };
+    }
 }
 
 sub new {
@@ -205,7 +207,7 @@ Amon::V::MT - Amon Text::MicroTemplate View Class
 =head1 SYNOPSIS
 
     package MyApp::V::MT;
-    use Amon::V::MT;
+    use Amon::V::MT -base;
     1;
 
 =head1 DESCRIPTION

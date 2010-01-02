@@ -1,7 +1,9 @@
 package Amon;
 use strict;
 use warnings;
+use base qw/Class::Accessor::Fast/;
 use Amon::Util;
+use Amon::Trigger;
 use 5.008003;
 
 our $VERSION = 0.02;
@@ -11,21 +13,22 @@ our $VERSION = 0.02;
     sub set_context { $_context = $_[1] }
 }
 
+__PACKAGE__->mk_accessors(qw/web_base request response/);
+
 sub import {
-    my ($class, %args) = @_;
-    my $caller = caller(0);
+    my $class = shift;
 
     strict->import;
     warnings->import;
 
-    no strict 'refs';
-    require Class::Accessor::Fast;
-    unshift @{"${caller}::ISA"}, 'Class::Accessor::Fast';
-    my $base_dir = Amon::Util::base_dir($caller);
-    *{"${caller}::base_dir"} = sub { $base_dir };
-    $caller->mk_accessors(qw/web_base request response/);
-    for my $meth (qw/new config component model view bootstrap/) {
-        *{"${caller}::${meth}"} = *{"${class}::${meth}"};
+    if (@_>0 && shift eq '-base') {
+        my $caller = caller(0);
+
+        no strict 'refs';
+        unshift @{"${caller}::ISA"}, $class;
+
+        my $base_dir = Amon::Util::base_dir($caller);
+        *{"${caller}::base_dir"} = sub { $base_dir };
     }
 }
 
