@@ -1,6 +1,7 @@
 package Amon::V::TT;
 use strict;
 use warnings;
+use base qw/Amon::V::TemplateBase/;
 use File::Spec;
 use Template;
 

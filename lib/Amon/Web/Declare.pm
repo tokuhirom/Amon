@@ -13,18 +13,7 @@ sub param { req->param(@_) }
 sub param_decoded { req->param_decoded(@_) }
 
 sub render {
-    my $c = Amon->context;
-    my $html = $c->view()->render(@_);
-       $html = Encode::encode($c->encoding, $html);
-    my $content_type = $c->html_content_type();
-    return [
-        200,
-        [
-            'Content-Type'   => $content_type,
-            'Content-Length' => length($html)
-        ],
-        [$html]
-    ];
+    return Amon->context->view()->make_response(@_);
 }
 
 sub render_partial {

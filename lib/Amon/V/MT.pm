@@ -1,12 +1,14 @@
 package Amon::V::MT;
 use strict;
 use warnings;
+use base qw/Amon::V::TemplateBase/;
 use Text::MicroTemplate;
 use File::Spec;
 use FindBin;
 use Amon::Util;
 use Try::Tiny;
 require Amon;
+use Encode ();
 use constant { # bitmask
     CACHE_FILE      => 1,
     CACHE_MEMORY    => 2,
