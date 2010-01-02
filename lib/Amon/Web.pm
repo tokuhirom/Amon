@@ -76,8 +76,17 @@ sub to_app {
         }
         $c->call_trigger('AFTER_DISPATCH' => $response);
 
+        $c->_destroy_me();
+
         return $response;
     };
+}
+
+
+sub _destroy_me {
+    my $self = shift;
+    # paranoia: guard against cyclic reference
+    delete $self->{$_} for keys %$self;
 }
 
 1;

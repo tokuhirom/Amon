@@ -53,8 +53,8 @@ sub component {
     my $klass = "@{[ $self->base_class ]}::$name";
     $self->{_components}->{$klass} ||= do {
         Amon::Util::load_class($klass);
-        my $config = $self->config()->{$name};
-        $klass->new($config ? $config : ());
+        my $config = $self->config()->{$name} || +{};
+        $klass->new($config);
     };
 }
 
