@@ -4,7 +4,7 @@ use warnings;
 use base qw/Class::Accessor::Fast/;
 use Amon::Util;
 use Amon::Trigger;
-use 5.008003;
+use 5.008001;
 
 our $VERSION = 0.02;
 {
