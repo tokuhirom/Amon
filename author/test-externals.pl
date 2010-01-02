@@ -5,6 +5,7 @@ use autodie;
 
 my @dist = (
     'Inamode13'   => q{git://github.com/tokuhirom/Inamode13.git},
+    'NoPaste'     => q{git://github.com/tokuhirom/p5-OreOre-NoPaste.git},
 );
 
 my $distdir = 'externals';
