@@ -5,11 +5,12 @@ use base 'Exporter';
 use Amon::Declare;
 use Encode ();
 
-our @EXPORT = (qw/req param render render_partial redirect res_404 uri_for/, @Amon::Declare::EXPORT);
+our @EXPORT = (qw/req param param_decoded render render_partial redirect res_404 uri_for/, @Amon::Declare::EXPORT);
 
 sub req() { Amon->context->request }
 
 sub param { req->param(@_) }
+sub param_decoded { req->param_decoded(@_) }
 
 sub render {
     my $c = Amon->context;
