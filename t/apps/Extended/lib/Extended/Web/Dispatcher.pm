@@ -6,13 +6,13 @@ sub dispatch {
     my ($class, $req) = @_;
     given ($req->path_info) {
         when ('/') {
-            call("Root", 'index');
+            return call("Root", 'index');
         }
         when ('/die') {
-            call("Root", 'die');
+            return call("Root", 'die');
         }
         default {
-            res_404();
+            return res_404();
         }
     }
 }

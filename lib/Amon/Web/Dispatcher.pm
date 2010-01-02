@@ -33,15 +33,15 @@ Amon::Web::Dispatcher - Amon Dispatcher class
         my ($class, $req) = @_;
         given ([$req->method, $req->uri]) {
              when (['GET', '/']) {
-                 call('Root', 'index');
+                 return call('Root', 'index');
              }
              when (['POST', '/post']) {
-                 call('Entry', 'post');
+                 return call('Entry', 'post');
                  # or
-                 MyApp::C::Entry->post($req);
+                 return MyApp::C::Entry->post($req);
              }
              default {
-                 res_404(); # return 404 response
+                 return res_404(); # return 404 response
              }
         }
     }

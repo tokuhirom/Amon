@@ -13,7 +13,7 @@ our $VERSION = 0.02;
     sub set_context { $_context = $_[1] }
 }
 
-__PACKAGE__->mk_accessors(qw/web_base request response/);
+__PACKAGE__->mk_accessors(qw/web_base request/);
 
 sub import {
     my $class = shift;

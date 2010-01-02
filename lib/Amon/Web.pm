@@ -65,18 +65,18 @@ sub to_app {
         );
         local $Amon::_context = $c;
 
+        my $response;
         for my $code ($c->get_trigger_code('BEFORE_DISPATCH')) {
-            $code->();
-            last if $c->response();
+            $response = $code->();
+            last if $response;
         }
-        unless ($c->response) {
-            $dispatcher->dispatch($req, $c);
-        }
-        my $res = $c->response()
+        unless ($response) {
+            $response = $dispatcher->dispatch($req, $c)
                     or die "response is not generated";
-        $c->call_trigger('AFTER_DISPATCH');
+        }
+        $c->call_trigger('AFTER_DISPATCH' => $response);
 
-        return $res;
+        return $response;
     };
 }
 

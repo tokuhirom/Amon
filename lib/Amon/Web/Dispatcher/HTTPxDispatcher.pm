@@ -20,7 +20,7 @@ sub dispatch {
         my $action = $ret->{action};
         return $klass->$action($ret->{args});
     } else {
-        res_404();
+        return res_404();
     }
 }
 

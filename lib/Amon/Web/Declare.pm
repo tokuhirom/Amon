@@ -17,14 +17,14 @@ sub render {
     my $html = $c->view()->render(@_);
        $html = Encode::encode($web_base->encoding, $html);
     my $content_type = $web_base->html_content_type();
-    $c->response([
+    return [
         200,
         [
             'Content-Type'   => $content_type,
             'Content-Length' => length($html)
         ],
         [$html]
-    ]);
+    ];
 }
 
 sub render_partial {
@@ -52,21 +52,20 @@ sub redirect($) {
     $url =~ s!/+$!!;
     $location =~ s!^/+([^/])!/$1!;
     $url .= $location;
-    $c->response([
+    [
         302,
         ['Location' => $url],
         []
-    ]);
+    ];
 }
 
 sub res_404 {
     my $text = shift || "404 Not Found";
-    my $c = Amon->context;
-    $c->response([
+    [
         404,
         ['Content-Length' => length($text)],
         [$text],
-    ]);
+    ];
 }
 
 1;
@@ -95,10 +94,6 @@ Render template by L<Text::MicroTemplate>.
 =item redirect($location)
 
 Output redirect response.
-
-=item detach([$status, $headers, $body])
-
-Detach context and return PSGI response.
 
 =back
 

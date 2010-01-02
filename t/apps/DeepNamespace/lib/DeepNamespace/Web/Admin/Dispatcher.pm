@@ -6,10 +6,10 @@ sub dispatch {
     my ($class, $req) = @_;
     given ($req->path_info) {
         when ('/') {
-            call("Root", 'index');
+            return call("Root", 'index');
         }
         default {
-            res_404();
+            return res_404();
         }
     }
 }
