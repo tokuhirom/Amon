@@ -8,6 +8,8 @@ use Amon::Web::Declare;
 our @EXPORT = qw/dispatch/;
 
 sub import {
+    strict->import;
+    warnings->import;
     HTTPx::Dispatcher->export_to_level(1);
     __PACKAGE__->export_to_level(1);
 }
