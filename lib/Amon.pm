@@ -1,7 +1,6 @@
 package Amon;
 use strict;
 use warnings;
-use base qw/Class::Accessor::Fast/;
 use Amon::Util;
 use Amon::Trigger;
 use Scalar::Util ();
