@@ -4,7 +4,7 @@ use warnings;
 use base qw/Amon::V::TemplateBase/;
 use File::Spec;
 use Template;
-use Scalar::Util ();
+use Amon::Mixin::Context;
 
 sub import {
     my $class = shift;
@@ -17,9 +17,7 @@ sub import {
 
 sub new {
     my ($class, $conf) = @_;
-    my $self = bless {%$conf}, $class;
-    Scalar::Util::weaken($self->{context});
-    $self;
+    bless {}, $class;
 }
 
 # entry point
@@ -28,7 +26,7 @@ sub render {
     my $tt = Template->new(
         ABSOLUTE => 1,
         RELATIVE => 1,
-        INCLUDE_PATH => [ File::Spec->catdir($self->{context}->base_dir, 'tmpl'), '.' ],
+        INCLUDE_PATH => [ File::Spec->catdir($self->context->base_dir, 'tmpl'), '.' ],
     );
     $tt->process($input, $params, \my $output) or die $tt->error;
     return $output;

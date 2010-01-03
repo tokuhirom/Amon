@@ -7,14 +7,13 @@ use File::Spec;
 use FindBin;
 use Amon::Util;
 use Try::Tiny;
-require Amon;
 use Encode ();
+use Amon::Mixin::Context;
 use constant { # bitmask
     CACHE_FILE      => 1,
     CACHE_MEMORY    => 2,
     CACHE_NO_CHECK  => 4,
 };
-use Scalar::Util;
 our $VERSION = 0.01;
 
 our $render_context;
@@ -44,17 +43,19 @@ sub import {
 
 sub new {
     my ($class, $conf) = @_;
-    my $include_path = $conf->{include_path} || [File::Spec->catfile($conf->{context}->base_dir, 'tmpl')];
-       $include_path = [$include_path] unless ref $include_path;
+    my $include_path = $conf->{include_path};
+       $include_path = [$include_path] if $include_path && !ref $include_path;
 
-    my $self = bless {
+    bless {
         include_path => $include_path,
         cache_dir    => $conf->{cache_dir} || $class->default_cache_dir(),
         cache_mode   => exists($conf->{cache_mode}) ? $conf->{cache_mode} : 0,
-        context      => $conf->{context},
     }, $class;
-    Scalar::Util::weaken($self->{context});
-    $self;
+}
+
+sub include_path {
+    my $self = shift;
+    $self->{include_path} ||= [File::Spec->catfile($self->context->base_dir, 'tmpl')];
 }
 
 sub default_cache_dir {
@@ -76,7 +77,7 @@ sub render {
 # user can override this method.
 sub resolve_tmpl_path {
     my ($self, $file) = @_;
-    for my $inc (@{$self->{include_path}}) {
+    for my $inc (@{$self->include_path}) {
         my $path = File::Spec->catfile($inc, $file);
         return $path if -f $path;
     }
@@ -92,7 +93,7 @@ sub __load_internal {
         return $code->(@params);
     }
 
-    my $filepath = $self->resolve_tmpl_path($path) or Carp::croak("Can't find template '$path' from " . join(', ', map { qq{'$_'} } @{$self->{include_path}}));
+    my $filepath = $self->resolve_tmpl_path($path) or Carp::croak("Can't find template '$path' from " . join(', ', map { qq{'$_'} } @{$self->include_path}));
     my @filepath_stat = stat($filepath) or Carp::croak("Can't find template: $filepath: $!");
     my $filepath_mtime = $filepath_stat[9];
     if (($cache_mode & CACHE_MEMORY) && $self->_has_fresh_memory_cache($path, $filepath_mtime)) {

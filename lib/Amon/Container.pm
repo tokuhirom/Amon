@@ -22,10 +22,11 @@ sub config { $_[0]->{config} || +{} }
 sub component {
     my ($self, $name) = @_;
     my $klass = "@{[ $self->base_class ]}::$name";
-    $self->{_components}->{$klass} ||= do {
+    $self->{components}->{$klass} ||= do {
         Amon::Util::load_class($klass);
         my $config = $self->config()->{$name} || +{};
-        my $obj = $klass->new({context => $self, %$config});
+        my $obj = $klass->new($config);
+        $obj->set_context($self) if $obj->can('set_context');
         $obj;
     };
 }
