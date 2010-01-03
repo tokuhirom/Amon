@@ -50,6 +50,7 @@ sub import {
 sub html_content_type { 'text/html; charset=UTF-8' }
 sub encoding          { 'utf-8' }
 sub request           { $_[0]->{request} }
+sub pnotes            { $_[0]->{pnotes}  }
 
 sub to_app {
     my ($class, %args) = @_;
@@ -65,11 +66,12 @@ sub run {
 
     my $req = $self->request_class->new($env);
     local $self->{request} = $req;
+    local $self->{pnotes}  = +{};
     local $Amon::_context = $self;
 
     my $response;
     for my $code ($self->get_trigger_code('BEFORE_DISPATCH')) {
-        $response = $code->();
+        $response = $code->($self);
         last if $response;
     }
     unless ($response) {

@@ -1,7 +1,7 @@
 package Amon::Container;
 use strict;
 use warnings;
-use Amon::Util;
+use Amon::Util ();
 
 sub new {
     my $class = shift;
@@ -39,6 +39,25 @@ sub view {
     my $self = shift;
     my $name = @_ == 1 ? $_[0] : $self->default_view_class;
     $self->component("V::$name");
+}
+
+sub add_method {
+    my ($class, $name, $code) = @_;
+    Amon::Util::add_method($class, $name, $code);
+}
+
+sub load_plugins {
+    my ($class, @args) = @_;
+    for (my $i=0; $i<@args; $i+=2) {
+        my ($module, $conf) = ($args[$i], $args[$i+1]);
+        $class->load_plugin($module, $conf);
+    }
+}
+
+sub load_plugin {
+    my ($class, $module, $conf) = @_;
+    $module = Amon::Util::load_class($module, 'Amon::Plugin');
+    $module->init($class, $conf);
 }
 
 1;

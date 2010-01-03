@@ -4,4 +4,12 @@ use Amon::Web -base => (
     base_class => 'Extended',
     request_class => 'Extended::Web::Request',
 );
+
+__PACKAGE__->load_plugins(
+    'HTTPSession' => {
+        state => 'Cookie',
+        store => 'OnMemory',
+    },
+);
+
 1;

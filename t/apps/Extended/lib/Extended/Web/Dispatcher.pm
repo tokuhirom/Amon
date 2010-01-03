@@ -11,6 +11,9 @@ sub dispatch {
         when ('/die') {
             return call("Root", 'die');
         }
+        when ('/session') {
+            return call("Root", 'session');
+        }
         default {
             return res_404();
         }
