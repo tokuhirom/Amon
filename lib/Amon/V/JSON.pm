@@ -2,13 +2,16 @@ package Amon::V::JSON;
 use strict;
 use warnings;
 use JSON ();
+use Scalar::Util ();
 
 sub new {
     my ($class, $conf) = @_;
-    bless {
+    my $self = bless {
         callback_param => 'callback',
         %$conf,
     }, $class;
+    Scalar::Util::weaken($self->{context});
+    return $self;
 }
 
 sub render {

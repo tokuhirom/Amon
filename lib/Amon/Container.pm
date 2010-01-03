@@ -1,7 +1,6 @@
 package Amon::Container;
 use strict;
 use warnings;
-use Scalar::Util ();
 use Amon::Util;
 
 sub new {
@@ -27,7 +26,6 @@ sub component {
         Amon::Util::load_class($klass);
         my $config = $self->config()->{$name} || +{};
         my $obj = $klass->new({context => $self, %$config});
-        Scalar::Util::weaken($obj->{context}) if $obj->{context};
         $obj;
     };
 }
