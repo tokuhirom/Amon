@@ -3,6 +3,11 @@ use warnings;
 use Plack::Request;
 use Test::More;
 
+BEGIN {
+    $INC{'MyApp.pm'}      = __FILE__;
+    $INC{'MyApp/V/MT.pm'} = __FILE__;
+}
+
 {
     package MyApp::Web::Dispatcher;
     use Amon::Web::Dispatcher::HTTPxDispatcher;
@@ -20,10 +25,15 @@ use Test::More;
 {
     package MyApp::Web;
     use Amon::Web -base => (
-        base_class => 'Amon',
+        base_class => 'MyApp',
         dispatcher_class => 'Amon::Web::Dispatcher',
         default_view_class => 'MT',
     );
+}
+
+{
+    package MyApp;
+    use Amon -base;
 }
 
 my $c = MyApp::Web->bootstrap();

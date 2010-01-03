@@ -7,14 +7,24 @@ use Encode;
 use Test::More;
 use Amon;
 
+BEGIN {
+    $INC{'MyApp.pm'} = __FILE__;
+    $INC{'MyApp/V/MT.pm'} = __FILE__;
+}
+
 {
     package MyApp::Web;
     use Amon::Web -base => (
-        base_class => 'Amon',
+        base_class => 'MyApp',
         dispatcher_class => 'Amon::Web::Dispatcher',
         default_view_class => 'MT',
     );
     sub encoding { 'utf-8' }
+}
+
+{
+    package MyApp;
+    use Amon -base;
 }
 
 my $c = MyApp::Web->bootstrap();

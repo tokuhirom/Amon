@@ -4,6 +4,8 @@ use warnings;
 use Module::Pluggable::Object;
 use Amon::Util;
 use Amon::Web::Base;
+use Amon::Trigger;
+use Amon::Container;
 
 sub import {
     my $class = shift;

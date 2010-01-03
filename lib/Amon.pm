@@ -1,10 +1,8 @@
 package Amon;
 use strict;
 use warnings;
-use Amon::Util;
-use Amon::Trigger;
-use Scalar::Util ();
 use 5.008001;
+use Amon::Container;
 
 our $VERSION = 0.02;
 {
@@ -23,52 +21,13 @@ sub import {
         my $caller = caller(0);
 
         no strict 'refs';
-        unshift @{"${caller}::ISA"}, $class;
+        unshift @{"${caller}::ISA"}, 'Amon::Container';
 
         my $base_dir = Amon::Util::base_dir($caller);
         *{"${caller}::base_dir"} = sub { $base_dir };
 
         *{"${caller}::base_class"} = sub { $caller };
     }
-}
-
-sub new {
-    my $class = shift;
-    my %args = @_ == 1 ? %{$_[0]} : @_;
-    bless {%args}, $class;
-}
-
-# for CLI
-sub bootstrap {
-    my $class = shift;
-    my $self = $class->new(@_);
-    Amon->set_context($self);
-    return $self;
-}
-
-sub config { $_[0]->{config} || +{} }
-
-sub component {
-    my ($self, $name) = @_;
-    my $klass = "@{[ $self->base_class ]}::$name";
-    $self->{_components}->{$klass} ||= do {
-        Amon::Util::load_class($klass);
-        my $config = $self->config()->{$name} || +{};
-        my $obj = $klass->new({context => $self, %$config});
-        Scalar::Util::weaken($obj->{context}) if $obj->{context};
-        $obj;
-    };
-}
-
-sub model {
-    my ($self, $name) = @_;
-    $self->component("M::$name");
-}
-
-sub view {
-    my $self = shift;
-    my $name = @_ == 1 ? $_[0] : $self->default_view_class;
-    $self->component("V::$name");
 }
 
 1;
