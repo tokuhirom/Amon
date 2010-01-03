@@ -16,7 +16,7 @@ sub import {
 
 sub new {
     my ($class, $conf) = @_;
-    bless {}, $class;
+    bless {%$conf}, $class;
 }
 
 # entry point
@@ -25,7 +25,7 @@ sub render {
     my $tt = Template->new(
         ABSOLUTE => 1,
         RELATIVE => 1,
-        INCLUDE_PATH => [ File::Spec->catdir(Amon->context->base_dir, 'tmpl'), '.' ],
+        INCLUDE_PATH => [ File::Spec->catdir($self->{context}->base_dir, 'tmpl'), '.' ],
     );
     $tt->process($input, $params, \my $output) or die $tt->error;
     return $output;

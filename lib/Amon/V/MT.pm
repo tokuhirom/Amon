@@ -43,13 +43,14 @@ sub import {
 
 sub new {
     my ($class, $conf) = @_;
-    my $include_path = $conf->{include_path} || [File::Spec->catfile(Amon->context->base_dir, 'tmpl')];
+    my $include_path = $conf->{include_path} || [File::Spec->catfile($conf->{context}->base_dir, 'tmpl')];
        $include_path = [$include_path] unless ref $include_path;
 
     bless {
         include_path => $include_path,
         cache_dir    => $conf->{cache_dir} || $class->default_cache_dir(),
         cache_mode   => exists($conf->{cache_mode}) ? $conf->{cache_mode} : 0,
+        context      => $conf->{context},
     }, $class;
 }
 

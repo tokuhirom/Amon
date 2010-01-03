@@ -21,7 +21,7 @@ sub make_response {
 
     my $json = $self->render($src);
 
-    my $req = Amon->context->request;
+    my $req = $self->{context}->request;
     my $ua = $req->header('User-Agent') || '';
 
     my $content_type = do {

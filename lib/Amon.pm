@@ -4,6 +4,7 @@ use warnings;
 use base qw/Class::Accessor::Fast/;
 use Amon::Util;
 use Amon::Trigger;
+use Scalar::Util ();
 use 5.008001;
 
 our $VERSION = 0.02;
@@ -54,7 +55,9 @@ sub component {
     $self->{_components}->{$klass} ||= do {
         Amon::Util::load_class($klass);
         my $config = $self->config()->{$name} || +{};
-        $klass->new($config);
+        my $obj = $klass->new({context => $self, %$config});
+        Scalar::Util::weaken($obj->{context}) if $obj->{context};
+        $obj;
     };
 }
 

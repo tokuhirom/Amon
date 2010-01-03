@@ -4,7 +4,7 @@ use warnings;
 
 sub make_response {
     my $self = shift;
-    my $c = Amon->context;
+    my $c = $self->{context};
     my $html = $self->render(@_);
        $html = Encode::encode($c->encoding, $html);
     my $content_type = $c->html_content_type();
