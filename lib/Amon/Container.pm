@@ -19,32 +19,59 @@ sub bootstrap {
 
 sub config { $_[0]->{config} || +{} }
 
-sub component {
+sub get {
     my ($self, $name) = @_;
     my $klass = "@{[ $self->base_class ]}::$name";
     $self->{components}->{$klass} ||= do {
         Amon::Util::load_class($klass);
         my $config = $self->config()->{$name} || +{};
-        my $obj = $klass->new($config);
-        $obj->set_context($self) if $obj->can('set_context');
-        $obj;
+        if (my $factory = $self->get_factory($name)) {
+            $factory->($self, $klass, $config);
+        } else {
+            $klass->new($config);
+        }
     };
 }
 
 sub model {
     my ($self, $name) = @_;
-    $self->component("M::$name");
+    $self->get("M::$name");
+}
+
+sub db {
+    my $self = shift;
+    $self->get(join('::', "DB", @_));
 }
 
 sub view {
     my $self = shift;
     my $name = @_ == 1 ? $_[0] : $self->default_view_class;
-    $self->component("V::$name");
+       $name = "V::$name";
+    my $klass = "@{[ $self->base_class ]}::$name";
+    $self->{components}->{$klass} ||= do {
+        Amon::Util::load_class($klass);
+        my $config = $self->config()->{$name} || +{};
+        $klass->new($self, $config);
+    };
 }
 
 sub add_method {
     my ($class, $name, $code) = @_;
     Amon::Util::add_method($class, $name, $code);
+}
+
+sub add_factory {
+    my ($class, $target, $factory) = @_;
+    if (not ref $factory) {
+        my $factory_class = Amon::Util::load_class($factory, 'Amon::Factory');
+        $factory = sub { $factory_class->create(@_) };
+    }
+    $class->_factory_map->{$target} = $factory;
+}
+sub get_factory {
+    my ($class, $target) = @_;
+    $class = ref $class if ref $class;
+    $class->_factory_map->{$target};
 }
 
 sub load_plugins {

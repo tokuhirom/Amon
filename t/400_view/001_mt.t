@@ -8,8 +8,15 @@ use Test::More;
     use Amon::V::MT -base;
 }
 
+{
+    package MyApp;
+    use Amon -base;
+}
+
+my $c = MyApp->new();
 for my $cache_mode (1..6) {
     my $v = MyApp::V::MT->new(
+        $c,
         {
             cache_mode   => $cache_mode,
             include_path => File::Spec->catfile( $FindBin::Bin, 'tmpl' )

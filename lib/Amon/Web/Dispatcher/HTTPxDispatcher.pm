@@ -15,12 +15,12 @@ sub import {
 }
 
 sub dispatch {
-    my ($class, $req) = @_;
-    my $ret = $class->match($req);
+    my ($class, $c) = @_;
+    my $ret = $class->match($c->request);
     if ($ret) {
         my $klass = "@{[ ref Amon->context ]}::C::$ret->{controller}";
         my $action = $ret->{action};
-        return $klass->$action($ret->{args});
+        return $klass->$action($c, $ret->{args});
     } else {
         return res_404();
     }

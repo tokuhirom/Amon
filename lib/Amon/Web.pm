@@ -75,7 +75,7 @@ sub run {
         last if $response;
     }
     unless ($response) {
-        $response = $self->dispatcher_class->dispatch($req, $self)
+        $response = $self->dispatcher_class->dispatch($self)
             or die "response is not generated";
     }
     $self->call_trigger('AFTER_DISPATCH' => $response);

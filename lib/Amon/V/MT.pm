@@ -8,7 +8,6 @@ use FindBin;
 use Amon::Util;
 use Try::Tiny;
 use Encode ();
-use Amon::Mixin::Context;
 use constant { # bitmask
     CACHE_FILE      => 1,
     CACHE_MEMORY    => 2,
@@ -42,21 +41,19 @@ sub import {
 }
 
 sub new {
-    my ($class, $conf) = @_;
-    my $include_path = $conf->{include_path};
-       $include_path = [$include_path] if $include_path && !ref $include_path;
+    my ($class, $c, $conf) = @_;
+    my $include_path = $conf->{include_path} || [File::Spec->catfile($c->base_dir, 'tmpl')];
+       $include_path = [$include_path] if not ref $include_path;
 
     bless {
+        context      => $c,
         include_path => $include_path,
         cache_dir    => $conf->{cache_dir} || $class->default_cache_dir(),
         cache_mode   => exists($conf->{cache_mode}) ? $conf->{cache_mode} : 0,
     }, $class;
 }
 
-sub include_path {
-    my $self = shift;
-    $self->{include_path} ||= [File::Spec->catfile($self->context->base_dir, 'tmpl')];
-}
+sub include_path { $_[0]->{include_path} }
 
 sub default_cache_dir {
     my $class = shift;

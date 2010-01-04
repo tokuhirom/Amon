@@ -27,6 +27,9 @@ sub import {
         *{"${caller}::base_dir"} = sub { $base_dir };
 
         *{"${caller}::base_class"} = sub { $caller };
+
+        my $factory_map = {};
+        *{"${caller}::_factory_map"} = sub { $factory_map };
     }
 }
 

@@ -2,12 +2,12 @@ package Amon::V::JSON;
 use strict;
 use warnings;
 use JSON ();
-use Amon::Mixin::Context;
 
 sub new {
-    my ($class, $conf) = @_;
+    my ($class, $c, $conf) = @_;
     bless {
         callback_param => 'callback',
+        context => $c,
         %$conf,
     }, $class;
 }

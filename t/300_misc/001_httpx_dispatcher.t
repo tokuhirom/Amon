@@ -17,7 +17,7 @@ BEGIN {
 {
     package MyApp::Web::C::Blog;
     sub show {
-        my ($class, $args) = @_;
+        my ($class, $c, $args) = @_;
         [200, [], "YEAR: $args->{year}, MONTH: $args->{month}"];
     }
 }
@@ -39,7 +39,8 @@ BEGIN {
 my $c = MyApp::Web->bootstrap();
 
 my $req = Plack::Request->new({PATH_INFO => '/blog/2009/01'});
-my $ret = MyApp::Web::Dispatcher->dispatch($req);
+$c->{request} = $req;
+my $ret = MyApp::Web::Dispatcher->dispatch($c);
 is $ret->[2], 'YEAR: 2009, MONTH: 01';
 
 done_testing;
