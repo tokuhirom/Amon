@@ -75,7 +75,7 @@ sub _body {
 
 sub content_type {
     my $self = shift;
-    if (@_ == 0) {
+    if (@_ == 1) {
         $self->headers->content_type(@_);
         return $self;
     } else {
