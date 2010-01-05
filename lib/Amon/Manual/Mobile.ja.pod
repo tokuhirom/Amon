@@ -10,20 +10,14 @@ Amon でサックリとケータイ対応する方法についての解説です
 
 =head2 HTTP::MobileAgent との連携
 
-    package MyApp::Request;
-    use base qw/Amon::Request/;
-    use HTTP::MobileAgent;
-    sub mobile_agent { $_[0]->{mobile_agent} ||= HTTP::MobileAgent->new($_[0]->headers) }
-    1;
-
-として、カスタムリクエストクラスを作成します。こうすることにより、
-HTTP::MobileAgent を気軽につかえるようになります。
-
-次に、これを利用するために、以下のように記述します。
+L<Amon::Plugin::MobileAgent> を利用してください。利用方法は以下のとおり。
 
     package MyApp::Web;
-    use Amon::Web (
-        request_class => 'MyApp::Request',
+    use Amon::Web -base => (
+        default_view_class => 'MT',
+    );
+    __PACKAGE__->load_plugins(
+        qw/ MobileAgent /
     );
     1;
 
