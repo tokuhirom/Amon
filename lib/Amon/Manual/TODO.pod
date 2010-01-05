@@ -1,0 +1,23 @@
+=head1 NAME
+
+Amon::Manual::TODO - What is next step?
+
+=head1 TODO LIST
+
+=over 4
+
+=item Amon::Plugin::CSSInliner
+
+like HTML::DoCoMoCSS
+
+=item Amon::Plugin::Download
+
+  render()->download($filename)
+
+=item Plack::Middleware::PageCache
+
+
+=back
+
+=cut
+

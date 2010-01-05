@@ -43,6 +43,19 @@ Amon において、Factory は他のクラスのインスタンスを構築す�
 標準では L<Amon::Factory::DBI> と L<Amon::Factory::DataModel> が提供さ
 れています。
 
+=item Plugin
+
+Plugin は、フックポイントにフックして処理する、Request, Response,
+Context といった各クラスにメソッドをはやす、といったことをするクラスで
+す。
+
+
+   __PACKAGE__->load_plugins(qw/PluginName/);
+
+といった形式で使います。Amon::Plugin::PluginName->init($c) が起動時によ
+ばれるので、init メソッドの中に処理を記述してください。
+
+
 =back
 
 =head2 Web 関連のコンポーネント
