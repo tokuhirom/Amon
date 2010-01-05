@@ -5,9 +5,11 @@ use base 'Exporter';
 use Amon::Declare;
 use Encode ();
 
-our @EXPORT = (qw/req param param_decoded render render_partial redirect res_404 uri_for/, @Amon::Declare::EXPORT);
+our @EXPORT = (qw/res req param param_decoded render render_partial redirect res_404 uri_for/, @Amon::Declare::EXPORT);
 
-sub req() { Amon->context->request }
+sub response { Amon->context->response_class->new(@_) }
+sub res      { Amon->context->response_class->new(@_) }
+sub req()    { Amon->context->request }
 
 sub param { req->param(@_) }
 sub param_decoded { req->param_decoded(@_) }
@@ -41,20 +43,20 @@ sub redirect($) {
     $url =~ s!/+$!!;
     $location =~ s!^/+([^/])!/$1!;
     $url .= $location;
-    [
+    response(
         302,
         ['Location' => $url],
         []
-    ];
+    );
 }
 
 sub res_404 {
     my $text = shift || "404 Not Found";
-    [
+    response(
         404,
         ['Content-Length' => length($text)],
         [$text],
-    ];
+    );
 }
 
 1;

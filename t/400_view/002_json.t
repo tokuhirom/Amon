@@ -13,7 +13,7 @@ my $c = Extended::Web->bootstrap(
 );
 is $c->view('JSON')->render({a => 'b'}), '{"a":"b"}';
 is_deeply(
-    $c->view('JSON')->make_response({a => 'b'}),
+    $c->view('JSON')->make_response({a => 'b'})->finalize(),
     [
         200,
         [

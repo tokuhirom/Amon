@@ -45,12 +45,14 @@ sub new {
     my $include_path = $conf->{include_path} || [File::Spec->catfile($c->base_dir, 'tmpl')];
        $include_path = [$include_path] if not ref $include_path;
 
-    bless {
+    my $self = bless {
         context      => $c,
         include_path => $include_path,
         cache_dir    => $conf->{cache_dir} || $class->default_cache_dir(),
         cache_mode   => exists($conf->{cache_mode}) ? $conf->{cache_mode} : 0,
     }, $class;
+    Scalar::Util::weaken($self->{context});
+    return $self;
 }
 
 sub include_path { $_[0]->{include_path} }

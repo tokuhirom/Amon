@@ -4,6 +4,7 @@ use warnings;
 use base qw/Amon::V::TemplateBase/;
 use File::Spec;
 use Template;
+use Scalar::Util ();
 
 sub import {
     my $class = shift;
@@ -16,7 +17,9 @@ sub import {
 
 sub new {
     my ($class, $c, $conf) = @_;
-    bless {context => $c}, $class;
+    my $self = bless {context => $c}, $class;
+    Scalar::Util::weaken($self->{context});
+    return $self;
 }
 
 # entry point

@@ -2,14 +2,17 @@ package Amon::V::JSON;
 use strict;
 use warnings;
 use JSON ();
+use Scalar::Util ();
 
 sub new {
     my ($class, $c, $conf) = @_;
-    bless {
+    my $self = bless {
         callback_param => 'callback',
         context => $c,
         %$conf,
     }, $class;
+    Scalar::Util::weaken($self->{context});
+    return $self;
 }
 
 sub render {
@@ -43,14 +46,14 @@ sub make_response {
     $output .= $json;
     $output .= ");"   if $cb;
 
-    return [
+    return $self->{context}->response_class->new(
         200,
         [
             'Content-Length' => length($json),
             'Content-Type'   => $content_type,
         ],
         [$json]
-    ];
+    );
 }
 
 sub _validate_callback_param {

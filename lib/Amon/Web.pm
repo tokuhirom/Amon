@@ -37,6 +37,10 @@ sub import {
         load_class($request_class);
         add_method($caller, 'request_class', sub { $request_class });
 
+        my $response_class = $args{response_class} || 'Amon::Web::Response';
+        load_class($response_class);
+        add_method($caller, 'response_class', sub { $response_class });
+
         my $default_view_class = $args{default_view_class} or die "missing configuration: default_view_class";
         load_class($default_view_class, "${base_class}::V");
         add_method($caller, 'default_view_class', sub { $default_view_class });
@@ -79,7 +83,7 @@ sub run {
             or die "response is not generated";
     }
     $self->call_trigger('AFTER_DISPATCH' => $response);
-    return $response;
+    return $response->finalize;
 }
 
 1;
