@@ -5,6 +5,7 @@ use Amon::Util;
 
 sub create {
     my ($class, $c, $klass, $conf) = @_;
+    Amon::Util::load_class($klass);
     my $obj = $klass->new();
     if (my $module = $conf->{module}) {
         $module = Amon::Util::load_class($module, 'Data::Model::Driver');

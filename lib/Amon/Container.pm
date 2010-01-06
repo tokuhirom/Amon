@@ -23,11 +23,11 @@ sub get {
     my ($self, $name) = @_;
     my $klass = "@{[ $self->base_class ]}::$name";
     $self->{components}->{$klass} ||= do {
-        Amon::Util::load_class($klass);
         my $config = $self->config()->{$name} || +{};
         if (my $factory = $self->get_factory($name)) {
             $factory->($self, $klass, $config);
         } else {
+            Amon::Util::load_class($klass);
             $klass->new($config);
         }
     };
