@@ -2,10 +2,15 @@ use strict;
 use warnings;
 use Test::Requires 'DBI', 'DBD::SQLite', 'Data::Model';
 use Test::More;
+use Amon::Factory::DataModel;
+
+BEGIN {
+    $INC{'Neko/DB.pm'} = __FILE__;
+}
 
 {
-    package Neko::M::DB;
-    use base qw/Amon::M::DataModel/;
+    package Neko::DB;
+    use base qw/Data::Model/;
     use Data::Model::Schema;
 
     install_model user => schema {
@@ -25,12 +30,18 @@ use Test::More;
     };
 }
 
-my $db = Neko::M::DB->new({
-    module => 'DBI',
-    config => {
-        dsn => 'dbi:SQLite:',
-    }
-});
+{
+    package Neko;
+    use Amon -base;
+}
+
+my $c = Neko->new;
+my $db = Amon::Factory::DataModel->create(
+    $c, 'Neko::DB', {
+        module => 'DBI',
+        config => { dsn => 'dbi:SQLite:', }
+    },
+);
 for my $target ($db->schema_names) {
     my $dbh = $db->get_driver($target)->rw_handle;
     for my $sql ($db->as_sqls($target)) {
