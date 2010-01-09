@@ -25,7 +25,7 @@ BEGIN {
 {
     package MyApp::Web;
     use Amon::Web -base => (
-        base_class => 'MyApp',
+        base_name => 'MyApp',
         dispatcher_class => 'Amon::Web::Dispatcher',
         default_view_class => 'MT',
     );

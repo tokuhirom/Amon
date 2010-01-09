@@ -26,7 +26,7 @@ sub import {
         my $base_dir = Amon::Util::base_dir($caller);
         *{"${caller}::base_dir"} = sub { $base_dir };
 
-        *{"${caller}::base_class"} = sub { $caller };
+        *{"${caller}::base_name"} = sub { $caller };
 
         my $factory_map = {};
         *{"${caller}::_factory_map"} = sub { $factory_map };

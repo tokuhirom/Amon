@@ -24,13 +24,13 @@ sub import {
         load_class($dispatcher_class);
         add_method($caller, 'dispatcher_class', sub { $dispatcher_class });
 
-        my $base_class = $args{base_class} || do {
+        my $base_name = $args{base_name} || do {
             local $_ = $caller;
             s/::Web(?:::.+)?$//;
             $_;
         };
-        load_class($base_class);
-        add_method($caller, 'base_class', sub { $base_class });
+        load_class($base_name);
+        add_method($caller, 'base_name', sub { $base_name });
 
         my $request_class = $args{request_class} || 'Amon::Web::Request';
         load_class($request_class);
@@ -41,11 +41,11 @@ sub import {
         add_method($caller, 'response_class', sub { $response_class });
 
         my $default_view_class = $args{default_view_class} or die "missing configuration: default_view_class";
-        load_class($default_view_class, "${base_class}::V");
+        load_class($default_view_class, "${base_name}::V");
         add_method($caller, 'default_view_class', sub { $default_view_class });
 
         no strict 'refs';
-        unshift @{"${caller}::ISA"}, $base_class;
+        unshift @{"${caller}::ISA"}, $base_name;
         unshift @{"${caller}::ISA"}, $class;
     }
 }

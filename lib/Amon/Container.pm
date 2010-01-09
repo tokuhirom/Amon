@@ -21,7 +21,7 @@ sub config { $_[0]->{config} || +{} }
 
 sub get {
     my ($self, $name) = @_;
-    my $klass = "@{[ $self->base_class ]}::$name";
+    my $klass = "@{[ $self->base_name ]}::$name";
     $self->{components}->{$klass} ||= do {
         my $config = $self->config()->{$name} || +{};
         if (my $factory = $self->get_factory($name)) {
@@ -47,7 +47,7 @@ sub view {
     my $self = shift;
     my $name = @_ == 1 ? $_[0] : $self->default_view_class;
        $name = "V::$name";
-    my $klass = "@{[ $self->base_class ]}::$name";
+    my $klass = "@{[ $self->base_name ]}::$name";
     $self->{components}->{$klass} ||= do {
         Amon::Util::load_class($klass);
         my $config = $self->config()->{$name} || +{};
