@@ -26,6 +26,14 @@ use Amon::Web -base => (
     base_class         => '[%= $module %]',
 );
 1;
+-- lib/$path/DB.pm
+package [%= $module %]::DB;
+use DBIx::Skinny;
+1;
+-- lib/$path/DB/Schema.pm
+package [%= $module %]::DB::Schema;
+use DBIx::Skinny::Schema;
+1;
 -- lib/$path/V/MT.pm
 package [%= $module %]::V::MT;
 use Amon::V::MT -base;
@@ -37,25 +45,9 @@ use Amon::V::MT::Context;
 -- lib/$path/Web/Dispatcher.pm
 % my $perlver = shift;
 package [%= $module %]::Web::Dispatcher;
-% if ($perlver eq '5.10') {
-use Amon::Web::Dispatcher;
-use feature 'switch';
-
-sub dispatch {
-    my ($class, $c) = @_;
-    given ($c->request->path_info) {
-        when ('/') {
-            return call("Root", 'index');
-        }
-        default {
-            return res_404();
-        }
-    }
-}
-% } else {
 use Amon::Web::Dispatcher::HTTPxDispatcher;
+
 connect '' => {controller => 'Root', action => 'index'};
-% }
 
 1;
 -- lib/$path/Web/C/Root.pm
@@ -319,6 +311,7 @@ sub main {
     _mkpath "lib/$path/V/MT";
     _mkpath "lib/$path/Web/C";
     _mkpath "lib/$path/M";
+    _mkpath "lib/$path/DB";
     _mkpath "tmpl";
     _mkpath "t";
     _mkpath "xt";
