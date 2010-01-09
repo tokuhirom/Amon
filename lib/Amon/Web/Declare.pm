@@ -39,10 +39,16 @@ sub uri_for {
 sub redirect($) {
     my $c = Amon->context;
     my $location = shift;
-    my $url = $c->request->base;
-    $url =~ s!/+$!!;
-    $location =~ s!^/+([^/])!/$1!;
-    $url .= $location;
+    my $url = do {
+        if ($location =~ m{^https?://}) {
+            $location;
+        } else {
+            my $url = $c->request->base;
+            $url =~ s!/+$!!;
+            $location =~ s!^/+([^/])!/$1!;
+            $url .= $location;
+        }
+    };
     response(
         302,
         ['Location' => $url],
