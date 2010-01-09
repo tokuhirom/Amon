@@ -26,14 +26,6 @@ use Amon::Web -base => (
     base_class         => '[%= $module %]',
 );
 1;
--- lib/$path/DB.pm
-package [%= $module %]::DB;
-use DBIx::Skinny;
-1;
--- lib/$path/DB/Schema.pm
-package [%= $module %]::DB::Schema;
-use DBIx::Skinny::Schema;
-1;
 -- lib/$path/V/MT.pm
 package [%= $module %]::V::MT;
 use Amon::V::MT -base;
@@ -311,7 +303,6 @@ sub main {
     _mkpath "lib/$path/V/MT";
     _mkpath "lib/$path/Web/C";
     _mkpath "lib/$path/M";
-    _mkpath "lib/$path/DB";
     _mkpath "tmpl";
     _mkpath "t";
     _mkpath "xt";
