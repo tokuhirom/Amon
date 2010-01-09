@@ -20,13 +20,13 @@ sub bootstrap {
 sub config { $_[0]->{config} || +{} }
 
 sub get {
-    my ($self, $name) = @_;
-    my $klass = "@{[ $self->base_name ]}::$name";
-    $self->{components}->{$klass} ||= do {
+    my ($self, $name, @args) = @_;
+    $self->{components}->{$name} ||= do {
         my $config = $self->config()->{$name} || +{};
         if (my $factory = $self->get_factory($name)) {
-            $factory->($self, $klass, $config);
+            $factory->($self, $name, $config, @args);
         } else {
+            my $klass = "@{[ $self->base_name ]}::$name";
             Amon::Util::load_class($klass);
             $klass->new($config);
         }
