@@ -45,3 +45,38 @@ sub _load {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Amon::Plugin::HTTPSession - Plugin system for Amon
+
+=head1 SYNOPSIS
+
+    package MyApp::Web;
+    use Amon::Web -base;
+    __PACKAGE__->load_plugins(qw/HTTPSession/);
+
+    package MyApp::C::Root;
+    use Amon::Web::C;
+    sub index {
+        my $foo = c->session->get('foo');
+        if ($foo) {
+              c->session->set('foo' => $foo+1);
+        } else {
+              c->session->set('foo' => 1);
+        }
+    }
+
+=head1 DESCRIPTION
+
+HTTP::Session integrate to Amon.
+
+After load this plugin, you can get instance of HTTP::Session from C<c->session> method.
+
+=head1 SEE ALSO
+
+L<HTTP::Session>
+
+=cut
+
