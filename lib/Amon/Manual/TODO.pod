@@ -10,10 +10,6 @@ Amon::Manual::TODO - What is next step?
 
 like HTML::DoCoMoCSS
 
-=item Amon::Plugin::Download
-
-  render()->download($filename)
-
 =item Plack::Middleware::PageCache
 
 =item Amon::Plugin::ConfigLoader
