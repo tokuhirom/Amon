@@ -49,6 +49,20 @@ Amon - lightweight web application framework
     Fast
     Easy to use
 
+=head1 CLASS METHODS
+
+=over 4
+
+=item my $c = Amon->context();
+
+Get the context object.
+
+=item Amon->set_context($c)
+
+Set your context object(INTERNAL USE ONLY).
+
+=back
+
 =head1 AUTHOR
 
 Tokuhiro Matsuno

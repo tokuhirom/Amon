@@ -44,3 +44,5 @@ TBD
 HTML
 JSON
 init
+MyApp
+plugins
