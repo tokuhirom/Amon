@@ -23,7 +23,7 @@ BEGIN {
             c->session->set(foo => 'bar');
             return redirect('/step2');
         } elsif ($c->request->path_info eq '/step2') {
-            my $res = "RES: @{[  c->session->get('foo') ]}";
+            my $res = "<html><body>@{[  c->session->get('foo') ]}</body></html>";
             return res(
                 200,
                 [
@@ -65,7 +65,7 @@ $mech->get('/');
 is $mech->status(), 302;
 like $mech->res->header('Location'), qr[^http://localhost/step2\?amon_sid=.{32}$];
 $mech->get_ok($mech->res->header('Location'));
-$mech->content_contains('RES: bar');
+$mech->content_is('<html><body>bar</body></html>');
 
 done_testing;
 
