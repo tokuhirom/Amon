@@ -39,8 +39,13 @@ sub _load {
         }
     } else {
         my $store_class = Amon::Util::load_class($stuff, $namespace);
-        my $store_obj = $store_class->new();
-        return sub { $store_obj };
+        my $store_obj;
+        return sub {
+            $store_obj ||= do {
+                my $config ||= Amon->context->config->{$store_class} || {};
+                $store_class->new($config);
+            };
+        };
     }
 }
 
