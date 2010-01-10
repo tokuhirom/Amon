@@ -7,8 +7,10 @@ use Amon::Util;
 sub init {
     my ($class, $c, $conf) = @_;
 
-    my $state_code = $class->_load($conf->{state}, 'HTTP::Session::State');
-    my $store_code = $class->_load($conf->{store}, 'HTTP::Session::Store');
+    my $state_conf = $conf->{state} or die "missing configuration : state";
+    my $store_conf = $conf->{store} or die "missing configuration : store";
+    my $state_code = $class->_load($state_conf, 'HTTP::Session::State');
+    my $store_code = $class->_load($store_conf, 'HTTP::Session::Store');
 
     $c->add_method(session => sub {
         my $self = shift;
