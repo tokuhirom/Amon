@@ -7,6 +7,7 @@ use FindBin;
 use lib File::Spec->catfile($FindBin::Bin, '..', 'lib');
 use Test::More;
 use App::Prove;
+use File::Basename;
 
 our @EXPORT = qw/run_app_test/;
 
@@ -15,7 +16,7 @@ sub run_app_test {
     chdir "t/apps/$name/" or die $!;
 
     my $app = App::Prove->new();
-    $app->process_args('-Ilib', '-I'.File::Spec->catfile($FindBin::Bin, '..', 'lib'), <t/*.t>);
+    $app->process_args('-Ilib', '-I'.File::Spec->catfile(dirname(__FILE__), '..', 'lib'), <t/*.t>);
     ok($app->run);
     done_testing;
 }
