@@ -27,24 +27,9 @@ L<Amon::Plugin::MobileAgent> を利用してください。利用方法は以下
 ングと Content-Type を以下のように設定しましょう。
 
     package MyApp::Web;
-    use Amon::Web (
-        request_class => 'MyApp::Request',
-    );
+    use Amon::Web -base;
 
-    use HTTP::MobileAgent::Plugin::Charset;
-    use Encode::JP::Mobile;
-    # override method.
-    sub html_content_type {
-        my $ma = Amon->context->request->mobile_agent;
-        my $ct  = $ma->is_docomo ? 'application/xhtml+xml;charset=' : 'text/html;charset=';
-           $ct .= $ma->can_display_utf8 ? 'utf-8' : 'Shift_JIS';
-           $ct;
-    }
-    # override method.
-    sub encoding {
-        Amon->context->request->mobile_agent->encoding;
-    }
-    1;
+    __PACKAGE__->load_plugins('MobileCharset' => {});
 
 =head2 CSS のインライン化
 
