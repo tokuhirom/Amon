@@ -11,11 +11,17 @@ __PACKAGE__->load_plugins(
     'MobileCharset' => {},
 );
 
+use HTML::Shakan::Model::DBIxSkinny;
 sub form {
     my ( $c, $form_name ) = @_;
-    my $form = Hello::Form->get( $form_name => ( request => $c->request, ) );
-       $form->load_function_message('en');
-       $form;
+    my $form = Hello::Form->get(
+        $form_name => (
+            request => $c->request,
+            model   => HTML::Shakan::Model::DBIxSkinny->new()
+        )
+    );
+    $form->load_function_message('en');
+    $form;
 }
 
 sub login_user {

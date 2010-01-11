@@ -186,9 +186,14 @@ sql/sqlite.sql には、とりあえず以下のような内容のスキーマ�
     package Hello::Web;
     sub form {
         my ( $c, $form_name ) = @_;
-        my $form = Hello::Form->get( $form_name => ( request => $c->request, ) );
-           $form->load_function_message('en');
-           $form;
+        my $form = Hello::Form->get(
+            $form_name => (
+                request => $c->request,
+                model   => HTML::Shakan::Model::DBIxSkinny->new()
+            )
+        );
+        $form->load_function_message('en');
+        return $form;
     }
 
 したらば、これをつかって、コントローラを定義しましょう。サインアップ画面をまずはつっくりましょう。
@@ -198,14 +203,7 @@ sql/sqlite.sql には、とりあえず以下のような内容のスキーマ�
     sub signup {
         my $form = c->form('user_add');
         if ($form->submitted_and_valid) {
-            my $table = 'user';
-            my %has_column = map { $_ => 1 } @{db->schema->schema_info->{$table}->{columns}};
-            my %row =
-                  map  { $_ => $form->param( $_ ) || undef }
-                  grep { $has_column{$_} }
-                  map  { $_->name() }
-                       $form->fields;
-            my $row = db->insert($table => \%row);
+            $form->model->create(db() => 'user');
             return redirect('/signup_thanks');
         }
         return render("signup.mt", $form);
@@ -285,5 +283,11 @@ tmpl/signup_thanks.mt は以下のように、感謝の意を表しておきま�
         redirect('/?login_failed');
     }
 
+ログアウトもできないといけませんね。こんなかんじで。
+
+    sub logout {
+        c->session->expire();
+        redirect('/');
+    }
 
 =cut

@@ -84,3 +84,6 @@ form .inputbox {
     display: block;
 }
 
+.error {
+    color: red;
+}

@@ -4,13 +4,20 @@
 ? block content => sub {
 
 ? if (defined param('login_failed')) {
-Invalid password or e-mail.
+<div class="error">Invalid password or e-mail.</div>
 ? }
 
+? if (login_user) {
+<form method="post" action="/logout" name="logout">
+<input type="submit" value="logout" />
+</form>
+? } else {
 <form method="post" action="/login" name="login">
-<?= $form->render() ?>
+<?= encoded_string $form->render() ?>
 <input type="submit" value="login" />
 </form>
+<a href="/signup">signup</a>
+? }
 
 <form method="post" action="/post" name="post">
 <textarea name="body"></textarea>

@@ -16,14 +16,7 @@ sub index {
 sub signup {
     my $form = c->form('user_add');
     if ($form->submitted_and_valid) {
-        my $table = 'user';
-        my %has_column = map { $_ => 1 } @{db->schema->schema_info->{$table}->{columns}};
-        my %row =
-          map { $_ => $form->param( $_ ) || undef }
-          grep { $has_column{$_} }
-          map { $_->name() }
-          $form->fields;
-        my $row = db->insert($table => \%row);
+        $form->model->create(db() => 'user');
         return redirect('/signup_thanks');
     }
     return render("signup.mt", $form);
@@ -45,7 +38,12 @@ sub login {
             return redirect('/');
         }
     }
-    redirect('/?login_failed');
+    redirect('/?login_failed=1');
+}
+
+sub logout {
+    c->session->expire();
+    redirect('/');
 }
 
 sub post {
