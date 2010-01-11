@@ -1,12 +1,32 @@
 use strict;
 use warnings;
-use lib 't/apps/Extended/lib/';
 use Test::Requires 'JSON';
 use Test::More;
-use Extended::Web;
 use Amon::Web::Request;
 
-my $c = Extended::Web->bootstrap(
+BEGIN {
+    $INC{'MyApp/Web/Dispatcher.pm'} = __FILE__;
+    $INC{'MyApp/V/JSON.pm'}         = __FILE__;
+    $INC{'MyApp.pm'}                = __FILE__;
+};
+
+{
+    package MyApp;
+    use Amon -base;
+
+    package MyApp::Web;
+    use Amon::Web -base => (
+        default_view_class => 'JSON',
+    );
+
+    package MyApp::Web::Dispatcher;
+    use Amon::Web::Dispatcher;
+
+    package MyApp::V::JSON;
+    use base qw/Amon::V::JSON/;
+}
+
+my $c = MyApp::Web->bootstrap(
     request => Amon::Web::Request->new(+{
         REQUEST_METHOD => 'GET',
     })
