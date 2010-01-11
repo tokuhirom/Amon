@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 use Test::More;
+use Test::Requires 'HTTP::MobileAgent';
 
 BEGIN {
     $INC{'MyApp/Web/Dispatcher.pm'} = __FILE__;
