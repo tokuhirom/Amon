@@ -46,3 +46,8 @@ JSON
 init
 MyApp
 plugins
+CPAN
+ORM
+RDBMS
+SQL
+SQLite
