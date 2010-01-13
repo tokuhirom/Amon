@@ -2,6 +2,8 @@ use strict;
 use warnings;
 use Test::More;
 use Test::Requires 'HTML::FillInForm';
+use File::Spec;
+use File::Temp qw/tempdir/;
 
 BEGIN {
     $INC{'MyApp/Web/Dispatcher.pm'} = __FILE__;
@@ -13,9 +15,10 @@ BEGIN {
 {
     package MyApp;
     use Amon -base;
-}
 
-{
+    package MyApp::V::MT;
+    use Amon::V::MT -base;
+
     package MyApp::Web;
     use Amon::Web -base => (
         default_view_class => 'MT',
@@ -25,8 +28,17 @@ BEGIN {
     );
 }
 
-my $c = MyApp::Web->new();
-my $res = $c->response_class->new(200, ['Content-Type' => 'text/html'], <<'...');
+use Amon::Web::Declare;
+my $tmp = tempdir(CLEANUP => 1);
+my $c = MyApp::Web->bootstrap(config => {
+    'V::MT' => {
+        include_path => [$tmp],
+    },
+});
+
+{
+    open my $fh, '>', File::Spec->catfile($tmp, 'hoge.mt') or die $!;
+    print $fh <<'...';
 <html>
 <head>
 </head>
@@ -38,6 +50,9 @@ my $res = $c->response_class->new(200, ['Content-Type' => 'text/html'], <<'...')
 </body>
 </html>
 ...
-$res = $res->fillin_form({body => "hello"});
+    close $fh;
+}
+
+my $res = render('hoge.mt')->fillin_form({body => "hello"});
 like $res->body(), qr{<input value="hello" name="body" type="text" />};
 done_testing;

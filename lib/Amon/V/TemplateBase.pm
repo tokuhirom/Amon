@@ -14,7 +14,7 @@ sub make_response {
             'Content-Type'   => $content_type,
             'Content-Length' => length($html)
         ],
-        [$html]
+        $html
     );
 }
 
