@@ -1,7 +1,6 @@
 package Amon::Web::Response;
 use strict;
 use warnings;
-use Plack::Util::Accessor qw/status body/;
 use HTTP::Headers;
 
 # alias
@@ -80,6 +79,26 @@ sub content_type {
         return $self;
     } else {
         return $self->headers->content_type();
+    }
+}
+
+sub status {
+    my $self = shift;
+    if (@_ == 1) {
+        $self->{status} = $_[0];
+        return $self;
+    } else {
+        return $self->{status};
+    }
+}
+
+sub body {
+    my $self = shift;
+    if (@_ == 1) {
+        $self->{body} = $_[0];
+        return $self;
+    } else {
+        return $self->{body};
     }
 }
 
