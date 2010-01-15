@@ -308,6 +308,7 @@ sub main {
     _mkpath "xt";
     _mkpath "htdocs/static/css/";
     _mkpath "htdocs/static/img/";
+    _mkpath "htdocs/static/js/";
 
     my $conf = _parse_conf($confsrc);
     while (my ($file, $tmpl) = each %$conf) {
