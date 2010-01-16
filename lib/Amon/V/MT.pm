@@ -218,6 +218,58 @@ Amon::V::MT - Amon Text::MicroTemplate View Class
 
 =head1 DESCRIPTION
 
+This is Text::MicroTemplate wrapper for Amon.
+
+THis module contains memory cache/file cache feature.
+
+=head1 CONFIGURATION
+
+=over 4
+
+=item include_path
+
+Set the include path by arrayref.
+
+=item cache_mode
+
+This module supports multiple cache strategy.You can set the option in configuration.
+
+    use Amon::V::MT;
+    MyApp->bootstrap(
+        {
+            config => {
+                'V::MT' => {
+                    cache_mode => Amon::V::MT::CACHE_FILE(),
+                }
+            }
+        }
+    );
+
+You can use following bitmask.
+
+=over 4
+
+=item CACHE_FILE
+
+cache the compiled template in file.
+
+=item CACHE_MEMORY
+
+cache the compiled template on memory.
+
+=item CACHE_NO_CHECK
+
+Do not check the file modification time for each request.
+If you want to use this bit, you should clear cache manually.
+
+=back
+
+=item cache_dir
+
+Specify the cache directory for CACHE_FILE option.
+
+=back
+
 =head1 SEE ALSO
 
 L<Text::MicroTemplate>, L<Amon>
