@@ -220,7 +220,7 @@ Amon::V::MT - Amon Text::MicroTemplate View Class
 
 This is Text::MicroTemplate wrapper for Amon.
 
-THis module contains memory cache/file cache feature.
+This module contains memory cache/file cache feature.
 
 =head1 CONFIGURATION
 

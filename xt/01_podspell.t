@@ -51,3 +51,4 @@ ORM
 RDBMS
 SQL
 SQLite
+bitmask
