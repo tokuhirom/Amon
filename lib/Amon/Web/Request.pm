@@ -8,15 +8,10 @@ sub param_decoded {
     my ($self, $param) = @_;
     return wantarray ? () : undef unless exists $self->parameters->{$param};
     my $encoding = Amon->context->encoding;
-    if ( ref $self->parameters->{$param} eq 'ARRAY' ) {
-        return wantarray()
-            ? (map { Encode::decode($encoding, $_) } @{ $self->parameters->{$param} })
-                : Encode::decode($encoding, $self->parameters->{$param}->[0]);
-    } else {
-        return wantarray()
-            ? ( Encode::decode($encoding, $self->parameters->{$param}) )
-                : Encode::decode($encoding, $self->parameters->{$param});
-    }
+    my @values = $self->parameters->get_all($param);
+    return wantarray()
+        ? (map { Encode::decode($encoding, $_) } @values)
+        : Encode::decode($encoding, $values[0]);
 }
 
 1;
