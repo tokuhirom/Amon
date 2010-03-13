@@ -2,7 +2,7 @@ package Amon::Declare;
 use strict;
 use warnings;
 use base 'Exporter';
-our @EXPORT = qw/config model db view c/;
+our @EXPORT = qw/config model db view c logger/;
 use Amon::Util;
 
 sub c      ()  { Amon->context            }
@@ -10,6 +10,7 @@ sub config ()  { Amon->context->config    }
 sub db (;$)    { Amon->context->db(@_)    }
 sub model ($)  { Amon->context->model(@_) }
 sub view ($)   { Amon->context->view(@_)  }
+sub logger ()  { Amon->context->logger()  }
 
 1;
 __END__

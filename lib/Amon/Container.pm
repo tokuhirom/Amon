@@ -38,6 +38,11 @@ sub model {
     $self->get("M::$name");
 }
 
+sub logger {
+    my ($self) = @_;
+    $self->get("Logger");
+}
+
 sub db {
     my $self = shift;
     $self->get(join('::', "DB", @_));

@@ -12,6 +12,7 @@ requires 'Test::More'                => 0.88; # 0.88 or later is required for do
 requires 'HTTPx::Dispatcher'         => 0.07;
 requires 'Exporter';
 requires 'Class::Accessor::Fast';
+requires 'parent';
 
 test_requires 'Test::Requires';
 
