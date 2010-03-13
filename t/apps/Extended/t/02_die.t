@@ -14,7 +14,7 @@ test_psgi
         my $res = $cb->($req);
         is $res->code, 500;
         like $res->content, qr/OKAY/;
-        like $res->content, qr{die &quot;OKAY&quot;;};
+        like $res->content, qr{Trace begun};
     };
 
 done_testing;
