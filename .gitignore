@@ -1,2 +1,12 @@
 Makefile
 inc/
+META.yml
+Makefile
+blib/
+inc/
+pm_to_blib
+*.sw[po]
+^\.git/
+MANIFEST.bak
+*.old
+MANIFEST
