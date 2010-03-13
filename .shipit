@@ -1,0 +1,2 @@
+steps = FindVersion, ChangeVersion, CheckChangeLog, DistTest, Commit, Tag
+git.push_to=origin
