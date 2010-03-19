@@ -30,7 +30,7 @@ sub slurp {
         open(my $fh, '<', $_[0]) or return;
         return do { local $/; <$fh> };
     } else {
-        open(my $fh, @_) or return;
+        open(my $fh, @_) or return; # no critic.
         return do { local $/; <$fh> };
     }
 }
