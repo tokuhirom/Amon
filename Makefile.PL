@@ -4,8 +4,7 @@ all_from 'lib/Amon.pm';
 license 'perl';
 
 requires 'Module::Pluggable::Object' => 3.9;
-requires 'Plack::Request'            => 0.09;
-requires 'Plack'                     => 0.9027;
+requires 'Plack'                     => 0.992;
 requires 'Text::MicroTemplate'       => 0.11;
 requires 'Try::Tiny'                 => 0.04;
 requires 'Test::More'                => 0.88; # 0.88 or later is required for done_testing!
