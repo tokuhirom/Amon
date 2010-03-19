@@ -51,6 +51,20 @@ sub index {
 }
 
 1;
+-- lib/$path/DB.pm
+package [%= $module %]::DB;
+use DBIx::Skinny;
+1;
+-- lib/$path/DB/Schema.pm
+package [%= $module %]::DB::Schema;
+use DBIx::Skinny::Schema;
+
+# install_table 'table' => schema {
+#     pk '...';
+#     columns qw/.../;
+# };
+
+1;
 -- tmpl/index.mt
 ? extends 'base.mt';
 ? block title => '[%= $dist %] page';
@@ -271,10 +285,14 @@ all_pod_files_ok();
 allow=refs
 [-Subroutines::ProhibitSubroutinePrototypes]
 [TestingAndDebugging::RequireUseStrict]
-equivalent_modules = Mouse Mouse::Role Moose Amon Amon::Web Amon::Web::C Amon::V::MT::Context Amon::Web::Dispatcher Amon::V::MT Amon::Config DBIx::Skinny DBIx::Skinny::Schema Amon::Web::Dispatcher::HTTPxDispatcher Any::Moose Amon::Web::Dispatcher::RouterSimple
+equivalent_modules = Mouse Mouse::Role Moose Amon Amon::Web Amon::Web::C Amon::V::MT::Context Amon::Web::Dispatcher Amon::V::MT Amon::Config DBIx::Skinny DBIx::Skinny::Schema Amon::Web::Dispatcher::HTTPxDispatcher Any::Moose Amon::Web::Dispatcher::RouterSimple DBIx::Skinny DBIx::Skinny::Schema
 -- .gitignore
 Makefile
 inc/
+MANIFEST
+*.bak
+*.old
+nytprof.out
 ...
 
 &main;exit;
@@ -303,6 +321,7 @@ sub main {
     _mkpath "lib/$path/V/MT";
     _mkpath "lib/$path/Web/C";
     _mkpath "lib/$path/M";
+    _mkpath "lib/$path/DB/";
     _mkpath "tmpl";
     _mkpath "t";
     _mkpath "xt";

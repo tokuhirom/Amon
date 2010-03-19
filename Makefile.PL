@@ -13,6 +13,7 @@ requires 'String::CamelCase';
 requires 'Exporter';
 requires 'Class::Accessor::Fast';
 requires 'parent';
+requires 'DBIx::Skinny' => 0.0705; # DBIx::Skinny is default ORM
 
 test_requires 'Test::Requires';
 
