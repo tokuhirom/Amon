@@ -37,9 +37,9 @@ use Amon::V::MT::Context;
 -- lib/$path/Web/Dispatcher.pm
 % my $perlver = shift;
 package [%= $module %]::Web::Dispatcher;
-use Amon::Web::Dispatcher::HTTPxDispatcher;
+use Amon::Web::Dispatcher::RouterSimple -base;
 
-connect '' => {controller => 'Root', action => 'index'};
+connect '/' => {controller => 'Root', action => 'index'};
 
 1;
 -- lib/$path/Web/C/Root.pm
@@ -271,7 +271,7 @@ all_pod_files_ok();
 allow=refs
 [-Subroutines::ProhibitSubroutinePrototypes]
 [TestingAndDebugging::RequireUseStrict]
-equivalent_modules = Mouse Mouse::Role Moose Amon Amon::Web Amon::Web::C Amon::V::MT::Context Amon::Web::Dispatcher Amon::V::MT Amon::Config DBIx::Skinny DBIx::Skinny::Schema Amon::Web::Dispatcher::HTTPxDispatcher Any::Moose
+equivalent_modules = Mouse Mouse::Role Moose Amon Amon::Web Amon::Web::C Amon::V::MT::Context Amon::Web::Dispatcher Amon::V::MT Amon::Config DBIx::Skinny DBIx::Skinny::Schema Amon::Web::Dispatcher::HTTPxDispatcher Any::Moose Amon::Web::Dispatcher::RouterSimple
 -- .gitignore
 Makefile
 inc/
