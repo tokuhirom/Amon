@@ -1,4 +1,5 @@
 package Amon::Sense;
+## This is experimental!
 use strict;
 use warnings;
 use parent 'Exporter';
