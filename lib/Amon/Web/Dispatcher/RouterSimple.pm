@@ -37,6 +37,7 @@ sub dispatch {
     my $req = $c->request;
     if (my $p = $class->match($req->env)) {
         my $action = $req->method eq 'POST' ? "post_$p->{action}" : $p->{action};
+        $c->{args} = $p->{args};
         "@{[ ref Amon->context ]}::C::$p->{controller}"->$action($c, $p->{args});
     } else {
         res_404();

@@ -54,6 +54,7 @@ sub html_content_type { 'text/html; charset=UTF-8' }
 sub encoding          { 'utf-8' }
 sub request           { $_[0]->{request} }
 sub pnotes            { $_[0]->{pnotes}  }
+sub args              { $_[0]->{args}    }
 
 sub to_app {
     my ($class, %args) = @_;
