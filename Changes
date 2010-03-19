@@ -1,3 +1,9 @@
+0.19
+
+    - make DBIx::Skinny as default
+    - use Router::Simple.
+    - fixed dependencies
+
 0.18
 
     - added logger support
