@@ -5,15 +5,22 @@ license 'perl';
 
 requires 'Module::Pluggable::Object' => 3.9;
 requires 'Plack'                     => 0.992;
-requires 'Text::MicroTemplate'       => 0.11;
 requires 'Try::Tiny'                 => 0.04;
 requires 'Test::More'                => 0.88; # 0.88 or later is required for done_testing!
-requires 'Router::Simple'            => 0.02;
-requires 'String::CamelCase';
 requires 'Exporter';
 requires 'Class::Accessor::Fast';
 requires 'parent';
-requires 'DBIx::Skinny' => 0.0705; # DBIx::Skinny is default ORM
+
+# Not core, but default components.
+requires 'DBIx::Skinny'        => 0.0705;
+requires 'Text::MicroTemplate' => 0.11;
+requires 'Router::Simple'            => 0.02;
+
+# Amon::Sense deps
+requires 'String::CamelCase';
+requires 'URI';
+requires 'URI::Escape';
+requires 'Path::Class';
 
 test_requires 'Test::Requires';
 
