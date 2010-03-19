@@ -9,8 +9,9 @@ use Try::Tiny qw(try catch);
 use Encode qw/encode decode encode_utf8 decode_utf8/;
 use URI;
 use URI::Escape qw/uri_escape uri_unescape/;
+use String::CamelCase qw/camelize decamelize/;
 
-our @EXPORT = qw/slurp try catch catfile catdir encode decode encode_utf8 decode_utf8 file dir uri uri_escape uri_unescape escape_html/;
+our @EXPORT = qw/slurp try catch catfile catdir encode decode encode_utf8 decode_utf8 file dir uri uri_escape uri_unescape escape_html camelize decamelize/;
 
 sub import {
     my $class = shift;
