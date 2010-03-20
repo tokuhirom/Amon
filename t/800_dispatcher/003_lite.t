@@ -5,6 +5,7 @@ use Test::More tests => 2;
 BEGIN {
     $INC{'MyApp.pm'}++;
     $INC{'MyApp/V/MT.pm'}++;
+    $INC{'MyApp/Web/Dispatcher.pm'}++;
 }
 
 {
@@ -14,9 +15,12 @@ BEGIN {
     package MyApp::V::MT;
 
     package MyApp::Web;
-    use Amon::Web::Lite -base => (
+    use Amon::Web -base => (
         default_view_class => 'MT',
     );
+
+    package MyApp::Web::Dispatcher;
+    use Amon::Web::Dispatcher::Lite '-base';
 
     get '/' => sub {
         res(200, [], ['ok'])
