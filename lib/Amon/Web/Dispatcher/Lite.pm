@@ -34,7 +34,7 @@ sub import {
         add_method($caller, 'get', sub {
             $any->([qw/GET HEAD/], $_[0], $_[1]);
         });
-        add_method($caller, 'pos', sub {
+        add_method($caller, 'post', sub {
             $any->([qw/POST/], $_[0], $_[1]);
         });
         add_method($caller, 'dispatch', sub {

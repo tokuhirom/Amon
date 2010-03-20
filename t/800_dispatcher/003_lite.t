@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 2;
+use Test::More tests => 3;
 
 BEGIN {
     $INC{'MyApp.pm'}++;
@@ -29,6 +29,10 @@ BEGIN {
         my ($c, $args) = @_;
         res(200, [], ["hi, $args->{name}"])
     };
+    post '/new' => sub {
+        my ($c, $args) = @_;
+        res(200, [], ["post"])
+    };
 }
 
 my $app = MyApp::Web->to_app();
@@ -45,5 +49,12 @@ my $app = MyApp::Web->to_app();
         REQUEST_METHOD => 'GET',
     });
     is $ret->[2]->[0], 'hi, tokuhirom';
+}
+{
+    my $ret = $app->({
+        PATH_INFO      => '/new',
+        REQUEST_METHOD => 'POST',
+    });
+    is $ret->[2]->[0], 'post';
 }
 
