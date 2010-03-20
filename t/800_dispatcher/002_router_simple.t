@@ -41,7 +41,7 @@ BEGIN {
     use Amon::Web::Dispatcher::RouterSimple -base;
     connect '/', {controller => 'Root', action => 'index'};
     connect '/blog/{year}/{month}', {controller => 'Blog', action => 'monthly'};
-    submapper('/account/', controller => 'Account')
+    submapper('/account/', {controller => 'Account'})
         ->connect('login', {action => 'login'});
 }
 
