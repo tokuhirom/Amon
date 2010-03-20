@@ -6,6 +6,8 @@ use Router::Simple 0.03;
 
 sub import {
     my $class = shift;
+    strict->import;
+    warnings->import;
     if (@_ > 0 && shift eq '-base') {
         my %args = @_;
         my $caller = caller(0);

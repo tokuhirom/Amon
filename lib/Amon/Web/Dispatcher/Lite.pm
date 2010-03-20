@@ -8,6 +8,8 @@ use Amon::Util qw/add_method/;
 
 sub import {
     my $class = shift;
+    strict->import;
+    warnings->import;
     if (@_ > 0 && shift eq '-base') {
         my $caller = caller(0);
 

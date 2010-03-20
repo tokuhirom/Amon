@@ -285,7 +285,7 @@ all_pod_files_ok();
 allow=refs
 [-Subroutines::ProhibitSubroutinePrototypes]
 [TestingAndDebugging::RequireUseStrict]
-equivalent_modules = Mouse Mouse::Role Moose Amon Amon::Web Amon::Web::C Amon::V::MT::Context Amon::Web::Dispatcher Amon::V::MT Amon::Config DBIx::Skinny DBIx::Skinny::Schema Amon::Web::Dispatcher::HTTPxDispatcher Any::Moose Amon::Web::Dispatcher::RouterSimple DBIx::Skinny DBIx::Skinny::Schema
+equivalent_modules = Mouse Mouse::Role Moose Amon Amon::Web Amon::Web::C Amon::V::MT::Context Amon::Web::Dispatcher Amon::V::MT Amon::Config DBIx::Skinny DBIx::Skinny::Schema Amon::Web::Dispatcher::HTTPxDispatcher Any::Moose Amon::Web::Dispatcher::RouterSimple DBIx::Skinny DBIx::Skinny::Schema Amon::Web::Dispatcher::Lite
 -- .gitignore
 Makefile
 inc/
