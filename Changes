@@ -1,3 +1,9 @@
+0.20
+
+    - added Web::Dispatcher::Lite
+    - Web::Dispatcher::RouterSimple:
+        enable stricture automatically
+
 0.19
 
     - make DBIx::Skinny as default
