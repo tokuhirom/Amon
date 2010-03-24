@@ -6,12 +6,16 @@ use base qw/Exporter/;
 our @EXPORT = qw/add_trigger call_trigger get_trigger_code/;
 
 sub add_trigger {
-    my ($class, $hook, $code) = @_;
+    my ($class, %args) = @_;
     if (ref $class) {
-        push @{$class->{_trigger}->{$hook}}, $code;
+        while (my ($hook, $code) = each %args) {
+            push @{$class->{_trigger}->{$hook}}, $code;
+        }
     } else {
         no strict 'refs';
-        push @{${"${class}::_trigger"}->{$hook}}, $code;
+        while (my ($hook, $code) = each %args) {
+            push @{${"${class}::_trigger"}->{$hook}}, $code;
+        }
     }
 }
 
@@ -27,7 +31,7 @@ sub get_trigger_code {
     my ($class, $hook) = @_;
     my @code;
     if (ref $class) {
-        push @code, @{ $class->{_trigger} || [] };
+        push @code, @{ $class->{_trigger}->{$hook} || [] };
         $class = ref $class;
     }
     no strict 'refs';
