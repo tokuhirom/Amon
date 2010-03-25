@@ -147,6 +147,17 @@ Create instance of component named "V::$name".
 
 =item __PACKAGE__->add_factory($target, $factory)
 
+    __PACKAGE__->add_factory(
+        'DB' => 'DBI',
+    );
+    __PACKAGE__->add_factory(
+        'MyComponent' => sub {
+            my ($self, $name, $config, @args) = @_;
+            ...
+        },
+    );
+
+
 register factory class to container.
 
 After this, $c->get($target) return the return value of $factory->create($target, $c->config->{$name}).
