@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 use Plack::Request;
+use Test::Requires 'HTTPx::Dispatcher';
 use Test::More;
 
 BEGIN {
