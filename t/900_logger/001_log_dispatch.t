@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::Requires 'Log::Dispatch';
+use Test::Requires 'Log::Dispatch', 'Data::OptList';
 use Test::More;
 use_ok 'Amon::Logger::LogDispatch';
 
