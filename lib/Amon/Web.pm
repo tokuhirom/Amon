@@ -56,6 +56,25 @@ sub request           { $_[0]->{request} }
 sub pnotes            { $_[0]->{pnotes}  }
 sub args              { $_[0]->{args}    }
 
+sub redirect {
+    my ($self, $location) = @_;
+    my $url = do {
+        if ($location =~ m{^https?://}) {
+            $location;
+        } else {
+            my $url = $self->request->base;
+            $url =~ s!/+$!!;
+            $location =~ s!^/+([^/])!/$1!;
+            $url .= $location;
+        }
+    };
+    $self->response_class->new(
+        302,
+        ['Location' => $url],
+        []
+    );
+}
+
 sub to_app {
     my ($class, %args) = @_;
 

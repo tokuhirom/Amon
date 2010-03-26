@@ -9,6 +9,7 @@ our @EXPORT = (qw/res req param param_decoded render render_partial redirect res
 
 sub response { Amon->context->response_class->new(@_) }
 sub res      { Amon->context->response_class->new(@_) }
+sub redirect($) { Amon->context->redirect(@_) }
 sub req()    { Amon->context->request }
 sub args()   { Amon->context->args    }
 
@@ -35,26 +36,6 @@ sub uri_for {
         push @q, "${key}=${val}";
     }
     $root . $path . (scalar @q ? '?' . join('&', @q) : '');
-}
-
-sub redirect($) {
-    my $c = Amon->context;
-    my $location = shift;
-    my $url = do {
-        if ($location =~ m{^https?://}) {
-            $location;
-        } else {
-            my $url = $c->request->base;
-            $url =~ s!/+$!!;
-            $location =~ s!^/+([^/])!/$1!;
-            $url .= $location;
-        }
-    };
-    response(
-        302,
-        ['Location' => $url],
-        []
-    );
 }
 
 sub res_404 {
