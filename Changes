@@ -1,3 +1,10 @@
+0.22
+
+    - Factory class was deprecated.
+    - DBIx::Skinny is no longer default ORM.
+      (Amon should not select any ORM as default)
+    - move uri_for to Amon::Web
+
 0.21
 
     - fixed tests
