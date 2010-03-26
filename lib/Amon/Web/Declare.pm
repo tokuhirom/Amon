@@ -24,19 +24,7 @@ sub render_partial {
     return Amon->context->view()->render(@_);
 }
 
-sub uri_for {
-    my ($path, $query) = @_;
-    my $root = req->{env}->{SCRIPT_NAME} || '/';
-    $root =~ s{([^/])$}{$1/};
-    $path =~ s{^/}{};
-
-    my @q;
-    while (my ($key, $val) = each %$query) {
-        $val = join '', map { /^[a-zA-Z0-9_.!~*'()-]$/ ? $_ : '%' . uc(unpack('H2', $_)) } split //, $val;
-        push @q, "${key}=${val}";
-    }
-    $root . $path . (scalar @q ? '?' . join('&', @q) : '');
-}
+sub uri_for { Amon->context->uri_for(@_) }
 
 sub res_404 {
     my $text = shift || "404 Not Found";

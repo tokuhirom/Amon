@@ -53,6 +53,7 @@ sub import {
 sub html_content_type { 'text/html; charset=UTF-8' }
 sub encoding          { 'utf-8' }
 sub request           { $_[0]->{request} }
+sub req               { $_[0]->{request} }
 sub pnotes            { $_[0]->{pnotes}  }
 sub args              { $_[0]->{args}    }
 
@@ -104,5 +105,20 @@ sub run {
     $self->call_trigger('AFTER_DISPATCH' => $response);
     return $response->finalize;
 }
+
+sub uri_for {
+    my ($self, $path, $query) = @_;
+    my $root = $self->req->{env}->{SCRIPT_NAME} || '/';
+    $root =~ s{([^/])$}{$1/};
+    $path =~ s{^/}{};
+
+    my @q;
+    while (my ($key, $val) = each %$query) {
+        $val = join '', map { /^[a-zA-Z0-9_.!~*'()-]$/ ? $_ : '%' . uc(unpack('H2', $_)) } split //, $val;
+        push @q, "${key}=${val}";
+    }
+    $root . $path . (scalar @q ? '?' . join('&', @q) : '');
+}
+
 
 1;
