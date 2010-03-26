@@ -1,3 +1,11 @@
+0.21
+
+    - fixed tests
+    - Amon::Sense::add_trigger should take multiple triggers.
+    - [bug fixed] hook with instance should work
+    - fixed deps
+    - move redirect method to Amon::Web.
+
 0.20
 
     - added Web::Dispatcher::Lite
