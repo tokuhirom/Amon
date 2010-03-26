@@ -12,7 +12,6 @@ requires 'Class::Accessor::Fast';
 requires 'parent';
 
 # Not core, but default components.
-requires 'DBIx::Skinny'        => 0.0705;
 requires 'Text::MicroTemplate' => 0.11;
 requires 'Router::Simple'            => 0.02;
 
