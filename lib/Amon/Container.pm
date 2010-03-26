@@ -63,6 +63,8 @@ sub view {
 sub add_factory {
     my ($class, $target, $factory) = @_;
     if (not ref $factory) {
+        # This feature will remove.
+        Carp::carp("Factory class was deprecated. Will remove.");
         my $factory_class = Amon::Util::load_class($factory, 'Amon::Factory');
         $factory = sub { $factory_class->create(@_) };
     }

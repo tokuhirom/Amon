@@ -35,14 +35,6 @@ Model はオブジェクトであり、$c->model($name) メソッドによりイ
 DBI や Data::Model など、インスタンスの作成に ->new メソッドを呼びだす
 以外の特殊な操作が必要な場合には、Factory を利用してください。
 
-=item Factory
-
-Amon において、Factory は他のクラスのインスタンスを構築するモジュールで
-す。
-
-標準では L<Amon::Factory::DBI> と L<Amon::Factory::DataModel> が提供さ
-れています。
-
 =item Plugin
 
 Plugin は、フックポイントにフックして処理する、Request, Response,
