@@ -80,7 +80,7 @@ sub to_app {
     my ($class, %args) = @_;
 
     my $self = $class->new(
-        config   => $args{config} || +{},
+         ($args{config} ? (config   => $args{config}) : ()),
     );
     return sub { $self->run(shift) };
 }
@@ -118,6 +118,23 @@ sub uri_for {
         push @q, "${key}=${val}";
     }
     $root . $path . (scalar @q ? '?' . join('&', @q) : '');
+}
+
+# -------------------------------------------------------------------------
+# pluggable things
+
+sub load_plugins {
+    my ($class, @args) = @_;
+    for (my $i=0; $i<@args; $i+=2) {
+        my ($module, $conf) = ($args[$i], $args[$i+1]);
+        $class->load_plugin($module, $conf);
+    }
+}
+
+sub load_plugin {
+    my ($class, $module, $conf) = @_;
+    $module = Amon::Util::load_class($module, 'Amon::Plugin');
+    $module->init($class, $conf);
 }
 
 1;

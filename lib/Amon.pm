@@ -71,28 +71,6 @@ sub view {
     };
 }
 
-# -------------------------------------------------------------------------
-# pluggable things
-
-sub add_method {
-    my ($class, $name, $code) = @_;
-    Amon::Util::add_method($class, $name, $code);
-}
-
-sub load_plugins {
-    my ($class, @args) = @_;
-    for (my $i=0; $i<@args; $i+=2) {
-        my ($module, $conf) = ($args[$i], $args[$i+1]);
-        $class->load_plugin($module, $conf);
-    }
-}
-
-sub load_plugin {
-    my ($class, $module, $conf) = @_;
-    $module = Amon::Util::load_class($module, 'Amon::Plugin');
-    $module->init($class, $conf);
-}
-
 1;
 __END__
 
