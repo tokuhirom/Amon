@@ -120,6 +120,27 @@ sub uri_for {
     $root . $path . (scalar @q ? '?' . join('&', @q) : '');
 }
 
+sub render {
+    return shift->view()->make_response(@_);
+}
+
+sub render_partial {
+    return shift->view()->render(@_);
+}
+
+sub view {
+    my $self = shift;
+    my $name = @_ == 1 ? $_[0] : $self->default_view_class;
+       $name = "V::$name";
+    my $klass = "@{[ $self->base_name ]}::$name";
+    $self->{components}->{$klass} ||= do {
+        Amon::Util::load_class($klass);
+        my $config = $self->config()->{$name} || +{};
+        $klass->new($self, $config);
+    };
+}
+
+
 # -------------------------------------------------------------------------
 # pluggable things
 

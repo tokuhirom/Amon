@@ -59,18 +59,6 @@ sub db {
     $self->get(join('::', "DB", @_));
 }
 
-sub view {
-    my $self = shift;
-    my $name = @_ == 1 ? $_[0] : $self->default_view_class;
-       $name = "V::$name";
-    my $klass = "@{[ $self->base_name ]}::$name";
-    $self->{components}->{$klass} ||= do {
-        Amon::Util::load_class($klass);
-        my $config = $self->config()->{$name} || +{};
-        $klass->new($self, $config);
-    };
-}
-
 1;
 __END__
 

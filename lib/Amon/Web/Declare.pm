@@ -16,15 +16,9 @@ sub args()   { Amon->context->args    }
 sub param { req->param(@_) }
 sub param_decoded { req->param_decoded(@_) }
 
-sub render {
-    return Amon->context->view()->make_response(@_);
-}
-
-sub render_partial {
-    return Amon->context->view()->render(@_);
-}
-
-sub uri_for { Amon->context->uri_for(@_) }
+sub render         { Amon->context->render(@_) }
+sub render_partial { Amon->context->render_partial(@_) }
+sub uri_for        { Amon->context->uri_for(@_) }
 
 sub res_404 {
     my $text = shift || "404 Not Found";
