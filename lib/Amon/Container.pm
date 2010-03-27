@@ -19,7 +19,7 @@ sub get {
     my ($self, $name, @args) = @_;
     $self->{components}->{$name} ||= do {
         my $config = $self->config()->{$name} || +{};
-        if (my $factory = $self->_factory_map->($name)) {
+        if (my $factory = $self->_factory_map->{$name}) {
             $factory->($self, $name, $config, @args);
         } else {
             my $klass = "@{[ $self->base_name ]}::$name";
