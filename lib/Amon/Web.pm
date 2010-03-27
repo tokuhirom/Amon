@@ -80,7 +80,7 @@ sub to_app {
     my ($class, %args) = @_;
 
     my $self = $class->new(
-        config   => $args{config},
+        config   => $args{config} || +{},
     );
     return sub { $self->run(shift) };
 }
@@ -119,6 +119,5 @@ sub uri_for {
     }
     $root . $path . (scalar @q ? '?' . join('&', @q) : '');
 }
-
 
 1;
