@@ -1,7 +1,11 @@
 package Amon::Container;
+# This class should not contain any Amon specific feature.
 use strict;
 use warnings;
+use parent 'Class::Data::Inheritable';
 use Amon::Util ();
+
+__PACKAGE__->mk_classdata('_factory_map' => +{});
 
 sub new {
     my $class = shift;

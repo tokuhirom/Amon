@@ -28,9 +28,6 @@ sub import {
 
         *{"${caller}::base_name"} = sub { $caller };
 
-        my $factory_map = {};
-        *{"${caller}::_factory_map"} = sub { $factory_map };
-
         for my $meth (qw/bootstrap model view logger db view add_method load_plugins load_plugin/) {
             *{"${caller}::${meth}"} = *{"${class}::${meth}"};
         }

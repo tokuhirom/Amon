@@ -9,6 +9,7 @@ requires 'Try::Tiny'                 => 0.04;
 requires 'Test::More'                => 0.88; # 0.88 or later is required for done_testing!
 requires 'Exporter';
 requires 'Class::Accessor::Fast';
+requires 'Class::Data::Inheritable';
 requires 'parent';
 
 # Not core, but default components.
