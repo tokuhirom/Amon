@@ -21,20 +21,17 @@ sub import {
         my $caller = caller(0);
 
         no strict 'refs';
+        unshift @{"${caller}::ISA"}, 'Amon::Base';
         unshift @{"${caller}::ISA"}, 'Amon::Container';
 
         my $base_dir = Amon::Util::base_dir($caller);
         *{"${caller}::base_dir"} = sub { $base_dir };
 
         *{"${caller}::base_name"} = sub { $caller };
-
-        for my $meth (qw/bootstrap model view logger db view add_method load_plugins load_plugin/) {
-            *{"${caller}::${meth}"} = *{"${class}::${meth}"};
-        }
-
-
     }
 }
+
+package Amon::Base;
 
 # for CLI
 sub bootstrap {
