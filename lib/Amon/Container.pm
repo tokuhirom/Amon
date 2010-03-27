@@ -19,7 +19,7 @@ sub get {
     my ($self, $name, @args) = @_;
     $self->{components}->{$name} ||= do {
         my $config = $self->config()->{$name} || +{};
-        if (my $factory = $self->get_factory($name)) {
+        if (my $factory = $self->_factory_map->($name)) {
             $factory->($self, $name, $config, @args);
         } else {
             my $klass = "@{[ $self->base_name ]}::$name";
@@ -38,11 +38,6 @@ sub add_factory {
         $factory = sub { $factory_class->create(@_) };
     }
     $class->_factory_map->{$target} = $factory;
-}
-sub get_factory {
-    my ($class, $target) = @_;
-    $class = ref $class if ref $class;
-    $class->_factory_map->{$target};
 }
 
 1;
