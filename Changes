@@ -1,3 +1,12 @@
+0.30
+
+    - added Amon::ConfigLoader
+    - make container as more simple
+    - use class-data-inheritable in container
+    - $c->view method move to Amon::Web
+    - added Amon::Web->render()
+    - added Amon::Web->render_partial()
+
 0.22
 
     - Factory class was deprecated.
