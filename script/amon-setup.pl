@@ -46,10 +46,12 @@ connect '/' => {controller => 'Root', action => 'index'};
 1;
 -- lib/$path/Web/C/Root.pm
 package [%= $module %]::Web::C::Root;
-use Amon::Web::C;
+use strict;
+use warnings;
 
 sub index {
-    render("index.mt");
+    my ($class, $c) = @_;
+    $c->render("index.mt");
 }
 
 1;
