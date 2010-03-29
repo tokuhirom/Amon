@@ -4,7 +4,7 @@ use warnings;
 use 5.008001;
 use Amon::Container;
 
-our $VERSION = '0.30';
+our $VERSION = '0.31';
 {
     our $_context;
     sub context { $_context }

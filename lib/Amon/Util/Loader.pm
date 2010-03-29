@@ -1,5 +1,7 @@
 package Amon::Util::Loader;
 # some code taken from Module::Pluggable::Fast.
+# M::P::* things are useful, but it is targetted for *Pluggable* things.
+# I want just for loading controller classes.
 use strict;
 use warnings;
 use UNIVERSAL::require;

@@ -1,5 +1,12 @@
+0.31
+
+    - Amon::Web::Dispatcher::HTTPxDispatcher will remove on 0.40
+    - do not depend to Module::Pluggable::Object.
+      New loader will die if one of controller has a syntax error.
+
 0.30
 
+    [SOME INCOMPAT CHANGES]
     - added Amon::ConfigLoader
     - make container as more simple
     - use class-data-inheritable in container

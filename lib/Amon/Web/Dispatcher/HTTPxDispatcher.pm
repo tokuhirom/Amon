@@ -29,6 +29,10 @@ sub dispatch {
 1;
 __END__
 
+=head1 NAME
+
+Amon::Web::Dispatcher::HTTPxDispatcher - (DEPRECATED)
+
 =head1 SYNOPSIS
 
     package MyApp::Web::Dispatcher;
