@@ -19,6 +19,7 @@ sub import {
 
     if (@_>0 && shift eq '-base') {
         my $caller = caller(0);
+        my %args = @_;
 
         no strict 'refs';
         unshift @{"${caller}::ISA"}, 'Amon::Base';
@@ -28,7 +29,20 @@ sub import {
         *{"${caller}::base_dir"} = sub { $base_dir };
 
         *{"${caller}::base_name"} = sub { $caller };
+
+        if (my $config_loader = $args{config_loader_class}) {
+            $config_loader->use or die $@;
+            *{"${caller}::config_loader_class"} = sub { $config_loader };
+        }
     }
+}
+
+sub new {
+    my $class = shift;
+    if ($class->can('config_loader_class')) {
+        unshift @_, 'config' => $class->config_loader_class->load();
+    }
+    $class->SUPER::new(@_);
 }
 
 package Amon::Base;

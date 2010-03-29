@@ -17,7 +17,9 @@ pod2usage(1) if $help;
 my $confsrc = <<'...';
 -- lib/$path.pm
 package [%= $module %];
-use Amon -base;
+use Amon -base => (
+    config_loader_class => '[%= $module %]',
+);
 1;
 -- lib/$path/Web.pm
 package [%= $module %]::Web;
@@ -50,6 +52,14 @@ sub index {
     render("index.mt");
 }
 
+1;
+-- config/development.pl
++{
+};
+-- lib/$path/ConfigLoader.pm
+package [%= $module %]::ConfigLoader;
+use strict;
+use parent 'Amon::ConfigLoader';
 1;
 -- tmpl/index.mt
 ? extends 'base.mt';
@@ -312,6 +322,7 @@ sub main {
     _mkpath "tmpl";
     _mkpath "t";
     _mkpath "xt";
+    _mkpath "config/";
     _mkpath "htdocs/static/css/";
     _mkpath "htdocs/static/img/";
     _mkpath "htdocs/static/js/";
