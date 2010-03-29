@@ -1,8 +1,8 @@
 package Amon::Web;
 use strict;
 use warnings;
-use Module::Pluggable::Object;
 use Amon::Util;
+use Amon::Util::Loader;
 use Amon::Trigger;
 use Amon::Container;
 
@@ -15,10 +15,8 @@ sub import {
         strict->import;
         warnings->import;
 
-        # load classes
-        Module::Pluggable::Object->new(
-            'require' => 1, search_path => "${caller}::C"
-        )->plugins;
+        # load controller classes
+        Amon::Util::Loader::load_all("${caller}::C");
 
         my $dispatcher_class = $args{dispatcher_class} || "${caller}::Dispatcher";
         load_class($dispatcher_class);
