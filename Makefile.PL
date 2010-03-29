@@ -3,7 +3,6 @@ use inc::Module::Install;
 all_from 'lib/Amon.pm';
 license 'perl';
 
-requires 'Module::Pluggable::Object' => 3.9;
 requires 'Plack'                     => 0.992;
 requires 'Try::Tiny'                 => 0.04;
 requires 'Test::More'                => 0.88; # 0.88 or later is required for done_testing!
