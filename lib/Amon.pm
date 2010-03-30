@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use 5.008001;
 use Amon::Container;
+use UNIVERSAL::require;
 
 our $VERSION = '0.31';
 {
