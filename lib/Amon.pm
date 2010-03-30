@@ -24,7 +24,6 @@ sub import {
 
         no strict 'refs';
         unshift @{"${caller}::ISA"}, 'Amon::Base';
-        unshift @{"${caller}::ISA"}, 'Amon::Container';
 
         my $base_dir = Amon::Util::base_dir($caller);
         *{"${caller}::base_dir"} = sub { $base_dir };
@@ -38,6 +37,9 @@ sub import {
     }
 }
 
+package Amon::Base;
+use parent 'Amon::Container';
+
 sub new {
     my $class = shift;
     if ($class->can('config_loader_class')) {
@@ -45,8 +47,6 @@ sub new {
     }
     $class->SUPER::new(@_);
 }
-
-package Amon::Base;
 
 # for CLI
 sub bootstrap {
