@@ -18,7 +18,7 @@ my $confsrc = <<'...';
 -- lib/$path.pm
 package [%= $module %];
 use Amon -base => (
-    config_loader_class => '[%= $module %]',
+    config_loader_class => '[%= $module %]::ConfigLoader',
 );
 1;
 -- lib/$path/Web.pm
