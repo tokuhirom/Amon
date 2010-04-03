@@ -16,8 +16,8 @@ sub init {
         my $self = shift;
         $self->pnotes->{session} ||= do {
             HTTP::Session->new(
-                state   => $state_code->(),
-                store   => $store_code->(),
+                state   => $state_code->($self),
+                store   => $store_code->($self),
                 request => $self->request,
             );
         };
