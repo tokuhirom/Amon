@@ -1,3 +1,9 @@
+0.40
+
+    - Amon::Web::Dispatcher::HTTPxDispatcher was removed.
+    - Amon::Web::C was removed.
+      use Amon::Web::Declare instead.
+
 0.32
 
     - M::P::Object is no longer needed
