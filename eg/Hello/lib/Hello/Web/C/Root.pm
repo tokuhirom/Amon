@@ -1,5 +1,7 @@
 package Hello::Web::C::Root;
-use Amon::Web::C;
+use strict;
+use warnings;
+use Amon::Web::Declare;
 
 sub index {
     my $login_form = c->form('login');

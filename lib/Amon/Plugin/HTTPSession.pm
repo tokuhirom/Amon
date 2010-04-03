@@ -65,7 +65,9 @@ Amon::Plugin::HTTPSession - Plugin system for Amon
     __PACKAGE__->load_plugins(qw/HTTPSession/);
 
     package MyApp::C::Root;
-    use Amon::Web::C;
+    use strict;
+    use warnings;
+    use Amon::Web::Declare;
     sub index {
         my $foo = c->session->get('foo');
         if ($foo) {

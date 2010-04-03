@@ -23,18 +23,24 @@ BEGIN {
 
 {
     package MyApp::Web::C::Root;
-    use Amon::Web::C;
+    use strict;
+    use warnings;
+    use Amon::Web::Declare;
     sub index { res(200, [], 'top') }
 
     package MyApp::Web::C::Blog;
-    use Amon::Web::C;
+    use strict;
+    use warnings;
+    use Amon::Web::Declare;
     sub monthly {
         my ($class, $c, $args) = @_;
         res(200, [], "blog: $args->{year}, $args->{month}")
     }
 
     package MyApp::Web::C::Account;
-    use Amon::Web::C;
+    use strict;
+    use warnings;
+    use Amon::Web::Declare;
     sub login { res(200, [], 'login') }
 
     package MyApp::Web::Dispatcher;
