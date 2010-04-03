@@ -1,3 +1,10 @@
+0.32
+
+    - M::P::Object is no longer needed
+    - ConfigLoader is enabled by default.
+    - depend to latest Plack
+    - Plugin::HTTPSesssion: pass $c to callback
+
 0.31
 
     - Amon::Web::Dispatcher::HTTPxDispatcher will remove on 0.40
