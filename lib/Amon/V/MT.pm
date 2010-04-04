@@ -50,6 +50,7 @@ sub new {
         include_path => $include_path,
         cache_dir    => $conf->{cache_dir} || $class->default_cache_dir(),
         cache_mode   => exists($conf->{cache_mode}) ? $conf->{cache_mode} : 0,
+        open_layer   => $conf->{open_layer} || ':utf8',
     }, $class;
     Scalar::Util::weaken($self->{context});
     return $self;
@@ -145,7 +146,7 @@ sub __compile {
 sub _build_file {
     my ($self, $mt, $filepath) = @_;
 
-    open my $fh, "<:utf8", $filepath
+    open my $fh, "<$self->{open_layer}", $filepath
         or Carp::croak("Can't open template file :$filepath:$!");
     my $src = do { local $/; <$fh> };
     close $fh;
