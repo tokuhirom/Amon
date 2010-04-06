@@ -18,7 +18,7 @@ requires 'Router::Simple'            => 0.02;
 
 # Amon::Sense deps
 requires 'String::CamelCase';
-requires 'URI';
+requires 'URI' => 1.54;
 requires 'URI::Escape';
 requires 'Path::Class';
 
