@@ -1,3 +1,8 @@
+0.41
+
+    - added $req->uri_with() method.
+    - added new option 'open_layer' to Amon::V::MT.
+
 0.40
 
     - Amon::Web::Dispatcher::HTTPxDispatcher was removed.
