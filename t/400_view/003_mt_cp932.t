@@ -3,6 +3,7 @@ use warnings;
 use utf8;
 use Test::More;
 use Amon::V::MT;
+use FindBin;
 
 {
     package MyApp::V::MT;

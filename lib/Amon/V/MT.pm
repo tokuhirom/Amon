@@ -4,7 +4,6 @@ use warnings;
 use base qw/Amon::V::TemplateBase/;
 use Text::MicroTemplate;
 use File::Spec;
-use FindBin;
 use Amon::Util;
 use Try::Tiny;
 use Encode ();
