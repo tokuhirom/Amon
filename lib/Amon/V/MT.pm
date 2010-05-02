@@ -51,7 +51,6 @@ sub new {
         cache_mode   => exists($conf->{cache_mode}) ? $conf->{cache_mode} : 0,
         open_layer   => $conf->{open_layer} || ':utf8',
     }, $class;
-    Scalar::Util::weaken($self->{context});
     return $self;
 }
 
