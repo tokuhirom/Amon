@@ -39,7 +39,7 @@ sub import {
         add_method($caller, 'response_class', sub { $response_class });
 
         my $default_view_class = $args{default_view_class} or die "missing configuration: default_view_class";
-        load_class($default_view_class, "${base_name}::V");
+        Amon::Util::load_class($default_view_class, "${base_name}::V");
         add_method($caller, 'default_view_class', sub { $default_view_class });
 
         no strict 'refs';
