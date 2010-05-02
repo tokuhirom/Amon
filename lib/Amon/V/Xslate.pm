@@ -25,7 +25,7 @@ sub new {
 
 sub render {
     my ($self, $input, $params) = @_;
-    my $output = $self->{xslate}->render($input, $params);
+    my $output = $self->{xslate}->render($input, $params || +{});
     return $output;
 }
 
