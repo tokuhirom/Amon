@@ -4,7 +4,7 @@ use warnings;
 use base qw/Amon::V::TemplateBase/;
 use File::Spec ();
 use Scalar::Util ();
-use Text::Xslate 0.001_08 ();
+use Text::Xslate 0.1015 ();
 
 sub import {
     my $class = shift;
@@ -25,7 +25,7 @@ sub new {
 
 sub render {
     my ($self, $input, $params) = @_;
-    my $output = $self->{xslate}->render($input, $params || +{});
+    my $output = $self->{xslate}->render($input, { c => $self->{context}, %{ $params || +{}} });
     return $output;
 }
 
