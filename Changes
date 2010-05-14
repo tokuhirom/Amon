@@ -1,3 +1,8 @@
+0.42
+
+    - added Text::Xslate support
+    - fixed some issues
+
 0.41
 
     - added $req->uri_with() method.
