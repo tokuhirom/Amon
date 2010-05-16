@@ -1,0 +1,26 @@
+html {
+    background-color: black;
+    color: white;
+}
+header {
+    font-size: 40px;
+    color: red;
+    font-weight: bold;
+}
+#Container {
+    width: 890px;
+    margin: auto;
+}
+a {
+    color: #5CBA6B;
+}
+a:visited {
+    color: #287434;
+}
+footer {
+    font-size: x-small;
+    text-align: right;
+}
+table.toc {
+    margin-left: 10px;
+}

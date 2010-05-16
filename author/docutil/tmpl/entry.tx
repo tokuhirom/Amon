@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Amon docs</title>
+    <link rel="stylesheet" href="css/main.css" type="text/css" />
+</head>
+<body>
+    <div id="Container">
+        <div class="pod">[% html %]</div>
+        <footer>Copyright (C) 2010 Tokuhiro Matsuno</footer>
+    </div>
+</body>
+</html>
