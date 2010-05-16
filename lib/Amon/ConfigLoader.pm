@@ -21,3 +21,13 @@ sub load {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Amon::ConfigLoader - configuration file loader for Amon
+
+=head1 DESCRIPTION
+
+This is configuration file loader for Amon.
+

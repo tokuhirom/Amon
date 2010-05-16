@@ -55,6 +55,10 @@ sub import {
 1;
 __END__
 
+=head1 NAME
+
+Amon::Web::Dispatcher::Lite - sinatra like dispatcher for Amon
+
 =head1 SYNOPSIS
 
     package MyApp::Web;
