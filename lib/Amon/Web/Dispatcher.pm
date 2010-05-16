@@ -28,21 +28,14 @@ Amon::Web::Dispatcher - Amon Dispatcher class
 
     package MyApp::Web::Dispatcher;
     use Amon::Web::Dispatcher;
-    use 5.010;
     sub dispatch {
         my ($class, $req) = @_;
-        given ([$req->method, $req->uri]) {
-             when (['GET', '/']) {
-                 return call('Root', 'index');
-             }
-             when (['POST', '/post']) {
-                 return call('Entry', 'post');
-                 # or
-                 return MyApp::C::Entry->post($req);
-             }
-             default {
-                 return res_404(); # return 404 response
-             }
+        if ($req->method eq 'GET' && $req->uri eq '/') {
+            return MyApp::Web::C::Root->index($req);
+        } elsif ($req->method eq 'POST' && $req->uri eq '/post') {
+            return MyApp::Web::C::Entry->post($req);
+        } else {
+            return res_404(); # 404 not found
         }
     }
 
