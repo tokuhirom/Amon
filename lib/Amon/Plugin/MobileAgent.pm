@@ -33,6 +33,9 @@ Amon::Plugin::MobileAgent - HTTP::MobileAgent plugin for Amon
     );
     1;
 
+    # in your controller
+    $c->request->mobile_agent();
+
 =head1 DESCRIPTION
 
 Integrate with L<HTTP::MobileAgent>
