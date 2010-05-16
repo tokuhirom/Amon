@@ -44,3 +44,23 @@ sub load_all {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Amon::Util::Loader - component loader
+
+=head1 DESCRIPTION
+
+This is component loader.
+
+=head1 METHODS
+
+=over 4
+
+=item Amon::Util::Loader::load_all("MyApp::Web::C")
+
+Load all components from "MyApp::Web::C".
+
+=back
+
