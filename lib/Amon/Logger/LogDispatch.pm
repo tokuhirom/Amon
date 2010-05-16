@@ -1,7 +1,7 @@
 package Amon::Logger::LogDispatch;
 use strict;
 use warnings;
-use Log::Dispatch;
+use Log::Dispatch ();
 use Plack::Util qw//;
 use Data::OptList qw//;
 
@@ -46,7 +46,7 @@ Amon::Logger::LogDispatch - Log::Dispatch glue for Amon
     package Your::Logger;
     use parent 'Log::Dispatch';
 
-    # in your config.yml
+    # in your config.pl
     'Logger' => {
         loggers => [
             'Screen::Color' => {

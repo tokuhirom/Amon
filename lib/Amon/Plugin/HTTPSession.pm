@@ -62,7 +62,16 @@ Amon::Plugin::HTTPSession - Plugin system for Amon
 
     package MyApp::Web;
     use Amon::Web -base;
-    __PACKAGE__->load_plugins(qw/HTTPSession/);
+    use HTTP::Session::Store::Memcached;
+    __PACKAGE__->load_plugins(qw/HTTPSession/ => {
+        state => 'URI',
+        store => sub {
+            my ($c) = @_;
+            HTTP::Session::Store::Memcached->new(
+                memd => $c->get('Cache::Memcached::Fast')
+            );
+        },
+    });
 
     package MyApp::C::Root;
     use strict;

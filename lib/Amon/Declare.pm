@@ -8,9 +8,17 @@ use Amon::Util;
 sub c      ()  { Amon->context            }
 sub config ()  { Amon->context->config    }
 sub db (;$)    { Amon->context->db(@_)    }
-sub model ($)  { Amon->context->model(@_) }
-sub view ($)   { Amon->context->view(@_)  }
 sub logger ()  { Amon->context->logger()  }
+
+sub view ($)   {
+    warn "[DEPRECATED]";
+    Amon->context->view(@_)
+}
+
+sub model ($)  {
+    warn "[DEPRECATED]";
+    Amon->context->model(@_);
+}
 
 1;
 __END__
@@ -29,13 +37,21 @@ Amon::Declare - Amon Declare Class
 
 =over 4
 
+=item c()
+
+Get the context object.
+
 =item config()
 
-get configuration from context object.
+Get configuration from context object.
 
-=item model($model)
+=item view($view)
 
-get the model class name.
+Get the view object.
+
+=item logger()
+
+Get the logger object.
 
 =back
 
