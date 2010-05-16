@@ -84,5 +84,23 @@ Amon::Web::Request - Amon Request Class
 
 This is a child class of L<Plack::Request>.Please see L<Plack::Request> for more details.
 
+=head1 METHODS
+
+=over 4
+
+=item $req->param_decoded($param)
+
+Get dedecoded parameters.
+
+=item $req->uri_with($args, $behavior)
+
+Returns a rewritten URI object for the current request. Key/value pairs passed in will override existing parameters. You can remove an existing parameter by passing in an undef value. Unmodified pairs will be preserved.
+
+You may also pass an optional second parameter that puts uri_with into append mode:
+
+  $req->uri_with( { key => 'value' }, { mode => 'append' } );
+
+=back
+
 =cut
 
