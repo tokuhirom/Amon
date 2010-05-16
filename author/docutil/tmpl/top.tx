@@ -8,6 +8,23 @@
 <body>
     <div id="Container">
         <header>Amon docs</header>
+
+            <div>
+                <h1>Amon is ...</h1>
+                <ul>
+                    <li>Fast</li>
+                    <li>Simple</li>
+                </ul>
+                <B>Web Application Framework</B> for Perl5.
+
+                <h1>Amon's policies are</h1>
+                <ul>
+                    <li><a href="http://search.cpan.org/dist/PSGI/">PSGI</a> support</li>
+                    <li>no xs dependencies by default</li>
+                    <li>Thin layer</li>
+                </ul>
+            </div>
+
             <h1>classes</h1>
             <table class="toc">
             [% FOREACH v IN pm %]
