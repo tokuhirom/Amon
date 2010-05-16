@@ -10,7 +10,7 @@ requires 'Exporter';
 requires 'Class::Accessor::Fast';
 requires 'Class::Data::Inheritable';
 requires 'parent';
-requires 'UNIVERSAL::require';
+requires 'UNIVERSAL::require' => 0.13;
 
 # Not core, but default components.
 requires 'Text::MicroTemplate' => 0.11;
