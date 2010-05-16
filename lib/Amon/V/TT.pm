@@ -44,10 +44,14 @@ Amon::V::TT - Amon Template-Toolkit View Class
 =head1 SYNOPSIS
 
     package MyApp::V::TT;
-    use Amon::V::TT;
+    use parent 'Amon::V::TT';
     1;
 
 =head1 DESCRIPTION
+
+This is a wrapper class for L<Template>.
+
+The all configurations for 'V::Xslate' will pass for Text::Xslate->new.
 
 =head1 SEE ALSO
 

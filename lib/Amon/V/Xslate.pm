@@ -39,12 +39,18 @@ Amon::V::Xslate - Amon Text::Xslate View Class
 =head1 SYNOPSIS
 
     package MyApp::V::Xslate;
-    use Amon::V::Xslate;
+    use parent 'Amon::V::Xslate';
     1;
 
 =head1 DESCRIPTION
 
 B<THIS IS EARLY BETA. INTERFACE WILL CHANGE>
+
+This is a wrapper class for L<Text::Xslate>.
+
+=head1 CONFIGURATION
+
+The all configurations for 'V::Xslate' will pass for Text::Xslate->new.
 
 =head1 SEE ALSO
 

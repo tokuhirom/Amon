@@ -7,6 +7,14 @@ header {
     color: red;
     font-weight: bold;
 }
+header a {
+    text-decoration: none;
+    color: red;
+}
+header a:visited {
+    text-decoration: none;
+    color: red;
+}
 #Container {
     width: 890px;
     margin: auto;
@@ -23,4 +31,7 @@ footer {
 }
 table.toc {
     margin-left: 10px;
+}
+h1 {
+    font-size: 20px;
 }
