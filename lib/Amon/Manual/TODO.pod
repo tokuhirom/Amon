@@ -12,12 +12,7 @@ like HTML::DoCoMoCSS
 
 =item Plack::Middleware::PageCache
 
-=item Amon::Plugin::ConfigLoader
-
-need it?
-
 =item build_per_request for container class
-
 
 =back
 
