@@ -29,7 +29,11 @@
             <table class="toc">
             [% FOREACH v IN pm %]
                 <tr>
-                <td><a href="[% v.ofname %].html">[% v.pkg %]</a></td>
+                [% IF v.desc %]
+                    <td><a href="[% v.ofname %].html">[% v.pkg %]</a></td>
+                [% ELSE %]
+                    <td>[% v.pkg %]</td>
+                [% END %]
                 <td>[% v.desc %]</td>
                 </tr>
             [% END %]

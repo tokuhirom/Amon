@@ -45,7 +45,13 @@ sub render_top {
     my ($pm, $pod) = @_;
     my $c = sub {
         sort { $a->{pkg} cmp $b->{pkg} } grep { $_->{pkg} } map {
-            my $pkg = parse($_)->name;
+            my $pkg = parse($_)->name || do {
+                my $x = $_;
+                $x =~ s!^lib/!!;
+                $x =~ s!/!::!g;
+                $x =~ s!\.pm!!;
+                $x;
+            };
             my $desc = parse($_)->title;
             +{
                 fname => $_, desc => $desc, pkg => $pkg, ofname => fname2ofname($_),
