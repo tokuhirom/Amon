@@ -90,7 +90,7 @@ This is a child class of L<Plack::Request>.Please see L<Plack::Request> for more
 
 =item $req->param_decoded($param)
 
-Get dedecoded parameters.
+Get decoded parameters.
 
 =item $req->uri_with($args, $behavior)
 

@@ -57,7 +57,7 @@ __END__
 
 =head1 NAME
 
-Amon::Web::Dispatcher::Lite - sinatra like dispatcher for Amon
+Amon::Web::Dispatcher::Lite - Sinatra like dispatcher for Amon
 
 =head1 SYNOPSIS
 

@@ -52,3 +52,5 @@ RDBMS
 SQL
 SQLite
 bitmask
+URI
+HTTP
