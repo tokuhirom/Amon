@@ -4,7 +4,7 @@ use warnings;
 use base qw/Amon::V::TemplateBase/;
 use File::Spec ();
 use Scalar::Util ();
-use Text::Xslate 0.1015 ();
+use Text::Xslate 0.1025 ();
 
 sub import {
     my $class = shift;
