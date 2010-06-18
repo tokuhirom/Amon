@@ -16,6 +16,7 @@ sub _fillin_form {
     my $html = $self->body();
     my $output = HTML::FillInForm->fill(\$html, @stuff);
     $self->body($output);
+    $self->header('Content-Length' => length($output)) if $self->header('Content-Length');
     return $self;
 }
 

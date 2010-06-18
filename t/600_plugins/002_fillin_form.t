@@ -55,4 +55,5 @@ my $c = MyApp::Web->bootstrap(config => {
 
 my $res = render('hoge.mt')->fillin_form({body => "hello"});
 like $res->body(), qr{<input value="hello" name="body" type="text" />};
+is length($res->body()), $res->header('Content-Length');
 done_testing;
