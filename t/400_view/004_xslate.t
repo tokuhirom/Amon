@@ -1,5 +1,6 @@
 use strict;
 use warnings;
+use Test::Requires 'Text::Xslate';
 use FindBin;
 use File::Spec;
 use Test::More;
