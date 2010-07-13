@@ -1,3 +1,9 @@
+0.43
+
+    * e657339 [BUG] Amon::Util must not returns undef at 2nd time function call.
+    * 7cfef62 Plugin::FillInForm: adjust content-length after fill-in.
+    * updated docs
+
 0.42
 
     - added Text::Xslate support
