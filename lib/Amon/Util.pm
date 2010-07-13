@@ -17,7 +17,7 @@ our @EXPORT = qw/add_method load_class/;
                 $class = "$prefix\::$class";
             }
         }
-        return if $loaded->{$class}++;
+        return $class if $loaded->{$class}++;
 
         my $file = $class;
         $file =~ s!::!/!g;
