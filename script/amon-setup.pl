@@ -55,6 +55,14 @@ sub index {
     'Tfall::Text::Xslate' => {
         path => ['tmpl/'],
     },
+    'Log::Dispatch' => {
+        outputs => [
+            ['Screen',
+            min_level => 'debug',
+            stderr => 1,
+            newline => 1],
+        ],
+    },
 };
 -- lib/$path/ConfigLoader.pm
 package [%= $module %]::ConfigLoader;
