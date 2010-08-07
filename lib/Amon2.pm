@@ -4,6 +4,7 @@ use warnings;
 use 5.008001;
 use UNIVERSAL::require;
 use Amon2::Util;
+use Plack::Util ();
 
 our $VERSION = '0.44';
 {
@@ -64,7 +65,7 @@ sub load_plugins {
 
 sub load_plugin {
     my ($class, $module, $conf) = @_;
-    $module = Amon2::Util::load_class($module, 'Amon2::Plugin');
+    $module = Plack::Util::load_class($module, 'Amon2::Plugin');
     $module->init($class, $conf);
 }
 

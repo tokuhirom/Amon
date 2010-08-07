@@ -6,6 +6,7 @@ use Amon2::Util::Loader;
 use Amon2::Trigger;
 use Encode ();
 use Module::Find ();
+use Plack::Util ();
 
 sub import {
     my $class = shift;
@@ -20,7 +21,7 @@ sub import {
         Module::Find::useall("${caller}::C");
 
         my $dispatcher_class = $args{dispatcher_class} || "${caller}::Dispatcher";
-        Amon2::Util::load_class($dispatcher_class);
+        Plack::Util::load_class($dispatcher_class);
         Amon2::Util::add_method($caller, 'dispatcher_class', sub { $dispatcher_class });
 
         my $base_name = $args{base_name} || do {
@@ -28,15 +29,15 @@ sub import {
             s/::Web(?:::.+)?$//;
             $_;
         };
-        Amon2::Util::load_class($base_name);
+        Plack::Util::load_class($base_name);
         Amon2::Util::add_method($caller, 'base_name', sub { $base_name });
 
         my $request_class = $args{request_class} || 'Amon2::Web::Request';
-        Amon2::Util::load_class($request_class);
+        Plack::Util::load_class($request_class);
         Amon2::Util::add_method($caller, 'request_class', sub { $request_class });
 
         my $response_class = $args{response_class} || 'Amon2::Web::Response';
-        Amon2::Util::load_class($response_class);
+        Plack::Util::load_class($response_class);
         Amon2::Util::add_method($caller, 'response_class', sub { $response_class });
 
         my $default_view_class = $args{default_view_class} or die "missing configuration: default_view_class";
@@ -150,7 +151,7 @@ sub view {
     my $self = shift;
     my $name = @_ == 1 ? $_[0] : $self->default_view_class;
     $self->{components}->{"View::$name"} ||= do {
-        my $klass = Amon2::Util::load_class($name, 'Tfall');
+        my $klass = Plack::Util::load_class($name, 'Tfall');
         my $config = $self->config()->{$klass};
         $klass->new($config);
     };

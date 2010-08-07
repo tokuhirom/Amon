@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use HTTP::Session;
 use Amon2::Util;
+use Plack::Util ();
 
 sub init {
     my ($class, $c, $conf) = @_;
@@ -40,7 +41,7 @@ sub _load {
             return sub { $stuff };
         }
     } else {
-        my $store_class = Amon2::Util::load_class($stuff, $namespace);
+        my $store_class = Plack::Util::load_class($stuff, $namespace);
         my $store_obj;
         return sub {
             $store_obj ||= do {
