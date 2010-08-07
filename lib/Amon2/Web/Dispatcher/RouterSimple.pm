@@ -5,35 +5,32 @@ use Router::Simple 0.03;
 
 sub import {
     my $class = shift;
-    strict->import;
-    warnings->import;
-    if (@_ > 0 && shift eq '-base') {
-        my %args = @_;
-        my $caller = caller(0);
+    my %args = @_;
+    my $caller = caller(0);
 
-        no strict 'refs';
-        unshift @{"${caller}::ISA"}, $class;
+    no strict 'refs';
+    unshift @{"${caller}::ISA"}, $class;
 
-        my $router = Router::Simple->new();
+    my $router = Router::Simple->new();
 
-        no strict 'refs';
-        # functions
-        for my $meth (qw/connect submapper/) {
-            *{"${caller}::${meth}"} = sub {
-                $router->$meth(@_);
-            };
-        }
-        # class methods
-        for my $meth (qw/match as_string/) {
-            *{"$caller\::${meth}"} = sub {
-                my $self = shift;
-                $router->$meth(@_)
-            };
-        }
+    no strict 'refs';
+    # functions
+    for my $meth (qw/connect submapper/) {
+        *{"${caller}::${meth}"} = sub {
+            $router->$meth(@_);
+        };
     }
+    # class methods
+    for my $meth (qw/match as_string/) {
+        *{"$caller\::${meth}"} = sub {
+            my $self = shift;
+            $router->$meth(@_)
+        };
+    }
+    *{"$caller\::dispatch"} = \&_dispatch;
 }
 
-sub dispatch {
+sub _dispatch {
     my ($class, $c) = @_;
     my $req = $c->request;
     if (my $p = $class->match($req->env)) {

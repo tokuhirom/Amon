@@ -41,7 +41,7 @@ BEGIN {
     sub login { $_[1]->response_class->new(200, [], 'login') }
 
     package MyApp::Web::Dispatcher;
-    use Amon2::Web::Dispatcher::RouterSimple -base;
+    use Amon2::Web::Dispatcher::RouterSimple;
     connect '/', {controller => 'Root', action => 'index'};
     connect '/blog/{year}/{month}', {controller => 'Blog', action => 'monthly'};
     submapper('/account/', {controller => 'Account'})

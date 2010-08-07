@@ -45,7 +45,7 @@ BEGIN {
 
 {
     package MyApp::Web::Dispatcher;
-    use Amon2::Web::Dispatcher::PathAttrRouter -base => (
+    use Amon2::Web::Dispatcher::PathAttrRouter (
         search_path => 'MyApp::Web::C',
     );
 }

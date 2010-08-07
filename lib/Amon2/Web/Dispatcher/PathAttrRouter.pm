@@ -5,20 +5,18 @@ use Path::AttrRouter;
 
 sub import {
     my $class = shift;
-    if (@_ > 0 && shift eq '-base') {
-        my %args = @_;
-        my $caller = caller(0);
+    my %args = @_;
+    my $caller = caller(0);
 
-        my $search_path = $args{search_path} or die "missing search_path";
-        my $router = Path::AttrRouter->new(search_path => $search_path);
+    my $search_path = $args{search_path} or die "missing search_path";
+    my $router = Path::AttrRouter->new(search_path => $search_path);
 
-        no strict 'refs';
-        unshift @{"${caller}::ISA"}, $class;
-        *{"${caller}::router"} = sub { $router };
-    }
+    no strict 'refs';
+    *{"${caller}::router"} = sub { $router };
+    *{"${caller}::dispatch"} = \&_dispatch;
 }
 
-sub dispatch {
+sub _dispatch {
     my ($self, $c) = @_;
     my $m = $self->router->match($c->request->path_info);
     if ($m) {
@@ -29,8 +27,6 @@ sub dispatch {
         return res_404();
     }
 }
-
-sub router { die "This is abstract method" }
 
 1;
 __END__
@@ -62,7 +58,7 @@ Amon2::Web::Dispatcher::PathAttrRouter - Path::AttrRouter binding for Amon2
     }
 
     package MyApp::Web::Dispatcher;
-    use Amon2::Web::Dispatcher::PathAttrRouter -base => (
+    use Amon2::Web::Dispatcher::PathAttrRouter (
         search_path => 'MyApp::Web::C',
     );
 
