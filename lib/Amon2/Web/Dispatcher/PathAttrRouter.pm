@@ -24,7 +24,7 @@ sub _dispatch {
         my $meth = $m->action->name;
         return $controller->$meth($c, @{ $m->args }, @{ $m->captures });
     } else {
-        return res_404();
+        return $c->res_404();
     }
 }
 
