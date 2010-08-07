@@ -1,7 +1,6 @@
 package Amon2::Web::Dispatcher::RouterSimple;
 use strict;
 use warnings;
-use Amon2::Web::Declare;
 use Router::Simple 0.03;
 
 sub import {

@@ -1,14 +1,12 @@
 package Amon2::Web::Dispatcher;
 use strict;
 use warnings;
-use Amon2::Web::Declare;
 use base 'Exporter';
 our @EXPORT = qw/call/;
 
 sub import {
     strict->import;
     warnings->import;
-    Amon2::Web::Declare->export_to_level(1);
     __PACKAGE__->export_to_level(1);
 }
 

@@ -2,7 +2,6 @@ package Amon2::Web::Dispatcher::PathAttrRouter;
 use strict;
 use warnings;
 use Path::AttrRouter;
-use Amon2::Web::Declare;
 
 sub import {
     my $class = shift;
@@ -44,7 +43,6 @@ Amon2::Web::Dispatcher::PathAttrRouter - Path::AttrRouter binding for Amon2
 
     package MyApp::Web::C;
     use base qw/Path::AttrRouter::Controller/;
-    use Amon2::Web::Declare;
     sub index :Path {
         my ($self, $c) = @_;
         res(200, [], 'index');
@@ -57,7 +55,6 @@ Amon2::Web::Dispatcher::PathAttrRouter - Path::AttrRouter binding for Amon2
 
     package MyApp::Web::C::Regex;
     use base qw/Path::AttrRouter::Controller/;
-    use Amon2::Web::Declare;
 
     sub index :Regex('^regex/(\d+)/(.+)') {
         my ($self, $c, $y, $m) = @_;

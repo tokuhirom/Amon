@@ -20,11 +20,11 @@ BEGIN {
     sub dispatch {
         my ($class, $c) = @_;
         if ($c->request->path_info eq '/') {
-            c->session->set(foo => 'bar');
-            return redirect('/step2');
+            $c->session->set(foo => 'bar');
+            return $c->redirect('/step2');
         } elsif ($c->request->path_info eq '/step2') {
-            my $res = "<html><body>@{[  c->session->get('foo') ]}</body></html>";
-            return res(
+            my $res = "<html><body>@{[  $c->session->get('foo') ]}</body></html>";
+            return $c->response_class->new(
                 200,
                 [
                     'Conent-Length' => length($res),
@@ -33,7 +33,7 @@ BEGIN {
                 $res
             );
         } else {
-            return res_404();
+            return $c->response_class->new(404, [], []);
         }
     }
 

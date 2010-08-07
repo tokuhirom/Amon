@@ -1,10 +1,10 @@
 package SampleApp::Web::C::Root;
 use strict;
 use warnings;
-use Amon2::Web::Declare;
 
 sub index {
-    render("index.mt");
+    my ($class, $c) =@_;
+    $c->render("index.mt");
 }
 
 1;

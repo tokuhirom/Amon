@@ -2,7 +2,6 @@ package Amon2::Web::Dispatcher::Lite;
 use strict;
 use warnings;
 use parent 'Amon2::Web';
-use Amon2::Web::Declare;
 use Router::Simple 0.04;
 use Amon2::Util qw/add_method/;
 
@@ -47,8 +46,6 @@ sub import {
                 return res_404();
             }
         });
-
-        Amon2::Web::Declare->export_to_level(1);
     }
 }
 

@@ -25,23 +25,20 @@ BEGIN {
     package MyApp::Web::C::Root;
     use strict;
     use warnings;
-    use Amon2::Web::Declare;
-    sub index { res(200, [], 'top') }
+    sub index { Amon2->context->response_class->new(200, [], 'top') }
 
     package MyApp::Web::C::Blog;
     use strict;
     use warnings;
-    use Amon2::Web::Declare;
     sub monthly {
         my ($class, $c, $args) = @_;
-        res(200, [], "blog: $args->{year}, $args->{month}")
+        Amon2->context->response_class->new(200, [], "blog: $args->{year}, $args->{month}")
     }
 
     package MyApp::Web::C::Account;
     use strict;
     use warnings;
-    use Amon2::Web::Declare;
-    sub login { res(200, [], 'login') }
+    sub login { $_[1]->response_class->new(200, [], 'login') }
 
     package MyApp::Web::Dispatcher;
     use Amon2::Web::Dispatcher::RouterSimple -base;

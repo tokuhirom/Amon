@@ -24,24 +24,22 @@ BEGIN {
 {
     package MyApp::Web::C;
     use base qw/Path::AttrRouter::Controller/;
-    use Amon2::Web::Declare;
     sub index :Path {
         my ($self, $c) = @_;
-        res(200, [], 'index');
+        $c->response_class->new(200, [], 'index');
     }
 
     sub index2 :Path :Args(2) {
         my ($self, $c, $x, $y) = @_;
-        res(200, [], "index2: $x, $y");
+        $c->response_class->new(200, [], "index2: $x, $y");
     }
 
     package MyApp::Web::C::Regex;
     use base qw/Path::AttrRouter::Controller/;
-    use Amon2::Web::Declare;
 
     sub index :Regex('^regex/(\d+)/(.+)') {
         my ($self, $c, $y, $m) = @_;
-        res(200, [], "regexp: $y, $m");
+        $c->response_class->new(200, [], "regexp: $y, $m");
     }
 }
 

@@ -23,15 +23,16 @@ BEGIN {
     use Amon2::Web::Dispatcher::Lite '-base';
 
     get '/' => sub {
-        res(200, [], ['ok'])
+        my $c = shift;
+        $c->response_class->new(200, [], ['ok'])
     };
     get '/hello/:name' => sub {
         my ($c, $args) = @_;
-        res(200, [], ["hi, $args->{name}"])
+        $c->response_class->new(200, [], ["hi, $args->{name}"])
     };
     post '/new' => sub {
         my ($c, $args) = @_;
-        res(200, [], ["post"])
+        $c->response_class->new(200, [], ["post"])
     };
 }
 

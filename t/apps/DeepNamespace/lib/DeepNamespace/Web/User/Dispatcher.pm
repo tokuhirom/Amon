@@ -6,7 +6,7 @@ sub dispatch {
     my ($class, $c) = @_;
     given ($c->request->path_info) {
         when ('/') {
-            return call("Root", 'index');
+            return call("Root", 'index', $c);
         }
         default {
             return res_404();

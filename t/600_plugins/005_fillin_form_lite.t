@@ -24,7 +24,6 @@ BEGIN {
     );
 }
 
-use Amon2::Web::Declare;
 my $tmp = tempdir(CLEANUP => 1);
 my $c = MyApp::Web->bootstrap(config => {
     'Tfall::Text::MicroTemplate::File' => {
@@ -49,6 +48,6 @@ my $c = MyApp::Web->bootstrap(config => {
     close $fh;
 }
 
-my $res = render('hoge.mt')->fillin_form({body => "hello"});
+my $res = $c->render('hoge.mt')->fillin_form({body => "hello"});
 like $res->body(), qr{<input type="text" name="body" value="hello" />};
 done_testing;

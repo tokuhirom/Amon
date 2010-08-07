@@ -2,8 +2,8 @@ package Amon2;
 use strict;
 use warnings;
 use 5.008001;
-use Amon2::Container;
 use UNIVERSAL::require;
+use Amon2::Util;
 
 our $VERSION = '0.44';
 {
@@ -38,15 +38,17 @@ sub import {
 }
 
 package Amon2::Base;
-use parent 'Amon2::Container';
 
 sub new {
     my $class = shift;
+    my %args = @_ == 1 ? %{ $_[0] } : @_;
     if ($class->can('config_loader_class')) {
-        unshift @_, 'config' => $class->config_loader_class->load();
+        $args{'config'} = $class->config_loader_class->load();
     }
-    $class->SUPER::new(@_);
+    bless { config => +{}, %args }, $class;
 }
+
+sub config { $_[0]->{config} }
 
 # for CLI
 sub bootstrap {

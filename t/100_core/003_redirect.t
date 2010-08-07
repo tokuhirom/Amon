@@ -1,6 +1,5 @@
 use strict;
 use warnings;
-require Amon2::Web::Declare;
 use Amon2::Web::Request;
 use Test::More;
 
@@ -66,7 +65,7 @@ sub check_redirect {
     my ($env, $next) = @_;
     $c->{request} = Amon2::Web::Request->new($env);
 
-    my $res = Amon2::Web::Declare::redirect($next);
+    my $res = $c->redirect($next);
     $res->header('Location');
 }
 

@@ -1,10 +1,10 @@
 package Extended::Web::C::Root;
 use strict;
 use warnings;
-use Amon2::Web::Declare;
 
 sub index {
-    render("index.mt");
+    my ($class, $c) = @_;
+    $c->render("index.mt");
 }
 
 sub die {
@@ -12,14 +12,16 @@ sub die {
 }
 
 sub session {
-    my $test = c->session->get('test');
+    my ($class, $c) = @_;
+
+    my $test = $c->session->get('test');
     if ($test) {
-        my $res = res(200, [], ["hello, $test"]);
-        c->session->set(test => $test + 1);
+        my $res = $c->response_class->new(200, [], ["hello, $test"]);
+        $c->session->set(test => $test + 1);
         return $res;
     } else {
-        c->session->set(test => 1);
-        return res(200, [], ["first time"]);
+        $c->session->set(test => 1);
+        return $c->response_class->new(200, [], ["first time"]);
     }
 }
 

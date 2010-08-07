@@ -17,6 +17,8 @@ requires 'Tfall';
 requires 'Text::Xslate';
 requires 'Text::MicroTemplate' => 0.11;
 requires 'Router::Simple'            => 0.02;
+requires 'Data::OptList';
+requires 'Log::Dispatch';
 
 # Amon2::Sense deps
 requires 'String::CamelCase';
