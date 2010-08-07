@@ -14,36 +14,36 @@ pod2usage(1) if $help;
 
 my $confsrc = <<'...';
 -- lib/$path.pm
-package [%= $module %];
+package <%= $module %>;
 use Amon2 -base;
 __PACKAGE__->load_plugins(qw/ConfigLoader LogDispatch/);
 1;
 -- lib/$path/Web.pm
-package [%= $module %]::Web;
+package <%= $module %>::Web;
 use Amon2::Web -base => (
     default_view_class => 'Text::Xslate',
-    base_class         => '[%= $module %]',
+    base_class         => '<%= $module %>',
 );
 1;
 -- lib/$path/V/MT/Context.pm
-package [%= $module %]::V::MT::Context;
+package <%= $module %>::V::MT::Context;
 use Amon2::V::MT::Context;
 1;
 -- lib/$path/Web/Dispatcher.pm
-package [%= $module %]::Web::Dispatcher;
+package <%= $module %>::Web::Dispatcher;
 use Amon2::Web::Dispatcher::RouterSimple;
 
 connect '/' => {controller => 'Root', action => 'index'};
 
 1;
 -- lib/$path/Web/C/Root.pm
-package [%= $module %]::Web::C::Root;
+package <%= $module %>::Web::C::Root;
 use strict;
 use warnings;
 
 sub index {
     my ($class, $c) = @_;
-    $c->render("index.mt");
+    $c->render("index.tt");
 }
 
 1;
@@ -51,6 +51,10 @@ sub index {
 +{
     'Tfall::Text::Xslate' => {
         path => ['tmpl/'],
+        syntax => 'TTerse',
+        function => {
+            c => sub { Amon2->context() },
+        },
     },
     'Log::Dispatch' => {
         outputs => [
@@ -62,31 +66,33 @@ sub index {
     },
 };
 -- lib/$path/ConfigLoader.pm
-package [%= $module %]::ConfigLoader;
+package <%= $module %>::ConfigLoader;
 use strict;
 use parent 'Amon2::ConfigLoader';
 1;
--- tmpl/index.mt
-? extends 'base.mt';
-? block title => '[%= $dist %] page';
-? block content => sub { 'hello, Amon2 world!' };
--- tmpl/base.mt
+-- tmpl/index.tt
+[% INCLUDE 'include/header.tt' %]
+
+hello, Amon2 world!
+
+[% INCLUDE 'include/footer.tt' %]
+-- tmpl/include/header.tt
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title><? block title => '[%= $dist %]' ?></title>
+    <title><%= $dist %></title>
     <meta http-equiv="Content-Style-Type" content="text/css" />  
     <meta http-equiv="Content-Script-Type" content="text/javascript" />  
-    <link href="<?= uri_for('/static/css/main.css') ?>" rel="stylesheet" type="text/css" media="screen" />
+    <link href="[% c().uri_for('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
     <div id="Container">
         <div id="Header">
-            <a href="<?= uri_for('/') ?>">Amon2 Startup Page</a>
+            <a href="[% c().uri_for('/') %]">Amon2 Startup Page</a>
         </div>
         <div id="Content">
-            <? block content => 'body here' ?>
+-- tmpl/include/footer.tt
         </div>
         <div id="FooterContainer"><div id="Footer">
             Powered by Amon2
@@ -176,18 +182,18 @@ form.nopaste p.submit-btn input {
 }
 
 -- $dist.psgi
-use [%= $module %]::Web;
+use <%= $module %>::Web;
 use Plack::Builder;
 
 builder {
     enable 'Plack::Middleware::Static',
         path => qr{^/static/},
         root => './htdocs/';
-    [%= $module %]::Web->to_app();
+    <%= $module %>::Web->to_app();
 };
 -- Makefile.PL
 use inc::Module::Install;
-all_from "lib/[%= $path %].pm";
+all_from "lib/<%= $path %>.pm";
 
 tests 't/*.t t/*/*.t t/*/*/*.t';
 requires 'Amon2';
@@ -201,7 +207,7 @@ use Plack::Test;
 use Plack::Util;
 use Test::More;
 
-my $app = Plack::Util::load_psgi '[%= $dist %].psgi';
+my $app = Plack::Util::load_psgi '<%= $dist %>.psgi';
 test_psgi
     app => $app,
     client => sub {
@@ -221,7 +227,7 @@ use Plack::Util;
 use Test::More;
 use Test::Requires 'Test::WWW::Mechanize::PSGI';
 
-my $app = Plack::Util::load_psgi '[%= $dist %].psgi';
+my $app = Plack::Util::load_psgi '<%= $dist %>.psgi';
 
 my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
 $mech->get_ok('/');
@@ -235,7 +241,7 @@ add_stopwords(map { split /[\s\:\-]/ } <DATA>);
 $ENV{LANG} = 'C';
 all_pod_files_spelling_ok('lib');
 __DATA__
-[%= $module %]
+<%= $module %>
 Tokuhiro Matsuno
 Test::TCP
 tokuhirom
@@ -325,6 +331,7 @@ sub main {
     _mkpath "lib/$path/M";
     _mkpath "lib/$path/DB/";
     _mkpath "tmpl";
+    _mkpath "tmpl/include/";
     _mkpath "t";
     _mkpath "xt";
     _mkpath "config/";
@@ -336,8 +343,8 @@ sub main {
     while (my ($file, $tmpl) = each %$conf) {
         $file =~ s/(\$\w+)/$1/gee;
         my $code = Text::MicroTemplate->new(
-            tag_start => '[%',
-            tag_end   => '%]',
+            tag_start => '<%',
+            tag_end   => '%>',
             line_start => '%',
             template => $tmpl,
         )->code;
