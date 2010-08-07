@@ -6,6 +6,7 @@ use Amon2::Trigger;
 use Encode ();
 use Module::Find ();
 use Plack::Util ();
+use URI::Escape ();
 
 sub import {
     my $class = shift;
@@ -124,7 +125,7 @@ sub uri_for {
 
     my @q;
     while (my ($key, $val) = each %$query) {
-        $val = join '', map { /^[a-zA-Z0-9_.!~*'()-]$/ ? $_ : '%' . uc(unpack('H2', $_)) } split //, $val;
+        $val = URI::Escape::uri_escape(Encode::encode($self->encoding, $val));
         push @q, "${key}=${val}";
     }
     $root . $path . (scalar @q ? '?' . join('&', @q) : '');
