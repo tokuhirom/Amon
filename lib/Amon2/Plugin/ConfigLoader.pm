@@ -12,7 +12,7 @@ sub init {
     my $env = $ENV{PLACK_ENV} || 'development';
     my $fname = File::Spec->catfile($c->base_dir, 'config', "${env}.pl");
     my $config = do $fname or die "Cannot load configuration file: $fname";
-    add_method($c, 'config', sub { $config });
+    Amon2::Util::add_method($c, 'config', sub { $config });
 }
 
 1;

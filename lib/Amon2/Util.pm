@@ -4,7 +4,7 @@ use warnings;
 use base qw/Exporter/;
 use File::Spec;
 
-our @EXPORT = qw/add_method load_class/;
+our @EXPORT_OK = qw/add_method load_class/;
 
 # taken from Plack::Util, because this method will use by CLI.
 {

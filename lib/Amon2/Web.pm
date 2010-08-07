@@ -19,27 +19,27 @@ sub import {
         Amon2::Util::Loader::load_all("${caller}::C");
 
         my $dispatcher_class = $args{dispatcher_class} || "${caller}::Dispatcher";
-        load_class($dispatcher_class);
-        add_method($caller, 'dispatcher_class', sub { $dispatcher_class });
+        Amon2::Util::load_class($dispatcher_class);
+        Amon2::Util::add_method($caller, 'dispatcher_class', sub { $dispatcher_class });
 
         my $base_name = $args{base_name} || do {
             local $_ = $caller;
             s/::Web(?:::.+)?$//;
             $_;
         };
-        load_class($base_name);
-        add_method($caller, 'base_name', sub { $base_name });
+        Amon2::Util::load_class($base_name);
+        Amon2::Util::add_method($caller, 'base_name', sub { $base_name });
 
         my $request_class = $args{request_class} || 'Amon2::Web::Request';
-        load_class($request_class);
-        add_method($caller, 'request_class', sub { $request_class });
+        Amon2::Util::load_class($request_class);
+        Amon2::Util::add_method($caller, 'request_class', sub { $request_class });
 
         my $response_class = $args{response_class} || 'Amon2::Web::Response';
-        load_class($response_class);
-        add_method($caller, 'response_class', sub { $response_class });
+        Amon2::Util::load_class($response_class);
+        Amon2::Util::add_method($caller, 'response_class', sub { $response_class });
 
         my $default_view_class = $args{default_view_class} or die "missing configuration: default_view_class";
-        add_method($caller, 'default_view_class', sub { $default_view_class });
+        Amon2::Util::add_method($caller, 'default_view_class', sub { $default_view_class });
 
         no strict 'refs';
         unshift @{"${caller}::ISA"}, $base_name;

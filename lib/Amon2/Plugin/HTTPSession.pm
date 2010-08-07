@@ -12,7 +12,7 @@ sub init {
     my $state_code = $class->_load($state_conf, 'HTTP::Session::State');
     my $store_code = $class->_load($store_conf, 'HTTP::Session::Store');
 
-    $c->add_method(session => sub {
+    Amon2::Util::add_method($c, session => sub {
         my $self = shift;
         $self->{__PACKAGE__} ||= do {
             HTTP::Session->new(
