@@ -17,6 +17,7 @@ requires 'Tfall';
 requires 'Text::Xslate';
 requires 'Text::MicroTemplate' => 0.11;
 requires 'Router::Simple'            => 0.02;
+requires 'Router::Simple::Sinatraish';
 requires 'Data::OptList';
 requires 'Log::Dispatch';
 

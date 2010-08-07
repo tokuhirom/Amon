@@ -4,49 +4,24 @@ use warnings;
 use parent 'Amon2::Web';
 use Router::Simple 0.04;
 use Amon2::Util qw/add_method/;
+use Router::Simple::Sinatraish;
 
 sub import {
     my $class = shift;
-    strict->import;
-    warnings->import;
-    if (@_ > 0 && shift eq '-base') {
-        my $caller = caller(0);
+    my $caller = caller(0);
 
-        my $router = Router::Simple->new();
-        my $any = sub ($$;$) {
-            my ($pattern, $dest, $opt) = do {
-                if (@_ == 3) {
-                    my ($methods, $pattern, $code) = @_;
-                    ($pattern, {code => $code}, +{method => [ map { uc $_ } @$methods ]});
-                } else {
-                    my ($pattern, $code) = @_;
-                    ($pattern, {code => $code}, +{});
-                }
-            };
-            $router->connect(
-                $pattern,
-                $dest,
-                $opt,
-            );
-        };
-        # any [qw/get post delete/] => '/bye' => sub { ... };
-        # any '/bye' => sub { ... };
-        add_method($caller, 'any', $any);
-        add_method($caller, 'get', sub {
-            $any->([qw/GET HEAD/], $_[0], $_[1]);
-        });
-        add_method($caller, 'post', sub {
-            $any->([qw/POST/], $_[0], $_[1]);
-        });
-        add_method($caller, 'dispatch', sub {
-            my ($klass, $c) = @_;
-            if (my $p = $router->match($c->request->env)) {
-                return $p->{code}->($c, $p);
-            } else {
-                return res_404();
-            }
-        });
-    }
+    Router::Simple::Sinatraish->export_to_level(1);
+    my $router = $caller->router;
+
+    no strict 'refs';
+    *{"$caller\::dispatch"} = sub {
+        my ($klass, $c) = @_;
+        if (my $p = $router->match($c->request->env)) {
+            return $p->{code}->($c, $p);
+        } else {
+            return $c->res_404();
+        }
+    };
 }
 
 1;
@@ -59,7 +34,7 @@ Amon2::Web::Dispatcher::Lite - Sinatra like dispatcher for Amon2
 =head1 SYNOPSIS
 
     package MyApp::Web;
-    use Amon2::Web::Dispatcher::Lite -base;
+    use Amon2::Web::Dispatcher::Lite;
 
     get '/' => sub {
         render('index.mt');
