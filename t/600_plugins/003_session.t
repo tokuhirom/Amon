@@ -14,6 +14,11 @@ BEGIN {
 {
     package MyApp;
     use Amon2 -base;
+    __PACKAGE__->config({
+        'HTTP::Session::State::URI' => {
+            session_id_name => 'amon_sid',
+        },
+    });
 
     package MyApp::Web::Dispatcher;
     sub dispatch {
@@ -49,11 +54,6 @@ BEGIN {
 }
 
 my $app = MyApp::Web->to_app(
-    config => {
-        'HTTP::Session::State::URI' => {
-            session_id_name => 'amon_sid',
-        },
-    },
 );
 my $mech = Test::WWW::Mechanize::PSGI->new(
     app                   => $app,

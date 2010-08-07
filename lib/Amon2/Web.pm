@@ -93,7 +93,7 @@ sub to_app {
         my $req = $class->request_class->new($env);
         my $self = $class->new(
             request => $req,
-            ($args{config} ? (config   => $args{config}) : ()),
+            %args,
         );
 
         no warnings 'redefine';
@@ -152,7 +152,6 @@ sub render_partial {
 
 sub view {
     my $self = shift;
-    my $proto = ref $self || $self;
 
     my $view_class = $self->view_class;
     my $config = $self->config()->{$view_class};

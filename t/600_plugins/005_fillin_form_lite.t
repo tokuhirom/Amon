@@ -10,10 +10,17 @@ BEGIN {
     $INC{'MyApp.pm'} = __FILE__;
 }
 
+my $tmp = tempdir(CLEANUP => 1);
 
 {
     package MyApp;
     use Amon2 -base;
+
+    __PACKAGE__->config({
+        'Tfall::Text::MicroTemplate::File' => {
+            include_path => [$tmp],
+        },
+    });
 
     package MyApp::Web;
     use Amon2::Web -base => (
@@ -24,12 +31,7 @@ BEGIN {
     );
 }
 
-my $tmp = tempdir(CLEANUP => 1);
-my $c = MyApp::Web->bootstrap(config => {
-    'Tfall::Text::MicroTemplate::File' => {
-        include_path => [$tmp],
-    },
-});
+my $c = MyApp::Web->bootstrap();
 
 {
     open my $fh, '>', File::Spec->catfile($tmp, 'hoge.mt') or die $!;

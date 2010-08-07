@@ -35,14 +35,15 @@ sub import {
 
 package Amon2::Base;
 use Data::OptList;
+use parent qw/Class::Data::Inheritable/;
+
+__PACKAGE__->mk_classdata('config' => +{});
 
 sub new {
     my $class = shift;
     my %args = @_ == 1 ? %{ $_[0] } : @_;
-    bless { config => +{}, %args }, $class;
+    bless { %args }, $class;
 }
-
-sub config { $_[0]->{config} }
 
 # for CLI
 sub bootstrap {
