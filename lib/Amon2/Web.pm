@@ -2,7 +2,6 @@ package Amon2::Web;
 use strict;
 use warnings;
 use Amon2::Util;
-use Amon2::Util::Loader;
 use Amon2::Trigger;
 use Encode ();
 use Module::Find ();
