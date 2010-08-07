@@ -17,5 +17,3 @@ This is response class for Amon2.
 
 This class is child class of L<Plack::Response>.
 
-=back
-
