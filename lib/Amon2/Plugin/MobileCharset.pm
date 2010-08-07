@@ -3,18 +3,19 @@ use strict;
 use warnings;
 use HTTP::MobileAgent::Plugin::Charset;
 use Encode::JP::Mobile;
+use Amon2::Util;
 
 sub init {
     my ($class, $c, $conf) = @_;
 
-    $c->add_method('html_content_type' => sub {
+    Amon2::Util::add_method($c, 'html_content_type' => sub {
         my $ma = shift->request->mobile_agent;
         my $ct  = $ma->is_docomo ? 'application/xhtml+xml;charset=' : 'text/html;charset=';
            $ct .= $ma->can_display_utf8 ? 'utf-8' : 'Shift_JIS';
            $ct;
     });
 
-    $c->add_method('encoding' => sub {
+    Amon2::Util::add_method($c, 'encoding' => sub {
         shift->request->mobile_agent->encoding
     });
 }
