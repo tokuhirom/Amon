@@ -73,6 +73,16 @@ sub redirect {
     );
 }
 
+sub res_404 {
+    my ($self) = @_;
+    my $content = 'not found';
+    $self->response_class->new(
+        404,
+        ['Content-Type' => 'text/plain', 'Content-Length' => length($content)],
+        [$content]
+    );
+}
+
 sub to_app {
     my ($class, %args) = @_;
 
