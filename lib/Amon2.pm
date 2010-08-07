@@ -59,11 +59,6 @@ sub bootstrap {
 # -------------------------------------------------------------------------
 # shortcut for your laziness
 
-sub model {
-    my ($self, $name) = @_;
-    $self->get("M::$name");
-}
-
 sub logger {
     my ($self) = @_;
     $self->get("Logger");

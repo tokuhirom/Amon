@@ -78,10 +78,6 @@ Get the configuration.
 
 Get the instance of component named $name.
 
-=item $c->model($name)
-
-Shortcut method for $c->get("M::$name").
-
 =item $c->db()
 
 Short cut method for $c->get("DB")
