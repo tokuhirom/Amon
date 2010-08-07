@@ -13,16 +13,16 @@ requires 'parent';
 requires 'UNIVERSAL::require' => 0.13;
 requires 'Tfall';
 requires 'Module::Find';
+requires 'URI' => 1.54;
+requires 'URI::Escape';
+requires 'Data::OptList';
 
 # Not core, but default components.
 requires 'Text::Xslate';
 requires 'Text::MicroTemplate' => 0.11;
 requires 'Router::Simple'            => 0.02;
 requires 'Router::Simple::Sinatraish';
-requires 'Data::OptList';
 requires 'Log::Dispatch';
-requires 'URI' => 1.54;
-requires 'URI::Escape';
 
 test_requires 'Test::Requires';
 
