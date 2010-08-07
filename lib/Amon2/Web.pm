@@ -40,8 +40,9 @@ sub import {
         Plack::Util::load_class($response_class);
         Amon2::Util::add_method($caller, 'response_class', sub { $response_class });
 
-        my $default_view_class = $args{default_view_class} or die "missing configuration: default_view_class";
-        Amon2::Util::add_method($caller, 'default_view_class', sub { $default_view_class });
+        my $view_class = $args{view_class} or die "missing configuration: view_class";
+           $view_class = Plack::Util::load_class($view_class, 'Tfall');
+        Amon2::Util::add_method($caller, 'view_class', sub { $view_class });
 
         no strict 'refs';
         unshift @{"${caller}::ISA"}, $base_name;
@@ -151,13 +152,13 @@ sub render_partial {
 
 sub view {
     my $self = shift;
-    my $name = @_ == 1 ? $_[0] : $self->default_view_class;
-    $self->{components}->{"View::$name"} ||= do {
-        my $klass = Plack::Util::load_class($name, 'Tfall');
-        my $config = $self->config()->{$klass};
-        $klass->new($config);
-    };
-}
+    my $proto = ref $self || $self;
 
+    my $view_class = $self->view_class;
+    my $config = $self->config()->{$view_class};
+    my $view = $view_class->new($config);
+    Amon2::Util::add_method($self, 'view', sub { $view }); # cache
+    return $view;
+}
 
 1;

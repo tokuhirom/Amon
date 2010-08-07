@@ -21,7 +21,7 @@ __PACKAGE__->load_plugins(qw/ConfigLoader LogDispatch/);
 -- lib/$path/Web.pm
 package <%= $module %>::Web;
 use Amon2::Web -base => (
-    default_view_class => 'Text::Xslate',
+    view_class => 'Text::Xslate',
     base_class         => '<%= $module %>',
 );
 1;

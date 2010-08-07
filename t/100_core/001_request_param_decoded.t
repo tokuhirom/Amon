@@ -17,7 +17,7 @@ BEGIN {
     package MyApp::Web;
     use Amon2::Web -base => (
         base_name => 'MyApp',
-        default_view_class => 'Text::MicroTemplate::File',
+        view_class => 'Text::MicroTemplate::File',
     );
     sub encoding { 'utf-8' }
 }
