@@ -14,7 +14,7 @@ my $tmp = tempdir(CLEANUP => 1);
 
 {
     package MyApp;
-    use Amon2 -base;
+    use parent qw/Amon2/;
 
     __PACKAGE__->config({
         'Tfall::Text::MicroTemplate::File' => {
@@ -23,7 +23,8 @@ my $tmp = tempdir(CLEANUP => 1);
     });
 
     package MyApp::Web;
-    use Amon2::Web -base => (
+    use parent qw/MyApp Amon2::Web/;
+    __PACKAGE__->setup(
         view_class => 'Text::MicroTemplate::File',
     );
     __PACKAGE__->load_plugins(

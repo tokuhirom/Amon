@@ -5,6 +5,8 @@ use 5.008001;
 use UNIVERSAL::require;
 use Amon2::Util;
 use Plack::Util ();
+use Data::OptList;
+use parent qw/Class::Data::Inheritable/;
 
 our $VERSION = '0.44';
 {
@@ -12,30 +14,6 @@ our $VERSION = '0.44';
     sub context { $_context }
     sub set_context { $_context = $_[1] }
 }
-
-sub import {
-    my $class = shift;
-
-    strict->import;
-    warnings->import;
-
-    if (@_>0 && shift eq '-base') {
-        my $caller = caller(0);
-        my %args = @_;
-
-        no strict 'refs';
-        unshift @{"${caller}::ISA"}, 'Amon2::Base';
-
-        my $base_dir = Amon2::Util::base_dir($caller);
-        *{"${caller}::base_dir"} = sub { $base_dir };
-
-        *{"${caller}::base_name"} = sub { $caller };
-    }
-}
-
-package Amon2::Base;
-use Data::OptList;
-use parent qw/Class::Data::Inheritable/;
 
 __PACKAGE__->mk_classdata('config' => +{});
 
@@ -51,6 +29,13 @@ sub bootstrap {
     my $self = $class->new(@_);
     Amon2->set_context($self);
     return $self;
+}
+
+sub base_dir {
+    my $proto = ref $_[0] || $_[0];
+    my $base_dir = Amon2::Util::base_dir($proto);
+    Amon2::Util::add_method($proto, 'base_dir', sub { $base_dir });
+    $base_dir;
 }
 
 # -------------------------------------------------------------------------

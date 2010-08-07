@@ -10,7 +10,7 @@ BEGIN {
 
 {
     package MyApp;
-    use Amon2 -base;
+    use parent qw/Amon2/;
     __PACKAGE__->load_plugins('LogDispatch' => {
         outputs => [ ['Null', 'min_level' => 'debug'] ]
     });

@@ -1,5 +1,7 @@
 package TTApp;
-use Amon2 -base;
+use strict;
+use warnings;
+use parent qw/Amon2/;
 __PACKAGE__->config(
     {
         'Tfall::TT' => {

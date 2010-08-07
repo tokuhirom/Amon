@@ -1,6 +1,6 @@
 package TTApp::Web;
-use Amon2::Web -base => (
+use parent qw/TTApp Amon2::Web/;
+__PACKAGE__->setup(
     view_class => 'TT',
-    base_name         => 'TTApp',
 );
 1;

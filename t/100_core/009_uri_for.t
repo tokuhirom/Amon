@@ -15,8 +15,8 @@ BEGIN {
 
 {
     package MyApp::Web;
-    use Amon2::Web -base => (
-        base_name => 'MyApp',
+    use parent qw/MyApp Amon2::Web/;
+    __PACKAGE__->setup(
         view_class => 'Text::MicroTemplate::File',
     );
     sub encoding { 'utf-8' }
@@ -24,7 +24,7 @@ BEGIN {
 
 {
     package MyApp;
-    use Amon2 -base;
+    use parent qw/Amon2/;
 }
 
 my $req = Amon2::Web::Request->new({

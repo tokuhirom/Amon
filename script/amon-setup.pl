@@ -15,14 +15,18 @@ pod2usage(1) if $help;
 my $confsrc = <<'...';
 -- lib/$path.pm
 package <%= $module %>;
-use Amon2 -base;
+use strict;
+use warnings;
+use parent qw/Amon2/;
 __PACKAGE__->load_plugins(qw/ConfigLoader LogDispatch/);
 1;
 -- lib/$path/Web.pm
 package <%= $module %>::Web;
-use Amon2::Web -base => (
+use strict;
+use warnings;
+use parent qw/<%= $module %> Amon2::Web/;
+__PACKAGE__->setup(
     view_class => 'Text::Xslate',
-    base_class         => '<%= $module %>',
 );
 1;
 -- lib/$path/V/MT/Context.pm

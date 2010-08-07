@@ -10,12 +10,13 @@ BEGIN {
 
 {
     package MyApp;
-    use Amon2 -base;
+    use parent qw/Amon2/;
 
     package MyApp::V::MT;
 
     package MyApp::Web;
-    use Amon2::Web -base => (
+    use parent qw/Amon2::Web Amon2/;
+    __PACKAGE__->setup(
         view_class => 'Text::MicroTemplate::File',
     );
 

@@ -8,46 +8,28 @@ use Module::Find ();
 use Plack::Util ();
 use URI::Escape ();
 
-sub import {
+sub setup {
     my $class = shift;
-    if (@_>0 && shift eq '-base') {
-        my %args = @_;
-        my $caller = caller(0);
+    my %args = @_;
 
-        strict->import;
-        warnings->import;
+    # load controller classes
+    Module::Find::useall("${class}::C");
 
-        # load controller classes
-        Module::Find::useall("${caller}::C");
+    my $dispatcher_class = $args{dispatcher_class} || "${class}::Dispatcher";
+    Plack::Util::load_class($dispatcher_class);
+    Amon2::Util::add_method($class, 'dispatcher_class', sub { $dispatcher_class });
 
-        my $dispatcher_class = $args{dispatcher_class} || "${caller}::Dispatcher";
-        Plack::Util::load_class($dispatcher_class);
-        Amon2::Util::add_method($caller, 'dispatcher_class', sub { $dispatcher_class });
+    my $request_class = $args{request_class} || 'Amon2::Web::Request';
+    Plack::Util::load_class($request_class);
+    Amon2::Util::add_method($class, 'request_class', sub { $request_class });
 
-        my $base_name = $args{base_name} || do {
-            local $_ = $caller;
-            s/::Web(?:::.+)?$//;
-            $_;
-        };
-        Plack::Util::load_class($base_name);
-        Amon2::Util::add_method($caller, 'base_name', sub { $base_name });
+    my $response_class = $args{response_class} || 'Amon2::Web::Response';
+    Plack::Util::load_class($response_class);
+    Amon2::Util::add_method($class, 'response_class', sub { $response_class });
 
-        my $request_class = $args{request_class} || 'Amon2::Web::Request';
-        Plack::Util::load_class($request_class);
-        Amon2::Util::add_method($caller, 'request_class', sub { $request_class });
-
-        my $response_class = $args{response_class} || 'Amon2::Web::Response';
-        Plack::Util::load_class($response_class);
-        Amon2::Util::add_method($caller, 'response_class', sub { $response_class });
-
-        my $view_class = $args{view_class} or die "missing configuration: view_class";
-           $view_class = Plack::Util::load_class($view_class, 'Tfall');
-        Amon2::Util::add_method($caller, 'view_class', sub { $view_class });
-
-        no strict 'refs';
-        unshift @{"${caller}::ISA"}, $base_name;
-        unshift @{"${caller}::ISA"}, $class;
-    }
+    my $view_class = $args{view_class} or die "missing configuration: view_class";
+       $view_class = Plack::Util::load_class($view_class, 'Tfall');
+    Amon2::Util::add_method($class, 'view_class', sub { $view_class });
 }
 
 sub html_content_type { 'text/html; charset=UTF-8' }
