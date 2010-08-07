@@ -29,10 +29,6 @@ Amon2::Manual::Tutorial.ja - Amon2 日本語チュートリアル
     |-- lib
     |   |-- Hello
     |   |   |-- M
-    |   |   |-- V
-    |   |   |   |-- MT
-    |   |   |   |   `-- Context.pm
-    |   |   |   `-- MT.pm
     |   |   |-- Web
     |   |   |   |-- C
     |   |   |   |   `-- Root.pm

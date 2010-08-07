@@ -10,31 +10,6 @@ Amon2 における各コンポーネントの定義についてここに記す�
 
 =over 4
 
-=item View
-
-View は $view->make_response(@args) と $view->render(@args); の2つのメ
-ソッドを持つクラスです。
-
-$view->render(@args) は、HTML や JSON などのcontent body を描画します。
-
-$view->make_response(@args) は $view->render(@args) を content body を
-利用して、レスポンスを構築します。
-
-=item Model
-
-Amon2 において、モデルとは、POPO(Plain Old Perl Object) のことをさします。
-Model は Amon2 に関する一切の知識を持つべきではありません。
-
-Model はオブジェクトであり、$c->model($name) メソッドによりインスタンス
-化されます。
-
-インスタンス化は MyApp::M::Whatever->new($conf) のようにして行われます。
-一般的な L<Class::Accessor::Fast>, L<Mouse>, L<Moose> などで構築された
-クラスなら、普通に動作するはずです。
-
-DBI や Data::Model など、インスタンスの作成に ->new メソッドを呼びだす
-以外の特殊な操作が必要な場合には、Factory を利用してください。
-
 =item Plugin
 
 Plugin は、フックポイントにフックして処理する、Request, Response,
