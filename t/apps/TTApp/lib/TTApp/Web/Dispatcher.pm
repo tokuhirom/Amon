@@ -4,9 +4,10 @@ use feature 'switch';
 
 sub dispatch {
     my ($class, $c) = @_;
+
     given ($c->request->path_info) {
         when ('/') {
-            return call("Root", 'index');
+            return TTApp::Web::C::Root->index($c);
         }
         default {
             return res_404();
