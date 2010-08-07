@@ -86,14 +86,13 @@ sub res_404 {
 }
 
 sub to_app {
-    my ($class, %args) = @_;
+    my ($class, ) = @_;
 
     return sub {
         my ($env) = @_;
         my $req = $class->request_class->new($env);
         my $self = $class->new(
             request => $req,
-            %args,
         );
 
         no warnings 'redefine';
