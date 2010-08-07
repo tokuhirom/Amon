@@ -10,13 +10,7 @@ sub init {
     my ($class, $c, $conf) = @_;
 
     my $env = $ENV{PLACK_ENV} || 'development';
-    my $class_path = $c;
-    $class_path =~ s{::}{/}g;
-    $class_path .= ".pm";
-    my $base = $INC{$class_path};
-    $base = Cwd::abs_path($base) || $base;
-    $base =~ s{(?:blib/)?lib/$class_path$}{};
-    my $fname = File::Spec->catfile($base, 'config', "${env}.pl");
+    my $fname = File::Spec->catfile($c->base_dir, 'config', "${env}.pl");
     my $config = do $fname or die "Cannot load configuration file: $fname";
     add_method($c, 'config', sub { $config });
 }
