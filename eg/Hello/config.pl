@@ -1,5 +1,6 @@
 my $tmpdir = '/tmp/hello.session/';
 mkdir $tmpdir;
+use Hello::V::MT::Context;
 
 {
     'DB' => {
@@ -7,5 +8,9 @@ mkdir $tmpdir;
     },
     'HTTP::Session::Store::File' => {
         dir => $tmpdir,
+    },
+    'Tfall::Text::MicroTemplate::File' => {
+        include_path => 'tmpl',
+        package_name => 'Hello::V::MT::Context',
     },
 }

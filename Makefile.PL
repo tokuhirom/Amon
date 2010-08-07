@@ -11,8 +11,10 @@ requires 'Class::Accessor::Fast';
 requires 'Class::Data::Inheritable';
 requires 'parent';
 requires 'UNIVERSAL::require' => 0.13;
+requires 'Tfall';
 
 # Not core, but default components.
+requires 'Text::Xslate';
 requires 'Text::MicroTemplate' => 0.11;
 requires 'Router::Simple'            => 0.02;
 

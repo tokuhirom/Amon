@@ -39,7 +39,7 @@ BEGIN {
 
     package MyApp::Web;
     use Amon2::Web -base => (
-        default_view_class => 'MT',
+        default_view_class => 'Text::MicroTemplate::File',
     );
     __PACKAGE__->load_plugins(
         'HTTPSession' => {

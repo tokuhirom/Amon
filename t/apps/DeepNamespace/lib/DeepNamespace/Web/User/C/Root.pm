@@ -4,7 +4,7 @@ use warnings;
 use Amon2::Web::Declare;
 
 sub index {
-    render("index.mt");
+    render("index");
 }
 
 1;

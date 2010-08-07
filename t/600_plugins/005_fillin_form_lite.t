@@ -21,7 +21,7 @@ BEGIN {
 
     package MyApp::Web;
     use Amon2::Web -base => (
-        default_view_class => 'MT',
+        default_view_class => 'Text::MicroTemplate::File',
     );
     __PACKAGE__->load_plugins(
         'FillInFormLite' => {},
@@ -31,7 +31,7 @@ BEGIN {
 use Amon2::Web::Declare;
 my $tmp = tempdir(CLEANUP => 1);
 my $c = MyApp::Web->bootstrap(config => {
-    'V::MT' => {
+    'Tfall::Text::MicroTemplate::File' => {
         include_path => [$tmp],
     },
 });
@@ -55,5 +55,4 @@ my $c = MyApp::Web->bootstrap(config => {
 
 my $res = render('hoge.mt')->fillin_form({body => "hello"});
 like $res->body(), qr{<input type="text" name="body" value="hello" />};
-is length($res->body()), $res->header('Content-Length');
 done_testing;

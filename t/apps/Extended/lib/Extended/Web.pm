@@ -1,6 +1,6 @@
 package Extended::Web;
 use Amon2::Web -base => (
-    default_view_class => 'MT',
+    default_view_class => 'Text::MicroTemplate::File',
     base_name => 'Extended',
     request_class => 'Extended::Web::Request',
 );

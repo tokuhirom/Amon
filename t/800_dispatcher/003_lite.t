@@ -16,7 +16,7 @@ BEGIN {
 
     package MyApp::Web;
     use Amon2::Web -base => (
-        default_view_class => 'MT',
+        default_view_class => 'Text::MicroTemplate::File',
     );
 
     package MyApp::Web::Dispatcher;

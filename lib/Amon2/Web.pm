@@ -5,6 +5,7 @@ use Amon2::Util;
 use Amon2::Util::Loader;
 use Amon2::Trigger;
 use Amon2::Container;
+use Encode ();
 
 sub import {
     my $class = shift;
@@ -39,7 +40,6 @@ sub import {
         add_method($caller, 'response_class', sub { $response_class });
 
         my $default_view_class = $args{default_view_class} or die "missing configuration: default_view_class";
-        Amon2::Util::load_class($default_view_class, "${base_name}::V");
         add_method($caller, 'default_view_class', sub { $default_view_class });
 
         no strict 'refs';
@@ -101,6 +101,11 @@ sub run {
             or die "response is not generated";
     }
     $self->call_trigger('AFTER_DISPATCH' => $response);
+    unless (ref $response->body) {
+        $response->body(Encode::encode_utf8($response->body)) if utf8::is_utf8($response->body);
+        $response->header('Content-Length' => length($response->body()))
+            unless $response->header('Content-Length');
+    }
     return $response->finalize;
 }
 
@@ -119,22 +124,28 @@ sub uri_for {
 }
 
 sub render {
-    return shift->view()->make_response(@_);
+    my $self = shift;
+    my $html = $self->view()->render(@_);
+    $self->response_class->new(
+        200,
+        ['Content-Type' => $self->html_content_type],
+        $html,
+    );
 }
 
 sub render_partial {
-    return shift->view()->render(@_);
+    my $self = shift;
+    my $html = $self->view()->render(@_);
+    return $html;
 }
 
 sub view {
     my $self = shift;
     my $name = @_ == 1 ? $_[0] : $self->default_view_class;
-       $name = "V::$name";
-    my $klass = "@{[ $self->base_name ]}::$name";
-    $self->{components}->{$klass} ||= do {
-        Amon2::Util::load_class($klass);
-        my $config = $self->config()->{$name} || +{};
-        $klass->new($self, $config);
+    $self->{components}->{"View::$name"} ||= do {
+        my $klass = Amon2::Util::load_class($name, 'Tfall');
+        my $config = $self->config()->{$klass};
+        $klass->new($config);
     };
 }
 

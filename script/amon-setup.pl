@@ -24,13 +24,9 @@ use Amon2 -base => (
 -- lib/$path/Web.pm
 package [%= $module %]::Web;
 use Amon2::Web -base => (
-    default_view_class => 'MT',
+    default_view_class => 'Text::Xslate',
     base_class         => '[%= $module %]',
 );
-1;
--- lib/$path/V/MT.pm
-package [%= $module %]::V::MT;
-use Amon2::V::MT -base;
 1;
 -- lib/$path/V/MT/Context.pm
 package [%= $module %]::V::MT::Context;
@@ -57,6 +53,9 @@ sub index {
 1;
 -- config/development.pl
 +{
+    'Tfall::Text::Xslate' => {
+        path => ['tmpl/'],
+    },
 };
 -- lib/$path/ConfigLoader.pm
 package [%= $module %]::ConfigLoader;

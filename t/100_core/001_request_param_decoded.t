@@ -17,7 +17,7 @@ BEGIN {
     use Amon2::Web -base => (
         base_name => 'MyApp',
         dispatcher_class => 'Amon2::Web::Dispatcher',
-        default_view_class => 'MT',
+        default_view_class => 'Text::MicroTemplate::File',
     );
     sub encoding { 'utf-8' }
 }
