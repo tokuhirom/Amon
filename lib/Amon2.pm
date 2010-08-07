@@ -33,6 +33,7 @@ sub import {
 }
 
 package Amon2::Base;
+use Data::OptList;
 
 sub new {
     my $class = shift;
@@ -70,8 +71,8 @@ sub db {
 
 sub load_plugins {
     my ($class, @args) = @_;
-    for (my $i=0; $i<@args; $i+=2) {
-        my ($module, $conf) = ($args[$i], $args[$i+1]);
+    for my $opt (@{Data::OptList::mkopt(\@args)}) {
+        my ($module, $conf) = ($opt->[0], $opt->[1]);
         $class->load_plugin($module, $conf);
     }
 }
