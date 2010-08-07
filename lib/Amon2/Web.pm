@@ -1,10 +1,16 @@
 package Amon2::Web;
 use strict;
 use warnings;
+use parent qw/Class::Data::Inheritable/;
 use Amon2::Util;
 use Amon2::Util::Loader;
 use Amon2::Trigger;
 use Amon2::Container;
+use Amon2::Web::Request;
+use Amon2::Web::Response;
+
+__PACKAGE__->mk_classdata( 'request_class'  => 'Amon2::Web::Request' );
+__PACKAGE__->mk_classdata( 'response_class' => 'Amon2::Web::Response' );
 
 sub import {
     my $class = shift;
@@ -29,14 +35,6 @@ sub import {
         };
         load_class($base_name);
         add_method($caller, 'base_name', sub { $base_name });
-
-        my $request_class = $args{request_class} || 'Amon2::Web::Request';
-        load_class($request_class);
-        add_method($caller, 'request_class', sub { $request_class });
-
-        my $response_class = $args{response_class} || 'Amon2::Web::Response';
-        load_class($response_class);
-        add_method($caller, 'response_class', sub { $response_class });
 
         my $default_view_class = $args{default_view_class} or die "missing configuration: default_view_class";
         Amon2::Util::load_class($default_view_class, "${base_name}::V");

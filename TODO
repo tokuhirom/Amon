@@ -1,10 +1,6 @@
 plan for Amon22.0
 
-- remove Amon2::Declare::db()
-- remove Amon2::Declare::logger()
-- remove Amon2::Declare::config()
-- remove Amon2::Declare::view()
-- remove Amon2::Declare::model()
 - use Class::Trigger
 - use Tfall
+- add $c->res();
 
