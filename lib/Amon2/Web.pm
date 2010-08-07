@@ -5,6 +5,7 @@ use Amon2::Util;
 use Amon2::Util::Loader;
 use Amon2::Trigger;
 use Encode ();
+use Module::Find ();
 
 sub import {
     my $class = shift;
@@ -16,7 +17,7 @@ sub import {
         warnings->import;
 
         # load controller classes
-        Amon2::Util::Loader::load_all("${caller}::C");
+        Module::Find::useall("${caller}::C");
 
         my $dispatcher_class = $args{dispatcher_class} || "${caller}::Dispatcher";
         Amon2::Util::load_class($dispatcher_class);

@@ -12,6 +12,7 @@ requires 'Class::Data::Inheritable';
 requires 'parent';
 requires 'UNIVERSAL::require' => 0.13;
 requires 'Tfall';
+requires 'Module::Find';
 
 # Not core, but default components.
 requires 'Text::Xslate';
@@ -20,12 +21,8 @@ requires 'Router::Simple'            => 0.02;
 requires 'Router::Simple::Sinatraish';
 requires 'Data::OptList';
 requires 'Log::Dispatch';
-
-# Amon2::Sense deps
-requires 'String::CamelCase';
 requires 'URI' => 1.54;
 requires 'URI::Escape';
-requires 'Path::Class';
 
 test_requires 'Test::Requires';
 
