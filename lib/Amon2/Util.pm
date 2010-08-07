@@ -33,12 +33,6 @@ sub add_method {
     *{"${klass}::${method}"} = $code;
 }
 
-sub class2env {
-    my $class = shift || '';
-    $class =~ s/::/_/g;
-    return uc($class);
-}
-
 sub base_dir($) {
     my $path = shift;
     $path =~ s!::!/!g;
@@ -78,20 +72,11 @@ unless C<$class> begins with C<+> sign, which means the class name is already fu
   my $class = Amon2::Util::load_class("Foo");                   # Foo  my $class = Plack::Util::load_class("Baz", "Foo::Bar");       # Foo::Bar::Baz
   my $class = Amon2::Util::load_class("+XYZ::ZZZ", "Foo::Bar"); # XYZ::ZZZ
 
-=item Amon2::Util::class2env
-
-Returns the environment name for class.
-
-    MyApp becomes MyApp
-    My::App becomes MY_APP
-
 =back
 
 =head1 THANKS TO
 
 load_class is taken from L<Plack::Util>.
-
-class2env is taken from L<Catalyst::Utils>.
 
 =head1 SEE ALSO
 
