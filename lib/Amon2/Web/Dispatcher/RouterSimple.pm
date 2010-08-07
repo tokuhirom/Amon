@@ -52,7 +52,7 @@ Amon2::Web::Dispatcher::RouterSimple - Router::Simple binding for Amon2
 =head1 SYNOPSIS
 
     package MyApp::Web::Dispatcher;
-    use Amon2::Web::Dispatcher::RouterSimple -base;
+    use Amon2::Web::Dispatcher::RouterSimple;
 
 =head1 DESCRIPTION
 
