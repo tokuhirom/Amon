@@ -1,0 +1,10 @@
+plan for Amon2.0
+
+- remove Amon::Declare::db()
+- remove Amon::Declare::logger()
+- remove Amon::Declare::config()
+- remove Amon::Declare::view()
+- remove Amon::Declare::model()
+- use Class::Trigger
+- use Tfall
+

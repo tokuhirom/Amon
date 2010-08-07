@@ -5,7 +5,7 @@ use 5.008001;
 use Amon::Container;
 use UNIVERSAL::require;
 
-our $VERSION = '0.43';
+our $VERSION = '0.44';
 {
     our $_context;
     sub context { $_context }

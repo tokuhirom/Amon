@@ -1,3 +1,7 @@
+0.44
+
+    - added Amon::Plugin::FillInFormLite.
+
 0.43
 
     * e657339 [BUG] Amon::Util must not returns undef at 2nd time function call.
