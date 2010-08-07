@@ -6,11 +6,9 @@ use Getopt::Long;
 use Pod::Usage;
 use Text::MicroTemplate ':all';
 
-my $perlver = $] >= 5.010000 ? '5.10' : '5.8';
 our $module;
 GetOptions(
-'perlver=s' => \$perlver,
-'help' => \my $help,
+    'help'      => \my $help,
 ) or pod2usage(0);
 pod2usage(1) if $help;
 
@@ -32,7 +30,6 @@ package [%= $module %]::V::MT::Context;
 use Amon2::V::MT::Context;
 1;
 -- lib/$path/Web/Dispatcher.pm
-% my $perlver = shift;
 package [%= $module %]::Web::Dispatcher;
 use Amon2::Web::Dispatcher::RouterSimple;
 
@@ -347,7 +344,7 @@ sub main {
         my $sub = eval "package main;our \$module; sub { Text::MicroTemplate::encoded_string(($code)->(\@_))}";
         die $@ if $@;
 
-        my $res = $sub->($perlver)->as_string;
+        my $res = $sub->()->as_string;
 
         print "writing $file\n";
         open my $fh, '>', $file or die "Can't open file($file):$!";
