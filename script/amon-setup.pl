@@ -18,7 +18,7 @@ my $confsrc = <<'...';
 -- lib/$path.pm
 package [%= $module %];
 use Amon2 -base;
-__PACKAGE__->load_plugins(qw/ConfigLoader/);
+__PACKAGE__->load_plugins(qw/ConfigLoader LogDispatch/);
 1;
 -- lib/$path/Web.pm
 package [%= $module %]::Web;
