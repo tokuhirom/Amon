@@ -108,11 +108,6 @@ sub to_app {
                 or die "response is not generated";
         }
         $self->call_trigger('AFTER_DISPATCH' => $response);
-        unless (ref $response->body) {
-            $response->body(Encode::encode_utf8($response->body)) if utf8::is_utf8($response->body);
-            $response->header('Content-Length' => length($response->body()))
-                unless $response->header('Content-Length');
-        }
         return $response->finalize;
     };
 }
@@ -134,9 +129,16 @@ sub uri_for {
 sub render {
     my $self = shift;
     my $html = $self->view()->render(@_);
-    $self->response_class->new(
+
+    for my $code ($self->get_trigger_code('HTML_FILTER')) {
+        $html = $code->($html);
+    }
+
+    $html = Encode::encode($self->encoding, $html);
+
+    return $self->response_class->new(
         200,
-        ['Content-Type' => $self->html_content_type],
+        ['Content-Type' => $self->html_content_type, 'Content-Length' => length($html)],
         $html,
     );
 }
