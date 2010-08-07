@@ -7,7 +7,6 @@ use File::Temp qw/tempdir/;
 
 BEGIN {
     $INC{'MyApp/Web/Dispatcher.pm'} = __FILE__;
-    $INC{'MyApp/V/MT.pm'} = __FILE__;
     $INC{'MyApp.pm'} = __FILE__;
 }
 
@@ -15,9 +14,6 @@ BEGIN {
 {
     package MyApp;
     use Amon2 -base;
-
-    package MyApp::V::MT;
-    use Amon2::V::MT -base;
 
     package MyApp::Web;
     use Amon2::Web -base => (
