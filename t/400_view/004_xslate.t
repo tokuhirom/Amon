@@ -6,12 +6,12 @@ use File::Spec;
 use Test::More;
 {
     package MyApp::V::Xslate;
-    use Amon::V::Xslate -base;
+    use Amon2::V::Xslate -base;
 }
 
 {
     package MyApp;
-    use Amon -base;
+    use Amon2 -base;
 }
 
 my $c = MyApp->new();

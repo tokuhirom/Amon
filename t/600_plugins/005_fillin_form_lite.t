@@ -14,13 +14,13 @@ BEGIN {
 
 {
     package MyApp;
-    use Amon -base;
+    use Amon2 -base;
 
     package MyApp::V::MT;
-    use Amon::V::MT -base;
+    use Amon2::V::MT -base;
 
     package MyApp::Web;
-    use Amon::Web -base => (
+    use Amon2::Web -base => (
         default_view_class => 'MT',
     );
     __PACKAGE__->load_plugins(
@@ -28,7 +28,7 @@ BEGIN {
     );
 }
 
-use Amon::Web::Declare;
+use Amon2::Web::Declare;
 my $tmp = tempdir(CLEANUP => 1);
 my $c = MyApp::Web->bootstrap(config => {
     'V::MT' => {

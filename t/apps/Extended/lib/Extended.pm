@@ -1,3 +1,3 @@
 package Extended;
-use Amon -base;
+use Amon2 -base;
 1;

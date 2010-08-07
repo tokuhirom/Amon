@@ -5,12 +5,12 @@ use File::Spec;
 use Test::More;
 {
     package MyApp::V::MT;
-    use Amon::V::MT -base;
+    use Amon2::V::MT -base;
 }
 
 {
     package MyApp;
-    use Amon -base;
+    use Amon2 -base;
 }
 
 my $c = MyApp->new();

@@ -2,22 +2,22 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>Amon docs</title>
+    <title>Amon2 docs</title>
     <link rel="stylesheet" href="css/main.css" type="text/css" />
 </head>
 <body>
     <div id="Container">
-        <header>Amon docs</header>
+        <header>Amon2 docs</header>
 
             <div>
-                <h1>Amon is ...</h1>
+                <h1>Amon2 is ...</h1>
                 <ul>
                     <li>Fast</li>
                     <li>Simple</li>
                 </ul>
                 <B>Web Application Framework</B> for Perl5.
 
-                <h1>Amon's policies are</h1>
+                <h1>Amon2's policies are</h1>
                 <ul>
                     <li><a href="http://search.cpan.org/dist/PSGI/">PSGI</a> support</li>
                     <li>no xs dependencies by default</li>

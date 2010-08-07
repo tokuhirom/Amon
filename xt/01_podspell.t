@@ -32,7 +32,7 @@ maki
 TODO
 kazuhooku
 FAQ
-Amon
+Amon2
 DBI
 PSGI
 URL
@@ -54,3 +54,4 @@ SQLite
 bitmask
 URI
 HTTP
+Amon

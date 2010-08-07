@@ -1,3 +1,3 @@
 package TTApp::V::TT;
-use Amon::V::TT -base;
+use Amon2::V::TT -base;
 1;

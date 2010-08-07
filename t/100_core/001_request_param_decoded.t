@@ -1,11 +1,11 @@
 use strict;
 use warnings;
 use utf8;
-use Amon::Web::Request;
+use Amon2::Web::Request;
 use URI::Escape;
 use Encode;
 use Test::More;
-use Amon;
+use Amon2;
 
 BEGIN {
     $INC{'MyApp.pm'} = __FILE__;
@@ -14,9 +14,9 @@ BEGIN {
 
 {
     package MyApp::Web;
-    use Amon::Web -base => (
+    use Amon2::Web -base => (
         base_name => 'MyApp',
-        dispatcher_class => 'Amon::Web::Dispatcher',
+        dispatcher_class => 'Amon2::Web::Dispatcher',
         default_view_class => 'MT',
     );
     sub encoding { 'utf-8' }
@@ -24,12 +24,12 @@ BEGIN {
 
 {
     package MyApp;
-    use Amon -base;
+    use Amon2 -base;
 }
 
 my $c = MyApp::Web->bootstrap();
 
-my $req = Amon::Web::Request->new({
+my $req = Amon2::Web::Request->new({
     QUERY_STRING   => 'foo=%E3%81%BB%E3%81%92&bar=%E3%81%B5%E3%81%8C1&bar=%E3%81%B5%E3%81%8C2',
     REQUEST_METHOD => 'GET',
 });

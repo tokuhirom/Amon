@@ -12,12 +12,12 @@ BEGIN {
 
 {
     package MyApp;
-    use Amon -base;
+    use Amon2 -base;
 }
 
 {
     package MyApp::Web;
-    use Amon::Web -base => (
+    use Amon2::Web -base => (
         default_view_class => 'MT',
     );
     __PACKAGE__->load_plugins(

@@ -1,3 +1,3 @@
 package Extended::Config;
-use Amon::Config;
+use Amon2::Config;
 1;

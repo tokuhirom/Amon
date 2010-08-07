@@ -1,4 +1,4 @@
-Amon - Yet another web application framework
+Amon2 - Yet another web application framework
 ============================================
 
 - Support PSGI/Plack

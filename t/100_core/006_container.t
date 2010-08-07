@@ -4,7 +4,7 @@ use Test::More;
 
 {
     package MyApp;
-    use parent 'Amon::Container';
+    use parent 'Amon2::Container';
     __PACKAGE__->add_factory('DB' => sub {
         my ($c, $klass, $conf) = @_;
         return "YES $conf";

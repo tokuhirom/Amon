@@ -13,10 +13,10 @@ BEGIN {
 
 {
     package MyApp;
-    use Amon -base;
+    use Amon2 -base;
 
     package MyApp::Web::Dispatcher;
-    use Amon::Web::Dispatcher;
+    use Amon2::Web::Dispatcher;
     sub dispatch {
         my ($class, $c) = @_;
         if ($c->request->path_info eq '/') {
@@ -38,7 +38,7 @@ BEGIN {
     }
 
     package MyApp::Web;
-    use Amon::Web -base => (
+    use Amon2::Web -base => (
         default_view_class => 'MT',
     );
     __PACKAGE__->load_plugins(

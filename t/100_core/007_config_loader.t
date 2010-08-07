@@ -6,7 +6,7 @@ BEGIN {$INC{'MyApp/ConfigLoader.pm'} = __FILE__; }
 
 {
     package MyApp;
-    use Amon -base => (
+    use Amon2 -base => (
         config_loader_class => 'MyApp::ConfigLoader',
     );
 }

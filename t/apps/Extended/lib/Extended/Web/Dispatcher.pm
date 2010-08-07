@@ -1,5 +1,5 @@
 package Extended::Web::Dispatcher;
-use Amon::Web::Dispatcher;
+use Amon2::Web::Dispatcher;
 use feature 'switch';
 
 sub dispatch {

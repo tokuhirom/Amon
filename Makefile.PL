@@ -1,6 +1,6 @@
 use inc::Module::Install;
 
-all_from 'lib/Amon.pm';
+all_from 'lib/Amon2.pm';
 license 'perl';
 
 requires 'Plack'                     => 0.9927;
@@ -16,7 +16,7 @@ requires 'UNIVERSAL::require' => 0.13;
 requires 'Text::MicroTemplate' => 0.11;
 requires 'Router::Simple'            => 0.02;
 
-# Amon::Sense deps
+# Amon2::Sense deps
 requires 'String::CamelCase';
 requires 'URI' => 1.54;
 requires 'URI::Escape';

@@ -1,5 +1,5 @@
 package DeepNamespace::Web::User;
-use Amon::Web -base => (
+use Amon2::Web -base => (
     default_view_class => 'MT',
     base_name => 'DeepNamespace',
 );

@@ -1,0 +1,20 @@
+=head1 NAME
+
+Amon2::Manual::TODO - What is next step?
+
+=head1 TODO LIST
+
+=over 4
+
+=item Amon2::Plugin::CSSInliner
+
+like HTML::DoCoMoCSS
+
+=item Plack::Middleware::PageCache
+
+=item build_per_request for container class
+
+=back
+
+=cut
+

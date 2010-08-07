@@ -1,5 +1,5 @@
 package Hello::Web::Dispatcher;
-use Amon::Web::Dispatcher::HTTPxDispatcher;
+use Amon2::Web::Dispatcher::HTTPxDispatcher;
 
 connect '/'              => { controller => 'Root', action => 'index' };
 connect '/signup'        => { controller => 'Root', action => 'signup' };

@@ -17,29 +17,29 @@ pod2usage(1) if $help;
 my $confsrc = <<'...';
 -- lib/$path.pm
 package [%= $module %];
-use Amon -base => (
+use Amon2 -base => (
     config_loader_class => '[%= $module %]::ConfigLoader',
 );
 1;
 -- lib/$path/Web.pm
 package [%= $module %]::Web;
-use Amon::Web -base => (
+use Amon2::Web -base => (
     default_view_class => 'MT',
     base_class         => '[%= $module %]',
 );
 1;
 -- lib/$path/V/MT.pm
 package [%= $module %]::V::MT;
-use Amon::V::MT -base;
+use Amon2::V::MT -base;
 1;
 -- lib/$path/V/MT/Context.pm
 package [%= $module %]::V::MT::Context;
-use Amon::V::MT::Context;
+use Amon2::V::MT::Context;
 1;
 -- lib/$path/Web/Dispatcher.pm
 % my $perlver = shift;
 package [%= $module %]::Web::Dispatcher;
-use Amon::Web::Dispatcher::RouterSimple -base;
+use Amon2::Web::Dispatcher::RouterSimple -base;
 
 connect '/' => {controller => 'Root', action => 'index'};
 
@@ -61,12 +61,12 @@ sub index {
 -- lib/$path/ConfigLoader.pm
 package [%= $module %]::ConfigLoader;
 use strict;
-use parent 'Amon::ConfigLoader';
+use parent 'Amon2::ConfigLoader';
 1;
 -- tmpl/index.mt
 ? extends 'base.mt';
 ? block title => '[%= $dist %] page';
-? block content => sub { 'hello, Amon world!' };
+? block content => sub { 'hello, Amon2 world!' };
 -- tmpl/base.mt
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -80,13 +80,13 @@ use parent 'Amon::ConfigLoader';
 <body>
     <div id="Container">
         <div id="Header">
-            <a href="<?= uri_for('/') ?>">Amon Startup Page</a>
+            <a href="<?= uri_for('/') ?>">Amon2 Startup Page</a>
         </div>
         <div id="Content">
             <? block content => 'body here' ?>
         </div>
         <div id="FooterContainer"><div id="Footer">
-            Powered by Amon
+            Powered by Amon2
         </div></div>
     </div>
 </body>
@@ -187,7 +187,7 @@ use inc::Module::Install;
 all_from "lib/[%= $path %].pm";
 
 tests 't/*.t t/*/*.t t/*/*/*.t';
-requires 'Amon';
+requires 'Amon2';
 recursive_author_tests('xt');
 
 WriteAll;
@@ -260,7 +260,7 @@ maki
 TODO
 kazuhooku
 FAQ
-Amon
+Amon2
 DBI
 PSGI
 URL
@@ -283,7 +283,7 @@ all_pod_files_ok();
 allow=refs
 [-Subroutines::ProhibitSubroutinePrototypes]
 [TestingAndDebugging::RequireUseStrict]
-equivalent_modules = Mouse Mouse::Role Moose Amon Amon::Web Amon::Web::C Amon::V::MT::Context Amon::Web::Dispatcher Amon::V::MT Amon::Config DBIx::Skinny DBIx::Skinny::Schema Amon::Web::Dispatcher::HTTPxDispatcher Any::Moose Amon::Web::Dispatcher::RouterSimple DBIx::Skinny DBIx::Skinny::Schema Amon::Web::Dispatcher::Lite common::sense
+equivalent_modules = Mouse Mouse::Role Moose Amon2 Amon2::Web Amon2::Web::C Amon2::V::MT::Context Amon2::Web::Dispatcher Amon2::V::MT Amon2::Config DBIx::Skinny DBIx::Skinny::Schema Amon2::Web::Dispatcher::HTTPxDispatcher Any::Moose Amon2::Web::Dispatcher::RouterSimple DBIx::Skinny DBIx::Skinny::Schema Amon2::Web::Dispatcher::Lite common::sense
 [-Subroutines::ProhibitExplicitReturnUndef]
 -- .gitignore
 Makefile

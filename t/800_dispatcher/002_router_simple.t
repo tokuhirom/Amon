@@ -11,12 +11,12 @@ BEGIN {
 
 {
     package MyApp;
-    use Amon -base;
+    use Amon2 -base;
 }
 
 {
     package MyApp::Web;
-    use Amon::Web -base => (
+    use Amon2::Web -base => (
         default_view_class => 'MT',
     );
 }
@@ -25,13 +25,13 @@ BEGIN {
     package MyApp::Web::C::Root;
     use strict;
     use warnings;
-    use Amon::Web::Declare;
+    use Amon2::Web::Declare;
     sub index { res(200, [], 'top') }
 
     package MyApp::Web::C::Blog;
     use strict;
     use warnings;
-    use Amon::Web::Declare;
+    use Amon2::Web::Declare;
     sub monthly {
         my ($class, $c, $args) = @_;
         res(200, [], "blog: $args->{year}, $args->{month}")
@@ -40,11 +40,11 @@ BEGIN {
     package MyApp::Web::C::Account;
     use strict;
     use warnings;
-    use Amon::Web::Declare;
+    use Amon2::Web::Declare;
     sub login { res(200, [], 'login') }
 
     package MyApp::Web::Dispatcher;
-    use Amon::Web::Dispatcher::RouterSimple -base;
+    use Amon2::Web::Dispatcher::RouterSimple -base;
     connect '/', {controller => 'Root', action => 'index'};
     connect '/blog/{year}/{month}', {controller => 'Blog', action => 'monthly'};
     submapper('/account/', {controller => 'Account'})

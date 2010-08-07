@@ -2,17 +2,17 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
-use Amon::V::MT;
+use Amon2::V::MT;
 use FindBin;
 
 {
     package MyApp::V::MT;
-    use Amon::V::MT -base;
+    use Amon2::V::MT -base;
 }
 
 {
     package MyApp;
-    use Amon -base;
+    use Amon2 -base;
 }
 
 my $c = MyApp->new();

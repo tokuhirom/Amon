@@ -10,17 +10,17 @@ BEGIN {
 
 {
     package MyApp;
-    use Amon -base;
+    use Amon2 -base;
 
     package MyApp::V::MT;
 
     package MyApp::Web;
-    use Amon::Web -base => (
+    use Amon2::Web -base => (
         default_view_class => 'MT',
     );
 
     package MyApp::Web::Dispatcher;
-    use Amon::Web::Dispatcher::Lite '-base';
+    use Amon2::Web::Dispatcher::Lite '-base';
 
     get '/' => sub {
         res(200, [], ['ok'])

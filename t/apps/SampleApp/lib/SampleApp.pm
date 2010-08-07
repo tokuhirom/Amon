@@ -1,5 +1,5 @@
 package SampleApp;
-use Amon (
+use Amon2 (
   view_class => 'MT',
 );
 1;

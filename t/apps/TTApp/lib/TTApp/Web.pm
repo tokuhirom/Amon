@@ -1,5 +1,5 @@
 package TTApp::Web;
-use Amon::Web -base => (
+use Amon2::Web -base => (
     default_view_class => 'TT',
     base_name         => 'TTApp',
 );

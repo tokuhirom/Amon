@@ -11,12 +11,12 @@ BEGIN {
 
 {
     package MyApp;
-    use Amon -base;
+    use Amon2 -base;
 }
 
 {
     package MyApp::Web;
-    use Amon::Web -base => (
+    use Amon2::Web -base => (
         default_view_class => 'MT',
     );
 }
@@ -24,7 +24,7 @@ BEGIN {
 {
     package MyApp::Web::C;
     use base qw/Path::AttrRouter::Controller/;
-    use Amon::Web::Declare;
+    use Amon2::Web::Declare;
     sub index :Path {
         my ($self, $c) = @_;
         res(200, [], 'index');
@@ -37,7 +37,7 @@ BEGIN {
 
     package MyApp::Web::C::Regex;
     use base qw/Path::AttrRouter::Controller/;
-    use Amon::Web::Declare;
+    use Amon2::Web::Declare;
 
     sub index :Regex('^regex/(\d+)/(.+)') {
         my ($self, $c, $y, $m) = @_;
@@ -47,7 +47,7 @@ BEGIN {
 
 {
     package MyApp::Web::Dispatcher;
-    use Amon::Web::Dispatcher::PathAttrRouter -base => (
+    use Amon2::Web::Dispatcher::PathAttrRouter -base => (
         search_path => 'MyApp::Web::C',
     );
 }

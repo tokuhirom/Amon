@@ -1,9 +1,9 @@
 use strict;
 use warnings;
-use Amon::Web::Request;
+use Amon2::Web::Request;
 use Test::More;
 
-my $req = Amon::Web::Request->new(
+my $req = Amon2::Web::Request->new(
     {
         HTTP_HOST => 'localhost',
         PATH_INFO => '/foo/',

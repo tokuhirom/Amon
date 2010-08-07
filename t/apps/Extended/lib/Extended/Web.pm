@@ -1,5 +1,5 @@
 package Extended::Web;
-use Amon::Web -base => (
+use Amon2::Web -base => (
     default_view_class => 'MT',
     base_name => 'Extended',
     request_class => 'Extended::Web::Request',

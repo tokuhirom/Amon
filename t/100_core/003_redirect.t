@@ -1,7 +1,7 @@
 use strict;
 use warnings;
-require Amon::Web::Declare;
-use Amon::Web::Request;
+require Amon2::Web::Declare;
+use Amon2::Web::Request;
 use Test::More;
 
 BEGIN {
@@ -12,12 +12,12 @@ BEGIN {
 
 {
     package MyApp;
-    use Amon -base;
+    use Amon2 -base;
 }
 
 {
     package MyApp::Web;
-    use Amon::Web -base => (
+    use Amon2::Web -base => (
         default_view_class => 'MT',
     );
 }
@@ -64,9 +64,9 @@ done_testing;
 
 sub check_redirect {
     my ($env, $next) = @_;
-    $c->{request} = Amon::Web::Request->new($env);
+    $c->{request} = Amon2::Web::Request->new($env);
 
-    my $res = Amon::Web::Declare::redirect($next);
+    my $res = Amon2::Web::Declare::redirect($next);
     $res->header('Location');
 }
 
