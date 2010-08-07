@@ -2,10 +2,7 @@ package Amon2::Container;
 # This class should not contain any Amon2 specific feature.
 use strict;
 use warnings;
-use parent 'Class::Data::Inheritable';
 use Amon2::Util ();
-
-__PACKAGE__->mk_classdata('_factory_map' => +{});
 
 sub new {
     my $class = shift;
@@ -14,31 +11,6 @@ sub new {
 }
 
 sub config { $_[0]->{config} }
-
-sub get {
-    my ($self, $name, @args) = @_;
-    $self->{components}->{$name} ||= do {
-        my $config = $self->config()->{$name} || +{};
-        if (my $factory = $self->_factory_map->{$name}) {
-            $factory->($self, $name, $config, @args);
-        } else {
-            my $klass = "@{[ $self->base_name ]}::$name";
-            Amon2::Util::load_class($klass);
-            $klass->new($config);
-        }
-    };
-}
-
-sub add_factory {
-    my ($class, $target, $factory) = @_;
-    if (not ref $factory) {
-        # This feature will remove.
-        Carp::carp("Factory class was deprecated. Will remove.");
-        my $factory_class = Amon2::Util::load_class($factory, 'Amon2::Factory');
-        $factory = sub { $factory_class->create(@_) };
-    }
-    $class->_factory_map->{$target} = $factory;
-}
 
 1;
 __END__

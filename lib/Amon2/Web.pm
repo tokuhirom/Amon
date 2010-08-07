@@ -4,7 +4,6 @@ use warnings;
 use Amon2::Util;
 use Amon2::Util::Loader;
 use Amon2::Trigger;
-use Amon2::Container;
 use Encode ();
 
 sub import {
