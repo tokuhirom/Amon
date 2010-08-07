@@ -14,7 +14,7 @@ sub init {
 
     $c->add_method(session => sub {
         my $self = shift;
-        $self->pnotes->{session} ||= do {
+        $self->{__PACKAGE__} ||= do {
             HTTP::Session->new(
                 state   => $state_code->($self),
                 store   => $store_code->($self),
@@ -24,7 +24,7 @@ sub init {
     });
     $c->add_trigger(AFTER_DISPATCH => sub {
         my ($self, $res) = @_;
-        if (my $session = $self->pnotes->{session}) {
+        if (my $session = $self->{__PACKAGE__}) {
             $session->response_filter($res);
             $session->finalize();
         }

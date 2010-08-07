@@ -51,7 +51,6 @@ sub html_content_type { 'text/html; charset=UTF-8' }
 sub encoding          { 'utf-8' }
 sub request           { $_[0]->{request} }
 sub req               { $_[0]->{request} }
-sub pnotes            { $_[0]->{pnotes}  }
 sub args              { $_[0]->{args}    }
 
 sub redirect {
@@ -86,36 +85,34 @@ sub res_404 {
 sub to_app {
     my ($class, %args) = @_;
 
-    my $self = $class->new(
-         ($args{config} ? (config   => $args{config}) : ()),
-    );
-    return sub { $self->run(shift) };
-}
+    return sub {
+        my ($env) = @_;
+        my $req = $class->request_class->new($env);
+        my $self = $class->new(
+            request => $req,
+            ($args{config} ? (config   => $args{config}) : ()),
+        );
 
-sub run {
-    my ($self, $env) = @_;
+        no warnings 'redefine';
+        local *Amon2::context = sub { $self };
 
-    my $req = $self->request_class->new($env);
-    local $self->{request} = $req;
-    local $self->{pnotes}  = +{};
-    local $Amon2::_context = $self;
-
-    my $response;
-    for my $code ($self->get_trigger_code('BEFORE_DISPATCH')) {
-        $response = $code->($self);
-        last if $response;
-    }
-    unless ($response) {
-        $response = $self->dispatcher_class->dispatch($self)
-            or die "response is not generated";
-    }
-    $self->call_trigger('AFTER_DISPATCH' => $response);
-    unless (ref $response->body) {
-        $response->body(Encode::encode_utf8($response->body)) if utf8::is_utf8($response->body);
-        $response->header('Content-Length' => length($response->body()))
-            unless $response->header('Content-Length');
-    }
-    return $response->finalize;
+        my $response;
+        for my $code ($self->get_trigger_code('BEFORE_DISPATCH')) {
+            $response = $code->($self);
+            last if $response;
+        }
+        unless ($response) {
+            $response = $self->dispatcher_class->dispatch($self)
+                or die "response is not generated";
+        }
+        $self->call_trigger('AFTER_DISPATCH' => $response);
+        unless (ref $response->body) {
+            $response->body(Encode::encode_utf8($response->body)) if utf8::is_utf8($response->body);
+            $response->header('Content-Length' => length($response->body()))
+                unless $response->header('Content-Length');
+        }
+        return $response->finalize;
+    };
 }
 
 sub uri_for {

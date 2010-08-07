@@ -34,7 +34,7 @@ use Amon2::V::MT::Context;
 -- lib/$path/Web/Dispatcher.pm
 % my $perlver = shift;
 package [%= $module %]::Web::Dispatcher;
-use Amon2::Web::Dispatcher::RouterSimple -base;
+use Amon2::Web::Dispatcher::RouterSimple;
 
 connect '/' => {controller => 'Root', action => 'index'};
 
