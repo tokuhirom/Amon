@@ -52,21 +52,6 @@ sub bootstrap {
 }
 
 # -------------------------------------------------------------------------
-# shortcut for your laziness
-
-# DEPRECATED
-sub logger {
-    my ($self) = @_;
-    $self->get("Logger");
-}
-
-# DEPRECATED
-sub db {
-    my $self = shift;
-    $self->get(join('::', "DB", @_));
-}
-
-# -------------------------------------------------------------------------
 # pluggable things
 
 sub load_plugins {
