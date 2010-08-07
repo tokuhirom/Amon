@@ -17,9 +17,8 @@ pod2usage(1) if $help;
 my $confsrc = <<'...';
 -- lib/$path.pm
 package [%= $module %];
-use Amon2 -base => (
-    config_loader_class => '[%= $module %]::ConfigLoader',
-);
+use Amon2 -base;
+__PACKAGE__->load_plugins(qw/ConfigLoader/);
 1;
 -- lib/$path/Web.pm
 package [%= $module %]::Web;

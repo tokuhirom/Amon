@@ -16,7 +16,6 @@ BEGIN {
     use Amon2 -base;
 
     package MyApp::Web::Dispatcher;
-    use Amon2::Web::Dispatcher;
     sub dispatch {
         my ($class, $c) = @_;
         if ($c->request->path_info eq '/') {

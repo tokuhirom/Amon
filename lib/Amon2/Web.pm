@@ -159,21 +159,4 @@ sub view {
 }
 
 
-# -------------------------------------------------------------------------
-# pluggable things
-
-sub load_plugins {
-    my ($class, @args) = @_;
-    for (my $i=0; $i<@args; $i+=2) {
-        my ($module, $conf) = ($args[$i], $args[$i+1]);
-        $class->load_plugin($module, $conf);
-    }
-}
-
-sub load_plugin {
-    my ($class, $module, $conf) = @_;
-    $module = Amon2::Util::load_class($module, 'Amon2::Plugin');
-    $module->init($class, $conf);
-}
-
 1;

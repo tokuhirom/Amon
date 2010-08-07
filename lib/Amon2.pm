@@ -29,11 +29,6 @@ sub import {
         *{"${caller}::base_dir"} = sub { $base_dir };
 
         *{"${caller}::base_name"} = sub { $caller };
-
-        if (my $config_loader = $args{config_loader_class}) {
-            $config_loader->use or die $@;
-            *{"${caller}::config_loader_class"} = sub { $config_loader };
-        }
     }
 }
 
@@ -42,9 +37,6 @@ package Amon2::Base;
 sub new {
     my $class = shift;
     my %args = @_ == 1 ? %{ $_[0] } : @_;
-    if ($class->can('config_loader_class')) {
-        $args{'config'} = $class->config_loader_class->load();
-    }
     bless { config => +{}, %args }, $class;
 }
 
@@ -61,15 +53,35 @@ sub bootstrap {
 # -------------------------------------------------------------------------
 # shortcut for your laziness
 
+# DEPRECATED
 sub logger {
     my ($self) = @_;
     $self->get("Logger");
 }
 
+# DEPRECATED
 sub db {
     my $self = shift;
     $self->get(join('::', "DB", @_));
 }
+
+# -------------------------------------------------------------------------
+# pluggable things
+
+sub load_plugins {
+    my ($class, @args) = @_;
+    for (my $i=0; $i<@args; $i+=2) {
+        my ($module, $conf) = ($args[$i], $args[$i+1]);
+        $class->load_plugin($module, $conf);
+    }
+}
+
+sub load_plugin {
+    my ($class, $module, $conf) = @_;
+    $module = Amon2::Util::load_class($module, 'Amon2::Plugin');
+    $module->init($class, $conf);
+}
+
 
 1;
 __END__

@@ -9,6 +9,7 @@ use Amon2;
 
 BEGIN {
     $INC{'MyApp.pm'} = __FILE__;
+    $INC{'MyApp/Web/Dispatcher.pm'} = __FILE__;
     $INC{'MyApp/V/MT.pm'} = __FILE__;
 }
 
@@ -16,7 +17,6 @@ BEGIN {
     package MyApp::Web;
     use Amon2::Web -base => (
         base_name => 'MyApp',
-        dispatcher_class => 'Amon2::Web::Dispatcher',
         default_view_class => 'Text::MicroTemplate::File',
     );
     sub encoding { 'utf-8' }

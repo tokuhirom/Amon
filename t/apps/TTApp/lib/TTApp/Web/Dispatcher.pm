@@ -1,6 +1,7 @@
 package TTApp::Web::Dispatcher;
-use Amon2::Web::Dispatcher;
-use feature 'switch';
+use strict;
+use warnings;
+use 5.10.0;
 
 sub dispatch {
     my ($class, $c) = @_;
