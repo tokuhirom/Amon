@@ -39,7 +39,6 @@ sub html_content_type { 'text/html; charset=UTF-8' }
 sub encoding          { 'utf-8' }
 sub request           { $_[0]->{request} }
 sub req               { $_[0]->{request} }
-sub args              { $_[0]->{args}    }
 
 sub redirect {
     my ($self, $location) = @_;
