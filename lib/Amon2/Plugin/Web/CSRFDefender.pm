@@ -1,4 +1,4 @@
-package Amon2::Plugin::CSRFDefender;
+package Amon2::Plugin::Web::CSRFDefender;
 use strict;
 use warnings;
 use String::Random qw/random_regex/;

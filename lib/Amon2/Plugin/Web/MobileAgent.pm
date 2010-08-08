@@ -1,4 +1,4 @@
-package Amon2::Plugin::MobileAgent;
+package Amon2::Plugin::Web::MobileAgent;
 use strict;
 use warnings;
 use Amon2::Util;
@@ -20,7 +20,7 @@ __END__
 
 =head1 NAME
 
-Amon2::Plugin::MobileAgent - HTTP::MobileAgent plugin for Amon2
+Amon2::Plugin::Web::MobileAgent - HTTP::MobileAgent plugin for Amon2
 
 =head1 SYNOPSIS
 
@@ -29,7 +29,7 @@ Amon2::Plugin::MobileAgent - HTTP::MobileAgent plugin for Amon2
         view_class => 'Text::MicroTemplate::File',
     );
     __PACKAGE__->load_plugins(
-        qw/ MobileAgent /
+        qw/ Web::MobileAgent /
     );
     1;
 

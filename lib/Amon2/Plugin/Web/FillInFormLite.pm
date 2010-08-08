@@ -1,8 +1,8 @@
-package Amon2::Plugin::FillInForm;
+package Amon2::Plugin::Web::FillInFormLite;
 use strict;
 use warnings;
 use Amon2::Util;
-use HTML::FillInForm;
+use HTML::FillInForm::Lite;
 
 sub init {
     my ($class, $c, $conf) = @_;
@@ -14,7 +14,7 @@ sub _fillin_form {
     my ($self, @stuff) = @_;
 
     my $html = $self->body();
-    my $output = HTML::FillInForm->fill(\$html, @stuff);
+    my $output = HTML::FillInForm::Lite->fill(\$html, @stuff);
     $self->body($output);
     $self->header('Content-Length' => length($output)) if $self->header('Content-Length');
     return $self;
@@ -25,14 +25,14 @@ __END__
 
 =head1 NAME
 
-Amon2::Plugin::FillInForm - HTML::FillInForm
+Amon2::Plugin::Web::FillInFormLite - HTML::FillInForm::Lite
 
 =head1 SYNOPSIS
 
   package MyApp::Web;
   use Amon2::Web -base => (
   );
-  __PACKAGE__->load_plugins(qw/FillInForm/);
+  __PACKAGE__->load_plugins(qw/Web::FillInFormLite/);
   1;
 
   package MyApp::Web::C::Root;
@@ -45,9 +45,11 @@ Amon2::Plugin::FillInForm - HTML::FillInForm
 
 =head1 DESCRIPTION
 
+HTML::FillInForm::Lite version of L<Amon2::Plugin::FillInForm>
+
 =head1 SEE ALSO
 
-L<HTML::FillInForm>, L<Amon2>
+L<HTML::FillInForm::Lite>, L<Amon2>
 
 =cut
 

@@ -1,4 +1,4 @@
-package Amon2::Plugin::JSON;
+package Amon2::Plugin::Web::JSON;
 use strict;
 use warnings;
 use JSON qw/encode_json/;

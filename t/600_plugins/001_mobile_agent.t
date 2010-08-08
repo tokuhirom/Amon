@@ -22,7 +22,7 @@ BEGIN {
         view_class => 'Text::MicroTemplate::File',
     );
     __PACKAGE__->load_plugins(
-        'MobileAgent' => {},
+        'Web::MobileAgent' => {},
     );
 }
 

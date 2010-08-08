@@ -27,7 +27,7 @@ my $tmp = tempdir(CLEANUP => 1);
         view_class => 'Text::MicroTemplate::File',
     );
     __PACKAGE__->load_plugins(
-        'FillInForm' => {},
+        'Web::FillInForm' => {},
     );
 }
 

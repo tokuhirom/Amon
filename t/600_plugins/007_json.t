@@ -21,7 +21,7 @@ BEGIN {
         view_class => 'Text::MicroTemplate::File',
     );
     __PACKAGE__->load_plugins(
-        'JSON',
+        'Web::JSON',
     );
     sub encoding { 'utf-8' }
 }

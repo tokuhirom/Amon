@@ -1,4 +1,4 @@
-package Amon2::Plugin::HTTPSession;
+package Amon2::Plugin::Web::HTTPSession;
 use strict;
 use warnings;
 use HTTP::Session;
@@ -57,14 +57,14 @@ __END__
 
 =head1 NAME
 
-Amon2::Plugin::HTTPSession - Plugin system for Amon2
+Amon2::Plugin::Web::HTTPSession - Plugin system for Amon2
 
 =head1 SYNOPSIS
 
     package MyApp::Web;
     use Amon2::Web -base;
     use HTTP::Session::Store::Memcached;
-    __PACKAGE__->load_plugins(qw/HTTPSession/ => {
+    __PACKAGE__->load_plugins(qw/Web::HTTPSession/ => {
         state => 'URI',
         store => sub {
             my ($c) = @_;

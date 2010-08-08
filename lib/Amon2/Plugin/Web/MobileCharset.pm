@@ -1,4 +1,4 @@
-package Amon2::Plugin::MobileCharset;
+package Amon2::Plugin::Web::MobileCharset;
 use strict;
 use warnings;
 use HTTP::MobileAgent::Plugin::Charset;
@@ -25,7 +25,7 @@ __END__
 
 =head1 NAME
 
-Amon2::Plugin::MobileCharset - Amon2 plugin for Japanese mobile phone's charset
+Amon2::Plugin::Web::MobileCharset - Amon2 plugin for Japanese mobile phone's charset
 
 =head1 SYNOPSIS
 
@@ -33,8 +33,8 @@ Amon2::Plugin::MobileCharset - Amon2 plugin for Japanese mobile phone's charset
     use Amon2::Web -base;
 
     __PACKAGE__->load_plugins(
-        'MobileAgent'   => {},
-        'MobileCharset' => {},
+        'Web::MobileAgent',
+        'Web::MobileCharset',
     );
 
 =head1 DESCRIPTION
