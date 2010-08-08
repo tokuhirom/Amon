@@ -38,7 +38,7 @@ sub _dispatch {
         $c->{args} = $p;
         "@{[ ref Amon2->context ]}::C::$p->{controller}"->$action($c, $p);
     } else {
-        res_404();
+        $c->res_404();
     }
 }
 
