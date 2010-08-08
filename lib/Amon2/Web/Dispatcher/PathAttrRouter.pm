@@ -66,7 +66,7 @@ Amon2::Web::Dispatcher::PathAttrRouter - Path::AttrRouter binding for Amon2
 
 L<Path::Router> binding for Amon2.L<Path::Router> provides L<Catalyst> like attribute router.
 
-This is optional, and not maintained.Just experimental.
+This is optional, and not maintained. Just experimental.
 
 =head1 AUTHOR
 
