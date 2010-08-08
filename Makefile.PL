@@ -10,7 +10,6 @@ requires 'Exporter';
 requires 'Class::Accessor::Fast';
 requires 'Class::Data::Inheritable';
 requires 'parent';
-requires 'UNIVERSAL::require' => 0.13;
 requires 'Tfall';
 requires 'Module::Find';
 requires 'URI' => 1.54;

@@ -2,7 +2,6 @@ package Amon2;
 use strict;
 use warnings;
 use 5.008001;
-use UNIVERSAL::require;
 use Amon2::Util ();
 use Plack::Util ();
 use Data::OptList ();
