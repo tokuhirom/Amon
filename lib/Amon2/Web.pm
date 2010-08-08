@@ -1,8 +1,8 @@
 package Amon2::Web;
 use strict;
 use warnings;
-use Amon2::Util;
-use Amon2::Trigger;
+use Amon2::Util ();
+use Amon2::Trigger qw/add_trigger call_trigger get_trigger_code/;
 use Encode ();
 use Module::Find ();
 use Plack::Util ();

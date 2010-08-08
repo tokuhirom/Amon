@@ -3,9 +3,9 @@ use strict;
 use warnings;
 use 5.008001;
 use UNIVERSAL::require;
-use Amon2::Util;
+use Amon2::Util ();
 use Plack::Util ();
-use Data::OptList;
+use Data::OptList ();
 use parent qw/Class::Data::Inheritable/;
 use Carp ();
 
@@ -61,7 +61,7 @@ sub load_plugins {
 sub load_plugin {
     my ($class, $module, $conf) = @_;
     $module = Plack::Util::load_class($module, 'Amon2::Plugin');
-    $module->init($class, $conf);
+    $module->init($class, $conf || +{});
 }
 
 
