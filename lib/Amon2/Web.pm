@@ -127,10 +127,4 @@ sub render {
     );
 }
 
-sub render_partial {
-    my $self = shift;
-    my $html = $self->view()->render(@_);
-    return $html;
-}
-
 1;
