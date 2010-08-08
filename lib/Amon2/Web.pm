@@ -27,9 +27,12 @@ sub setup {
     Plack::Util::load_class($response_class);
     Amon2::Util::add_method($class, 'response_class', sub { $response_class });
 
+    # view object is cache-able.
     my $view_class = $args{view_class} or die "missing configuration: view_class";
        $view_class = Plack::Util::load_class($view_class, 'Tfall');
-    Amon2::Util::add_method($class, 'view_class', sub { $view_class });
+    my $config = $class->config()->{$view_class};
+    my $view = $view_class->new($config);
+    Amon2::Util::add_method($class, 'view', sub { $view }); # cache
 }
 
 sub html_content_type { 'text/html; charset=UTF-8' }
@@ -45,8 +48,8 @@ sub redirect {
             $location;
         } else {
             my $url = $self->request->base;
-            $url =~ s!/+$!!;
-            $location =~ s!^/+([^/])!/$1!;
+            $url =~ s{/+$}{};
+            $location =~ s{^/+([^/])}{/$1};
             $url .= $location;
         }
     };
@@ -129,16 +132,6 @@ sub render_partial {
     my $self = shift;
     my $html = $self->view()->render(@_);
     return $html;
-}
-
-sub view {
-    my $self = shift;
-
-    my $view_class = $self->view_class;
-    my $config = $self->config()->{$view_class};
-    my $view = $view_class->new($config);
-    Amon2::Util::add_method($self, 'view', sub { $view }); # cache
-    return $view;
 }
 
 1;

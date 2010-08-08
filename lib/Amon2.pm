@@ -7,6 +7,7 @@ use Amon2::Util;
 use Plack::Util ();
 use Data::OptList;
 use parent qw/Class::Data::Inheritable/;
+use Carp ();
 
 our $VERSION = '0.44';
 {
@@ -36,6 +37,14 @@ sub base_dir {
     my $base_dir = Amon2::Util::base_dir($proto);
     Amon2::Util::add_method($proto, 'base_dir', sub { $base_dir });
     $base_dir;
+}
+
+sub add_config {
+    my ($class, $key, $hash) = @_; $hash or Carp::croak("missing args: \$hash");
+    $class->config->{$key} = +{
+        %{$class->config->{$key} || +{}},
+        %{$hash},
+    };
 }
 
 # -------------------------------------------------------------------------

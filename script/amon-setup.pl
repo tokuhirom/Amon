@@ -25,6 +25,14 @@ package <%= $module %>::Web;
 use strict;
 use warnings;
 use parent qw/<%= $module %> Amon2::Web/;
+__PACKAGE__->add_config(
+    'Tfall::Text::Xslate' => {
+        'syntax'   => 'TTerse',
+        'function' => {
+            c => sub { Amon2->context() },
+        },
+    }
+);
 __PACKAGE__->setup(
     view_class => 'Text::Xslate',
 );
@@ -55,10 +63,6 @@ sub index {
 +{
     'Tfall::Text::Xslate' => {
         path => ['tmpl/'],
-        syntax => 'TTerse',
-        function => {
-            c => sub { Amon2->context() },
-        },
     },
     'Log::Dispatch' => {
         outputs => [
