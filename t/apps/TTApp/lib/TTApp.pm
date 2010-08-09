@@ -4,7 +4,7 @@ use warnings;
 use parent qw/Amon2/;
 __PACKAGE__->config(
     {
-        'Tfall::TT' => {
+        'TT' => {
             INCLUDE_PATH => ['tmpl/'],
         },
     },

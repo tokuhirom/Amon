@@ -9,11 +9,11 @@ requires 'Test::More' => 0.88;     # 0.88 or later is required for done_testing!
 requires 'Exporter'   => 5.64;
 requires 'Class::Data::Inheritable' => 0.08;
 requires 'parent'                   => 0.223;
-requires 'Tfall'                    => 0.01_04;
 requires 'Module::Find'             => 0.10;
 requires 'URI'                      => 1.54;
 requires 'URI::Escape'              => 3.30;
 requires 'Data::OptList'            => 0.106;
+requires 'Tiffany';
 
 # Not core, but default components.
 requires 'Text::Xslate'               => 0.1055;

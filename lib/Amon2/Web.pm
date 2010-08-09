@@ -7,6 +7,7 @@ use Encode ();
 use Module::Find ();
 use Plack::Util ();
 use URI::Escape ();
+use Tiffany;
 
 sub setup {
     my $class = shift;
@@ -29,9 +30,8 @@ sub setup {
 
     # view object is cache-able.
     my $view_class = $args{view_class} or die "missing configuration: view_class";
-       $view_class = Plack::Util::load_class($view_class, 'Tfall');
     my $config = $class->config()->{$view_class};
-    my $view = $view_class->new($config);
+    my $view = Tiffany->load($view_class, $config);
     Amon2::Util::add_method($class, 'view', sub { $view }); # cache
 }
 

@@ -17,7 +17,7 @@ my $tmp = tempdir(CLEANUP => 1);
     use parent qw/Amon2/;
 
     __PACKAGE__->config({
-        'Tfall::Text::MicroTemplate::File' => {
+        'Text::MicroTemplate::File' => {
             include_path => [$tmp],
         },
     });

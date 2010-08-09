@@ -9,7 +9,7 @@ use Hello::V::MT::Context;
     'HTTP::Session::Store::File' => {
         dir => $tmpdir,
     },
-    'Tfall::Text::MicroTemplate::File' => {
+    'Text::MicroTemplate::File' => {
         include_path => 'tmpl',
         package_name => 'Hello::V::MT::Context',
     },
