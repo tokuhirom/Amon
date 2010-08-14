@@ -18,7 +18,7 @@ BEGIN {
 
 
 my $c = MyApp->new();
-$c->logger->emerg("HELP ME");
-isa_ok $c->logger, 'Log::Dispatch';
+$c->log->emerg("HELP ME");
+isa_ok $c->log(), 'Log::Dispatch';
 done_testing;
 

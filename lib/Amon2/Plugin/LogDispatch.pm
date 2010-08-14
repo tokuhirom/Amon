@@ -11,7 +11,7 @@ sub init {
 
     my $conf = $config || $c->config->{'Log::Dispatch'} || die "missing configuration for LogDispatch plugin";
     my $logger = Log::Dispatch->new(%$conf);
-    Amon2::Util::add_method($c, 'logger', sub { $logger });
+    Amon2::Util::add_method($c, 'log', sub { $logger });
 }
 
 1;
@@ -42,7 +42,7 @@ Amon2::Plugin::LogDispatch - Log::Dispatch glue for Amon2
     },
 
     # in your controller
-    $c->logger->emerg('help me');
+    $c->log->emerg('help me');
 
 =head1 SEE ALSO
 
