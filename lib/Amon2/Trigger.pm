@@ -1,7 +1,8 @@
 package Amon2::Trigger;
 use strict;
 use warnings;
-use base qw/Exporter/;
+use parent qw/Exporter/;
+use Scalar::Util ();
 
 our @EXPORT = qw/add_trigger call_trigger get_trigger_code/;
 
@@ -30,7 +31,7 @@ sub call_trigger {
 sub get_trigger_code {
     my ($class, $hook) = @_;
     my @code;
-    if (ref $class) {
+    if (Scalar::Util::blessed($class)) {
         push @code, @{ $class->{_trigger}->{$hook} || [] };
         $class = ref $class;
     }
