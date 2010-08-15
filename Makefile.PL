@@ -16,7 +16,7 @@ requires 'Data::OptList'            => 0.106;
 requires 'Tiffany';
 
 # Not core, but default components.
-requires 'Text::Xslate'               => 0.1055;
+requires 'Text::Xslate'               => 0.1056;
 requires 'Text::MicroTemplate'        => 0.15;
 requires 'Router::Simple'             => 0.06;
 requires 'Router::Simple::Sinatraish' => 0.02;
