@@ -1,3 +1,7 @@
+0.45
+
+    - more flexible interface for Plugin::CSRFDefender
+
 0.44
 
     - added Amon::Plugin::FillInFormLite.
