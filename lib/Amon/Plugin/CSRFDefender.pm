@@ -41,23 +41,39 @@ sub init {
             }
         },
     );
-    $c->add_trigger(
-        BEFORE_DISPATCH => sub {
-            my $self = shift;
-
-            if ($self->req->method eq 'POST') {
-                my $r_token = $self->req->param('csrf_token');
-                my $session_token = $self->session->get('csrf_token');
-                if (!$r_token || !$session_token || ($r_token ne $session_token)) {
+    unless ($conf->{no_validate_hook}) {
+        $c->add_trigger(
+            BEFORE_DISPATCH => sub {
+                my $self = shift;
+                if (not $self->validate_csrf()) {
                     return $self->response_class->new(
                         403,
-                        ['Content-Type' => 'text/html'],
+                        [
+                            'Content-Type'   => 'text/html',
+                            'Content-Length' => length($ERROR_HTML)
+                        ],
                         $ERROR_HTML
                     );
+                } else {
+                    return;
                 }
             }
+        );
+    }
+    Amon::Util::add_method($c, 'validate_csrf', \&validate_csrf);
+}
+
+sub validate_csrf {
+    my $self = shift;
+
+    if ( $self->req->method eq 'POST' ) {
+        my $r_token       = $self->req->param('csrf_token');
+        my $session_token = $self->session->get('csrf_token');
+        if ( !$r_token || !$session_token || ( $r_token ne $session_token ) ) {
+            return 0; # good
         }
-    );
+    }
+    return 1; # bad
 }
 
 1;
