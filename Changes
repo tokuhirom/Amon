@@ -1,6 +1,10 @@
-0.45
+1.01
 
     - more flexible interface for Plugin::CSRFDefender
+
+1.00
+
+    - bump up version
 
 0.44
 
