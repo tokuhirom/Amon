@@ -37,10 +37,6 @@ __PACKAGE__->setup(
     view_class => 'Text::Xslate',
 );
 1;
--- lib/$path/V/MT/Context.pm
-package <%= $module %>::V::MT::Context;
-use Amon2::V::MT::Context;
-1;
 -- lib/$path/Web/Dispatcher.pm
 package <%= $module %>::Web::Dispatcher;
 use Amon2::Web::Dispatcher::RouterSimple;
@@ -205,6 +201,7 @@ all_from "lib/<%= $path %>.pm";
 
 tests 't/*.t t/*/*.t t/*/*/*.t';
 requires 'Amon2';
+requires 'Text::Xslate';
 recursive_author_tests('xt');
 
 WriteAll;
