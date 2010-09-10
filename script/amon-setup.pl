@@ -26,7 +26,7 @@ use strict;
 use warnings;
 use parent qw/<%= $module %> Amon2::Web/;
 __PACKAGE__->add_config(
-    'fTall::Text::Xslate' => {
+    'Text::Xslate' => {
         'syntax'   => 'TTerse',
         'function' => {
             c => sub { Amon2->context() },
