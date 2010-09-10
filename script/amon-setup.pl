@@ -186,6 +186,10 @@ form.nopaste p.submit-btn input {
 }
 
 -- $dist.psgi
+use File::Spec;
+use File::Basename;
+use local::lib File::Spec->catdir(dirname(__FILE__), 'extlib');
+use lib File::Spec->catdir(dirname(__FILE__), 'lib');
 use <%= $module %>::Web;
 use Plack::Builder;
 
@@ -343,6 +347,7 @@ sub main {
     _mkpath "htdocs/static/css/";
     _mkpath "htdocs/static/img/";
     _mkpath "htdocs/static/js/";
+    _mkpath "extlib/";
 
     my $conf = _parse_conf($confsrc);
     while (my ($file, $tmpl) = each %$conf) {
