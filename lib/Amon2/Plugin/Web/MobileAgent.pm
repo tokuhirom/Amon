@@ -25,12 +25,9 @@ Amon2::Plugin::Web::MobileAgent - HTTP::MobileAgent plugin for Amon2
 =head1 SYNOPSIS
 
     package MyApp::Web;
-    use Amon2::Web -base => (
-        view_class => 'Text::MicroTemplate::File',
-    );
-    __PACKAGE__->load_plugins(
-        qw/ Web::MobileAgent /
-    );
+    use parent qw/MyApp Amon2::Web/;
+    __PACKAGE__->setup();
+    __PACKAGE__->load_plugins('Web::MobileAgent');
     1;
 
     # in your controller
