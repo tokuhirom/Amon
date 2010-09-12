@@ -29,6 +29,7 @@ use parent qw/<%= $module %> Amon2::Web/;
 __PACKAGE__->add_config(
     'Text::Xslate' => {
         'syntax'   => 'TTerse',
+        'module'   => [ 'Text::Xslate::Bridge::TT2Like' ],
         'function' => {
             c => sub { Amon2->context() },
         },
@@ -207,6 +208,7 @@ all_from "lib/<%= $path %>.pm";
 tests 't/*.t t/*/*.t t/*/*/*.t';
 requires 'Amon2';
 requires 'Text::Xslate';
+requires 'Text::Xslate::Bridge::TT2Like';
 recursive_author_tests('xt');
 
 WriteAll;
