@@ -201,6 +201,7 @@ builder {
     enable 'Plack::Middleware::Static',
         path => qr{^/static/},
         root => './htdocs/';
+    enable 'Plack::Middleware::ReverseProxy';
     <%= $module %>::Web->to_app();
 };
 -- Makefile.PL
@@ -211,6 +212,7 @@ tests 't/*.t t/*/*.t t/*/*/*.t';
 requires 'Amon2';
 requires 'Text::Xslate';
 requires 'Text::Xslate::Bridge::TT2Like';
+requires 'Plack::Middleware::ReverseProxy';
 recursive_author_tests('xt');
 
 WriteAll;
