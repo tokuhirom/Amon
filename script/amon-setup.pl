@@ -32,6 +32,8 @@ __PACKAGE__->add_config(
         'module'   => [ 'Text::Xslate::Bridge::TT2Like' ],
         'function' => {
             c => sub { Amon2->context() },
+            uri_with => sub { Amon2->context()->req->uri_with(@_) },
+            uri_for  => sub { Amon2->context()->uri_for(@_) },
         },
     }
 );
