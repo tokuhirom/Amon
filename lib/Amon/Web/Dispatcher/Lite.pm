@@ -47,6 +47,7 @@ sub import {
                 return res_404();
             }
         });
+        add_method($caller, 'router', sub { $router });
 
         Amon::Web::Declare->export_to_level(1);
     }
