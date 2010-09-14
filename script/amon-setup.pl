@@ -40,6 +40,8 @@ __PACKAGE__->add_config(
 __PACKAGE__->setup(
     view_class => 'Text::Xslate',
 );
+__PACKAGE__->load_plugins('Web::FillInFormLite');
+# __PACKAGE__->load_plugins('Web::NoCache');
 1;
 -- lib/$path/Web/Dispatcher.pm
 package <%= $module %>::Web::Dispatcher;
@@ -213,6 +215,9 @@ requires 'Amon2';
 requires 'Text::Xslate';
 requires 'Text::Xslate::Bridge::TT2Like';
 requires 'Plack::Middleware::ReverseProxy';
+requires 'HTML::FillInForm::Lite';
+requires 'Time::Piece';
+# requires 'DBIx::Skinny';
 recursive_author_tests('xt');
 
 WriteAll;
