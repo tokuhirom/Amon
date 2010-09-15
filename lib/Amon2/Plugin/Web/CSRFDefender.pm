@@ -35,7 +35,7 @@ sub init {
             };
             my $html = $res->body;
             if ($res->header('Content-Type') =~ /html/ && not ref $html) {
-                $html =~ s!(<form\s*.*?>)!$1\n<input type="hidden" name="csrf_token" value="$token">!isg;
+                $html =~ s!(<form\s*.*?>)!$1\n<input type="hidden" name="csrf_token" value="$token" />!isg;
                 $res->body($html);
                 $res->header('Content-Length' => length($html));
             }
