@@ -7,9 +7,11 @@ use Pod::Usage;
 use Text::MicroTemplate ':all';
 
 our $module;
+our $dispatcher = 'RouterSimple';
 GetOptions(
-    'skinny'    => \our $skinny,
-    'help'      => \my $help,
+    'dispatcher=s' => \$dispatcher,
+    'skinny'       => \our $skinny,
+    'help'         => \my $help,
 ) or pod2usage(0);
 pod2usage(1) if $help;
 
@@ -58,16 +60,25 @@ __PACKAGE__->load_plugins('Web::FillInFormLite');
 1;
 -- lib/$path/Web/Dispatcher.pm
 package <%= $module %>::Web::Dispatcher;
+<% if ($dispatcher eq 'RouterSimple') { %>
 use Amon2::Web::Dispatcher::RouterSimple;
 
 connect '/' => 'Root#index';
+<% } else { %>
+use Amon2::Web::Dispatcher::Lite;
+
+any '/' => sub {
+    my ($c) = @_;
+    $c->render('index.tt');
+};
+<% } %>
 
 1;
 -- lib/$path/DB.pm skinny
 package <%= $module %>::DB;
 use DBIx::Skinny;
 1;
--- lib/$path/Web/C/Root.pm
+-- lib/$path/Web/C/Root.pm RouterSimple
 package <%= $module %>::Web::C::Root;
 use strict;
 use warnings;
@@ -377,9 +388,8 @@ sub main {
     mkdir $dist or die $!;
     chdir $dist or die $!;
     _mkpath "lib/$path";
-    _mkpath "lib/$path/V";
-    _mkpath "lib/$path/V/MT";
-    _mkpath "lib/$path/Web/C";
+    _mkpath "lib/$path/Web/";
+    _mkpath "lib/$path/Web/C" unless $dispatcher eq 'Lite';
     _mkpath "lib/$path/M";
     _mkpath "lib/$path/DB/";
     _mkpath "tmpl";
@@ -429,6 +439,7 @@ sub _parse_conf {
         } else {
             $fname or die "missing filename for first content";
             next LOOP if $tag && $tag eq 'skinny' && !$skinny;
+            next LOOP if $tag && $tag eq 'RouterSimple' && $dispatcher ne 'RouterSimple';
             $res->{$fname} .= "$line\n";
         }
     }
