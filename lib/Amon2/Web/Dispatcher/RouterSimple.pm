@@ -15,11 +15,21 @@ sub import {
 
     no strict 'refs';
     # functions
-    for my $meth (qw/connect submapper/) {
-        *{"${caller}::${meth}"} = sub {
-            $router->$meth(@_);
-        };
-    }
+    *{"${caller}::connect"} = sub {
+        if (@_ == 2 && !ref $_[1]) {
+            my ($path, $dest_str) = @_;
+            my ($controller, $action) = split('#', $dest_str);
+            my %dest;
+            $dest{controller} = $controller;
+            $dest{action} = $action if defined $action;
+            $router->connect($path, \%dest);
+        } else {
+            $router->connect(@_);
+        }
+    };
+    *{"${caller}::submapper"} = sub {
+        $router->submapper(@_);
+    };
     # class methods
     for my $meth (qw/match as_string/) {
         *{"$caller\::${meth}"} = sub {
@@ -53,6 +63,10 @@ Amon2::Web::Dispatcher::RouterSimple - Router::Simple binding for Amon2
 
     package MyApp::Web::Dispatcher;
     use Amon2::Web::Dispatcher::RouterSimple;
+    connect '/'           => 'Root#index';
+    connect '/my/'        => 'My#index';
+    connect '/my/:action' => 'My';
+    1;
 
 =head1 DESCRIPTION
 

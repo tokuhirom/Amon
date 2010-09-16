@@ -47,7 +47,7 @@ __PACKAGE__->load_plugins('Web::FillInFormLite');
 package <%= $module %>::Web::Dispatcher;
 use Amon2::Web::Dispatcher::RouterSimple;
 
-connect '/' => {controller => 'Root', action => 'index'};
+connect '/' => 'Root#index';
 
 1;
 -- lib/$path/Web/C/Root.pm
@@ -78,6 +78,7 @@ sub index {
 -- lib/$path/ConfigLoader.pm
 package <%= $module %>::ConfigLoader;
 use strict;
+use warnings;
 use parent 'Amon2::ConfigLoader';
 1;
 -- tmpl/index.tt
@@ -94,12 +95,12 @@ hello, Amon2 world!
     <title><%= $dist %></title>
     <meta http-equiv="Content-Style-Type" content="text/css" />  
     <meta http-equiv="Content-Script-Type" content="text/javascript" />  
-    <link href="[% c().uri_for('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
+    <link href="[% uri_for('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
     <div id="Container">
         <div id="Header">
-            <a href="[% c().uri_for('/') %]">Amon2 Startup Page</a>
+            <a href="[% uri_for('/') %]">Amon2 Startup Page</a>
         </div>
         <div id="Content">
 -- tmpl/include/footer.tt

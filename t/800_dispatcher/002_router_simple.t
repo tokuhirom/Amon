@@ -23,14 +23,16 @@ BEGIN {
 }
 
 {
+    package MyApp::Web::C::My;
+    sub foo { Amon2->context->response_class->new(200, [], 'foo') }
+
+    package MyApp::Web::C::Bar;
+    sub poo { Amon2->context->response_class->new(200, [], 'poo') }
+
     package MyApp::Web::C::Root;
-    use strict;
-    use warnings;
     sub index { Amon2->context->response_class->new(200, [], 'top') }
 
     package MyApp::Web::C::Blog;
-    use strict;
-    use warnings;
     sub monthly {
         my ($class, $c, $args) = @_;
         Amon2->context->response_class->new(200, [], "blog: $args->{year}, $args->{month}")
@@ -44,6 +46,8 @@ BEGIN {
     package MyApp::Web::Dispatcher;
     use Amon2::Web::Dispatcher::RouterSimple;
     connect '/', {controller => 'Root', action => 'index'};
+    connect '/my/foo', 'My#foo';
+    connect '/bar/:action', 'Bar';
     connect '/blog/{year}/{month}', {controller => 'Blog', action => 'monthly'};
     submapper('/account/', {controller => 'Account'})
         ->connect('login', {action => 'login'});
@@ -54,6 +58,10 @@ my $app = MyApp::Web->to_app();
 my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
 $mech->get_ok('/');
 $mech->content_is('top');
+$mech->get_ok('/my/foo');
+$mech->content_is('foo');
+$mech->get_ok('/bar/poo');
+$mech->content_is('poo');
 $mech->get_ok('/blog/2010/04');
 $mech->content_is("blog: 2010, 04");
 $mech->get_ok('/account/login');
