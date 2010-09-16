@@ -206,19 +206,6 @@ body {
 #Content {
     padding: 10px;
 }
-form.nopaste {
-    text-align: center;
-}
-form.nopaste textarea {
-    width: 80%;
-    margin: auto;
-}
-form.nopaste p.submit-btn input {
-    margin: 10px;
-    font-size: 900%;
-    height: 40px;
-    width: 100px;
-}
 
 #FooterContainer {
     border-top: 1px solid black;
