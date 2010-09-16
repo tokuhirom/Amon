@@ -23,6 +23,9 @@ requires 'Router::Simple'             => 0.06;
 requires 'Router::Simple::Sinatraish' => 0.02;
 requires 'Log::Dispatch'              => 2.26;
 
+# Optional components
+recommends 'Test::WWW::Mechanize::PSGI';
+
 test_requires 'Test::Requires';
 
 tests 't/*.t t/*/*.t t/*/*/*.t';
