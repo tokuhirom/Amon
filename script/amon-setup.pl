@@ -8,6 +8,7 @@ use Text::MicroTemplate ':all';
 
 our $module;
 GetOptions(
+    'skinny'    => \our $skinny,
     'help'      => \my $help,
 ) or pod2usage(0);
 pod2usage(1) if $help;
@@ -19,7 +20,19 @@ use strict;
 use warnings;
 use parent qw/Amon2/;
 our $VERSION='0.01';
+
 __PACKAGE__->load_plugins(qw/ConfigLoader LogDispatch/);
+
+<% if ($skinny) { %>
+sub db {
+    my ($self) = @_;
+    $self->{db} //= do {
+        my $conf = $self->config->{'DBIx::Skinny'} or die "missing configuration for 'DBIx::Skinny'";
+        <%= $module %>::DB->new($conf);
+    };
+}
+<% } %>
+
 1;
 -- lib/$path/Web.pm
 package <%= $module %>::Web;
@@ -50,6 +63,10 @@ use Amon2::Web::Dispatcher::RouterSimple;
 connect '/' => 'Root#index';
 
 1;
+-- lib/$path/DB.pm skinny
+package <%= $module %>::DB;
+use DBIx::Skinny;
+1;
 -- lib/$path/Web/C/Root.pm
 package <%= $module %>::Web::C::Root;
 use strict;
@@ -63,6 +80,13 @@ sub index {
 1;
 -- config/development.pl
 +{
+<% if ($skinny) { %>
+    'DBIx::Skinny' => {
+        dsn => 'dbi:SQLite:dbname=test.db',
+        username => '',
+        password => '',
+    },
+<% } %>
     'Text::Xslate' => {
         path => ['tmpl/'],
     },
@@ -81,6 +105,25 @@ use strict;
 use warnings;
 use parent 'Amon2::ConfigLoader';
 1;
+-- script/make_schema.pl
+use strict;
+use warnings;
+use <%= $module %>;
+use DBIx::Skinny::Schema::Loader qw/make_schema_at/;
+use FindBin;
+
+my $c = <%= $module %>->bootstrap;
+my $conf = $c->config->{'DBIx::Skinny'};
+
+my $schema = make_schema_at( '<%= $module %>::DB::Schema', {}, $conf );
+my $dest = File::Spec->catfile($FindBin::Bin, '..', 'lib', '<%= $module %>', 'DB', 'Schema.pm');
+open my $fh, '>', $dest or die "cannot open file '$dest': $!";
+print {$fh} $schema;
+close $fh;
+-- sql/my.sql
+CREATE TABLE foo (
+    foo_id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
+) ENGINE=InnoDB charset=utf-8;
 -- tmpl/index.tt
 [% INCLUDE 'include/header.tt' %]
 
@@ -218,7 +261,7 @@ requires 'Text::Xslate::Bridge::TT2Like';
 requires 'Plack::Middleware::ReverseProxy';
 requires 'HTML::FillInForm::Lite';
 requires 'Time::Piece';
-# requires 'DBIx::Skinny';
+requires 'DBIx::Skinny';
 recursive_author_tests('xt');
 
 WriteAll;
@@ -356,7 +399,12 @@ sub main {
     _mkpath "tmpl/include/";
     _mkpath "t";
     _mkpath "xt";
+    _mkpath "sql/";
     _mkpath "config/";
+    _mkpath "script/";
+    _mkpath "script/cron/";
+    _mkpath "script/tmp/";
+    _mkpath "script/maintenance/";
     _mkpath "htdocs/static/css/";
     _mkpath "htdocs/static/img/";
     _mkpath "htdocs/static/js/";
@@ -386,11 +434,14 @@ sub main {
 sub _parse_conf {
     my $fname;
     my $res;
-    for my $line (split /\n/, $confsrc) {
-        if ($line =~ /^--\s+(.+)$/) {
+    my $tag;
+    LOOP: for my $line (split /\n/, $confsrc) {
+        if ($line =~ /^--\s+(\S+)(?:\s*(\S+))?$/) {
             $fname = $1;
+            $tag   = $2;
         } else {
             $fname or die "missing filename for first content";
+            next LOOP if $tag && $tag eq 'skinny' && !$skinny;
             $res->{$fname} .= "$line\n";
         }
     }
