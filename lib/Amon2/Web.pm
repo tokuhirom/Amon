@@ -36,7 +36,10 @@ sub setup {
 }
 
 sub html_content_type { 'text/html; charset=UTF-8' }
-sub encoding          { 'utf-8' }
+BEGIN {
+    my $encoding = Encode::find_encoding('utf-8') || die;
+    sub encoding          { $encoding }
+}
 sub request           { $_[0]->{request} }
 sub req               { $_[0]->{request} }
 

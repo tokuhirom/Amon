@@ -6,14 +6,26 @@ use Encode ();
 use Carp ();
 use URI::QueryParam;
 
-sub param_decoded {
-    my ($self, $param) = @_;
-    return wantarray ? () : undef unless exists $self->parameters->{$param};
+sub body_parameters {
+    my ($self) = @_;
+    $self->{'amon2.body_parameters'} ||= $self->_decode_parameters($self->SUPER::body_parameters());
+}
+
+sub query_parameters {
+    my ($self) = @_;
+    $self->{'amon2.query_parameters'} ||= $self->_decode_parameters($self->SUPER::query_parameters());
+}
+
+sub _decode_parameters {
+    my ($self, $stuff) = @_;
+
     my $encoding = Amon2->context->encoding;
-    my @values = $self->parameters->get_all($param);
-    return wantarray()
-        ? (map { Encode::decode($encoding, $_) } @values)
-        : Encode::decode($encoding, $values[0]);
+    my @flatten = $stuff->flatten();
+    my @decoded;
+    while ( my ($k, $v) = splice @flatten, 0, 2 ) {
+        push @decoded, Encode::decode($encoding, $k), Encode::decode($encoding, $v);
+    }
+    return Hash::MultiValue->new(@decoded);
 }
 
 # code taken from Catalyst::Request
