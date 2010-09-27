@@ -1,3 +1,7 @@
+1.03
+
+    - added 'router' attribute for Dispatcher::Lite.
+
 1.02
 
     - bump up version
