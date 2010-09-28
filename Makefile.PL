@@ -18,6 +18,7 @@ requires 'local::lib';
 
 # Not core, but default components.
 requires 'Text::Xslate'               => 0.1056;
+requires 'Text::Xslate::Bridge::TT2Like' => 0.00007;
 requires 'Text::MicroTemplate'        => 0.15;
 requires 'Router::Simple'             => 0.06;
 requires 'Router::Simple::Sinatraish' => 0.02;
