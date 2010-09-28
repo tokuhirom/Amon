@@ -7,10 +7,6 @@ use Encode;
 use Test::More;
 use Amon2;
 
-BEGIN {
-    $INC{'MyApp.pm'} = __FILE__;
-}
-
 {
     package MyApp;
     use parent qw/Amon2/;

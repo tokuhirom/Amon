@@ -3,12 +3,6 @@ use warnings;
 use Amon2::Web::Request;
 use Test::More;
 
-BEGIN {
-    $INC{'MyApp/Web/Dispatcher.pm'} = __FILE__;
-    $INC{'MyApp/V/MT.pm'}           = __FILE__;
-    $INC{'MyApp.pm'}                = __FILE__;
-};
-
 {
     package MyApp;
     use parent qw/Amon2/;
@@ -16,10 +10,11 @@ BEGIN {
 
 {
     package MyApp::Web;
-    use parent qw/MyApp Amon2::Web/;
-    __PACKAGE__->setup(
-        view_class => 'Text::MicroTemplate::File',
-    );
+    use parent -norequire, qw/MyApp/;
+    use parent qw/Amon2::Web/;
+    use Tiffany;
+    sub create_view { Tiffany->load('Text::MicroTemplate::File') }
+    sub dispatch { MyApp::Web::Dispatcher->dispatch(shift) }
 }
 
 my $c = MyApp::Web->bootstrap();

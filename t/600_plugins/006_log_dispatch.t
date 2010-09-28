@@ -3,11 +3,6 @@ use warnings;
 use Test::More;
 use Test::Requires 'Log::Dispatch';
 
-BEGIN {
-    $INC{'MyApp.pm'} = __FILE__;
-}
-
-
 {
     package MyApp;
     use parent qw/Amon2/;

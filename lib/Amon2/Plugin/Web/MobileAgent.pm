@@ -7,10 +7,10 @@ use HTTP::MobileAgent;
 sub init {
     my ($class, $c, $conf) = @_;
     Amon2::Util::add_method(
-        $c->request_class,
+        $c,
         'mobile_agent',
         sub {
-            $_[0]->{mobile_agent} ||= HTTP::MobileAgent->new($_[0]->headers);
+            $_[0]->{mobile_agent} ||= HTTP::MobileAgent->new($_[0]->req->headers);
         }
     );
 }
@@ -31,7 +31,7 @@ Amon2::Plugin::Web::MobileAgent - HTTP::MobileAgent plugin for Amon2
     1;
 
     # in your controller
-    $c->request->mobile_agent();
+    $c->mobile_agent();
 
 =head1 DESCRIPTION
 

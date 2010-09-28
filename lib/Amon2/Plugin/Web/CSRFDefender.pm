@@ -49,7 +49,7 @@ sub init {
                 my $r_token = $self->req->param('csrf_token');
                 my $session_token = $self->session->get('csrf_token');
                 if (!$r_token || !$session_token || ($r_token ne $session_token)) {
-                    return $self->response_class->new(
+                    return $self->create_response(
                         403,
                         ['Content-Type' => 'text/html'],
                         $ERROR_HTML

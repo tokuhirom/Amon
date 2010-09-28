@@ -14,7 +14,7 @@ sub _render_json {
 
     my $output = encode_json($stuff);
 
-    my $res = $c->response_class->new(200);
+    my $res = $c->create_response(200);
 
     my $encoding = $c->encoding();
     if ( ( $c->req->user_agent || '' ) =~ /Opera/ ) {

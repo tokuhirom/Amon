@@ -16,12 +16,12 @@ sub session {
 
     my $test = $c->session->get('test');
     if ($test) {
-        my $res = $c->response_class->new(200, [], ["hello, $test"]);
+        my $res = $c->create_response(200, [], ["hello, $test"]);
         $c->session->set(test => $test + 1);
         return $res;
     } else {
         $c->session->set(test => 1);
-        return $c->response_class->new(200, [], ["first time"]);
+        return $c->create_response(200, [], ["first time"]);
     }
 }
 

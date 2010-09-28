@@ -3,13 +3,6 @@ use warnings;
 use Test::More;
 use Test::Requires 'HTTP::MobileAgent', 'HTTP::MobileAgent::Plugin::Charset', 'Encode::JP::Mobile';
 
-BEGIN {
-    $INC{'MyApp/Web/Dispatcher.pm'} = __FILE__;
-    $INC{'MyApp/V/MT.pm'} = __FILE__;
-    $INC{'MyApp.pm'} = __FILE__;
-}
-
-
 {
     package MyApp;
     use parent qw/Amon2/;
@@ -17,10 +10,10 @@ BEGIN {
 
 {
     package MyApp::Web;
-    use parent qw/MyApp Amon2::Web/;
-    __PACKAGE__->setup(
-        view_class => 'Text::MicroTemplate::File',
-    );
+    use parent -norequire, qw/MyApp/;
+    use parent qw/Amon2::Web/;
+    use Tiffany;
+    sub create_view { Tiffany->load('Text::MicroTemplate::File') }
     __PACKAGE__->load_plugins(
         'Web::MobileAgent'   => {},
         'Web::MobileCharset' => {},
@@ -31,7 +24,7 @@ my $env = {
     HTTP_USER_AGENT => 'DoCoMo/1.0/P502i/c10',
 };
 my $c = MyApp::Web->bootstrap();
-my $req = $c->request_class->new($env);
+my $req = $c->create_request($env);
 $c->{request} = $req;
 is $c->encoding, 'x-sjis-docomo';
 done_testing;

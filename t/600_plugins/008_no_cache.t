@@ -4,31 +4,25 @@ use Test::More;
 use Test::Requires 'Test::WWW::Mechanize::PSGI', 'HTTP::Session', 'HTML::StickyQuery';
 use Plack::Middleware::Lint;
 
-BEGIN {
-    $INC{'MyApp/Web/Dispatcher.pm'} = __FILE__;
-    $INC{'MyApp/V/MT.pm'} = __FILE__;
-    $INC{'MyApp.pm'} = __FILE__;
-}
-
-
 {
     package MyApp;
     use parent qw/Amon2/;
 
-    package MyApp::Web::Dispatcher;
+    package MyApp::Web;
+    use parent -norequire, qw/MyApp/;
+    use parent qw/Amon2::Web/;
+    use Tiffany;
+
+    sub create_view { Tiffany->load('Text::MicroTemplate::File' ) }
+
+    __PACKAGE__->load_plugins( 'Web::NoCache' );
+
     sub dispatch {
-        my ($class, $c) = @_;
-        return $c->response_class->new(
+        my ($c) = @_;
+        return $c->create_response(
             200, [], []
         );
     }
-
-    package MyApp::Web;
-    use parent qw/MyApp Amon2::Web/;
-    __PACKAGE__->setup(
-        view_class => 'Text::MicroTemplate::File',
-    );
-    __PACKAGE__->load_plugins( 'Web::NoCache' );
 }
 
 my $app = MyApp::Web->to_app();

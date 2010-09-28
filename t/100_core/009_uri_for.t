@@ -7,18 +7,13 @@ use Encode;
 use Test::More;
 use Amon2;
 
-BEGIN {
-    $INC{'MyApp.pm'} = __FILE__;
-    $INC{'MyApp/Web/Dispatcher.pm'} = __FILE__;
-    $INC{'MyApp/V/MT.pm'} = __FILE__;
-}
-
 {
     package MyApp::Web;
-    use parent qw/MyApp Amon2::Web/;
-    __PACKAGE__->setup(
-        view_class => 'Text::MicroTemplate::File',
-    );
+    use parent -norequire, qw/MyApp/;
+    use parent qw/Amon2::Web/;
+    use Tiffany;
+    sub create_view { Tiffany->load('Text::MicroTemplate::File') }
+    sub dispatch { MyApp::Web::Dispatcher->dispatch(shift) }
     sub encoding { 'utf-8' }
 }
 

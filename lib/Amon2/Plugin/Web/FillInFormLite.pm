@@ -7,7 +7,7 @@ use HTML::FillInForm::Lite;
 sub init {
     my ($class, $c, $conf) = @_;
 
-    Amon2::Util::add_method($c->response_class, 'fillin_form', \&_fillin_form);
+    Amon2::Util::add_method(ref $c->create_response(), 'fillin_form', \&_fillin_form);
 }
 
 sub _fillin_form {

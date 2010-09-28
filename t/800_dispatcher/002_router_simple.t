@@ -3,12 +3,6 @@ use warnings;
 use Test::More;
 use Test::Requires 'Test::WWW::Mechanize::PSGI';
 
-BEGIN {
-    $INC{"MyApp.pm"}                = __FILE__;
-    $INC{"MyApp/V/MT.pm"}           = __FILE__;
-    $INC{"MyApp/Web/Dispatcher.pm"} = __FILE__;
-};
-
 {
     package MyApp;
     use parent qw/Amon2/;
@@ -16,32 +10,33 @@ BEGIN {
 
 {
     package MyApp::Web;
-    use parent qw/MyApp Amon2::Web/;
-    __PACKAGE__->setup(
-        view_class => 'Text::MicroTemplate::File',
-    );
+    use parent -norequire, qw/MyApp/;
+    use parent qw/Amon2::Web/;
+    use Tiffany;
+    sub create_view { Tiffany->load('Text::MicroTemplate::File') }
+    sub dispatch { MyApp::Web::Dispatcher->dispatch(shift) }
 }
 
 {
     package MyApp::Web::C::My;
-    sub foo { Amon2->context->response_class->new(200, [], 'foo') }
+    sub foo { Amon2->context->create_response(200, [], 'foo') }
 
     package MyApp::Web::C::Bar;
-    sub poo { Amon2->context->response_class->new(200, [], 'poo') }
+    sub poo { Amon2->context->create_response(200, [], 'poo') }
 
     package MyApp::Web::C::Root;
-    sub index { Amon2->context->response_class->new(200, [], 'top') }
+    sub index { Amon2->context->create_response(200, [], 'top') }
 
     package MyApp::Web::C::Blog;
     sub monthly {
         my ($class, $c, $args) = @_;
-        Amon2->context->response_class->new(200, [], "blog: $args->{year}, $args->{month}")
+        Amon2->context->create_response(200, [], "blog: $args->{year}, $args->{month}")
     }
 
     package MyApp::Web::C::Account;
     use strict;
     use warnings;
-    sub login { $_[1]->response_class->new(200, [], 'login') }
+    sub login { $_[1]->create_response(200, [], 'login') }
 
     package MyApp::Web::Dispatcher;
     use Amon2::Web::Dispatcher::RouterSimple;

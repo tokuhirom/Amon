@@ -8,9 +8,6 @@ sub import {
     my %args = @_;
     my $caller = caller(0);
 
-    no strict 'refs';
-    unshift @{"${caller}::ISA"}, $class;
-
     my $router = Router::Simple->new();
 
     no strict 'refs';

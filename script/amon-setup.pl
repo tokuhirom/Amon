@@ -41,6 +41,24 @@ package <%= $module %>::Web;
 use strict;
 use warnings;
 use parent qw/<%= $module %> Amon2::Web/;
+
+# load all controller classes
+use Module::Find ();
+Module::Find::useall("<%= $module %>::Web::C");
+
+# custom classes
+use <%= $module %>::Web::Request;
+use <%= $module %>::Web::Response;
+sub create_request  { <%= $module %>::Web::Request->new($_[1]) }
+sub create_response { shift; <%= $module %>::Web::Response->new(@_) }
+
+# dispatcher
+use <%= $module %>::Web::Dispatcher;
+sub dispatch {
+    return <%= $module %>::Web::Dispatcher->dispatch($_[0]) or die "response is not generated";
+}
+
+# optional configuration
 __PACKAGE__->add_config(
     'Text::Xslate' => {
         'syntax'   => 'TTerse',
@@ -52,11 +70,19 @@ __PACKAGE__->add_config(
         },
     }
 );
-__PACKAGE__->setup(
-    view_class => 'Text::Xslate',
-);
-__PACKAGE__->load_plugins('Web::FillInFormLite');
+
+# setup view class
+use Tiffany::Text::Xslate;
+{
+    my $view_conf = __PACKAGE__->config->{'Text::Xslate'};
+    my $view = Tiffany::Text::Xslate->new($view_conf);
+    sub create_view { $view }
+}
+
+# load plugins
+# __PACKAGE__->load_plugins('Web::FillInFormLite');
 # __PACKAGE__->load_plugins('Web::NoCache');
+
 1;
 -- lib/$path/Web/Dispatcher.pm
 package <%= $module %>::Web::Dispatcher;
@@ -73,6 +99,16 @@ any '/' => sub {
 };
 <% } %>
 
+1;
+-- lib/$path/Web/Request.pm
+package <%= $module %>::Web::Request;
+use strict;
+use parent qw/Amon2::Web::Request/;
+1;
+-- lib/$path/Web/Response.pm
+package <%= $module %>::Web::Response;
+use strict;
+use parent qw/Amon2::Web::Response/;
 1;
 -- lib/$path/DB.pm skinny
 package <%= $module %>::DB;

@@ -3,12 +3,6 @@ use warnings;
 use Test::More;
 use Test::Requires 'HTTP::MobileAgent';
 
-BEGIN {
-    $INC{'MyApp/Web/Dispatcher.pm'} = __FILE__;
-    $INC{'MyApp.pm'} = __FILE__;
-}
-
-
 {
     package MyApp;
     use parent qw/Amon2/;
@@ -16,10 +10,12 @@ BEGIN {
 
 {
     package MyApp::Web;
-    use parent qw/MyApp Amon2::Web/;
-    __PACKAGE__->setup(
-        view_class => 'Text::MicroTemplate::File',
-    );
+    use parent -norequire, qw/MyApp/;
+    use parent qw/Amon2::Web/;
+    use Tiffany;
+
+    sub create_view { Tiffany->load('Text::MicroTemplate::File' ) }
+
     __PACKAGE__->load_plugins(
         'Web::JSON',
     );

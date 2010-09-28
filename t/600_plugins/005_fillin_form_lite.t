@@ -5,28 +5,18 @@ use Test::Requires 'HTML::FillInForm::Lite';
 use File::Spec;
 use File::Temp qw/tempdir/;
 
-BEGIN {
-    $INC{'MyApp/Web/Dispatcher.pm'} = __FILE__;
-    $INC{'MyApp.pm'} = __FILE__;
-}
-
 my $tmp = tempdir(CLEANUP => 1);
 
 {
     package MyApp;
     use parent qw/Amon2/;
 
-    __PACKAGE__->config({
-        'Text::MicroTemplate::File' => {
-            include_path => [$tmp],
-        },
-    });
-
     package MyApp::Web;
-    use parent qw/MyApp Amon2::Web/;
-    __PACKAGE__->setup(
-        view_class => 'Text::MicroTemplate::File',
-    );
+    use parent -norequire, qw/MyApp/;
+    use parent qw/Amon2::Web/;
+    use Tiffany;
+    sub create_view { Tiffany->load('Text::MicroTemplate::File',  { include_path => [$tmp] } ) }
+
     __PACKAGE__->load_plugins(
         'Web::FillInFormLite' => {},
     );

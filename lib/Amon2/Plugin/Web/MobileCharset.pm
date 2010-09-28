@@ -9,14 +9,14 @@ sub init {
     my ($class, $c, $conf) = @_;
 
     Amon2::Util::add_method($c, 'html_content_type' => sub {
-        my $ma = shift->request->mobile_agent;
+        my $ma = shift->mobile_agent;
         my $ct  = $ma->is_docomo ? 'application/xhtml+xml;charset=' : 'text/html;charset=';
            $ct .= $ma->can_display_utf8 ? 'utf-8' : 'Shift_JIS';
            $ct;
     });
 
     Amon2::Util::add_method($c, 'encoding' => sub {
-        shift->request->mobile_agent->encoding
+        shift->mobile_agent->encoding
     });
 }
 

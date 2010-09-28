@@ -4,13 +4,6 @@ use Test::More;
 use Test::Requires 'Test::WWW::Mechanize::PSGI', 'HTTP::Session', 'HTML::StickyQuery';
 use Plack::Middleware::Lint;
 
-BEGIN {
-    $INC{'MyApp/Web/Dispatcher.pm'} = __FILE__;
-    $INC{'MyApp/V/MT.pm'} = __FILE__;
-    $INC{'MyApp.pm'} = __FILE__;
-}
-
-
 {
     package MyApp;
     use parent qw/Amon2/;
@@ -20,15 +13,19 @@ BEGIN {
         },
     });
 
-    package MyApp::Web::Dispatcher;
+    package MyApp::Web;
+    use parent -norequire, qw/MyApp/;
+    use parent qw/Amon2::Web/;
+    use Tiffany;
+    sub create_view { Tiffany->load('Text::MicroTemplate::File') }
     sub dispatch {
-        my ($class, $c) = @_;
+        my $c = shift;
         if ($c->request->path_info eq '/') {
             $c->session->set(foo => 'bar');
             return $c->redirect('/step2');
         } elsif ($c->request->path_info eq '/step2') {
             my $res = "<html><body>@{[  $c->session->get('foo') ]}</body></html>";
-            return $c->response_class->new(
+            return $c->create_response(
                 200,
                 [
                     'Conent-Length' => length($res),
@@ -37,15 +34,10 @@ BEGIN {
                 $res
             );
         } else {
-            return $c->response_class->new(404, [], []);
+            return $c->create_response(404, [], []);
         }
     }
 
-    package MyApp::Web;
-    use parent qw/MyApp Amon2::Web/;
-    __PACKAGE__->setup(
-        view_class => 'Text::MicroTemplate::File',
-    );
     __PACKAGE__->load_plugins(
         'Web::HTTPSession' => {
             state => 'URI',
