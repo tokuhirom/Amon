@@ -91,12 +91,18 @@ sub to_app {
             last if $response;
         }
         unless ($response) {
-            $response = $self->dispatcher_class->dispatch($self)
-                or die "response is not generated";
+            $response = $self->dispatch();
         }
         $self->call_trigger('AFTER_DISPATCH' => $response);
         return $response->finalize;
     };
+}
+
+# you can override this method
+sub dispatch {
+    my ($self) = @_;
+    $self->dispatcher_class->dispatch($self)
+        or die "response is not generated";
 }
 
 sub uri_for {
