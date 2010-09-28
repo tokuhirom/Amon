@@ -295,7 +295,10 @@ requires 'Text::Xslate::Bridge::TT2Like';
 requires 'Plack::Middleware::ReverseProxy';
 requires 'HTML::FillInForm::Lite';
 requires 'Time::Piece';
+<% if ($skinny) { %>
 requires 'DBIx::Skinny';
+requires 'DBIx::Skinny::Schema::Loader';
+<% } %>
 recursive_author_tests('xt');
 
 WriteAll;
