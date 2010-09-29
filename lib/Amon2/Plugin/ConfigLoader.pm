@@ -1,5 +1,4 @@
 package Amon2::Plugin::ConfigLoader;
-# EXPERIMENTAL
 use strict;
 use warnings;
 use Amon2::Util;
@@ -21,6 +20,12 @@ __END__
 =head1 NAME
 
 Amon2::ConfigLoader - configuration file loader for Amon2
+
+=head1 SYNOPSIS
+
+    package MyApp;
+    use parent qw/Amon2/;
+    __PACKAGE__->load_plugins(qw/ConfigLoader/);
 
 =head1 DESCRIPTION
 
