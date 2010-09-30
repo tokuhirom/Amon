@@ -23,7 +23,8 @@ use warnings;
 use parent qw/Amon2/;
 our $VERSION='0.01';
 
-__PACKAGE__->load_plugins(qw/ConfigLoader LogDispatch/);
+__PACKAGE__->load_plugin('ConfigLoader'); # MUST BE FIRST.
+__PACKAGE__->load_plugin('LogDispatch');
 
 <% if ($skinny) { %>
 sub db {
