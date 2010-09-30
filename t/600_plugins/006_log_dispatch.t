@@ -6,9 +6,10 @@ use Test::Requires 'Log::Dispatch';
 {
     package MyApp;
     use parent qw/Amon2/;
-    __PACKAGE__->load_plugins('LogDispatch' => {
-        outputs => [ ['Null', 'min_level' => 'debug'] ]
-    });
+    __PACKAGE__->add_config(
+        'Log::Dispatch' => { outputs => [ [ 'Null', 'min_level' => 'debug' ] ] }
+    );
+    __PACKAGE__->load_plugins('LogDispatch');
 }
 
 
