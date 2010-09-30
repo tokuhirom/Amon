@@ -9,7 +9,7 @@ use Amon2::Util ();
 sub init {
     my ($class, $c, $config) = @_;
 
-    my $conf = $config || $c->config->{'Log::Dispatch'} || die "missing configuration for LogDispatch plugin";
+    my $conf = $c->config->{'Log::Dispatch'} || die "missing configuration for LogDispatch plugin(\$c->config->{'Log::Dispatch'} is undefined)";
     my $logger = Log::Dispatch->new(%$conf);
     Amon2::Util::add_method($c, 'log', sub { $logger });
 }
