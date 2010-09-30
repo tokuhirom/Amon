@@ -60,7 +60,7 @@ sub load_plugins {
 sub load_plugin {
     my ($class, $module, $conf) = @_;
     $module = Plack::Util::load_class($module, 'Amon2::Plugin');
-    $module->init($class, $conf || +{});
+    $module->init($class, $conf);
 }
 
 
