@@ -11,11 +11,11 @@ use Amon2;
     package MyApp;
     use parent qw/Amon2/;
     use Test::More;
-    __PACKAGE__->config({
+    sub load_config {+{
         'Foo' => {
             bar => 'baz',
         },
-    });
+    }}
     __PACKAGE__->add_config(
         'Foo' => {
             'hoge' => 'fuga',

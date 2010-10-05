@@ -23,7 +23,9 @@ use warnings;
 use parent qw/Amon2/;
 our $VERSION='0.01';
 
-__PACKAGE__->load_plugin('ConfigLoader'); # MUST BE FIRST.
+use Amon2::Config::Simple;
+sub load_config { Amon2::Config::Simple->load(shift) }
+
 __PACKAGE__->load_plugin('LogDispatch');
 
 <% if ($skinny) { %>

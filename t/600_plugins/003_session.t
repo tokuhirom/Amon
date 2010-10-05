@@ -7,11 +7,9 @@ use Plack::Middleware::Lint;
 {
     package MyApp;
     use parent qw/Amon2/;
-    __PACKAGE__->config({
-        'HTTP::Session::State::URI' => {
-            session_id_name => 'amon_sid',
-        },
-    });
+    sub load_config {
+        +{ 'HTTP::Session::State::URI' => { session_id_name => 'amon_sid', }, };
+    }
 
     package MyApp::Web;
     use parent -norequire, qw/MyApp/;

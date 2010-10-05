@@ -15,8 +15,6 @@ our $VERSION = '0.44';
     sub set_context { $_context = $_[1] }
 }
 
-__PACKAGE__->mk_classdata('config' => +{});
-
 sub new {
     my $class = shift;
     my %args = @_ == 1 ? %{ $_[0] } : @_;
@@ -36,6 +34,17 @@ sub base_dir {
     my $base_dir = Amon2::Util::base_dir($proto);
     Amon2::Util::add_method($proto, 'base_dir', sub { $base_dir });
     $base_dir;
+}
+
+sub load_config { die "Abstract base method" }
+sub config {
+    my $class = shift;
+       $class = ref $class || $class;
+    die "Do not call Amon2->config() directly." if __PACKAGE__ eq $class;
+    no strict 'refs';
+    my $config = $class->load_config();
+    *{"$class\::config"} = sub { $config }; # class cache.
+    return $config;
 }
 
 sub add_config {
