@@ -6,7 +6,7 @@ use File::Spec;
 sub load {
     my ($class, $c, %conf) = @_;
 
-    my $env = $conf->{environment} || $ENV{PLACK_ENV} || 'development';
+    my $env = $conf{environment} || $ENV{PLACK_ENV} || 'development';
     my $fname = File::Spec->catfile($c->base_dir, 'config', "${env}.pl");
     my $config = do $fname or die "Cannot load configuration file: $fname";
     return $config;
