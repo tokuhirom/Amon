@@ -4,7 +4,8 @@ use warnings;
 use File::Spec;
 
 sub load {
-    my ($class, $c, %conf) = @_;
+    my ($class, $c) = (shift, shift);
+    my %conf = @_ == 1 ? %{$_[0]} : @_;
 
     my $env = $conf{environment} || $ENV{PLACK_ENV} || 'development';
     my $fname = File::Spec->catfile($c->base_dir, 'config', "${env}.pl");
