@@ -105,7 +105,7 @@ sub render {
     my $html = $self->create_view()->render(@_);
 
     for my $code ($self->get_trigger_code('HTML_FILTER')) {
-        $html = $code->($html);
+        $html = $code->($self, $html);
     }
 
     $html = Encode::encode($self->encoding, $html);
