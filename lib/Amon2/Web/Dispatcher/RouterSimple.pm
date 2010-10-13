@@ -41,7 +41,7 @@ sub _dispatch {
     my ($class, $c) = @_;
     my $req = $c->request;
     if (my $p = $class->match($req->env)) {
-        my $action = $req->method eq 'POST' ? "post_$p->{action}" : $p->{action};
+        my $action = $p->{action};
         $c->{args} = $p;
         "@{[ ref Amon2->context ]}::C::$p->{controller}"->$action($c, $p);
     } else {
