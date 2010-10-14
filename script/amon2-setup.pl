@@ -89,6 +89,8 @@ use Tiffany::Text::Xslate;
 1;
 -- lib/$path/Web/Dispatcher.pm
 package <%= $module %>::Web::Dispatcher;
+use strict;
+use warnings;
 <% if ($dispatcher eq 'RouterSimple') { %>
 use Amon2::Web::Dispatcher::RouterSimple;
 
