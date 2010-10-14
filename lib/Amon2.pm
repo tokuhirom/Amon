@@ -7,7 +7,7 @@ use Plack::Util ();
 use Data::OptList ();
 use Carp ();
 
-our $VERSION = '0.44';
+our $VERSION = '1.99_01';
 {
     our $_context;
     sub context { $_context }
