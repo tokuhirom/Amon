@@ -24,7 +24,7 @@ sub main_test {
     chdir $dir or die $!;
     unshift @INC, File::Spec->catfile($dir, 'Hello', 'lib');
 
-    my $setup = File::Spec->catfile($FindBin::Bin, '..', 'script', 'amon-setup.pl');
+    my $setup = File::Spec->catfile($FindBin::Bin, '..', 'script', 'amon2-setup.pl');
     my $libdir = File::Spec->catfile($FindBin::Bin, '..', 'lib');
     !system $^X, '-I', $libdir, $setup, 'Hello' or die $!;
     chdir 'Hello' or die $!;
