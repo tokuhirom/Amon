@@ -13,13 +13,10 @@ Amon2 でサックリとケータイ対応する方法についての解説で�
 L<Amon2::Plugin::MobileAgent> を利用してください。利用方法は以下のとおり。
 
     package MyApp::Web;
-    use Amon2::Web -base => (
-        view_class => 'Text::MicroTemplate::File',
-    );
+    use parent qw/MyApp Amon2::Web/;
     __PACKAGE__->load_plugins(
         qw/ MobileAgent /
     );
-    1;
 
 =head2 Encode::JP::Mobile との連携
 
@@ -27,7 +24,7 @@ L<Amon2::Plugin::MobileAgent> を利用してください。利用方法は以�
 ングと Content-Type を以下のように設定しましょう。
 
     package MyApp::Web;
-    use Amon2::Web -base;
+    use parent qw/MyApp Amon2::Web/;
 
     __PACKAGE__->load_plugins('MobileCharset' => {});
 
