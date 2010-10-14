@@ -5,36 +5,24 @@ use Test::Requires 'HTML::FillInForm';
 use File::Spec;
 use File::Temp qw/tempdir/;
 
-BEGIN {
-    $INC{'MyApp/Web/Dispatcher.pm'} = __FILE__;
-    $INC{'MyApp/V/MT.pm'} = __FILE__;
-    $INC{'MyApp.pm'} = __FILE__;
-}
-
+my $tmp = tempdir(CLEANUP => 1);
 
 {
     package MyApp;
-    use Amon -base;
-
-    package MyApp::V::MT;
-    use Amon::V::MT -base;
+    use parent qw/Amon2/;
 
     package MyApp::Web;
-    use Amon::Web -base => (
-        default_view_class => 'MT',
-    );
+    use parent -norequire, qw/MyApp/;
+    use parent qw/Amon2::Web/;
+    use Tiffany;
+    sub create_view { Tiffany->load('Text::MicroTemplate::File', {include_path => [$tmp]}) }
+    sub dispatch { MyApp::Web::Dispatcher->dispatch(shift) }
     __PACKAGE__->load_plugins(
-        'FillInForm' => {},
+        'Web::FillInForm' => {},
     );
 }
 
-use Amon::Web::Declare;
-my $tmp = tempdir(CLEANUP => 1);
-my $c = MyApp::Web->bootstrap(config => {
-    'V::MT' => {
-        include_path => [$tmp],
-    },
-});
+my $c = MyApp::Web->bootstrap();
 
 {
     open my $fh, '>', File::Spec->catfile($tmp, 'hoge.mt') or die $!;
@@ -53,7 +41,6 @@ my $c = MyApp::Web->bootstrap(config => {
     close $fh;
 }
 
-my $res = render('hoge.mt')->fillin_form({body => "hello"});
+my $res = $c->render('hoge.mt')->fillin_form({body => "hello"});
 like $res->body(), qr{<input value="hello" name="body" type="text" />};
-is length($res->body()), $res->header('Content-Length');
 done_testing;

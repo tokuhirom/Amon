@@ -4,7 +4,7 @@ use Test::More;
 
 {
     package MyApp;
-    use Amon::Trigger;
+    use Amon2::Trigger;
 
     sub new { bless { BAR => 0 }, shift }
 

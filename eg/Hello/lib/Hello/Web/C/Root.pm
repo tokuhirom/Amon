@@ -1,64 +1,73 @@
 package Hello::Web::C::Root;
 use strict;
 use warnings;
-use Amon::Web::Declare;
+use Amon2::Declare;
 
 sub index {
-    my $login_form = c->form('login');
+    my ($class, $c) = @_;
+
+    my $login_form = $c->form('login');
     my @statuses;
-    if (my $user = c->login_user) {
-        @statuses = db->search(
+    if (my $user = $c->login_user) {
+        @statuses = $c->db->search(
             'status' => { user_id => $user->user_id, },
             { order_by => { 'status_id', 'DESC' } }
         );
     }
-    render("index.mt", $login_form, \@statuses);
+    return $c->render("index.mt", $login_form, \@statuses);
 }
 
 sub signup {
-    my $form = c->form('user_add');
+    my ($class, $c) = @_;
+    my $form = $c->form('user_add');
     if ($form->submitted_and_valid) {
-        $form->model->create(db() => 'user');
-        return redirect('/signup_thanks');
+        $form->model->create($c->db() => 'user');
+        return $c->redirect('/signup_thanks');
     }
-    return render("signup.mt", $form);
+    return $c->render("signup.mt", $form);
 }
 
-sub signup_thanks { render('signup_thanks.mt') }
+sub signup_thanks {
+    my ($class, $c) = @_;
+    $c->render('signup_thanks.mt');
+}
 
 sub login {
-    my $form = c->form('login');
+    my ($class, $c) = @_;
+    my $form = $c->form('login');
     if ($form->submitted_and_valid) {
-        my $user = db->single(
+        my $user = $c->db->single(
             user => {
                 email    => $form->param('email'),
                 password => $form->param('password'),
             }
         );
         if ($user) {
-            c->session->set('login_user_id' => $user->user_id);
-            return redirect('/');
+            $c->session->set('login_user_id' => $user->user_id);
+            return $c->redirect('/');
         }
     }
-    redirect('/?login_failed=1');
+    $c->redirect('/?login_failed=1');
 }
 
 sub logout {
-    c->session->expire();
-    redirect('/');
+    my ($class, $c) = @_;
+    $c->session->expire();
+    $c->redirect('/');
 }
 
 sub post {
-    my $user = c->login_user() or return redirect('/');
+    my ($class, $c) = @_;
+    my $user = c->login_user() or return $c->redirect('/');
     if (my $body = param_decoded('body')) {
-        db->insert(
+        c->db->insert(
             'status' => {
                 user_id => $user->user_id,
                 body    => $body,
             },
         );
     }
-    return redirect('/');
+    return $c->redirect('/');
 }
 
 1;

@@ -1,12 +1,12 @@
 package DeepNamespace::Web::Admin::Dispatcher;
-use Amon::Web::Dispatcher;
+use strict;
 use feature 'switch';
 
 sub dispatch {
     my ($class, $c) = @_;
     given ($c->request->path_info) {
         when ('/') {
-            return call("Root", 'index');
+            return DeepNamespace::Web::Admin::C::Root->index($c);
         }
         default {
             return res_404();

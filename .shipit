@@ -1,2 +1,2 @@
-steps = FindVersion, ChangeVersion, CheckChangeLog, DistTest, Commit, Tag
+steps = FindVersion, ChangeVersion, CheckChangeLog, DistTest, Commit, Tag, MakeDist, UploadGitHub
 git.push_to=origin

@@ -2,36 +2,33 @@ use strict;
 use warnings;
 use Test::More tests => 3;
 
-BEGIN {
-    $INC{'MyApp.pm'}++;
-    $INC{'MyApp/V/MT.pm'}++;
-    $INC{'MyApp/Web/Dispatcher.pm'}++;
-}
-
 {
     package MyApp;
-    use Amon -base;
+    use parent qw/Amon2/;
 
     package MyApp::V::MT;
 
     package MyApp::Web;
-    use Amon::Web -base => (
-        default_view_class => 'MT',
-    );
+    use parent -norequire, qw/MyApp/;
+    use parent qw/Amon2::Web/;
+    use Tiffany;
+    sub create_view { Tiffany->load('Text::MicroTemplate::File') }
+    sub dispatch { MyApp::Web::Dispatcher->dispatch(shift) }
 
     package MyApp::Web::Dispatcher;
-    use Amon::Web::Dispatcher::Lite '-base';
+    use Amon2::Web::Dispatcher::Lite '-base';
 
     get '/' => sub {
-        res(200, [], ['ok'])
+        my $c = shift;
+        $c->create_response(200, [], 'ok')
     };
     get '/hello/:name' => sub {
         my ($c, $args) = @_;
-        res(200, [], ["hi, $args->{name}"])
+        $c->create_response(200, [], ["hi, $args->{name}"])
     };
     post '/new' => sub {
         my ($c, $args) = @_;
-        res(200, [], ["post"])
+        $c->create_response(200, [], ["post"])
     };
 }
 

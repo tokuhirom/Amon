@@ -1,5 +1,5 @@
 package SampleApp;
-use Amon (
-  view_class => 'MT',
+use Amon2 (
+  view_class => 'Text::MicroTemplate::File',
 );
 1;

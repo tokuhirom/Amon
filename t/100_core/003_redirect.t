@@ -1,25 +1,20 @@
 use strict;
 use warnings;
-require Amon::Web::Declare;
-use Amon::Web::Request;
+use Amon2::Web::Request;
 use Test::More;
-
-BEGIN {
-    $INC{'MyApp/Web/Dispatcher.pm'} = __FILE__;
-    $INC{'MyApp/V/MT.pm'}           = __FILE__;
-    $INC{'MyApp.pm'}                = __FILE__;
-};
 
 {
     package MyApp;
-    use Amon -base;
+    use parent qw/Amon2/;
 }
 
 {
     package MyApp::Web;
-    use Amon::Web -base => (
-        default_view_class => 'MT',
-    );
+    use parent -norequire, qw/MyApp/;
+    use parent qw/Amon2::Web/;
+    use Tiffany;
+    sub create_view { Tiffany->load('Text::MicroTemplate::File') }
+    sub dispatch { MyApp::Web::Dispatcher->dispatch(shift) }
 }
 
 my $c = MyApp::Web->bootstrap();
@@ -64,9 +59,9 @@ done_testing;
 
 sub check_redirect {
     my ($env, $next) = @_;
-    $c->{request} = Amon::Web::Request->new($env);
+    $c->{request} = Amon2::Web::Request->new($env);
 
-    my $res = Amon::Web::Declare::redirect($next);
+    my $res = $c->redirect($next);
     $res->header('Location');
 }
 

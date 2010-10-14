@@ -1,6 +1,6 @@
 package Hello::Web;
-use Amon::Web -base => (
-    default_view_class => 'MT',
+use Amon2::Web -base => (
+    view_class => 'Text::MicroTemplate::File',
     base_class         => 'Hello',
 );
 use Hello::Form;

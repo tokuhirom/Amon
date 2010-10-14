@@ -1,3 +1,3 @@
 package DeepNamespace::V::MT;
-use Amon::V::MT -base;
+use Amon2::V::MT -base;
 1;

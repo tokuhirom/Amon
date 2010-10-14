@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=<?= c->encoding =~ /utf/ ? 'UTF-8': 'Shift_JIS' ?>" />
-    <title><? block title => 'Amon' ?></title>
+    <title><? block title => 'Amon2' ?></title>
     <meta http-equiv="Content-Style-Type" content="text/css" />  
     <meta http-equiv="Content-Script-Type" content="text/javascript" />  
     <link href="<?= uri_for('/static/css/main.css') ?>" rel="stylesheet" type="text/css" media="screen" />
@@ -10,7 +10,7 @@
 <body>
     <div id="Container">
         <div id="Header">
-            <a href="<?= uri_for('/') ?>">Amon Startup Page</a>
+            <a href="<?= uri_for('/') ?>">Amon2 Startup Page</a>
         </div>
         <div id="Content">
 ? if (login_user()) {
@@ -19,7 +19,7 @@
             <? block content => 'body here' ?>
         </div>
         <div id="FooterContainer"><div id="Footer">
-            Powered by Amon
+            Powered by Amon2
         </div></div>
     </div>
 </body>

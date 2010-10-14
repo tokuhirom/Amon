@@ -2,12 +2,12 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>Amon docs</title>
+    <title>Amon2 docs</title>
     <link rel="stylesheet" href="css/main.css" type="text/css" />
 </head>
 <body>
     <div id="Container">
-        <header><a href="/">Amon docs</a></header>
+        <header><a href="/">Amon2 docs</a></header>
         <div class="pod">[% html %]</div>
         <footer>Copyright (C) 2010 Tokuhiro Matsuno</footer>
     </div>

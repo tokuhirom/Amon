@@ -1,5 +1,5 @@
 package Hello::V::MT::Context;
-use Amon::V::MT::Context;
+use Amon2::V::MT::Context;
 use Hello::Form;
 use Hello::Form::Renderer;
 
