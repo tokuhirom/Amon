@@ -155,7 +155,7 @@ use strict;
 use warnings;
 use parent 'Amon2::ConfigLoader';
 1;
--- script/make_schema.pl
+-- script/make_schema.pl skinny
 use strict;
 use warnings;
 use <%= $module %>;
