@@ -4,7 +4,7 @@ use warnings;
 use base 'Exporter';
 our @EXPORT = qw/c/;
 
-sub c () { Amon2->context }
+sub c () { $Amon2::CONTEXT }
 
 1;
 __END__
@@ -27,7 +27,7 @@ Amon2::Declare - Amon2 Declare Class
 
 =item c()
 
-Get the context object.
+Get the context object. This is shortcut for Amon2->context() method.
 
 =back
 

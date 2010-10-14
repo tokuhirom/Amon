@@ -9,9 +9,9 @@ use Carp ();
 
 our $VERSION = '1.99_01';
 {
-    our $_context;
-    sub context { $_context }
-    sub set_context { $_context = $_[1] }
+    our $CONTEXT; # You can localize this variable in your application.
+    sub context { $CONTEXT }
+    sub set_context { $CONTEXT = $_[1] }
 }
 
 sub new {
