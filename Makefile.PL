@@ -30,7 +30,7 @@ test_requires 'Test::Requires';
 
 tests 't/*.t t/*/*.t t/*/*/*.t';
 recursive_author_tests('xt');
-install_script 'script/amon-setup.pl';
+install_script 'script/amon2-setup.pl';
 auto_include;
 auto_set_repository;
 
