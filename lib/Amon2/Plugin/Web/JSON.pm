@@ -2,11 +2,11 @@ package Amon2::Plugin::Web::JSON;
 use strict;
 use warnings;
 use JSON qw/encode_json/;
-use Amon2::Util qw/add_method/;
+use Amon2::Util ();
 
 sub init {
     my ($class, $c, $conf) = @_;
-    add_method($c, 'render_json', \&_render_json);
+    Amon2::Util::add_method($c, 'render_json', \&_render_json);
 }
 
 sub _render_json {

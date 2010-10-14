@@ -62,7 +62,7 @@ Amon2::Plugin::Web::HTTPSession - Plugin system for Amon2
 =head1 SYNOPSIS
 
     package MyApp::Web;
-    use Amon2::Web -base;
+    use parent qw/MyApp Amon2::Web/;
     use HTTP::Session::Store::Memcached;
     __PACKAGE__->load_plugins(qw/Web::HTTPSession/ => {
         state => 'URI',
@@ -77,13 +77,14 @@ Amon2::Plugin::Web::HTTPSession - Plugin system for Amon2
     package MyApp::C::Root;
     use strict;
     use warnings;
-    use Amon2::Web::Declare;
+
     sub index {
-        my $foo = c->session->get('foo');
+        my ($class, $c) = @_;
+        my $foo = $c->session->get('foo');
         if ($foo) {
-              c->session->set('foo' => $foo+1);
+              $c->session->set('foo' => $foo+1);
         } else {
-              c->session->set('foo' => 1);
+              $c->session->set('foo' => 1);
         }
     }
 
@@ -91,7 +92,7 @@ Amon2::Plugin::Web::HTTPSession - Plugin system for Amon2
 
 HTTP::Session integrate to Amon2.
 
-After load this plugin, you can get instance of HTTP::Session from C<c->session> method.
+After load this plugin, you can get instance of HTTP::Session from C<$c->session> method.
 
 =head1 SEE ALSO
 
