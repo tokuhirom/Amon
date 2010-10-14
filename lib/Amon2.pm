@@ -5,7 +5,6 @@ use 5.008001;
 use Amon2::Util ();
 use Plack::Util ();
 use Data::OptList ();
-use parent qw/Class::Data::Inheritable/;
 use Carp ();
 
 our $VERSION = '0.44';

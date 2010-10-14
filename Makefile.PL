@@ -7,7 +7,6 @@ requires 'Plack'      => 0.9943;
 requires 'Try::Tiny'  => 0.06;
 requires 'Test::More' => 0.88;     # 0.88 or later is required for done_testing!
 requires 'Exporter'   => 5.64;
-requires 'Class::Data::Inheritable' => 0.08;
 requires 'parent'                   => 0.223;
 requires 'Module::Find'             => 0.10;
 requires 'URI'                      => 1.54;
