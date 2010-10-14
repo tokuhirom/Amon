@@ -4,7 +4,7 @@ use warnings;
 
 sub index {
     my ($class, $c) = @_;
-    $c->render("index.mt");
+    $c->render("index", $c);
 }
 
 sub die {

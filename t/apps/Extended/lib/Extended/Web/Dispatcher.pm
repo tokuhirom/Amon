@@ -1,23 +1,10 @@
 package Extended::Web::Dispatcher;
-use Amon2::Web::Dispatcher;
-use feature 'switch';
+use strict;
+use warnings;
+use Amon2::Web::Dispatcher::RouterSimple;
 
-sub dispatch {
-    my ($class, $c) = @_;
-    given ($c->request->path_info) {
-        when ('/') {
-            return call("Root", 'index');
-        }
-        when ('/die') {
-            return call("Root", 'die');
-        }
-        when ('/session') {
-            return call("Root", 'session');
-        }
-        default {
-            return res_404();
-        }
-    }
-}
+connect '/'        => 'Root#index';
+connect '/die'     => 'Root#die';
+connect '/session' => 'Root#session';
 
 1;
