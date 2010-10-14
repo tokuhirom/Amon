@@ -81,7 +81,7 @@ Amon2 - lightweight web application framework
 
 =head1 SYNOPSIS
 
-    $ amon-setup.pl MyApp
+    $ amon2-setup.pl MyApp
 
 =head1 Point
 
