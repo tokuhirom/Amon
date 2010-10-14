@@ -4,7 +4,7 @@ use warnings;
 use base 'Exporter';
 our @EXPORT = qw/c/;
 
-sub c () { $Amon2::CONTEXT }
+*c = *Amon2::context;
 
 1;
 __END__

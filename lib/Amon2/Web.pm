@@ -71,7 +71,7 @@ sub to_app {
         );
 
         no warnings 'redefine';
-        local *Amon2::context = sub { $self };
+        local $Amon2::CONTEXT = $self;
 
         my $response;
         for my $code ($self->get_trigger_code('BEFORE_DISPATCH')) {
