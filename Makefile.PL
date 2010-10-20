@@ -1,4 +1,6 @@
 use inc::Module::Install;
+use Module::Install::Repository;
+use Module::Install::AuthorTests;
 
 all_from 'lib/Amon2.pm';
 license 'perl';
