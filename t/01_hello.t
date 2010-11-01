@@ -9,7 +9,7 @@ use Plack::Test;
 use Cwd;
 use Test::More;
 use App::Prove;
-use Test::Requires 'HTML::FillInForm::Lite';
+use Test::Requires 'HTML::FillInForm::Lite', 'Plack::Middleware::ReverseProxy';
 
 &main; done_testing; exit;
 
