@@ -31,8 +31,9 @@ sub req               { $_[0]->{request} }
 
 # -------------------------------------------------------------------------
 # methods
+
 sub redirect {
-    my ($self, $location) = @_;
+    my ($self, $location, $params) = @_;
     my $url = do {
         if ($location =~ m{^https?://}) {
             $location;
@@ -43,6 +44,11 @@ sub redirect {
             $url .= $location;
         }
     };
+    if ($params && ref $params eq 'ARRAY') {
+        my $uri = URI->new($url);
+        $uri->query_form($uri->query_form, map { Encode::encode($self->encoding, $_) } @$params);
+        $url = $uri->as_string;
+    }
     $self->create_response(
         302,
         ['Location' => $url],
