@@ -17,6 +17,11 @@ my $tmp = tempdir(CLEANUP => 1);
     use Tiffany;
     sub create_view { Tiffany->load('Text::MicroTemplate::File',  { include_path => [$tmp] } ) }
 
+    sub dispatch {
+        my $c = shift;
+        $c->fillin_form(+{body => 'hello'});
+        $c->render('hoge.mt');
+    }
     __PACKAGE__->load_plugins(
         'Web::FillInFormLite' => {},
     );
@@ -41,6 +46,17 @@ my $c = MyApp::Web->bootstrap();
     close $fh;
 }
 
-my $res = $c->render('hoge.mt')->fillin_form({body => "hello"});
-like $res->body(), qr{<input type="text" name="body" value="hello" />};
+subtest 'new style' => sub {
+    my $res = MyApp::Web->to_app()->(+{});
+    like $res->[2]->[0], qr{<input type="text" name="body" value="hello" />};
+    is Plack::Util::header_get($res->[1], 'Content-Length'), length($res->[2]->[0]);
+};
+
+subtest 'old style' => sub {
+    local $SIG{__WARN__} = sub { };
+    my $res = $c->render('hoge.mt')->fillin_form({body => "hello"});
+    like $res->body(), qr{<input type="text" name="body" value="hello" />};
+    is $res->content_length, length($res->body);
+};
+
 done_testing;
