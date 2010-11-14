@@ -1,3 +1,11 @@
+2.01
+
+    - fixed test case
+    - added second argument for: $c->redirect($location, \%params)
+    - added second argument for: $c->redirect($location, \@params)
+    - added $c->fillin_form() method to Amon2;:Plugin::Web:FillInForm and
+      Amon2::Plugin::Web::FillInForm.
+
 2.00
 
     - refactored
