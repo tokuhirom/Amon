@@ -93,6 +93,18 @@ is(
     ),
     'http://google.com/?foo=hoge&%E3%81%84%E3%82%84%E3%82%93=%E3%81%B0%E3%81%8B%E3%82%93'
 );
+is(
+    check_redirect(
+        {
+            HTTP_HOST   => 'example.com',
+            REQUEST_URI => '/',
+            SCRIPT_NAME => '/bar/',
+        },
+        'http://google.com/?foo=hoge',
+        {'いやん' => 'ばかん'}
+    ),
+    'http://google.com/?foo=hoge&%E3%81%84%E3%82%84%E3%82%93=%E3%81%B0%E3%81%8B%E3%82%93'
+);
 
 no warnings 'once';
 local *MyApp::Web::encoding = sub { 'cp932' };
