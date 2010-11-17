@@ -203,6 +203,7 @@ DB の設定を config/development.sql に書きます。
 
     package Hello::Web;
     use Hello::Web::Form;
+    use HTML::Shakan::Model::DBIxSkinny;
     sub form {
         my ( $c, $form_name ) = @_;
         my $form = Hello::Web::Form->get(
