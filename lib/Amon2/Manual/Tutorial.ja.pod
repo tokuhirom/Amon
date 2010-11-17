@@ -134,7 +134,7 @@ DB の設定を config/development.sql に書きます。
 
     % cpanm HTML::Shakan
 
-次に、フォームを lib/Hello/Form.pm に定義しましょう。
+次に、フォームを lib/Hello/Web/Form.pm に定義しましょう。
 
     package Hello::Web::Form;
     use HTML::Shakan::Declare;
@@ -260,7 +260,7 @@ tmpl/signup_thanks.mt は以下のように、感謝の意を表しておきま�
 ログインするには、セッションが必要なので、セッションプラグインをよみこみましょう。今回は、状態のひきつぎに Cookie をつかい、サーバー側のストレージにはファイルをつかいましょう。
 
     __PACKAGE__->load_plugins(
-        'HTTPSession'   => { state => 'Cookie', store => 'File' },
+        'Web::HTTPSession'   => { state => 'Cookie', store => 'File' },
     );
 
 
