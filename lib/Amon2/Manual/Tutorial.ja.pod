@@ -88,7 +88,7 @@ Amon2 のアプリケーションを起動させるには L<plackup> コマン�
 sql/sqlite.sql には、とりあえず以下のような内容のスキーマを書きましょう。
 
     create table user (
-        user_id int not null primary key,
+        user_id integer not null primary key,
         email varchar(255) not null,
         nick varchar(255) not null,
         password varchar(255) not null
