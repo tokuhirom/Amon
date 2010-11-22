@@ -28,6 +28,7 @@ sub bootstrap {
     return $self;
 }
 
+# class method.
 sub base_dir {
     my $proto = ref $_[0] || $_[0];
     my $base_dir = Amon2::Util::base_dir($proto);
@@ -35,7 +36,7 @@ sub base_dir {
     $base_dir;
 }
 
-sub load_config { die "Abstract base method" }
+sub load_config { die "Abstract base method: load_config" }
 sub config {
     my $class = shift;
        $class = ref $class || $class;
