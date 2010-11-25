@@ -61,9 +61,11 @@ sub dispatch {
     return <%= $module %>::Web::Dispatcher->dispatch($_[0]) or die "response is not generated";
 }
 
-# optional configuration
-__PACKAGE__->add_config(
-    'Text::Xslate' => {
+# setup view class
+use Tiffany::Text::Xslate;
+{
+    my $view_conf = __PACKAGE__->config->{'Text::Xslate'} || die "missing configuration for Text::Xslate";
+    my $view = Tiffany::Text::Xslate->new(+{
         'syntax'   => 'TTerse',
         'module'   => [ 'Text::Xslate::Bridge::TT2Like' ],
         'function' => {
@@ -71,14 +73,8 @@ __PACKAGE__->add_config(
             uri_with => sub { Amon2->context()->req->uri_with(@_) },
             uri_for  => sub { Amon2->context()->uri_for(@_) },
         },
-    }
-);
-
-# setup view class
-use Tiffany::Text::Xslate;
-{
-    my $view_conf = __PACKAGE__->config->{'Text::Xslate'};
-    my $view = Tiffany::Text::Xslate->new($view_conf);
+        %$view_conf
+    });
     sub create_view { $view }
 }
 

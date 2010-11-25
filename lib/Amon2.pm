@@ -48,6 +48,7 @@ sub config {
 
 sub add_config {
     my ($class, $key, $hash) = @_; $hash or Carp::croak("missing args: \$hash");
+    # This method will be deprecate.
     $class->config->{$key} = +{
         %{$class->config->{$key} || +{}},
         %{$hash},
