@@ -44,10 +44,22 @@ sub redirect {
             $url .= $location;
         }
     };
-    if ($params && ref $params eq 'ARRAY') {
-        my $uri = URI->new($url);
-        $uri->query_form($uri->query_form, map { Encode::encode($self->encoding, $_) } @$params);
-        $url = $uri->as_string;
+    if (my $ref_params = ref $params) {
+        if ($ref_params eq 'ARRAY') {
+            my $uri = URI->new($url);
+            $uri->query_form($uri->query_form, map { Encode::encode($self->encoding, $_) } @$params);
+            $url = $uri->as_string;
+        } elsif ($ref_params eq 'HASH') {
+            my @ary;
+            my $encoding = $self->encoding;
+            while (my ($k, $v) = each %$params) {
+                push @ary, Encode::encode($encoding, $k);
+                push @ary, Encode::encode($encoding, $v);
+            }
+            my $uri = URI->new($url);
+            $uri->query_form($uri->query_form, @ary);
+            $url = $uri->as_string;
+        }
     }
     $self->create_response(
         302,

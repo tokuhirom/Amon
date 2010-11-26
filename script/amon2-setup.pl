@@ -26,8 +26,6 @@ our $VERSION='0.01';
 use Amon2::Config::Simple;
 sub load_config { Amon2::Config::Simple->load(shift) }
 
-__PACKAGE__->load_plugin('LogDispatch');
-
 <% if ($skinny) { %>
 sub db {
     my ($self) = @_;
@@ -61,9 +59,11 @@ sub dispatch {
     return <%= $module %>::Web::Dispatcher->dispatch($_[0]) or die "response is not generated";
 }
 
-# optional configuration
-__PACKAGE__->add_config(
-    'Text::Xslate' => {
+# setup view class
+use Tiffany::Text::Xslate;
+{
+    my $view_conf = __PACKAGE__->config->{'Text::Xslate'} || die "missing configuration for Text::Xslate";
+    my $view = Tiffany::Text::Xslate->new(+{
         'syntax'   => 'TTerse',
         'module'   => [ 'Text::Xslate::Bridge::TT2Like' ],
         'function' => {
@@ -71,14 +71,8 @@ __PACKAGE__->add_config(
             uri_with => sub { Amon2->context()->req->uri_with(@_) },
             uri_for  => sub { Amon2->context()->uri_for(@_) },
         },
-    }
-);
-
-# setup view class
-use Tiffany::Text::Xslate;
-{
-    my $view_conf = __PACKAGE__->config->{'Text::Xslate'};
-    my $view = Tiffany::Text::Xslate->new($view_conf);
+        %$view_conf
+    });
     sub create_view { $view }
 }
 
@@ -141,14 +135,6 @@ sub index {
 <% } %>
     'Text::Xslate' => {
         path => ['tmpl/'],
-    },
-    'Log::Dispatch' => {
-        outputs => [
-            ['Screen',
-            min_level => 'debug',
-            stderr => 1,
-            newline => 1],
-        ],
     },
 };
 -- lib/$path/ConfigLoader.pm

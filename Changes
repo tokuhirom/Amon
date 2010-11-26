@@ -1,3 +1,17 @@
+2.02
+
+    - Amon::add_config will be deprecate
+    - Log::Dispatch is no longer default component
+    - docs(hiratara)
+
+2.01
+
+    - fixed test case
+    - added second argument for: $c->redirect($location, \%params)
+    - added second argument for: $c->redirect($location, \@params)
+    - added $c->fillin_form() method to Amon2;:Plugin::Web:FillInForm and
+      Amon2::Plugin::Web::FillInForm.
+
 2.00
 
     - refactored

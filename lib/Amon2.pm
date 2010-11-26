@@ -7,7 +7,7 @@ use Plack::Util ();
 use Data::OptList ();
 use Carp ();
 
-our $VERSION = '2.00';
+our $VERSION = '2.02';
 {
     our $CONTEXT; # You can localize this variable in your application.
     sub context { $CONTEXT }
@@ -49,6 +49,7 @@ sub config {
 
 sub add_config {
     my ($class, $key, $hash) = @_; $hash or Carp::croak("missing args: \$hash");
+    # This method will be deprecate.
     $class->config->{$key} = +{
         %{$class->config->{$key} || +{}},
         %{$hash},
