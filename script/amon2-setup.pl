@@ -26,8 +26,6 @@ our $VERSION='0.01';
 use Amon2::Config::Simple;
 sub load_config { Amon2::Config::Simple->load(shift) }
 
-__PACKAGE__->load_plugin('LogDispatch');
-
 <% if ($skinny) { %>
 sub db {
     my ($self) = @_;
@@ -137,14 +135,6 @@ sub index {
 <% } %>
     'Text::Xslate' => {
         path => ['tmpl/'],
-    },
-    'Log::Dispatch' => {
-        outputs => [
-            ['Screen',
-            min_level => 'debug',
-            stderr => 1,
-            newline => 1],
-        ],
     },
 };
 -- lib/$path/ConfigLoader.pm
