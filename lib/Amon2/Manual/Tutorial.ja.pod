@@ -88,7 +88,7 @@ Amon2 のアプリケーションを起動させるには L<plackup> コマン�
 sql/sqlite.sql には、とりあえず以下のような内容のスキーマを書きましょう。
 
     create table user (
-        user_id int not null primary key,
+        user_id integer not null primary key,
         email varchar(255) not null,
         nick varchar(255) not null,
         password varchar(255) not null
@@ -134,7 +134,7 @@ DB の設定を config/development.sql に書きます。
 
     % cpanm HTML::Shakan
 
-次に、フォームを lib/Hello/Form.pm に定義しましょう。
+次に、フォームを lib/Hello/Web/Form.pm に定義しましょう。
 
     package Hello::Web::Form;
     use HTML::Shakan::Declare;
@@ -203,6 +203,7 @@ DB の設定を config/development.sql に書きます。
 
     package Hello::Web;
     use Hello::Web::Form;
+    use HTML::Shakan::Model::DBIxSkinny;
     sub form {
         my ( $c, $form_name ) = @_;
         my $form = Hello::Web::Form->get(
@@ -260,7 +261,7 @@ tmpl/signup_thanks.mt は以下のように、感謝の意を表しておきま�
 ログインするには、セッションが必要なので、セッションプラグインをよみこみましょう。今回は、状態のひきつぎに Cookie をつかい、サーバー側のストレージにはファイルをつかいましょう。
 
     __PACKAGE__->load_plugins(
-        'HTTPSession'   => { state => 'Cookie', store => 'File' },
+        'Web::HTTPSession'   => { state => 'Cookie', store => 'File' },
     );
 
 
