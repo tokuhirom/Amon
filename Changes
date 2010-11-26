@@ -1,3 +1,9 @@
+2.02
+
+    - Amon::add_config will be deprecate
+    - Log::Dispatch is no longer default component
+    - docs(hiratara)
+
 2.01
 
     - fixed test case
