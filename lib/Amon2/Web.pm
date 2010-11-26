@@ -126,13 +126,19 @@ sub render {
         $html = $code->($self, $html);
     }
 
-    $html = Encode::encode($self->encoding, $html);
+    $html = $self->encode_html($html);
 
     return $self->create_response(
         200,
         ['Content-Type' => $self->html_content_type, 'Content-Length' => length($html)],
         $html,
     );
+}
+
+# you can override this method on your application
+sub encode_html {
+    my ($self, $html) = @_;
+    return Encode::encode($self->encoding, $html);
 }
 
 1;
