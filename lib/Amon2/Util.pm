@@ -24,22 +24,3 @@ sub base_dir($) {
 }
 
 1;
-__END__
-
-=head1 NAME
-
-Amon2::Util - Amon2 Utility Class
-
-=head1 DESCRIPTION
-
-This is a utility functions for L<Amon2>.
-
-=head1 FUNCTIONS
-
-
-=head1 SEE ALSO
-
-L<Catalyst::Utils>, L<Plack::Util>
-
-=cut
-
