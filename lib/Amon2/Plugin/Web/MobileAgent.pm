@@ -26,7 +26,6 @@ Amon2::Plugin::Web::MobileAgent - HTTP::MobileAgent plugin for Amon2
 
     package MyApp::Web;
     use parent qw/MyApp Amon2::Web/;
-    __PACKAGE__->setup();
     __PACKAGE__->load_plugins('Web::MobileAgent');
     1;
 
