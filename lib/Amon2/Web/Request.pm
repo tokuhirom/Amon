@@ -96,13 +96,13 @@ Amon2::Web::Request - Amon2 Request Class
 
 This is a child class of L<Plack::Request>.Please see L<Plack::Request> for more details.
 
+=head1 AUTOMATIC DECODING
+
+This class decode the query/body parameters automatically.
+
 =head1 METHODS
 
 =over 4
-
-=item $req->param_decoded($param)
-
-Get decoded parameters.
 
 =item $req->uri_with($args, $behavior)
 
