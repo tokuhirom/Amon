@@ -8,7 +8,7 @@
 <body>
     <div id="Container">
         <header><a href="/">Amon2 docs</a></header>
-        <div class="pod">[% html %]</div>
+        <div class="pod">[% src %]</div>
         <footer>Copyright (C) 2010 Tokuhiro Matsuno</footer>
     </div>
 </body>

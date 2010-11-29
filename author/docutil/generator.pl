@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use 5.12.0;
 use autodie;
-use Text::Xslate qw/escaped_string/;
+use Text::Xslate qw/mark_raw/;
 use Path::Class;
 use YAML;
 use Pod::POM;
@@ -14,8 +14,9 @@ my $BASE = file(__FILE__)->dir->stringify;
 my $OUT = "/usr/local/webapp/amon-website/";
 # my $OUT = "/tmp/docs/";
 my $XT = Text::Xslate->new(
-    'path' => ["$BASE/tmpl/"],
+    'path'   => ["$BASE/tmpl/"],
     'syntax' => 'TTerse',
+    'module' => ['Text::Xslate::Bridge::TT2Like'],
 );
 
 &main;exit;
@@ -83,7 +84,7 @@ sub render_pod {
     my $fname = shift;
     my $ofname = fname2ofname($fname);
     my $html = parse($fname)->body;
-    my $content = $XT->render("entry.tx", {html => escaped_string(decode_utf8 $html)});
+    my $content = $XT->render("entry.tx", {src => mark_raw(decode_utf8 $html)});
     write_file("$OUT/$ofname.html", $content);
 }
 
@@ -94,13 +95,10 @@ sub aggregate {
         callback => sub {
             my $f = shift;
             return unless -f $f;
-            given ("$f") {
-                when (qr/\.pm$/) {
-                    push @pm, "$f";
-                }
-                when (qr/\.pod$/) {
-                    push @pod, "$f";
-                }
+
+            for ("$f") {
+            push @pm, $_ if /\.pm$/;
+            push @pod, $_ if /\.pod$/;
             }
         },
     );
