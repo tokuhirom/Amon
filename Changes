@@ -1,3 +1,8 @@
+2.04
+
+    - docs
+    - rewrote tutorial
+
 2.03
 
     - new hook point: encode_html.
