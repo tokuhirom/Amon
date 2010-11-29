@@ -1,13 +1,14 @@
-use Hello::Web;
-use Plack::Builder;
 use File::Spec;
 use File::Basename;
-
-my $config = do File::Spec->catfile(dirname(__FILE__), 'config.pl') or die "cannot load configuration file";
+use local::lib File::Spec->catdir(dirname(__FILE__), 'extlib');
+use lib File::Spec->catdir(dirname(__FILE__), 'lib');
+use Hello::Web;
+use Plack::Builder;
 
 builder {
     enable 'Plack::Middleware::Static',
         path => qr{^/static/},
         root => './htdocs/';
-    Hello::Web->to_app(config => $config);
+    enable 'Plack::Middleware::ReverseProxy';
+    Hello::Web->to_app();
 };

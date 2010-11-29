@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+<body>
+
+<form method="post" action="[% uri_for('/post') %]">
+    <input type="text" name="body" />
+    <input type="submit" value="送信" />
+</form>
+<ul>
+[% FOR entry IN entries %]
+    <li>[% entry.entry_id %]. [% entry.body %]</li>
+[% END %]
+</ul>
+
+</body>
+</html>

@@ -1,3 +1,7 @@
 Makefile
 inc/
-hello.db
+MANIFEST
+*.bak
+*.old
+nytprof.out
+test.db

@@ -65,25 +65,3 @@ body {
     padding-top: 2px;
 }
 
-form {
-    width: 400px;
-}
-form p {
-    clear: both;
-    width: auto;
-}
-form label {
-    display: block;
-    float: left;
-    width: 125px;
-    margin: 0;
-    cursor: auto;
-}
-form .inputbox {
-    margin-left: 135px;
-    display: block;
-}
-
-.error {
-    color: red;
-}

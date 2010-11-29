@@ -1,11 +1,11 @@
 package Hello::Web::Dispatcher;
-use Amon2::Web::Dispatcher::HTTPxDispatcher;
+use strict;
+use warnings;
 
-connect '/'              => { controller => 'Root', action => 'index' };
-connect '/signup'        => { controller => 'Root', action => 'signup' };
-connect '/signup_thanks' => { controller => 'Root', action => 'signup_thanks' };
-connect '/login'         => { controller => 'Root', action => 'login' };
-connect '/logout'        => { controller => 'Root', action => 'logout' };
-connect '/post'          => { controller => 'Root', action => 'post' };
+use Amon2::Web::Dispatcher::RouterSimple;
+
+connect '/'              => 'Root#index';
+connect '/post'          => 'Root#post';
+
 
 1;

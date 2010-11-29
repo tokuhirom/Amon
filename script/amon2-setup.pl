@@ -27,6 +27,8 @@ use Amon2::Config::Simple;
 sub load_config { Amon2::Config::Simple->load(shift) }
 
 <% if ($skinny) { %>
+use <%= $module %>::DB;
+
 sub db {
     my ($self) = @_;
     $self->{db} //= do {
