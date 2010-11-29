@@ -152,7 +152,7 @@ DB の設定を config/development.sql に書きます。
         return $c->redirect('/');
     }
 
-=haed2 テンプレート
+=head2 テンプレート
 
 Amon2 では現在、L<Text::Xslate> の TTerse をデフォルトのテンプレートエンジンとして採用しています。
 
