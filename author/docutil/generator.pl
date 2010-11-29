@@ -9,6 +9,8 @@ use Pod::POM;
 use Pod::HTMLEmbed;
 use File::Copy::Recursive qw/rcopy/;
 use Encode;
+use lib 'lib';
+use Amon2;
 
 my $BASE = file(__FILE__)->dir->stringify;
 my $OUT = "/usr/local/webapp/amon-website/";
@@ -60,6 +62,7 @@ sub render_top {
         } @_;
     };
     my $content = $XT->render( 'top.tx', {
+        amon_version => $Amon2::VERSION,
         pm  => [ $c->(@$pm) ],
         pod => [ $c->(@$pod) ],
     } );
