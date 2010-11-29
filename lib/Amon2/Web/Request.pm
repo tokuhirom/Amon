@@ -94,7 +94,7 @@ Amon2::Web::Request - Amon2 Request Class
 
 =head1 DESCRIPTION
 
-This is a child class of L<Plack::Request>.Please see L<Plack::Request> for more details.
+This is a child class of L<Plack::Request>. Please see L<Plack::Request> for more details.
 
 =head1 AUTOMATIC DECODING
 
