@@ -17,6 +17,7 @@ sub _render_json {
     my $res = $c->create_response(200);
 
     my $encoding = $c->encoding();
+    $encoding = $encoding->mime_name if ref $encoding;
     if ( ( $c->req->user_agent || '' ) =~ /Opera/ ) {
         $res->content_type(
             "application/x-javascript; charset=$encoding");
