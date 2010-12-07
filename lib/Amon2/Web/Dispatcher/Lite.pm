@@ -3,7 +3,6 @@ use strict;
 use warnings;
 use parent 'Amon2::Web';
 use Router::Simple 0.04;
-use Amon2::Util qw/add_method/;
 use Router::Simple::Sinatraish;
 
 sub import {
