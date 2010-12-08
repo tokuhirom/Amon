@@ -71,10 +71,10 @@ sub validate_csrf {
         my $r_token       = $self->req->param('csrf_token');
         my $session_token = $self->session->get('csrf_token');
         if ( !$r_token || !$session_token || ( $r_token ne $session_token ) ) {
-            return 0; # good
+            return 0; # bad
         }
     }
-    return 1; # bad
+    return 1; # good
 }
 
 1;
