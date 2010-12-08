@@ -23,8 +23,8 @@ sub init {
     my ($class, $c, $conf) = @_;
 
     $c->add_trigger(
-        AFTER_DISPATCH => sub {
-            my ($self, $res) = @_;
+        HTML_FILTER => sub {
+            my ($self, $html) = @_;
             my $token = do {
                 if (my $token = $self->session->get('csrf_token')) {
                     $token;
@@ -34,12 +34,8 @@ sub init {
                     $token;
                 }
             };
-            my $html = $res->body;
-            if (($res->header('Content-Type') || '') =~ /html/ && not ref $html) {
-                $html =~ s!(<form\s*.*?>)!$1\n<input type="hidden" name="csrf_token" value="$token" />!isg;
-                $res->body($html);
-                $res->header('Content-Length' => length($html));
-            }
+            $html =~ s!(<form\s*.*?>)!$1\n<input type="hidden" name="csrf_token" value="$token" />!isg;
+            return $html;
         },
     );
     unless ($conf->{no_validate_hook}) {
