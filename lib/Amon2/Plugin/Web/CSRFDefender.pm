@@ -2,6 +2,7 @@ package Amon2::Plugin::Web::CSRFDefender;
 use strict;
 use warnings;
 use String::Random qw/random_regex/;
+use Amon2::Util ();
 
 our $ERROR_HTML = <<'...';
 <!doctype html>
@@ -60,7 +61,7 @@ sub init {
             }
         );
     }
-    Amon::Util::add_method($c, 'validate_csrf', \&validate_csrf);
+    Amon2::Util::add_method($c, 'validate_csrf', \&validate_csrf);
 }
 
 sub validate_csrf {
