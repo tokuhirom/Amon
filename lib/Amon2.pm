@@ -7,7 +7,7 @@ use Plack::Util ();
 use Data::OptList ();
 use Carp ();
 
-our $VERSION = '2.05';
+our $VERSION = '2.06';
 {
     our $CONTEXT; # You can localize this variable in your application.
     sub context { $CONTEXT }

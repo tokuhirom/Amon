@@ -1,3 +1,8 @@
+2.06
+
+    - fixed csrfdefender for amon2 style(before this commit, it still amon1 style!)
+      (tokuhirom)
+
 2.05
 
     - Plugin::Web::CSRFDefender: oops. older version does not works without Amon1
