@@ -43,7 +43,12 @@ sub _dispatch {
     if (my $p = $class->match($req->env)) {
         my $action = $p->{action};
         $c->{args} = $p;
-        "@{[ ref Amon2->context ]}::C::$p->{controller}"->$action($c, $p);
+        for my $controller ( ucfirst($p->{controller}), $p->{controller} ) {
+            return
+                "@{[ ref Amon2->context ]}::C::$controller"->$action($c, $p)
+                    if eval { "@{[ ref Amon2->context ]}::C::$controller"->can($action) };
+        }
+        $c->res_404();
     } else {
         $c->res_404();
     }
