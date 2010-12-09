@@ -75,7 +75,7 @@ $mech->get_ok('/sitemap');
 $mech->content_is("sitemap");
 $mech->get_ok('/low/');
 $mech->content_is("top");
-$mech->get_ok('/baz/index2');
+$mech->get_ok('/baz/index');
 $mech->content_is("top");
 
 done_testing;
