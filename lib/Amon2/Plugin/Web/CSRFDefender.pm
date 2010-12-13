@@ -25,15 +25,7 @@ sub init {
     $c->add_trigger(
         HTML_FILTER => sub {
             my ($self, $html) = @_;
-            my $token = do {
-                if (my $token = $self->session->get('csrf_token')) {
-                    $token;
-                } else {
-                    $token = random_regex('[a-zA-Z0-9_]{32}');
-                    $self->session->set('csrf_token' => $token);
-                    $token;
-                }
-            };
+            my $token = $self->get_csrf_defender_token();
             $html =~ s!(<form\s*.*?>)!$1\n<input type="hidden" name="csrf_token" value="$token" />!isg;
             return $html;
         },
@@ -57,7 +49,20 @@ sub init {
             }
         );
     }
+    Amon2::Util::add_method($c, 'get_csrf_defender_token', \&get_csrf_defender_token);
     Amon2::Util::add_method($c, 'validate_csrf', \&validate_csrf);
+}
+
+sub get_csrf_defender_token {
+    my $self = shift;
+
+    if (my $token = $self->session->get('csrf_token')) {
+        $token;
+    } else {
+        $token = String::Random::random_regex('[a-zA-Z0-9_]{32}');
+        $self->session->set('csrf_token' => $token);
+        $token;
+    }
 }
 
 sub validate_csrf {
