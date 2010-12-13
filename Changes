@@ -1,3 +1,7 @@
+2.08
+
+    - Web::Dispatcher::RouterSimple: export 'router' method
+
 2.07
 
     - Plugin::Web::CSRFDefender: added get_csrf_defender_token method.
