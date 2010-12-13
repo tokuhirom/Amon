@@ -1,3 +1,7 @@
+2.07
+
+    - Plugin::Web::CSRFDefender: added get_csrf_defender_token method.
+
 2.06
 
     - fixed csrfdefender for amon2 style(before this commit, it still amon1 style!)
