@@ -28,6 +28,7 @@ sub import {
         $router->submapper(@_);
     };
     # class methods
+    *{"${caller}::router"} = sub { $router };
     for my $meth (qw/match as_string/) {
         *{"$caller\::${meth}"} = sub {
             my $self = shift;
