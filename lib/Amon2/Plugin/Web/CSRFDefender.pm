@@ -2,6 +2,7 @@ package Amon2::Plugin::Web::CSRFDefender;
 use strict;
 use warnings;
 use String::Random qw/random_regex/;
+use Amon2::Util ();
 
 our $ERROR_HTML = <<'...';
 <!doctype html>
@@ -22,23 +23,11 @@ sub init {
     my ($class, $c, $conf) = @_;
 
     $c->add_trigger(
-        AFTER_DISPATCH => sub {
-            my ($self, $res) = @_;
-            my $token = do {
-                if (my $token = $self->session->get('csrf_token')) {
-                    $token;
-                } else {
-                    $token = random_regex('[a-zA-Z0-9_]{32}');
-                    $self->session->set('csrf_token' => $token);
-                    $token;
-                }
-            };
-            my $html = $res->body;
-            if (($res->header('Content-Type') || '') =~ /html/ && not ref $html) {
-                $html =~ s!(<form\s*.*?>)!$1\n<input type="hidden" name="csrf_token" value="$token" />!isg;
-                $res->body($html);
-                $res->header('Content-Length' => length($html));
-            }
+        HTML_FILTER => sub {
+            my ($self, $html) = @_;
+            my $token = $self->get_csrf_defender_token();
+            $html =~ s!(<form\s*.*?>)!$1\n<input type="hidden" name="csrf_token" value="$token" />!isg;
+            return $html;
         },
     );
     unless ($conf->{no_validate_hook}) {
@@ -60,7 +49,20 @@ sub init {
             }
         );
     }
-    Amon::Util::add_method($c, 'validate_csrf', \&validate_csrf);
+    Amon2::Util::add_method($c, 'get_csrf_defender_token', \&get_csrf_defender_token);
+    Amon2::Util::add_method($c, 'validate_csrf', \&validate_csrf);
+}
+
+sub get_csrf_defender_token {
+    my $self = shift;
+
+    if (my $token = $self->session->get('csrf_token')) {
+        $token;
+    } else {
+        $token = String::Random::random_regex('[a-zA-Z0-9_]{32}');
+        $self->session->set('csrf_token' => $token);
+        $token;
+    }
 }
 
 sub validate_csrf {
@@ -70,10 +72,10 @@ sub validate_csrf {
         my $r_token       = $self->req->param('csrf_token');
         my $session_token = $self->session->get('csrf_token');
         if ( !$r_token || !$session_token || ( $r_token ne $session_token ) ) {
-            return 0; # good
+            return 0; # bad
         }
     }
-    return 1; # bad
+    return 1; # good
 }
 
 1;
