@@ -1,3 +1,7 @@
+2.11
+
+    - fix  encoding mime_name is lower case, Safari add BOM bug, Chrome text/html(s-aska)
+
 2.10
 
     - fixed test case
