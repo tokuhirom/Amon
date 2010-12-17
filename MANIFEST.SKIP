@@ -22,3 +22,4 @@
 ^author/
 \bblib\b
 .+/inc\b
+\.ja\.pod$
