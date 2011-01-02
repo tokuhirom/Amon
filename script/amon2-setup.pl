@@ -151,7 +151,7 @@ use warnings;
 use FindBin;
 use File::Spec;
 use lib File::Spec->catdir($FindBin::Bin, '..', 'lib');
-use local::lib File::Spec->catdir($FindBin::Bin, '..', 'extlib');
+use lib File::Spec->catdir($FindBin::Bin, '..', 'extlib', 'lib', 'perl5');
 use <%= $module %>;
 use DBIx::Skinny::Schema::Loader qw/make_schema_at/;
 use FindBin;
@@ -269,7 +269,7 @@ body {
 -- $dist.psgi
 use File::Spec;
 use File::Basename;
-use local::lib File::Spec->catdir(dirname(__FILE__), 'extlib');
+use lib File::Spec->catdir(dirname(__FILE__), 'extlib', 'lib', 'perl5');
 use lib File::Spec->catdir(dirname(__FILE__), 'lib');
 use <%= $module %>::Web;
 use Plack::Builder;

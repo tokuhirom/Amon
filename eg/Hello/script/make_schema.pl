@@ -3,7 +3,7 @@ use warnings;
 use FindBin;
 use File::Spec;
 use lib File::Spec->catdir($FindBin::Bin, '..', 'lib');
-use local::lib File::Spec->catdir($FindBin::Bin, '..', 'extlib');
+use lib File::Spec->catdir($FindBin::Bin, '..', 'extlib', 'lib', 'perl5');
 use Hello;
 use DBIx::Skinny::Schema::Loader qw/make_schema_at/;
 use FindBin;
