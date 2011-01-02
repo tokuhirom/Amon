@@ -10,8 +10,7 @@ use Cwd;
 use Test::More;
 use App::Prove;
 use Test::Requires 'HTML::FillInForm::Lite', 'Plack::Middleware::ReverseProxy';
-
-plan skip_all => 'brokan';
+use Config;
 
 &main; done_testing; exit;
 
@@ -31,6 +30,9 @@ sub main_test {
     !system $^X, '-I', $libdir, $setup, 'Hello' or die $!;
     chdir 'Hello' or die $!;
 
+    note '-- run prove';
+    system "$^X Makefile.PL";
+    system $Config{make};
     my $app = App::Prove->new();
     $app->process_args('-Ilib', '-I'.File::Spec->catfile($FindBin::Bin, '..', 'lib'), <t/*.t>, <xt/*.t>);
     ok($app->run);

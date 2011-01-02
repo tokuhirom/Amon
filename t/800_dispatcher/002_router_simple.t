@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use Test::More;
-use Test::Requires 'Test::WWW::Mechanize::PSGI';
+use Test::Requires 'Test::WWW::Mechanize::PSGI', 'String::Random';
 
 {
     package MyApp;
@@ -40,6 +40,9 @@ use Test::Requires 'Test::WWW::Mechanize::PSGI';
 
     package MyApp::Web::Dispatcher;
     use Amon2::Web::Dispatcher::RouterSimple;
+
+    ::isa_ok __PACKAGE__->router(), 'Router::Simple';
+
     connect '/', {controller => 'Root', action => 'index'};
     connect '/my/foo', 'My#foo';
     connect '/bar/:action', 'Bar';

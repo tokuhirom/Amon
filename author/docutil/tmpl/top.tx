@@ -7,7 +7,7 @@
 </head>
 <body>
     <div id="Container">
-        <header>Amon2 docs</header>
+        <header>Amon2 docs for [% amon_version %]</header>
 
             <div>
                 <h1>Amon2 is ...</h1>
@@ -15,6 +15,8 @@
                     <li>Fast</li>
                     <li>Simple</li>
                     <li>Minimalistic</li>
+                    <li>use PSGI</li>
+                    <li>less dependencies</li>
                 </ul>
                 <B>Web Application Framework</B> for Perl5.
 
@@ -24,6 +26,13 @@
                     <li>no xs dependencies by default</li>
                     <li>Thin layer</li>
                 </ul>
+            </div>
+
+            <div>
+                <h1>Installation</h1>
+                <div>
+                    <pre>cpanm --mirror=http://orepan.64p.org/ Amon2</pre>
+                </div>
             </div>
 
             <h1>classes</h1>

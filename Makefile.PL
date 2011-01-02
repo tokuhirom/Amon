@@ -33,5 +33,6 @@ recursive_author_tests('xt');
 install_script 'script/amon2-setup.pl';
 auto_include;
 auto_set_repository;
+no_index directory => 'eg';
 
 WriteAll;
