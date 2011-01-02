@@ -5,6 +5,10 @@ use base qw/Plack::Request/;
 use Encode ();
 use Carp ();
 use URI::QueryParam;
+use Hash::MultiValue;
+
+# ------------------------------------------------------------------------- 
+# This object returns decoded parameter values by default
 
 sub body_parameters {
     my ($self) = @_;
@@ -27,8 +31,47 @@ sub _decode_parameters {
     }
     return Hash::MultiValue->new(@decoded);
 }
+sub parameters {
+    my $self = shift;
 
-# code taken from Catalyst::Request
+    $self->env->{'amon2.request.merged'} ||= do {
+        my $query = $self->query_parameters;
+        my $body  = $self->body_parameters;
+        Hash::MultiValue->new( $query->flatten, $body->flatten );
+    };
+}
+
+# ------------------------------------------------------------------------- 
+# raw parameter values are also available.
+
+sub body_parameters_raw {
+    shift->SUPER::body_parameters();
+}
+sub query_parameters_raw {
+    shift->SUPER::query_parameters();
+}
+sub parameters_raw {
+    my $self = shift;
+
+    $self->env->{'plack.request.merged'} ||= do {
+        my $query = $self->SUPER::query_parameters();
+        my $body  = $self->SUPER::body_parameters();
+        Hash::MultiValue->new( $query->flatten, $body->flatten );
+    };
+}
+sub param_raw {
+    my $self = shift;
+
+    return keys %{ $self->parameters_raw } if @_ == 0;
+
+    my $key = shift;
+    return $self->parameters_raw->{$key} unless wantarray;
+    return $self->parameters_raw->get_all($key);
+}
+
+
+# ------------------------------------------------------------------------- 
+# uri_with funcition.  The code was taken from Catalyst::Request
 sub uri_with {
     my( $self, $args, $behavior) = @_;
 
@@ -98,7 +141,8 @@ This is a child class of L<Plack::Request>. Please see L<Plack::Request> for mor
 
 =head1 AUTOMATIC DECODING
 
-This class decode the query/body parameters automatically.
+This class decode query/body parameters automatically.
+Return value of C<< $req->param() >>, C<< $req->body_parameters >>, etc. is the decoded value.
 
 =head1 METHODS
 
@@ -111,6 +155,20 @@ Returns a rewritten URI object for the current request. Key/value pairs passed i
 You may also pass an optional second parameter that puts uri_with into append mode:
 
   $req->uri_with( { key => 'value' }, { mode => 'append' } );
+
+=item $req->body_parameters_raw()
+
+=item $req->query_parameters_raw()
+
+=item $req->parameters_raw()
+
+=item $req->param_raw()
+
+=item $req->param_raw($key)
+
+=item $req->param_raw($key => $val)
+
+These methods are the accessor to raw values. 'raw' means the value is not decoded.
 
 =back
 
