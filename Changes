@@ -1,3 +1,8 @@
+2.12
+
+    - Amon2::Web::Request: added accessor for raw value
+    - removed dependency for local::lib.
+
 2.11
 
     - fix  encoding mime_name is lower case, Safari add BOM bug, Chrome text/html(s-aska)
