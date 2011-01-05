@@ -90,10 +90,9 @@ Amon2 - lightweight web application framework
     use Amon2::Config::Simple;
     sub load_config { Amon2::Config::Simple->load(shift) }
 
-=head1 Point
+=head1 DESCRIPTION
 
-    Fast
-    Easy to use
+Amon2 is simple, readable, extensible, B<STABLE>, B<FAST> web application framework based on L<Plack>.
 
 =head1 METHODS
 
