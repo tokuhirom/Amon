@@ -27,7 +27,7 @@ Amon2::Declare - Amon2 Declare Class
 
 =item c()
 
-Get the context object. This is shortcut for Amon2->context() method.
+Get the context object. This is shortcut for C<< Amon2->context() >> method.
 
 =back
 

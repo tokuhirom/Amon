@@ -44,6 +44,11 @@ Amon2::Plugin::LogDispatch - Log::Dispatch glue for Amon2
     # in your controller
     $c->log->emerg('help me');
 
+=head1 DESCRIPTION
+
+This is a L<Log::Dispatch> glue for L<Amon2>. This module still maintained, but I don't use this module on production environment today.
+I'm a user of L<Log::Minimal>.
+
 =head1 SEE ALSO
 
 L<Amon2>, L<Log::Dispatch>
