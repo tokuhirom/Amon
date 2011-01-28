@@ -31,10 +31,11 @@ use <%= $module %>::DB;
 
 sub db {
     my ($self) = @_;
-    $self->{db} //= do {
+    if (!defined $self->{db}) {
         my $conf = $self->config->{'DBIx::Skinny'} or die "missing configuration for 'DBIx::Skinny'";
-        <%= $module %>::DB->new($conf);
-    };
+        $self->{db} = <%= $module %>::DB->new($conf);
+    }
+    return $self->{db};
 }
 <% } %>
 
