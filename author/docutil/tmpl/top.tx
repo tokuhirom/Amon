@@ -60,7 +60,7 @@
                 </tr>
             [% END %]
             </table>
-        <footer>Copyright (C) 2010 Tokuhiro Matsuno</footer>
+        <footer>Copyright (C) 2010-2011 Tokuhiro Matsuno</footer>
     </div>
 </body>
 </html>
