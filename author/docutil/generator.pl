@@ -89,9 +89,13 @@ sub render_pod {
     my $fname = shift;
     my $ofname = fname2ofname($fname);
     my $html = parse($fname)->body;
-    (my $package = $fname) =~ s!^lib/!!;
-    $package =~ s!/!::!g;
-    $package =~ s!\.pm$!!;
+    my $package = do {
+        local $_ = $fname;
+        s!^lib/!!;
+        s!/!::!g;
+        s!\.pm$!!;
+        $_;
+    };
     my $content = $XT->render(
         "entry.tx" => {
             src     => mark_raw( $html),
