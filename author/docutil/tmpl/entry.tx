@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8" />
     <title>Amon2 docs</title>
+    <link rel="stylesheet" href="css/screen.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
+    <!--[if lt IE 8]><link rel="stylesheet" href="../blueprint/ie.css" type="text/css" media="screen, projection"><![endif]--> 
     <link rel="stylesheet" href="css/main.css" type="text/css" />
 </head>
 <body>
     <div id="Container">
-        <header><a href="/">Amon2 docs</a></header>
+        <header><a href="./index.html">Amon2 docs</a></header>
         <div class="pod">[% src %]</div>
         <footer>Copyright (C) 2010 Tokuhiro Matsuno</footer>
     </div>
