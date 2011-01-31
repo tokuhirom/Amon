@@ -1,19 +1,14 @@
 html {
-    background-color: black;
-    color: white;
 }
 header {
     font-size: 40px;
-    color: red;
     font-weight: bold;
 }
 header a {
     text-decoration: none;
-    color: red;
 }
 header a:visited {
     text-decoration: none;
-    color: red;
 }
 #Container {
     width: 890px;
