@@ -4,7 +4,6 @@ use 5.12.0;
 use autodie;
 use Text::Xslate qw/mark_raw/;
 use Path::Class;
-use YAML;
 use Pod::HTMLEmbed;
 use File::Copy::Recursive qw/rcopy/;
 use Encode;
