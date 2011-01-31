@@ -7,6 +7,8 @@ use parent qw/Plack::Response/;
 1;
 __END__
 
+=encoding utf-8
+
 =head1 NAME
 
 Amon2::Web::Response - web response class for Amon2

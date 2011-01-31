@@ -16,6 +16,8 @@ sub load {
 1;
 __END__
 
+=encoding utf-8
+
 =head1 NAME
 
 Amon2::Config::Simple - Default configuration file loader

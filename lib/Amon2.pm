@@ -79,6 +79,8 @@ sub load_plugin {
 1;
 __END__
 
+=encoding utf-8
+
 =head1 NAME
 
 Amon2 - lightweight web application framework

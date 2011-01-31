@@ -53,6 +53,8 @@ sub _dispatch {
 1;
 __END__
 
+=encoding utf-8
+
 =head1 NAME
 
 Amon2::Web::Dispatcher::RouterSimple - Router::Simple binding for Amon2

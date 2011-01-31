@@ -9,6 +9,8 @@ our @EXPORT = qw/c/;
 1;
 __END__
 
+=encoding utf-8
+
 =head1 NAME
 
 Amon2::Declare - Amon2 Declare Class

@@ -18,6 +18,8 @@ sub init {
 1;
 __END__
 
+=encoding utf-8
+
 =head1 NAME
 
 Amon2::Plugin::Web::MobileAgent - HTTP::MobileAgent plugin for Amon2

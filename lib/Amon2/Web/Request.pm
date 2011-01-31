@@ -131,6 +131,8 @@ sub uri_with {
 1;
 __END__
 
+=encoding utf-8
+
 =head1 NAME
 
 Amon2::Web::Request - Amon2 Request Class

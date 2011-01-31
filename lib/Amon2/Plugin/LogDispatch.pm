@@ -17,6 +17,8 @@ sub init {
 1;
 __END__
 
+=encoding utf-8
+
 =head1 NAME
 
 Amon2::Plugin::LogDispatch - Log::Dispatch glue for Amon2

@@ -26,6 +26,8 @@ sub import {
 1;
 __END__
 
+=encoding utf-8
+
 =head1 NAME
 
 Amon2::Web::Dispatcher::Lite - Sinatra like dispatcher for Amon2

@@ -23,6 +23,8 @@ sub init {
 1;
 __END__
 
+=encoding utf-8
+
 =head1 NAME
 
 Amon2::Plugin::Web::MobileCharset - Amon2 plugin for Japanese mobile phone's charset

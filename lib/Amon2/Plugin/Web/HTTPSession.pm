@@ -55,6 +55,8 @@ sub _load {
 1;
 __END__
 
+=encoding utf-8
+
 =head1 NAME
 
 Amon2::Plugin::Web::HTTPSession - Plugin system for Amon2

@@ -17,6 +17,8 @@ sub init {
 1;
 __END__
 
+=encoding utf-8
+
 =head1 SYNOPSIS
 
     __PACKAGE__->load_plugins('Web::NoCache');

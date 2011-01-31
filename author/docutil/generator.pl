@@ -94,7 +94,7 @@ sub render_pod {
     $package =~ s!\.pm$!!;
     my $content = $XT->render(
         "entry.tx" => {
-            src     => mark_raw( decode_utf8 $html),
+            src     => mark_raw( $html),
             package => $package
         }
     );
