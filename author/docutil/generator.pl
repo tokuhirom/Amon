@@ -11,6 +11,7 @@ use File::Copy::Recursive qw/rcopy/;
 use Encode;
 use lib 'lib';
 use Amon2;
+use Getopt::Long;
 
 my $BASE = file(__FILE__)->dir->stringify;
 my $OUT = "/usr/local/webapp/amon-website/";
@@ -19,6 +20,9 @@ my $XT = Text::Xslate->new(
     'path'   => ["$BASE/tmpl/"],
     'syntax' => 'TTerse',
     'module' => ['Text::Xslate::Bridge::TT2Like'],
+);
+GetOptions(
+    'out=s' => \$OUT,
 );
 
 &main;exit;
