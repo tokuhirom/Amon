@@ -1,3 +1,11 @@
+2.14
+
+    script/amon2-setup.pl enhancements
+    - handle robots.txt and favicon.ico in .psgi
+    - make Middleware::Static's path as absolute
+      (reported by @makotoworld)
+    - added experimental blueprint support for amon2-setup.pl
+
 2.13
 
     - fixed code depended on perl5.10
