@@ -47,6 +47,7 @@ package <%= $module %>::Web;
 use strict;
 use warnings;
 use parent qw/<%= $module %> Amon2::Web/;
+use File::Spec;
 
 # load all controller classes
 use Module::Find ();
@@ -68,6 +69,9 @@ sub dispatch {
 use Tiffany::Text::Xslate;
 {
     my $view_conf = __PACKAGE__->config->{'Text::Xslate'} || die "missing configuration for Text::Xslate";
+    unless (exists $view_conf->{path}) {
+        $view_conf->{path} = [ File::Spec->catdir(__PACKAGE__->base_dir(), 'tmpl') ];
+    }
     my $view = Tiffany::Text::Xslate->new(+{
         'syntax'   => 'TTerse',
         'module'   => [ 'Text::Xslate::Bridge::TT2Like' ],
@@ -82,8 +86,18 @@ use Tiffany::Text::Xslate;
 }
 
 # load plugins
-# __PACKAGE__->load_plugins('Web::FillInFormLite');
-# __PACKAGE__->load_plugins('Web::NoCache');
+use HTTP::Session::Store::File;
+__PACKAGE__->load_plugins(
+    'Web::FillInFormLite',
+    'Web::NoCache', # do not cache the dynamic content by default
+    'Web::CSRFDefender',
+    'Web::HTTPSession' => {
+        state => 'Cookie',
+        store => HTTP::Session::Store::File->new(
+            dir => File::Spec->tmpdir(),
+        ),
+    },
+);
 
 # for your security
 __PACKAGE__->add_trigger(
@@ -146,8 +160,7 @@ sub index {
         password => '',
     },
 <% } %>
-    'Text::Xslate' => {
-        path => ['tmpl/'],
+    'Text::Xslate' => +{
     },
 };
 -- lib/$path/ConfigLoader.pm
@@ -242,7 +255,7 @@ hello, Amon2 world!
 <body>
     <div id="Container">
         <div id="Header">
-            <a href="[% uri_for('/') %]">Amon2 Startup Page</a>
+            <a href="[% uri_for('/') %]"><%= $dist %></a>
         </div>
         <div id="Content">
 -- tmpl/include/footer.tt
@@ -337,6 +350,9 @@ builder {
 -- Makefile.PL
 use inc::Module::Install;
 all_from "lib/<%= $path %>.pm";
+
+license 'unknown';
+author  'unknown';
 
 tests 't/*.t t/*/*.t t/*/*/*.t';
 requires 'Amon2';

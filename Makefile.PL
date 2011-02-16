@@ -22,6 +22,8 @@ requires 'Text::Xslate::Bridge::TT2Like' => '0.00007';
 requires 'Text::MicroTemplate'        => 0.15; # TODO: remove dependency on T::MT.
 requires 'Router::Simple'             => 0.06;
 requires 'Router::Simple::Sinatraish' => 0.02;
+requires 'HTML::FillInForm::Lite' => 1.09;
+requires 'HTTP::Session' => 0.41;
 
 # Optional components
 recommends 'Test::WWW::Mechanize::PSGI';
