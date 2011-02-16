@@ -24,7 +24,7 @@ sub _fillin_form2 {
 sub _fillin_form {
     my ($self, @stuff) = @_;
 
-    Carp::carp("\$res->fillin_form() was deprecated. Use \$c->fillin_form(\$stuff) instead.");
+    Carp::cluck("\$res->fillin_form() was deprecated. Use \$c->fillin_form(\$stuff) instead.");
 
     my $html = $self->body();
     my $output = HTML::FillInForm->fill(\$html, @stuff);
