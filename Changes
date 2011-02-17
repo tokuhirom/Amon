@@ -1,3 +1,13 @@
+2.15
+
+    - setup session(store it to file) by default
+    - enable fillinform by default
+    - enable nocache plugin by default
+    - fill the absolute template path by default
+    - enable CSRFDefender plugin by default
+    - cluck the deprecated warnings
+    - perl 5.008001+ is required by Amon2
+
 2.14
 
     script/amon2-setup.pl enhancements
