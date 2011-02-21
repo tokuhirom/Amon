@@ -1,3 +1,11 @@
+2.16
+
+    amon2-setup.pl
+    - remove skinny support
+    - added DBI base class
+    - link to amon.64p.org in skelton
+    - remove experimental blueprint support
+
 2.15
 
     - setup session(store it to file) by default
