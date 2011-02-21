@@ -24,6 +24,9 @@ requires 'Router::Simple'             => 0.06;
 requires 'Router::Simple::Sinatraish' => 0.02;
 requires 'HTML::FillInForm::Lite' => 1.09;
 requires 'HTTP::Session' => 0.41;
+requires 'DBD::SQLite' => 1.31;
+requires 'DBIx::TransactionManager';
+requires 'SQL::Interp';
 
 # Optional components
 recommends 'Test::WWW::Mechanize::PSGI';

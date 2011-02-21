@@ -28,20 +28,121 @@ use 5.008001;
 use Amon2::Config::Simple;
 sub load_config { Amon2::Config::Simple->load(shift) }
 
+use <%= $module %>::DBI;
+sub dbh {
+    my ($self) = @_;
+
+    if (!defined $self->{dbh}) {
+        my $conf = $self->config->{'DBI'} or die "missing configuration for 'DBI'";
+        $self->{dbh} = <%= $module %>::DBI->connect(@$conf);
+    }
+    return $self->{dbh};
+}
+
 <% if ($skinny) { %>
 use <%= $module %>::DB;
 
 sub db {
     my ($self) = @_;
     if (!defined $self->{db}) {
-        my $conf = $self->config->{'DBIx::Skinny'} or die "missing configuration for 'DBIx::Skinny'";
-        $self->{db} = <%= $module %>::DB->new($conf);
+        $self->{db} = <%= $module %>::DB->new(+{ dbh => $self->dbh });
     }
     return $self->{db};
 }
 <% } %>
 
 1;
+-- lib/$path/DBI.pm
+use strict;
+use warnings;
+
+package <%= $module %>::DBI;
+use parent qw/DBI/;
+
+sub connect {
+	my ($self, $dsn, $user, $pass, $attr) = @_;
+    $attr->{RaiseError} = 0;
+    if ($DBI::VERSION >= 1.614) {
+        $attr->{AutoInactiveDestroy} = 1 unless exists $attr->{AutoInactiveDestroy};
+    }
+	if ($dsn =~ /^dbi:SQLite:/) {
+		$attr->{sqlite_unicode} = 1 unless exists $attr->{sqlite_unicode};
+	}
+    if ($dsn =~ /^dbi:mysql:/) {
+        $attr->{mysql_enable_utf8} = 1 unless exists $attr->{mysql_enable_utf8};
+    }
+	return $self->SUPER::connect($dsn, $user, $pass, $attr) or die "Cannot connect to server: $DBI::errstr";
+}
+
+package <%= $module %>::DBI::dr;
+our @ISA = qw(DBI::dr);
+
+package <%= $module %>::DBI::db;
+our @ISA = qw(DBI::db);
+
+use DBIx::TransactionManager;
+use SQL::Interp ();
+
+sub _txn_manager {
+    my $self = shift;
+    $self->{private_txn_manager} //= DBIx::TransactionManager->new($self);
+}
+
+sub txn_scope { $_[0]->_txn_manager->txn_scope(caller => [caller(0)]) }
+
+sub do_i {
+    my $self = shift;
+    my ($sql, @bind) = SQL::Interp::sql_interp(@_);
+    $self->do($sql, {}, @bind);
+}
+
+sub insert {
+    my ($self, $table, $vars) = @_;
+    $self->do_i("INSERT INTO $table", $vars);
+}
+
+sub prepare {
+    my ($self, @args) = @_;
+    my $sth = $self->SUPER::prepare(@args) or do {
+        <%= $module %>::DBI::Util::handle_error($_[1], [], $self->errstr);
+    };
+    $sth->{private_sql} = $_[1];
+    return $sth;
+}
+
+package <%= $module %>::DBI::st;
+our @ISA = qw(DBI::st);
+
+sub execute {
+    my ($self, @args) = @_;
+    $self->SUPER::execute(@args) or do {
+        <%= $module %>::DBI::Util::handle_error($self->{private_sql}, \@args, $self->errstr);
+    };
+}
+
+sub sql { $_[0]->{private_sql} }
+
+package <%= $module %>::DBI::Util;
+use Carp::Clan qw{^(DBI::|<%= $module %>::DBI::|DBD::)};
+use Data::Dumper ();
+
+sub handle_error {
+    my ( $stmt, $bind, $reason ) = @_;
+
+    $stmt =~ s/\n/\n          /gm;
+    my $err = sprintf <<"TRACE", $reason, $stmt, Data::Dumper::Dumper($bind);
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@ <%= $module %>::DBI 's Exception @@@@@
+Reason  : %s
+SQL     : %s
+BIND    : %s
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+TRACE
+    $err =~ s/\n\Z//;
+    croak $err;
+}
+
 -- lib/$path/Web.pm
 package <%= $module %>::Web;
 use strict;
@@ -95,7 +196,7 @@ __PACKAGE__->load_plugins(
         state => 'Cookie',
         store => HTTP::Session::Store::File->new(
             dir => File::Spec->tmpdir(),
-        ),
+        )
     },
 );
 
@@ -104,6 +205,14 @@ __PACKAGE__->add_trigger(
     AFTER_DISPATCH => sub {
         my ( $c, $res ) = @_;
         $res->header( 'X-Content-Type-Options' => 'nosniff' );
+    },
+);
+
+__PACKAGE__->add_trigger(
+    BEFORE_DISPATCH => sub {
+        my ( $c ) = @_;
+        # ...
+        return;
     },
 );
 
@@ -153,13 +262,27 @@ sub index {
 1;
 -- config/development.pl
 +{
-<% if ($skinny) { %>
-    'DBIx::Skinny' => {
-        dsn => 'dbi:SQLite:dbname=test.db',
-        username => '',
-        password => '',
+    'DBI' => [
+        'dbi:SQLite:dbname=development.db',
+        '',
+        '',
+        +{
+            sqlite_unicode => 1,
+        }
+    ],
+    'Text::Xslate' => +{
     },
-<% } %>
+};
+-- config/test.pl
++{
+    'DBI' => [
+        'dbi:SQLite:memory:',
+        '',
+        '',
+        +{
+            sqlite_unicode => 1,
+        }
+    ],
     'Text::Xslate' => +{
     },
 };
@@ -227,9 +350,7 @@ open my $fh, '>', $dest or die "cannot open file '$dest': $!";
 print {$fh} $schema;
 close $fh;
 -- sql/my.sql
-CREATE TABLE foo (
-    foo_id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
-) ENGINE=InnoDB charset=utf-8;
+-- sql/sqlite3.sql
 -- tmpl/index.tt
 [% INCLUDE 'include/header.tt' %]
 
@@ -284,16 +405,17 @@ body > #Container {height:auto;}
 body {
     color: white;
     font-family: "メイリオ","Hiragino Kaku Gothic Pro","ヒラギノ角ゴ Pro W3","ＭＳ Ｐゴシック","Osaka",sans-selif;
+    background-color: whitesmoke;
 }
 
 #Container {
-    width: 780px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 10px;
+    margin-right: 10px;
     margin-bottom: 0px;
+    margin-top: 0px;
+
     border-left: black solid 1px;
     border-right: black solid 1px;
-    margin-top: 0px;
     height: 100%;
     min-height:100%;
     background-color: white;
@@ -324,7 +446,7 @@ body {
     position:absolute;
     bottom:0px;
     height:20px;
-    width:780px;
+    width:100%;
 }
 #Footer {
     text-align: right;
@@ -368,9 +490,48 @@ requires 'DBIx::Inspector' => 0.03;
 recursive_author_tests('xt');
 
 WriteAll;
+-- t/00_compile.t
+use strict;
+use warnings;
+use Test::More;
+
+use_ok $_ for qw(
+    <%= $module %>
+    <%= $module %>::DBI
+    <%= $module %>::Web
+    <%= $module %>::Web::Dispatcher
+);
+
+done_testing;
+-- t/Util.pm
+package t::Util;
+BEGIN {
+    unless ($ENV{PLACK_ENV}) {
+        $ENV{PLACK_ENV} = 'test';
+    }
+}
+use parent qw/Exporter/;
+use Test::More 0.96;
+
+{
+    # utf8 hack.
+    binmode Test::More->builder->$_, ":utf8" for qw/output failure_output todo_output/;                       
+    no warnings 'redefine';
+    my $code = \&Test::Builder::child;
+    *Test::Builder::child = sub {
+        my $builder = $code->(@_);
+        binmode $builder->output,         ":utf8";
+        binmode $builder->failure_output, ":utf8";
+        binmode $builder->todo_output,    ":utf8";
+        return $builder;
+    };
+}
+
+1;
 -- t/01_root.t
 use strict;
 use warnings;
+use t::Util;
 use Plack::Test;
 use Plack::Util;
 use Test::More;
@@ -390,6 +551,7 @@ done_testing;
 -- t/02_mech.t
 use strict;
 use warnings;
+use t::Util;
 use Plack::Test;
 use Plack::Util;
 use Test::More;
@@ -399,6 +561,38 @@ my $app = Plack::Util::load_psgi '<%= $dist %>.psgi';
 
 my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
 $mech->get_ok('/');
+
+done_testing;
+-- t/03_dbi.t
+use strict;
+use warnings;
+use t::Util;
+use Test::More;
+use <%= $module %>::DBI;
+
+eval {
+    <%= $module %>::DBI->connect('dbi:unknown:', '', '');
+};
+ok $@, "dies with unknown driver, automatically.";
+
+my $dbh = <%= $module %>::DBI->connect('dbi:SQLite::memory:', '', '');
+$dbh->do(q{CREATE TABLE foo (e)});
+$dbh->insert('foo', {e => 3});
+$dbh->do_i('INSERT INTO foo ', {e => 4});
+is join(',', map { @$_ } @{$dbh->selectall_arrayref('SELECT * FROM foo ORDER BY e')}), '3,4';
+
+subtest 'utf8' => sub {
+    $dbh->do(q{CREATE TABLE bar (x)});
+    $dbh->insert(bar => { x => "こんにちは" });
+    my ($x) = $dbh->selectrow_array(q{SELECT x FROM bar});
+    is $x, "こんにちは";
+};
+
+eval {
+    $dbh->insert('bar', {e => 3});
+}; note $@;
+ok $@, "Dies with unknown table name automatically.";
+like $@, qr/<%= $module %>::DBI 's Exception/;
 
 done_testing;
 -- xt/01_podspell.t
@@ -469,6 +663,7 @@ MANIFEST
 *.bak
 *.old
 nytprof.out
+development.db
 -- htdocs/static/blueprint/ie.css blueprint
 /* -----------------------------------------------------------------------
 
