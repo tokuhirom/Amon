@@ -258,7 +258,7 @@ sub index {
 -- config/test.pl
 +{
     'DBI' => [
-        'dbi:SQLite::memory:',
+        'dbi:SQLite:dbname=test.db',
         '',
         '',
         +{
