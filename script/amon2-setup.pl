@@ -447,6 +447,15 @@ use Test::More 0.96;
     };
 }
 
+# setup database
+use BBS;
+open my $fh, "<", "sql/sqlite3.sql" or die "Cannot open file: sql/sqlite3.sql";
+unlink 'test.db' if -f 'test.db';
+my $c = BBS->new;
+for (grep /\S/, split /;/, do { local $/; <$fh> }) {
+    $c->dbh->do($_);
+}
+
 1;
 -- t/01_root.t
 use strict;
@@ -584,6 +593,7 @@ MANIFEST
 *.old
 nytprof.out
 development.db
+est.db
 END_OF_SRC
 
 &main;exit;
