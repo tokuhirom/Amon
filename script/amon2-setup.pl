@@ -290,6 +290,8 @@ hello, Amon2 world!
     <title><%= $dist %></title>
     <meta http-equiv="Content-Style-Type" content="text/css" />  
     <meta http-equiv="Content-Script-Type" content="text/javascript" />  
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0"]]>
+    <meta name="format-detection" content="telephone=no" />
     <link href="[% uri_for('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
@@ -371,6 +373,9 @@ body {
     text-align: right;
     padding-right: 10px;
     padding-top: 2px;
+}
+
+@media screen and (max-device-width: 480px) {
 }
 
 -- $dist.psgi
