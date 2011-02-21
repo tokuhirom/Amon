@@ -375,7 +375,7 @@ hello, Amon2 world!
 -- tmpl/include/footer.tt
         </div>
         <div id="FooterContainer"><div id="Footer">
-            Powered by Amon2
+            Powered by <a href="http://amon.64p.org/">Amon2</a>
         </div></div>
     </div>
 </body>
