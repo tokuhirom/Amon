@@ -27,6 +27,7 @@ requires 'HTTP::Session' => 0.41;
 requires 'DBD::SQLite' => 1.31;
 requires 'DBIx::TransactionManager';
 requires 'SQL::Interp';
+requires 'Plack::Middleware::ReverseProxy';
 
 # Optional components
 recommends 'Test::WWW::Mechanize::PSGI';
