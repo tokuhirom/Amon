@@ -1,3 +1,9 @@
+2.17
+
+    - fixed broken deps for String::Random(reported by miyagawa++)
+      Now Amon2::Util provides random_string() method.
+    - fixed broken amon2-setup.pl
+
 2.16
 
     amon2-setup.pl
