@@ -1,7 +1,6 @@
 package Amon2::Plugin::Web::CSRFDefender;
 use strict;
 use warnings;
-use String::Random qw/random_regex/;
 use Amon2::Util ();
 
 our $ERROR_HTML = <<'...';
@@ -59,7 +58,7 @@ sub get_csrf_defender_token {
     if (my $token = $self->session->get('csrf_token')) {
         $token;
     } else {
-        $token = String::Random::random_regex('[a-zA-Z0-9_]{32}');
+        $token = Amon2::Util::random_string(32);
         $self->session->set('csrf_token' => $token);
         $token;
     }

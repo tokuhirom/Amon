@@ -4,7 +4,7 @@ use warnings;
 use base qw/Exporter/;
 use File::Spec;
 
-our @EXPORT_OK = qw/add_method/;
+our @EXPORT_OK = qw/add_method random_string/;
 
 sub add_method {
     my ($klass, $method, $code) = @_;
@@ -21,6 +21,16 @@ sub base_dir($) {
     } else {
         File::Spec->rel2abs('./');
     }
+}
+
+sub random_string {
+    my $length = shift;
+    my @chars = ( 'A'..'Z', 'a'..'z', '0'..'9' );
+    my $ret;
+    for (1..$length) {
+        $ret .= $chars[int rand @chars];
+    }
+    return $ret;
 }
 
 1;
