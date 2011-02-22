@@ -275,7 +275,9 @@ use warnings;
 use parent 'Amon2::ConfigLoader';
 1;
 -- sql/my.sql
+
 -- sql/sqlite3.sql
+
 -- tmpl/index.tt
 [% INCLUDE 'include/header.tt' %]
 
@@ -448,10 +450,10 @@ use Test::More 0.96;
 }
 
 # setup database
-use BBS;
+use <%= $module %>;
 open my $fh, "<", "sql/sqlite3.sql" or die "Cannot open file: sql/sqlite3.sql";
 unlink 'test.db' if -f 'test.db';
-my $c = BBS->new;
+my $c = <%= $module %>->new;
 for (grep /\S/, split /;/, do { local $/; <$fh> }) {
     $c->dbh->do($_);
 }
