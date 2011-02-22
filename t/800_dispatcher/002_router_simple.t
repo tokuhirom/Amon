@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use Test::More;
-use Test::Requires 'Test::WWW::Mechanize::PSGI', 'String::Random';
+use Test::Requires 'Test::WWW::Mechanize::PSGI';
 
 {
     package MyApp;
