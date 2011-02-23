@@ -155,6 +155,14 @@ Load multiple plugins at one time. The arguments are processed by L<Data::OptLis
 
 =back
 
+=head1 DOCUMENTS
+
+More complicated documents are available on http://amon.64p.org/
+
+=head1 SUPPORTS
+
+#amon at irc.perl.org is available.
+
 =head1 AUTHOR
 
 Tokuhiro Matsuno
