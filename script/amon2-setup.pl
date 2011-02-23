@@ -279,35 +279,36 @@ use parent 'Amon2::ConfigLoader';
 -- sql/sqlite3.sql
 
 -- tmpl/index.tt
-[% INCLUDE 'include/header.tt' %]
+[% WRAPPER 'include/layout.tt' %]
 
 hello, Amon2 world!
 
-[% INCLUDE 'include/footer.tt' %]
--- tmpl/include/header.tt
+[% END %]
+-- tmpl/include/layout.tt
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title><%= $dist %></title>
+    <title>[% title || '<%= $dist %>' %]</title>
     <meta http-equiv="Content-Style-Type" content="text/css" />  
     <meta http-equiv="Content-Script-Type" content="text/javascript" />  
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0"]]>
     <meta name="format-detection" content="telephone=no" />
     <link href="[% uri_for('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
+    <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 </head>
-<body>
-    <div id="Container">
-        <div id="Header">
-            <a href="[% uri_for('/') %]"><%= $dist %></a>
-        </div>
-        <div id="Content">
--- tmpl/include/footer.tt
-        </div>
-        <div id="FooterContainer"><div id="Footer">
-            Powered by <a href="http://amon.64p.org/">Amon2</a>
-        </div></div>
+<body[% IF bodyID %] class="[% bodyID %]"[% END %]>
+    <header>
+        <a href="[% uri_for('/') %]"><%= $dist %></a>
+    </header>
+    <div id="Content">
+        [% content %]
     </div>
+    <footer>
+        Powered by <a href="http://amon.64p.org/">Amon2</a>
+    </footer>
 </body>
 </html>
 -- htdocs/static/css/main.css
@@ -345,38 +346,27 @@ body {
     color: black;
 }
 
-#Header {
+body > header {
     height: 50px;
     font-size: 36px;
     padding: 2px;
-    text-align: center;
-}
-
-#Header a {
-    color: black;
-    font-weight: bold;
-    text-decoration: none;
-}
+    text-align: center; }
+    body > header a {
+        color: black;
+        font-weight: bold;
+        text-decoration: none; }
 
 #Content {
     padding: 10px;
 }
 
-#FooterContainer {
-    border-top: 1px solid black;
-    font-size: 10px;
-    color: black;
-    position:absolute;
-    bottom:0px;
-    height:20px;
-    width:100%;
-}
-#Footer {
+body > footer {
     text-align: right;
     padding-right: 10px;
     padding-top: 2px;
 }
 
+/* smart phones */
 @media screen and (max-device-width: 480px) {
 }
 
