@@ -1,3 +1,7 @@
+2.20
+
+    - fixed fucking missing deps on Carp::Clan.
+
 2.19
 
     - script/amon2-setup.pl now provides more better perlcritic templates. It's more safe.
