@@ -18,12 +18,8 @@ sub _render_json {
 
     my $encoding = $c->encoding();
     $encoding = lc($encoding->mime_name) if ref $encoding;
-    if ( ( $c->req->user_agent || '' ) =~ /Opera/ ) {
-        $res->content_type(
-            "application/x-javascript; charset=$encoding");
-    }
     # chrome bug
-    elsif ( ( $c->req->user_agent || '' ) =~ /Chrome/ and
+    if ( ( $c->req->user_agent || '' ) =~ /Chrome/ and
         ( $c->req->env->{'HTTP_X_REQUESTED_WITH'} || '' ) ne 'XMLHttpRequest' ) {
         $res->content_type("text/html; charset=$encoding");
     }

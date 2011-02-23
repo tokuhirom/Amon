@@ -37,7 +37,7 @@ my $ua_chrome = 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534
     }));
     my $res = $c->render_json(+{"foo"=>"bar"});
     is $res->status, 200;
-    is $res->header('Content-Type'), 'application/x-javascript; charset=utf-8';
+    is $res->header('Content-Type'), 'application/json; charset=utf-8';
     is $res->content, '{"foo":"bar"}';
 }
 {
