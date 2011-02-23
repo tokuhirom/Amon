@@ -1,3 +1,8 @@
+2.19
+
+    - script/amon2-setup.pl now provides more better perlcritic templates. It's more safe.
+      (tokuhirom)
+
 2.18
 
     - call ancestor's trigger code like Class::Trigger(tokuhirom)
