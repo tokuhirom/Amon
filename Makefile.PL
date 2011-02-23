@@ -16,6 +16,7 @@ requires 'URI::Escape'              => 3.30;
 requires 'Data::OptList'            => 0.106;
 requires 'Tiffany' => 0.02;
 requires 'MRO::Compat';
+requires 'Carp::Clan' => '6.04';
 
 # Not core, but default components.
 requires 'Text::Xslate'               => 0.1056;
