@@ -5,31 +5,35 @@ use Module::Install::AuthorTests;
 all_from 'lib/Amon2.pm';
 license 'perl';
 
-requires 'Plack'      => 0.9943;
-requires 'Try::Tiny'  => 0.06;
-requires 'Test::More' => 0.94;     # 0.94 or later is required for better testing.
-requires 'Exporter'   => 5.64;
-requires 'parent'                   => 0.223;
-requires 'Module::Find'             => 0.10;
-requires 'URI'                      => 1.54;
-requires 'URI::Escape'              => 3.30;
-requires 'Data::OptList'            => 0.106;
-requires 'Tiffany' => 0.02;
-requires 'MRO::Compat';
-requires 'Carp::Clan' => '6.04';
+requires(
+    'Plack'         => 0.9943,
+    'Try::Tiny'     => 0.06,
+    'Test::More'    => 0.94,     # 0.94 or later is required for better testing.
+    'Exporter'      => 5.64,
+    'parent'        => 0.223,
+    'Module::Find'  => 0.10,
+    'URI'           => 1.54,
+    'URI::Escape'   => 3.30,
+    'Data::OptList' => 0.106,
+    'Tiffany'       => 0.02,
+    'MRO::Compat'   => 0,
+);
 
 # Not core, but default components.
-requires 'Text::Xslate'               => 0.1056;
-requires 'Text::Xslate::Bridge::TT2Like' => '0.00007';
-requires 'Text::MicroTemplate'        => 0.15; # TODO: remove dependency on T::MT.
-requires 'Router::Simple'             => 0.06;
-requires 'Router::Simple::Sinatraish' => 0.02;
-requires 'HTML::FillInForm::Lite' => 1.09;
-requires 'HTTP::Session' => 0.41;
-requires 'DBD::SQLite' => 1.31;
-requires 'DBIx::TransactionManager';
-requires 'SQL::Interp';
-requires 'Plack::Middleware::ReverseProxy';
+requires(
+    'Text::Xslate'                  => 0.1056,
+    'Text::Xslate::Bridge::TT2Like' => '0.00007',
+    'Text::MicroTemplate'        => 0.15,    # TODO: remove dependency on T::MT.
+    'Router::Simple'             => 0.06,
+    'Router::Simple::Sinatraish' => 0.02,
+    'HTML::FillInForm::Lite'     => 1.09,
+    'HTTP::Session'              => 0.41,
+    'DBD::SQLite'                => 1.31,
+    'DBIx::TransactionManager'   => 0,
+    'SQL::Interp'                => 0,
+    'Carp::Clan'                 => '6.04',
+    'Plack::Middleware::ReverseProxy' => 0,
+);
 
 # Optional components
 recommends 'Test::WWW::Mechanize::PSGI';
