@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use parent qw/Exporter/;
 use Scalar::Util ();
+use MRO::Compat;
 
 our @EXPORT = qw/add_trigger call_trigger get_trigger_code/;
 
@@ -37,7 +38,9 @@ sub get_trigger_code {
     }
     no strict 'refs';
     my $klass = ref $class || $class;
-    push @code, @{${"${klass}::_trigger"}->{$hook} || []};
+    for (@{mro::get_linear_isa($class)}) {
+        push @code, @{${"${_}::_trigger"}->{$hook} || []};
+    }
     return @code;
 }
 
