@@ -1,3 +1,7 @@
+2.21
+
+    - Plugin::JSON: remove Opera special casing
+
 2.20
 
     - fixed fucking missing deps on Carp::Clan.
