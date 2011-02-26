@@ -9,6 +9,7 @@ use Plack::Util ();
 use URI::Escape ();
 use Amon2::Web::Request;
 use Amon2::Web::Response;
+use Scalar::Util ();
 
 # -------------------------------------------------------------------------
 # hook points:
@@ -94,11 +95,10 @@ sub to_app {
         my $response;
         for my $code ($self->get_trigger_code('BEFORE_DISPATCH')) {
             $response = $code->($self);
-            last if $response;
+            goto PROCESS_END if Scalar::Util::blessed($response) && $response->isa('Plack::Response');
         }
-        unless ($response) {
-            $response = $self->dispatch() or die "cannot get any response";
-        }
+        $response = $self->dispatch() or die "cannot get any response";
+    PROCESS_END:
         $self->call_trigger('AFTER_DISPATCH' => $response);
         return $response->finalize;
     };
