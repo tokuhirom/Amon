@@ -1,3 +1,7 @@
+2.22
+
+    - make HTML5 template as default
+
 2.21
 
     - Plugin::JSON: remove Opera special casing
