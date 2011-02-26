@@ -303,7 +303,7 @@ hello, Amon2 world!
     <header>
         <a href="[% uri_for('/') %]"><%= $dist %></a>
     </header>
-    <div id="Content">
+    <div id="main">
         [% content %]
     </div>
     <footer>
@@ -312,38 +312,57 @@ hello, Amon2 world!
 </body>
 </html>
 -- htdocs/static/css/main.css
-/* reset.css */
-html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin:0;padding:0;border:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;}
-body {line-height:1.5;}
-table {border-collapse:separate;border-spacing:0;}
-caption, th, td {text-align:left;font-weight:normal;}
-table, td, th {vertical-align:middle;}
-blockquote:before, blockquote:after, q:before, q:after {content:"";}
-blockquote, q {quotes:"" "";}
-a img {border:none;}
+/* meyer-reset.css */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
 
 /* main */
 html,body {height:100%;}
-body > #Container {height:auto;}
 
 body {
-    color: white;
     font-family: "メイリオ","Hiragino Kaku Gothic Pro","ヒラギノ角ゴ Pro W3","ＭＳ Ｐゴシック","Osaka",sans-selif;
-    background-color: whitesmoke;
-}
-
-#Container {
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-bottom: 0px;
-    margin-top: 0px;
-
-    border-left: black solid 1px;
-    border-right: black solid 1px;
-    height: 100%;
-    min-height:100%;
     background-color: white;
-    color: black;
 }
 
 body > header {
@@ -356,15 +375,19 @@ body > header {
         font-weight: bold;
         text-decoration: none; }
 
-#Content {
+#main {
     padding: 10px;
 }
 
 body > footer {
     text-align: right;
     padding-right: 10px;
-    padding-top: 2px;
-}
+    padding-top: 2px; }
+    body > footer a {
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+    }
 
 /* smart phones */
 @media screen and (max-device-width: 480px) {
