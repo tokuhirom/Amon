@@ -15,7 +15,6 @@ requires(
     'URI'           => 1.54,
     'URI::Escape'   => 3.30,
     'Data::OptList' => 0.106,
-    'Tiffany'       => 0.02,
     'MRO::Compat'   => 0,
 );
 

@@ -53,13 +53,13 @@ sub dispatch {
 }
 
 # setup view class
-use Tiffany::Text::Xslate;
+use Text::Xslate;
 {
     my $view_conf = __PACKAGE__->config->{'Text::Xslate'} || die "missing configuration for Text::Xslate";
     unless (exists $view_conf->{path}) {
         $view_conf->{path} = [ File::Spec->catdir(__PACKAGE__->base_dir(), 'tmpl') ];
     }
-    my $view = Tiffany::Text::Xslate->new(+{
+    my $view = Text::Xslate->new(+{
         'syntax'   => 'TTerse',
         'module'   => [ 'Text::Xslate::Bridge::TT2Like' ],
         'function' => {
