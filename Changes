@@ -1,3 +1,13 @@
+2.23
+
+    *WARNINGS*
+    - remove Tiffany dependencies from core. It may break your application created by amon2-setup.pl < 2.23.
+      You would write 'requires "Tiffany"' in your Makefile.PL manually.
+
+    [IMPROVEMENTS]
+    - remove DBI dependencies from core
+    - BEFORE_DISPATCH does not dies if the callback function returns true
+
 2.22
 
     - make HTML5 template as default
