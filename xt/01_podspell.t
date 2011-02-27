@@ -57,3 +57,5 @@ HTTP
 Amon
 TTerse
 cpanm
+irc
+org
