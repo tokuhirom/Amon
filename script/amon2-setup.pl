@@ -26,109 +26,9 @@ use 5.008001;
 use Amon2::Config::Simple;
 sub load_config { Amon2::Config::Simple->load(shift) }
 
-use <%= $module %>::DBI;
-sub dbh {
-    my ($self) = @_;
-
-    if (!defined $self->{dbh}) {
-        my $conf = $self->config->{'DBI'} or die "missing configuration for 'DBI'";
-        $self->{dbh} = <%= $module %>::DBI->connect(@$conf);
-    }
-    return $self->{dbh};
-}
+# __PACKAGE__->load_plugin(qw/DBI/);
 
 1;
--- lib/$path/DBI.pm
-use strict;
-use warnings;
-
-package <%= $module %>::DBI;
-use parent qw/DBI/;
-
-sub connect {
-	my ($self, $dsn, $user, $pass, $attr) = @_;
-    $attr->{RaiseError} = 0;
-    if ($DBI::VERSION >= 1.614) {
-        $attr->{AutoInactiveDestroy} = 1 unless exists $attr->{AutoInactiveDestroy};
-    }
-	if ($dsn =~ /^dbi:SQLite:/) {
-		$attr->{sqlite_unicode} = 1 unless exists $attr->{sqlite_unicode};
-	}
-    if ($dsn =~ /^dbi:mysql:/) {
-        $attr->{mysql_enable_utf8} = 1 unless exists $attr->{mysql_enable_utf8};
-    }
-	return $self->SUPER::connect($dsn, $user, $pass, $attr) or die "Cannot connect to server: $DBI::errstr";
-}
-
-package <%= $module %>::DBI::dr;
-our @ISA = qw(DBI::dr);
-
-package <%= $module %>::DBI::db;
-our @ISA = qw(DBI::db);
-
-use DBIx::TransactionManager;
-use SQL::Interp ();
-
-sub _txn_manager {
-    my $self = shift;
-    $self->{private_txn_manager} //= DBIx::TransactionManager->new($self);
-}
-
-sub txn_scope { $_[0]->_txn_manager->txn_scope(caller => [caller(0)]) }
-
-sub do_i {
-    my $self = shift;
-    my ($sql, @bind) = SQL::Interp::sql_interp(@_);
-    $self->do($sql, {}, @bind);
-}
-
-sub insert {
-    my ($self, $table, $vars) = @_;
-    $self->do_i("INSERT INTO $table", $vars);
-}
-
-sub prepare {
-    my ($self, @args) = @_;
-    my $sth = $self->SUPER::prepare(@args) or do {
-        <%= $module %>::DBI::Util::handle_error($_[1], [], $self->errstr);
-    };
-    $sth->{private_sql} = $_[1];
-    return $sth;
-}
-
-package <%= $module %>::DBI::st;
-our @ISA = qw(DBI::st);
-
-sub execute {
-    my ($self, @args) = @_;
-    $self->SUPER::execute(@args) or do {
-        <%= $module %>::DBI::Util::handle_error($self->{private_sql}, \@args, $self->errstr);
-    };
-}
-
-sub sql { $_[0]->{private_sql} }
-
-package <%= $module %>::DBI::Util;
-use Carp::Clan qw{^(DBI::|<%= $module %>::DBI::|DBD::)};
-use Data::Dumper ();
-
-sub handle_error {
-    my ( $stmt, $bind, $reason ) = @_;
-
-    $stmt =~ s/\n/\n          /gm;
-    my $err = sprintf <<"TRACE", $reason, $stmt, Data::Dumper::Dumper($bind);
-
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@@@@@ <%= $module %>::DBI 's Exception @@@@@
-Reason  : %s
-SQL     : %s
-BIND    : %s
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-TRACE
-    $err =~ s/\n\Z//;
-    croak $err;
-}
-
 -- lib/$path/Web.pm
 package <%= $module %>::Web;
 use strict;
@@ -559,7 +459,6 @@ use Test::More;
 
 use_ok $_ for qw(
     <%= $module %>
-    <%= $module %>::DBI
     <%= $module %>::Web
     <%= $module %>::Web::Dispatcher
 );
@@ -587,15 +486,6 @@ use Test::More 0.96;
         binmode $builder->todo_output,    ":utf8";
         return $builder;
     };
-}
-
-# setup database
-use <%= $module %>;
-open my $fh, "<", "sql/sqlite3.sql" or die "Cannot open file: sql/sqlite3.sql";
-unlink 'test.db' if -f 'test.db';
-my $c = <%= $module %>->new;
-for (grep /\S/, split /;/, do { local $/; <$fh> }) {
-    $c->dbh->do($_);
 }
 
 1;
@@ -632,38 +522,6 @@ my $app = Plack::Util::load_psgi '<%= $dist %>.psgi';
 
 my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
 $mech->get_ok('/');
-
-done_testing;
--- t/03_dbi.t
-use strict;
-use warnings;
-use t::Util;
-use Test::More;
-use <%= $module %>::DBI;
-
-eval {
-    <%= $module %>::DBI->connect('dbi:unknown:', '', '');
-};
-ok $@, "dies with unknown driver, automatically.";
-
-my $dbh = <%= $module %>::DBI->connect('dbi:SQLite::memory:', '', '');
-$dbh->do(q{CREATE TABLE foo (e)});
-$dbh->insert('foo', {e => 3});
-$dbh->do_i('INSERT INTO foo ', {e => 4});
-is join(',', map { @$_ } @{$dbh->selectall_arrayref('SELECT * FROM foo ORDER BY e')}), '3,4';
-
-subtest 'utf8' => sub {
-    $dbh->do(q{CREATE TABLE bar (x)});
-    $dbh->insert(bar => { x => "こんにちは" });
-    my ($x) = $dbh->selectrow_array(q{SELECT x FROM bar});
-    is $x, "こんにちは";
-};
-
-eval {
-    $dbh->insert('bar', {e => 3});
-}; note $@;
-ok $@, "Dies with unknown table name automatically.";
-like $@, qr/<%= $module %>::DBI 's Exception/;
 
 done_testing;
 -- xt/01_podspell.t

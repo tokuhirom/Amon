@@ -28,10 +28,6 @@ requires(
     'Router::Simple::Sinatraish' => 0.02,
     'HTML::FillInForm::Lite'     => 1.09,
     'HTTP::Session'              => 0.41,
-    'DBD::SQLite'                => 1.31,
-    'DBIx::TransactionManager'   => 0,
-    'SQL::Interp'                => 0,
-    'Carp::Clan'                 => '6.04',
     'Plack::Middleware::ReverseProxy' => 0,
 );
 

@@ -25,8 +25,8 @@ sub main_test {
     chdir $dir or die $!;
     unshift @INC, File::Spec->catfile($dir, 'Hello', 'lib');
 
-    my $setup = File::Spec->catfile($FindBin::Bin, '..', 'script', 'amon2-setup.pl');
-    my $libdir = File::Spec->catfile($FindBin::Bin, '..', 'lib');
+    my $setup = File::Spec->catfile($FindBin::Bin, '..', '..', 'script', 'amon2-setup.pl');
+    my $libdir = File::Spec->catfile($FindBin::Bin, '..', '..', 'lib');
     !system $^X, '-I', $libdir, $setup, 'Hello' or die $!;
     chdir 'Hello' or die $!;
 
@@ -34,6 +34,6 @@ sub main_test {
     system "$^X Makefile.PL";
     system $Config{make};
     my $app = App::Prove->new();
-    $app->process_args('-Ilib', '-I'.File::Spec->catfile($FindBin::Bin, '..', 'lib'), <t/*.t>, <xt/*.t>);
+    $app->process_args('-Ilib', '-I'.File::Spec->catfile($FindBin::Bin, '..', '..', 'lib'), <t/*.t>, <xt/*.t>);
     ok($app->run);
 }
