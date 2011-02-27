@@ -524,49 +524,6 @@ my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
 $mech->get_ok('/');
 
 done_testing;
--- xt/01_podspell.t
-use Test::More;
-eval q{ use Test::Spelling };
-plan skip_all => "Test::Spelling is not installed." if $@;
-add_stopwords(map { split /[\s\:\-]/ } <DATA>);
-$ENV{LANG} = 'C';
-all_pod_files_spelling_ok('lib');
-__DATA__
-<%= $module %>
-Tokuhiro Matsuno
-Test::TCP
-tokuhirom
-AAJKLFJEF
-GMAIL
-COM
-Tatsuhiko
-Miyagawa
-Kazuhiro
-Osawa
-lestrrat
-typester
-cho45
-charsbar
-coji
-clouder
-gunyarakun
-hio_d
-hirose31
-ikebe
-kan
-kazeburo
-daisuke
-maki
-TODO
-kazuhooku
-FAQ
-Amon2
-DBI
-PSGI
-URL
-XS
-env
-.pm
 -- xt/02_perlcritic.t
 use strict;
 use Test::More;
