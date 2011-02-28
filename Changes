@@ -1,3 +1,11 @@
+2.24
+
+    [IMPROVEMENTS]
+    - added Plugin::Web::PlackSession
+
+    [MINOR FIX]
+    - remove spelling test case from amon2-setup.pl
+
 2.23
 
     *WARNINGS*
