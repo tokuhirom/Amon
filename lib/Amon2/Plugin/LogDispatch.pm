@@ -51,7 +51,7 @@ Amon2::Plugin::LogDispatch - Log::Dispatch glue for Amon2
 This is a L<Log::Dispatch> glue for L<Amon2>. This module still maintained, but I don't use this module on production environment today.
 I'm a user of L<Log::Minimal>.
 
-B<I WILL SPLIT THIS PACKAGE FROM CORE DISTRIBUTION. IF YOU WANT TO USE IT, YOU SHOULD DEPEND TO THIS PACKAGE IMPLICITYLY>.
+B<I WILL SPLIT THIS PACKAGE FROM CORE DISTRIBUTION. IF YOU WANT TO USE IT, YOU SHOULD DEPEND TO THIS PACKAGE IMPLICITLY>.
 
 =head1 SEE ALSO
 
