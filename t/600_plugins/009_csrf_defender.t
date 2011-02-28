@@ -32,7 +32,6 @@ my $COMMIT;
     package MyApp::Web;
     use parent -norequire, qw/MyApp/;
     use parent qw/Amon2::Web/;
-    use Tiffany;
     use HTTP::Session::Store::OnMemory;
     sub create_view { MyApp::Web::View->new() }
     sub dispatch {

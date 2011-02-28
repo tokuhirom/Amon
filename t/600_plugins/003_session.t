@@ -14,8 +14,6 @@ use Plack::Middleware::Lint;
     package MyApp::Web;
     use parent -norequire, qw/MyApp/;
     use parent qw/Amon2::Web/;
-    use Tiffany;
-    sub create_view { Tiffany->load('Text::MicroTemplate::File') }
     sub dispatch {
         my $c = shift;
         if ($c->request->path_info eq '/') {

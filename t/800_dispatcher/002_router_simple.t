@@ -12,8 +12,6 @@ use Test::Requires 'Test::WWW::Mechanize::PSGI';
     package MyApp::Web;
     use parent -norequire, qw/MyApp/;
     use parent qw/Amon2::Web/;
-    use Tiffany;
-    sub create_view { Tiffany->load('Text::MicroTemplate::File') }
     sub dispatch { MyApp::Web::Dispatcher->dispatch(shift) }
 }
 

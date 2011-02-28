@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use Test::More;
-use Test::Requires 'HTML::FillInForm::Lite';
+use Test::Requires 'HTML::FillInForm::Lite', 'Tiffany', 'Text::MicroTemplate::File';
 use File::Spec;
 use File::Temp qw/tempdir/;
 

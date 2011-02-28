@@ -11,9 +11,6 @@ use Plack::Middleware::Lint;
     package MyApp::Web;
     use parent -norequire, qw/MyApp/;
     use parent qw/Amon2::Web/;
-    use Tiffany;
-
-    sub create_view { Tiffany->load('Text::MicroTemplate::File' ) }
 
     __PACKAGE__->load_plugins( 'Web::NoCache' );
 
