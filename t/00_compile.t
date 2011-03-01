@@ -2,13 +2,15 @@ use strict;
 use warnings;
 use Test::More;
 
-use_ok("Amon2::Web::Response");
-use_ok("Amon2::Web::Request");
+use_ok($_) for qw/
+    Amon2
+    Amon2::Web
+    Amon2::Web::Response
+    Amon2::Web::Request
+/;
 
-use lib 't/apps/SampleApp/lib';
+use Plack;
 
-package SampleApp;
-use Test::More;
-use_ok("Amon2", view_class => 'Text::MicroTemplate::File');
+diag "Plack: $Plack::VERSION\n";
 
 done_testing;
