@@ -41,12 +41,6 @@ use File::Spec;
 use Module::Find ();
 Module::Find::useall("<% $module %>::Web::C");
 
-# custom classes
-use <% $module %>::Web::Request;
-use <% $module %>::Web::Response;
-sub create_request  { <% $module %>::Web::Request->new($_[1]) }
-sub create_response { shift; <% $module %>::Web::Response->new(@_) }
-
 # dispatcher
 use <% $module %>::Web::Dispatcher;
 sub dispatch {
@@ -117,22 +111,6 @@ any '/' => sub {
     $c->render('index.tt');
 };
 
-1;
-...
-
-    $self->write_file("lib/<<PATH>>/Web/Request.pm", <<'...');
-package <% $module %>::Web::Request;
-use strict;
-use warnings;
-use parent qw/Amon2::Web::Request/;
-1;
-...
-
-    $self->write_file("lib/<<PATH>>/Web/Response.pm", <<'...');
-package <% $module %>::Web::Response;
-use strict;
-use warnings;
-use parent qw/Amon2::Web::Response/;
 1;
 ...
 
@@ -435,8 +413,6 @@ use_ok $_ for qw(
     <% $module %>
     <% $module %>::Web
     <% $module %>::Web::Dispatcher
-    <% $module %>::Web::Request
-    <% $module %>::Web::Response
 );
 
 done_testing;

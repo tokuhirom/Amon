@@ -32,12 +32,6 @@ use warnings;
 use parent qw/<% $module %> Amon2::Web/;
 use File::Spec;
 
-# custom classes
-use Amon2::Web::Request;
-use Amon2::Web::Response;
-sub create_request  { Amon2::Web::Request->new($_[1]) }
-sub create_response { shift; Amon2::Web::Response->new(@_) }
-
 # write your code here.
 sub dispatch {
     my ($c) = @_;
