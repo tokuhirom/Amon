@@ -1,3 +1,7 @@
+2.27
+
+    do not create MyApp/Web/(Request|Response).pm by default. It's makes shourter skelton code.
+
 2.26
 
     - rewrite setup script
