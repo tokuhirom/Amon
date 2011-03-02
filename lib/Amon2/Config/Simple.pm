@@ -35,6 +35,8 @@ This is a default configuration file loader for L<Amon2>.
 
 This module loads the configuration by C<< do >> function. Yes, it's just plain perl code structure.
 
+Amon2 using configuration file in C<< "config/@{[ $c->mode_name ]}.pl" >>.
+
 =head1 HOW DO YOU USE YOUR OWN ENVIRONMENT VARIABLE FOR DETECTING CONFIGURATION FILE?
 
 If you want to use "config/$ENV{RUN_MODE}.pl" for the configuration file, you can write code as following:
