@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Getopt::Long;
 use Pod::Usage;
-use Amon2::Setup::Flavor::Simple;
+use Amon2::Setup::Flavor::Basic;
 
 my $flavor_name = "Basic";
 GetOptions(

@@ -3,7 +3,7 @@ use warnings;
 use utf8;
 
 package Amon2::Setup::Flavor::Basic;
-use parent qw/Amon2::Setup::Flavor::Simple/;
+use parent qw/Amon2::Setup::Flavor::Minimum/;
 use Amon2::Setup::Asset::jQuery;
 
 sub run {

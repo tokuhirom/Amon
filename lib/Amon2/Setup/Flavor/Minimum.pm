@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use utf8;
 
-package Amon2::Setup::Flavor::Simple;
+package Amon2::Setup::Flavor::Minimum;
 use parent qw/Amon2::Setup::Flavor/;
 
 sub run {
