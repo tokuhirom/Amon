@@ -4,6 +4,7 @@ use utf8;
 
 package Amon2::Setup::Flavor::Basic;
 use parent qw/Amon2::Setup::Flavor::Simple/;
+use Amon2::Setup::Asset::jQuery;
 
 sub run {
     my $self = shift;
@@ -212,6 +213,8 @@ hello, Amon2 world!
 </body>
 </html>
 ...
+
+    $self->write_file('htdocs/static/js/' . Amon2::Setup::Asset::jQuery->jquery_min_basename(), Amon2::Setup::Asset::jQuery->jquery_min_content());
 
     $self->write_file('htdocs/static/css/main.css', <<'...');
 /* meyer-reset.css */
