@@ -55,9 +55,14 @@ sub write_file {
 
     $filename =~ s/<<([^>]+)>>/$self->{lc($1)} or die "$1 is not defined. But you want to use $1 in filename."/ge;
 
-    infof("writing $filename");
-
     my $content = $xslate->render_string($template, $self);
+    $self->write_file_raw($filename, $content);
+}
+
+sub write_file_raw {
+    my ($self, $filename, $content) = @_;
+
+    infof("writing $filename");
 
     my $dirname = dirname($filename);
     File::Path::mkpath($dirname) if $dirname;

@@ -3,8 +3,9 @@ use warnings;
 use utf8;
 
 package Amon2::Setup::Flavor::Basic;
-use parent qw/Amon2::Setup::Flavor::Minimum/;
+use parent qw(Amon2::Setup::Flavor::Minimum);
 use Amon2::Setup::Asset::jQuery;
+use Amon2::Setup::Asset::Blueprint;
 
 sub run {
     my $self = shift;
@@ -158,7 +159,26 @@ use parent 'Amon2::ConfigLoader';
     $self->write_file('tmpl/index.tt', <<'...');
 [% WRAPPER 'include/layout.tt' %]
 
-hello, Amon2 world!
+<hr class="space">
+
+<div class="span-15 colborder">
+    <h1>hello, Amon2 world!</h1>
+
+    <h2>For benchmarkers...</h2>
+    <p>If you want to benchmarking between Plack based web application frameworks, you should use <B>Amon2::Setup::Flavor::Minimum</B> instead.</p>
+    <p>You can use it as following one liner:</p>
+    <pre>% amon2-setup.pl --flavor Minimum <% $module %></pre>
+</div>
+<div class="span-8 last">
+    <p>Amon2 is right for you if ...</p>
+    <ul>
+    <li>You need exceptional performance.</li>
+    <li>You want a framework with a small footprint.</li>
+    <li>You want a framework that requires nearly zero configuration.</li>
+    </ul>
+</div>
+
+<hr class="space">
 
 [% END %]
 ...
@@ -174,6 +194,9 @@ hello, Amon2 world!
     <meta http-equiv="Content-Script-Type" content="text/javascript" />  
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0"]]>
     <meta name="format-detection" content="telephone=no" />
+    <link href="[% uri_for('/static/css/blueprint/screen.css') %]" rel="stylesheet" type="text/css" media="screen" />
+    <link href="[% uri_for('/static/css/blueprint/print.css') %]" rel="stylesheet" type="text/css" media="print" />
+    <!--[if lt IE 8]><link rel="stylesheet" href="[% uri_for('/static/css/blueprint/ie.css') %]" type="text/css" media="screen, projection"><![endif]--> 
     <link href="[% uri_for('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
     <script src="[% uri_for('/static/js/<% $jquery_min_basename %>') %]"></script>
     <!--[if lt IE 9]>
@@ -181,221 +204,42 @@ hello, Amon2 world!
     <![endif]-->
 </head>
 <body[% IF bodyID %] class="[% bodyID %]"[% END %]>
-    <header>
-        <a href="[% uri_for('/') %]"><%= $dist %></a>
-    </header>
-    <div id="main">
-        [% content %]
+    <div class="container">
+        <header>
+            <a href="[% uri_for('/') %]"><%= $dist %></a>
+        </header>
+        <div id="main">
+            [% content %]
+        </div>
+        <footer>
+            Powered by <a href="http://amon.64p.org/">Amon2</a>
+        </footer>
     </div>
-    <footer>
-        Powered by <a href="http://amon.64p.org/">Amon2</a>
-    </footer>
 </body>
 </html>
 ...
 
     $self->write_file('htdocs/static/js/' . Amon2::Setup::Asset::jQuery->jquery_min_basename(), Amon2::Setup::Asset::jQuery->jquery_min_content());
+    $self->write_file_raw('htdocs/static/css/blueprint/screen.css', Amon2::Setup::Asset::Blueprint->screen_css());
+    $self->write_file_raw('htdocs/static/css/blueprint/print.css', Amon2::Setup::Asset::Blueprint->print_css());
+    $self->write_file_raw('htdocs/static/css/blueprint/ie.css', Amon2::Setup::Asset::Blueprint->ie_css());
 
     $self->write_file('htdocs/static/css/main.css', <<'...');
-/* meyer-reset.css */
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-    display: block;
-}
-body {
-    line-height: 1;
-}
-ol, ul {
-    list-style: none;
-}
-blockquote, q {
-    quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-    content: '';
-    content: none;
-}
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
-}
-
-/* --------------------------------------------------------------
-
-   typography.css
-   * Sets up some sensible default typography.
-    (from blueprint css)
-
--------------------------------------------------------------- */
-
-/* Default font settings.
-   The font-size percentage is of 16px. (0.75 * 16px = 12px) */
-html { font-size:100.01%; }
-body {
-  font-size: 75%;
-  color: #222;
-  background: #fff;
-  font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
-}
-
-
-/* Headings
--------------------------------------------------------------- */
-
-h1,h2,h3,h4,h5,h6 { font-weight: normal; color: #111; }
-
-h1 { font-size: 3em; line-height: 1; margin-bottom: 0.5em; }
-h2 { font-size: 2em; margin-bottom: 0.75em; }
-h3 { font-size: 1.5em; line-height: 1; margin-bottom: 1em; }
-h4 { font-size: 1.2em; line-height: 1.25; margin-bottom: 1.25em; }
-h5 { font-size: 1em; font-weight: bold; margin-bottom: 1.5em; }
-h6 { font-size: 1em; font-weight: bold; }
-
-h1 img, h2 img, h3 img,
-h4 img, h5 img, h6 img {
-  margin: 0;
-}
-
-
-/* Text elements
--------------------------------------------------------------- */
-
-p           { margin: 0 0 1.5em; }
-/* 
-	These can be used to pull an image at the start of a paragraph, so 
-	that the text flows around it (usage: <p><img class="left">Text</p>) 
- */
-.left  			{ float: left !important; }
-p .left			{ margin: 1.5em 1.5em 1.5em 0; padding: 0; }
-.right 			{ float: right !important; }
-p .right 		{ margin: 1.5em 0 1.5em 1.5em; padding: 0; }
-
-a:focus,
-a:hover     { color: #09f; }
-a           { color: #06c; text-decoration: underline; }
-
-blockquote  { margin: 1.5em; color: #666; font-style: italic; }
-strong,dfn	{ font-weight: bold; }
-em,dfn      { font-style: italic; }
-sup, sub    { line-height: 0; }
-
-abbr,
-acronym     { border-bottom: 1px dotted #666; }
-address     { margin: 0 0 1.5em; font-style: italic; }
-del         { color:#666; }
-
-pre         { margin: 1.5em 0; white-space: pre; }
-pre,code,tt { font: 1em 'andale mono', 'lucida console', monospace; line-height: 1.5; }
-
-
-/* Lists
--------------------------------------------------------------- */
-
-li ul,
-li ol       { margin: 0; }
-ul, ol      { margin: 0 1.5em 1.5em 0; padding-left: 1.5em; }
-
-ul          { list-style-type: disc; }
-ol          { list-style-type: decimal; }
-
-dl          { margin: 0 0 1.5em 0; }
-dl dt       { font-weight: bold; }
-dd          { margin-left: 1.5em;}
-
-
-/* Tables
--------------------------------------------------------------- */
-
-/* 
-	Because of the need for padding on TH and TD, the vertical rhythm 
-	on table cells has to be 27px, instead of the standard 18px or 36px 
-	of other elements. 
- */ 
-table       { margin-bottom: 1.4em; width:100%; }
-th          { font-weight: bold; }
-thead th    { background: #c3d9ff; }
-th,td,caption { padding: 4px 10px 4px 5px; }
-/*
-	You can zebra-stripe your tables in outdated browsers by adding 
-	the class "even" to every other table row. 
- */
-tbody tr:nth-child(even) td, 
-tbody tr.even td  { 
-	background: #e5ecf9; 
-}
-tfoot       { font-style: italic; }
-caption     { background: #eee; }
-
-
-/* Misc classes
--------------------------------------------------------------- */
-
-.small      { font-size: .8em; margin-bottom: 1.875em; line-height: 1.875em; }
-.large      { font-size: 1.2em; line-height: 2.5em; margin-bottom: 1.25em; }
-.hide       { display: none; }
-
-.quiet      { color: #666; }
-.loud       { color: #000; }
-.highlight  { background:#ff0; }
-.added      { background:#060; color: #fff; }
-.removed    { background:#900; color: #fff; }
-
-.first      { margin-left:0; padding-left:0; }
-.last       { margin-right:0; padding-right:0; }
-.top        { margin-top:0; padding-top:0; }
-.bottom     { margin-bottom:0; padding-bottom:0; }
-
-/* main */
-html,body {height:100%;}
-
-body {
-    font-family: "メイリオ","Hiragino Kaku Gothic Pro","ヒラギノ角ゴ Pro W3","ＭＳ Ｐゴシック","Osaka",sans-selif;
-    background-color: white;
-    max-width: 960px;
-    margin: 0 auto;
-}
-
-body > header {
+header {
     height: 50px;
     font-size: 36px;
     padding: 2px;
     text-align: center; }
-    body > header a {
+    header a {
         color: black;
         font-weight: bold;
         text-decoration: none; }
 
-#main {
-    padding: 10px;
-}
-
-body > footer {
+footer {
     text-align: right;
     padding-right: 10px;
     padding-top: 2px; }
-    body > footer a {
+    footer a {
         text-decoration: none;
         color: black;
         font-weight: bold;
