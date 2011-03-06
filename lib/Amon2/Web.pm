@@ -71,10 +71,40 @@ sub redirect {
 
 sub res_404 {
     my ($self) = @_;
-    my $content = 'not found';
+    my $content = <<'...';
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <style type="text/css">
+            body {
+                text-align: center;
+                font-family: 'Menlo', 'Monaco', Courier, monospace;
+                background-color: whitesmoke;
+                padding-top: 10%;
+            }
+            .number {
+                font-size: 800%;
+                font-weight: bold;
+                margin-bottom: 40px;
+            }
+            .message {
+                font-size: 400%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="number">404</div>
+        <div class="message">File Not Found</div>
+    </body>
+</html>
+...
     $self->create_response(
         404,
-        ['Content-Type' => 'text/plain', 'Content-Length' => length($content)],
+        [
+            'Content-Type' => 'text/html; charset=utf-8',
+            'Content-Length' => length($content),
+        ],
         [$content]
     );
 }
