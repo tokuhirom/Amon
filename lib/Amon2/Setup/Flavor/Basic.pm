@@ -154,7 +154,7 @@ any '/' => sub {
 <hr class="space">
 
 <div class="span-15 colborder">
-    <h1>hello, Amon2 world!</h1>
+    <h1>Hello, Amon2 world!</h1>
 
     <h2>For benchmarkers...</h2>
     <p>If you want to benchmarking between Plack based web application frameworks, you should use <B>Amon2::Setup::Flavor::Minimum</B> instead.</p>
