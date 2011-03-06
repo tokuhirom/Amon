@@ -145,14 +145,6 @@ any '/' => sub {
 };
 ...
 
-    $self->write_file("lib/<<PATH>>/ConfigLoader.pm", <<'...');
-package <% $module %>::ConfigLoader;
-use strict;
-use warnings;
-use parent 'Amon2::ConfigLoader';
-1;
-...
-
     $self->write_file("sql/my.sql", '');
     $self->write_file("sql/sqlite3.sql", '');
 
