@@ -172,3 +172,21 @@ sub encode_html {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Amon2::Web - Web Application Base.
+
+=head1 SYNOPSIS
+
+    package MyApp;
+    use parent qw/Amon2::Web/;
+
+=head1 DESCRIPTION
+
+This is a web application base class.
+
+=head1 METHODS
+
+TBD
