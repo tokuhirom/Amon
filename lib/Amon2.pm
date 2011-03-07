@@ -52,6 +52,8 @@ sub mode_name { $ENV{PLACK_ENV} }
 
 sub add_config {
     my ($class, $key, $hash) = @_; $hash or Carp::croak("missing args: \$hash");
+    Carp::cluck("Amon2->add_config() method was deprecated.");
+
     # This method will be deprecate.
     $class->config->{$key} = +{
         %{$class->config->{$key} || +{}},
