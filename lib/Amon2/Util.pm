@@ -34,3 +34,8 @@ sub random_string {
 }
 
 1;
+__END__
+
+=head1 DESCRIPTION
+
+This is a utility class for Amon2. Do not use this directly.

@@ -156,6 +156,14 @@ I<$module_name:> package name of the plugin. You can write it as two form like L
 
 Load multiple plugins at one time. The arguments are processed by L<Data::OptList>.
 
+=item C<< MyApp->load_config() >>
+
+You can get a configuration hashref from C<< config/$ENV{PLACK_ENV}.pl >>. You can override this method for customizing configuration loading method.
+
+=item C<< MyApp->add_config() >>
+
+DEPRECATED.
+
 =back
 
 =head1 DOCUMENTS
