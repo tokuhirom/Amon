@@ -1,3 +1,11 @@
+2.30
+
+    - Amon2->add_config() was now deprecated.
+    - Implement default load_config()
+    - ConfigLoader is no longer needed
+    - Depend to latest Xslate.
+    - fixed testing issue
+
 2.29
 
     - better 404 page

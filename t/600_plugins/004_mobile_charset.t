@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use Test::More;
-use Test::Requires 'HTTP::MobileAgent', 'HTTP::MobileAgent::Plugin::Charset', 'Encode::JP::Mobile';
+use Test::Requires 'HTTP::MobileAgent', 'HTTP::MobileAgent::Plugin::Charset', 'Encode::JP::Mobile', 'Tiffany';
 
 {
     package MyApp;
