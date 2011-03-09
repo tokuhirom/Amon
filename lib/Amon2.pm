@@ -6,6 +6,7 @@ use Amon2::Util ();
 use Plack::Util ();
 use Data::OptList ();
 use Carp ();
+use Amon2::Config::Simple;
 
 our $VERSION = '2.29';
 {
@@ -36,7 +37,7 @@ sub base_dir {
     $base_dir;
 }
 
-sub load_config { die "Abstract base method: load_config" }
+sub load_config { Amon2::Config::Simple->load(shift) }
 sub config {
     my $class = shift;
        $class = ref $class || $class;
@@ -51,6 +52,8 @@ sub mode_name { $ENV{PLACK_ENV} }
 
 sub add_config {
     my ($class, $key, $hash) = @_; $hash or Carp::croak("missing args: \$hash");
+    Carp::cluck("Amon2->add_config() method was deprecated.");
+
     # This method will be deprecate.
     $class->config->{$key} = +{
         %{$class->config->{$key} || +{}},
