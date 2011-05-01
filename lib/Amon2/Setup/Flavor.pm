@@ -7,6 +7,7 @@ use Text::Xslate;
 use File::Spec;
 use File::Basename;
 use File::Path ();
+use Amon2;
 
 my $xslate = Text::Xslate->new(
     syntax => 'Kolon',
@@ -20,6 +21,9 @@ sub infof { @_==1 ? print(@_) : printf(@_); print "\n" }
 sub new {
     my $class = shift;
     my %args = @_ ==1 ? %{$_[0]} : @_;
+
+    $args{amon2_version} = $Amon2::VERSION;
+
     for (qw/module/) {
         die "Missing mandatory parameter $_" unless exists $args{$_};
     }
