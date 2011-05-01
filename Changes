@@ -1,3 +1,8 @@
+2.32
+
+    - Setup::Flavor::Basic:
+        - specify the correct Amon2 version for better deployment.
+
 2.31
 
     some tweaks for dotcloud friendly
