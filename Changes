@@ -1,3 +1,11 @@
+2.31
+
+    some tweaks for dotcloud friendly
+    - Setup::Flavor::Basic:
+        - generate default deployment.yml
+        - configuration for Xslate is no longer required.
+        - default .psgi file name is app.psgi
+
 2.30
 
     - Amon2->add_config() was now deprecated.
