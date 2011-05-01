@@ -84,7 +84,7 @@ __PACKAGE__->add_trigger(
 </html>
 ...
 
-    $self->write_file('<<DIST>>.psgi', <<'...');
+    $self->write_file('app.psgi', <<'...');
 use File::Spec;
 use File::Basename;
 use lib File::Spec->catdir(dirname(__FILE__), 'extlib', 'lib', 'perl5');
@@ -170,7 +170,7 @@ use Plack::Test;
 use Plack::Util;
 use Test::More;
 
-my $app = Plack::Util::load_psgi '<% $dist %>.psgi';
+my $app = Plack::Util::load_psgi 'app.psgi';
 test_psgi
     app => $app,
     client => sub {
@@ -193,7 +193,7 @@ use Plack::Util;
 use Test::More;
 use Test::Requires 'Test::WWW::Mechanize::PSGI';
 
-my $app = Plack::Util::load_psgi '<%= $dist %>.psgi';
+my $app = Plack::Util::load_psgi 'app.psgi';
 
 my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
 $mech->get_ok('/');
