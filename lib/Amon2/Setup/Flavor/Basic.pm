@@ -122,8 +122,19 @@ any '/' => sub {
             sqlite_unicode => 1,
         }
     ],
-    'Text::Xslate' => +{
-    },
+};
+...
+
+    $self->write_file("config/deployment.pl", <<'...');
++{
+    'DBI' => [
+        'dbi:SQLite:dbname=deployment.db',
+        '',
+        '',
+        +{
+            sqlite_unicode => 1,
+        }
+    ],
 };
 ...
 
@@ -137,8 +148,6 @@ any '/' => sub {
             sqlite_unicode => 1,
         }
     ],
-    'Text::Xslate' => +{
-    },
 };
 ...
 
