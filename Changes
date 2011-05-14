@@ -1,3 +1,9 @@
+2.33
+
+    [INCOMPATIBLE CHANGE]
+    - split Plugin::LogDispatch, Plugin::Web::MobileAgent and Plugin::Web::MobileCharset
+      to independ dist. Since these modules are no longer used by maintainer.
+
 2.32
 
     - Setup::Flavor::Basic:
