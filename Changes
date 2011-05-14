@@ -1,3 +1,7 @@
+2.34
+
+    - Switch to EU::MM from M::I at setup script. This is required for more easy installing.
+
 2.33
 
     [INCOMPATIBLE CHANGE]
