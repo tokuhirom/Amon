@@ -1,3 +1,8 @@
+2.35
+
+    - fixed deps: JSON 2 is required.
+    - suppress warnings on t/100_core/010_add_config.t
+
 2.34
 
     - Switch to EU::MM from M::I at setup script. This is required for more easy installing.
