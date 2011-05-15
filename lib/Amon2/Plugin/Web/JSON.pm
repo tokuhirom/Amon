@@ -1,7 +1,7 @@
 package Amon2::Plugin::Web::JSON;
 use strict;
 use warnings;
-use JSON qw/encode_json/;
+use JSON 2 qw/encode_json/;
 use Amon2::Util ();
 
 sub init {

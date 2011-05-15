@@ -28,6 +28,7 @@ requires(
     'HTML::FillInForm::Lite'     => 1.09,
     'HTTP::Session'              => 0.41,
     'Plack::Middleware::ReverseProxy' => 0,
+	'JSON'                            => 2,
 );
 
 # Optional components
