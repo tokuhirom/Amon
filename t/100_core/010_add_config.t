@@ -16,6 +16,7 @@ use Amon2;
             bar => 'baz',
         },
     }}
+    local $SIG{__WARN__} = sub { }; # add_config method outputs deprecated warnigns
     __PACKAGE__->add_config(
         'Foo' => {
             'hoge' => 'fuga',
