@@ -1,3 +1,9 @@
+2.36
+
+    - generate (404|50[023]).html for dotcloud.
+    - auto_include considered harmful
+    - Text::MicroTemplate is no longer required by Amon2 core.
+
 2.35
 
     - fixed deps: JSON 2 is required.
