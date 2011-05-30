@@ -22,7 +22,6 @@ requires(
 requires(
     'Text::Xslate'                  => 1.0012,
     'Text::Xslate::Bridge::TT2Like' => '0.00007',
-    'Text::MicroTemplate'        => 0.15,    # TODO: remove dependency on T::MT.
     'Router::Simple'             => 0.06,
     'Router::Simple::Sinatraish' => 0.02,
     'HTML::FillInForm::Lite'     => 1.09,

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
-use Test::Requires qw/Tiffany Test::WWW::Mechanize::PSGI/;
+use Test::Requires qw/Tiffany Test::WWW::Mechanize::PSGI Text::MicroTemplate/;
 
 package MyApp;
 use parent qw/Amon2/;
