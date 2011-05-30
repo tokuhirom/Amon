@@ -6,6 +6,7 @@ package Amon2::Setup::Flavor::Basic;
 use parent qw(Amon2::Setup::Flavor::Minimum);
 use Amon2::Setup::Asset::jQuery;
 use Amon2::Setup::Asset::Blueprint;
+use HTTP::Status qw/status_message/;
 
 sub run {
     my $self = shift;
@@ -288,6 +289,46 @@ nytprof.out
 nytprof/
 development.db
 test.db
+...
+
+    for my $status (qw/404 500 502 503 504/) {
+        $self->write_status_file("htdocs/static/$status.html", $status);
+    }
+}
+
+sub write_status_file {
+    my ($self, $fname, $status) = @_;
+
+    local $self->{status}         = $status;
+    local $self->{status_message} = status_message($status);
+ 
+    $self->write_file($fname, <<'...');
+<!doctype html> 
+<html> 
+    <head> 
+        <meta charset=utf-8 /> 
+        <style type="text/css"> 
+            body {
+                text-align: center;
+                font-family: 'Menlo', 'Monaco', Courier, monospace;
+                background-color: whitesmoke;
+                padding-top: 10%;
+            }
+            .number {
+                font-size: 800%;
+                font-weight: bold;
+                margin-bottom: 40px;
+            }
+            .message {
+                font-size: 400%;
+            }
+        </style> 
+    </head> 
+    <body> 
+        <div class="number"><%= $status %></div> 
+        <div class="message"><%= $status_message %></div> 
+    </body> 
+</html> 
 ...
 }
 
