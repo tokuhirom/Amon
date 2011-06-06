@@ -1,3 +1,7 @@
+2.37
+
+    - escape JSON data for IE7's Content-Type vulnerability.
+
 2.36
 
     - generate (404|50[023]).html for dotcloud.
