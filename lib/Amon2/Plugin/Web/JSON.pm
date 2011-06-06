@@ -4,6 +4,14 @@ use warnings;
 use JSON 2 qw/encode_json/;
 use Amon2::Util ();
 
+my $_JSON = JSON->new()->ascii(1);
+
+my %_ESCAPE = (
+    '+' => '\\u002b', # do not eval as UTF-7
+    '<' => '\\u003c', # do not eval as HTML
+    '>' => '\\u003e', # ditto.
+);
+
 sub init {
     my ($class, $c, $conf) = @_;
     Amon2::Util::add_method($c, 'render_json', \&_render_json);
@@ -12,7 +20,10 @@ sub init {
 sub _render_json {
     my ($c, $stuff) = @_;
 
-    my $output = encode_json($stuff);
+    # for IE7 JSON venularity.
+    # see http://www.atmarkit.co.jp/fcoding/articles/webapp/05/webapp05a.html
+    my $output = $_JSON->encode($stuff);
+    $output =~ s!([+<>])!$_ESCAPE{$1}!g;
 
     my $res = $c->create_response(200);
 
@@ -32,6 +43,7 @@ sub _render_json {
         $output = "\xEF\xBB\xBF" . $output;
     }
 
+    $res->header( 'X-Content-Type-Options' => 'nosniff' ); # defense from XSS
     $res->content_length(length($output));
     $res->body($output);
 
@@ -52,4 +64,12 @@ __END__
 
     # in your controller
     return $c->render_json(+{foo => 'bar'}); # return $res
+
+=head1 JSON and security
+
+See the L<hasegawayosuke's article(Japanese)|http://www.atmarkit.co.jp/fcoding/articles/webapp/05/webapp05a.html>.
+
+=head1 THANKS TO
+
+hasegawayosuke
 
