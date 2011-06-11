@@ -20,7 +20,7 @@ ok((do 'lib/My/App.pm'), 'lib/My/App.pm is valid') or do {
         local $/; <$fh>;
     };
 };
-is( scalar( my @files = glob('htdocs/static/js/jquery-*.js') ), 1 );
+is( scalar( my @files = glob('static/js/jquery-*.js') ), 1 );
 
 my $libpath = File::Spec->rel2abs(File::Spec->catfile(dirname(__FILE__), '..', '..', 'lib'));
 my $app = App::Prove->new();

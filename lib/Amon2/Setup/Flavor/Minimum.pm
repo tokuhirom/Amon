@@ -95,7 +95,7 @@ use Plack::Builder;
 builder {
     enable 'Plack::Middleware::Static',
         path => qr{^(?:/static/|/robot\.txt$|/favicon.ico$)},
-        root => File::Spec->catdir(dirname(__FILE__), 'htdocs');
+        root => File::Spec->catdir(dirname(__FILE__));
     enable 'Plack::Middleware::ReverseProxy';
     <% $module %>::Web->to_app();
 };

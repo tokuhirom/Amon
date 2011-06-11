@@ -13,8 +13,8 @@ sub run {
 
     $self->SUPER::run();
 
-    $self->mkpath('htdocs/static/img/');
-    $self->mkpath('htdocs/static/js/');
+    $self->mkpath('static/img/');
+    $self->mkpath('static/js/');
 
     $self->write_file('lib/<<PATH>>.pm', <<'...');
 package <% $module %>;
@@ -218,12 +218,12 @@ any '/' => sub {
 </html>
 ...
 
-    $self->write_file('htdocs/static/js/' . Amon2::Setup::Asset::jQuery->jquery_min_basename(), Amon2::Setup::Asset::jQuery->jquery_min_content());
-    $self->write_file_raw('htdocs/static/css/blueprint/screen.css', Amon2::Setup::Asset::Blueprint->screen_css());
-    $self->write_file_raw('htdocs/static/css/blueprint/print.css', Amon2::Setup::Asset::Blueprint->print_css());
-    $self->write_file_raw('htdocs/static/css/blueprint/ie.css', Amon2::Setup::Asset::Blueprint->ie_css());
+    $self->write_file('static/js/' . Amon2::Setup::Asset::jQuery->jquery_min_basename(), Amon2::Setup::Asset::jQuery->jquery_min_content());
+    $self->write_file_raw('static/css/blueprint/screen.css', Amon2::Setup::Asset::Blueprint->screen_css());
+    $self->write_file_raw('static/css/blueprint/print.css', Amon2::Setup::Asset::Blueprint->print_css());
+    $self->write_file_raw('static/css/blueprint/ie.css', Amon2::Setup::Asset::Blueprint->ie_css());
 
-    $self->write_file('htdocs/static/css/main.css', <<'...');
+    $self->write_file('static/css/main.css', <<'...');
 header {
     height: 50px;
     font-size: 36px;
@@ -292,7 +292,7 @@ test.db
 ...
 
     for my $status (qw/404 500 502 503 504/) {
-        $self->write_status_file("htdocs/static/$status.html", $status);
+        $self->write_status_file("static/$status.html", $status);
     }
 }
 
