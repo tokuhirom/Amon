@@ -1,3 +1,7 @@
+2.38
+
+    - optimize directory structure for dotcloud(tokuhirom).
+
 2.37
 
     - escape JSON data for IE7's Content-Type vulnerability.
