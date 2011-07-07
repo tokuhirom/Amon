@@ -60,7 +60,7 @@ __END__
     package MyApp::Web;
     use base qw/MyApp Amon2::Web/;
 
-    __PACKAGE__->load_plugins(qw/JSON/);
+    __PACKAGE__->load_plugins(qw/Web::JSON/);
 
     # in your controller
     return $c->render_json(+{foo => 'bar'}); # return $res
