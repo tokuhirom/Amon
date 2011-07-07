@@ -1,3 +1,7 @@
+2.39
+    
+    - upgrade jquery to 1.6.2(tokuhirom)
+
 2.38
 
     - optimize directory structure for dotcloud(tokuhirom).
