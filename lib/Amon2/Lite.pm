@@ -85,7 +85,6 @@ sub import {
         $xslate;
     };
 
-    *{"$caller\::to_app"} = sub { $base_class->to_app() };
 }
 
 1;
