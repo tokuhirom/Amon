@@ -17,7 +17,7 @@ get '/hello' => sub {
     return $c->render('hello.tt', { name => $c->req->param('name')});
 };
 
-my $app = to_app;
+my $app = __PACKAGE__->to_app;
 
 test_psgi($app, sub {
     my $cb = shift;

@@ -35,7 +35,7 @@ builder {
         root => File::Spec->catdir(dirname(__FILE__));
     enable 'Plack::Middleware::ReverseProxy';
 
-    to_app();
+    __PACKAGE__->to_app();
 };
 
 __DATA__
