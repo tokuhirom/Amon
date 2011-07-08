@@ -27,9 +27,19 @@ sub main {
 
 __END__
 
+=head1 NAME
+
+amon2-setup.pl - setup script for amon2
+
 =head1 SYNOPSIS
 
     % amon-setup.pl MyApp
+
+        --flavor=Basic   basic flavour(default)
+        --flavor=Lite    Amon2::Lite flavour
+        --flavor=Minimum minimalistic flavour for benchmarking
+
+        --help   Show this help
 
 =head1 AUTHOR
 
