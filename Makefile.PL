@@ -9,7 +9,7 @@ requires(
     'Plack'         => 0.9943,
     'Try::Tiny'     => 0.06,
     'Test::More'    => 0.96,     # 0.96 or later is required for better testing.
-    'Exporter'      => 5.64,
+    'Exporter'      => 5.63,
     'parent'        => 0.223,
     'Module::Find'  => 0.10,
     'URI'           => 1.54,
