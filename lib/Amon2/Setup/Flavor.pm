@@ -59,7 +59,7 @@ sub write_file {
 
     $filename =~ s/<<([^>]+)>>/$self->{lc($1)} or die "$1 is not defined. But you want to use $1 in filename."/ge;
 
-    my $content = $xslate->render_string($template, $self);
+    my $content = $xslate->render_string($template, +{%$self});
     $self->write_file_raw($filename, $content);
 }
 
