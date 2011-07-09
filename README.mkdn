@@ -4,3 +4,5 @@ Amon2 - Yet another web application framework
 - Support PSGI/Plack
 - Thin layer.
 - lightweight
+
+Full of the document is available on http://amon.64p.org/
