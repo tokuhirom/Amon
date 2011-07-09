@@ -29,6 +29,18 @@ __PACKAGE__->add_trigger(
     },
 );
 
+# load plugins
+use HTTP::Session::Store::File;
+__PACKAGE__->load_plugins(
+    'Web::CSRFDefender',
+    'Web::HTTPSession' => {
+        state => 'Cookie',
+        store => HTTP::Session::Store::File->new(
+            dir => File::Spec->tmpdir(),
+        )
+    },
+);
+
 builder {
     enable 'Plack::Middleware::Static',
         path => qr{^(?:/static/|/robot\.txt$|/favicon.ico$)},
