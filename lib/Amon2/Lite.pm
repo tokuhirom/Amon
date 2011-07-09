@@ -103,7 +103,7 @@ Amon2::Lite - sinatra-ish
         $c->render('index.tt');
     };
 
-    to_app();
+    __PACKAGE__->to_app();
 
     __DATA__
 
@@ -123,8 +123,6 @@ B<THIS MODULE IS BETA STATE. API MAY CHANGE WITHOUT NOTICE>.
 
 =over 4
 
-=item get
-
 =item any(\@methods, $path, \&code)
 
 =item any($path, \&code)
@@ -139,7 +137,11 @@ Register new route for router.
 
 Register new route for router.
 
-=item to_app()
+=item __PACKAGE__->load_plugin($name, \%opts)
+
+Load a plugin to the context object.
+
+=item __PACKAGE__->to_app()
 
 Create new PSGI app instance.
 
