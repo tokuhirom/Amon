@@ -19,3 +19,4 @@ This is response class for Amon2.
 
 This class is child class of L<Plack::Response>.
 
+There is no extension for now, but I'm using this class for future plan.
