@@ -25,7 +25,6 @@ sub init {
         HTML_FILTER => sub {
             my ($self, $html) = @_;
             my $token = $self->get_csrf_defender_token();
-            warn "FILTERING"
             $html =~ s!(<form\s*.*?>)!$1\n<input type="hidden" name="csrf_token" value="$token" />!isg;
             return $html;
         },
