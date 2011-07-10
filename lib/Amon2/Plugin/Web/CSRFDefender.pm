@@ -25,6 +25,7 @@ sub init {
         HTML_FILTER => sub {
             my ($self, $html) = @_;
             my $token = $self->get_csrf_defender_token();
+            warn "FILTERING"
             $html =~ s!(<form\s*.*?>)!$1\n<input type="hidden" name="csrf_token" value="$token" />!isg;
             return $html;
         },
@@ -78,3 +79,42 @@ sub validate_csrf {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Amon2::Plugin::Web::CSRFDefender - Anti CSRF filter
+
+=head1 SYNOPSIS
+
+    package MyApp::Web;
+    use Amon2::Web;
+
+    __PACKAGE__->load_plugin('Web::CSRFDefender');
+
+=head1 DESCRIPTION
+
+This plugin denys CSRF request.
+
+=head1 METHODS
+
+=over 4
+
+=item $c->get_csrf_defender_token()
+
+Get a CSRF defender token. This method is useful to add token for AJAX request.
+
+=item $c->validate_csrf()
+
+You can validate CSRF token manually.
+
+=back
+
+=head1 AUTHOR
+
+Tokuhiro Matsuno
+
+=head1 SEE ALSO
+
+L<Amon2>
+
