@@ -1,7 +1,7 @@
 package Amon2::Web::Request;
 use strict;
 use warnings;
-use base qw/Plack::Request/;
+use parent qw/Plack::Request/;
 use Encode ();
 use Carp ();
 use URI::QueryParam;
