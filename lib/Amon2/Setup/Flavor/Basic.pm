@@ -333,3 +333,20 @@ sub write_status_file {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Amon2::Setup::Flavor::Basic - Basic flavor for Amon2
+
+=head1 SYNOPSIS
+
+    % amon2-setup.pl --flavor=Basic MyApp
+
+=head1 DESCRIPTION
+
+This is a basic flavor for Amon2. This is a default flavor.
+
+=head1 AUTHOR
+
+Tokuhiro Matsuno

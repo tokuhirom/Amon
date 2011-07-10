@@ -155,3 +155,20 @@ all_pod_files_ok();
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Amon2::Setup::Flavor::Lite - Amon2::Lite flavor
+
+=head1 SYNOPSIS
+
+    % amon2-setup.pl --flavor=Lite MyApp
+
+=head1 DESCRIPTION
+
+This is a flavor for project using Amon2::Lite.
+
+=head1 AUTHOR
+
+Tokuhiro Matsuno

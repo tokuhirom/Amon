@@ -215,3 +215,20 @@ all_pod_files_ok();
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Amon2::Setup::Flavor::Minimum - Amon2::Minimum flavor
+
+=head1 SYNOPSIS
+
+    % amon2-setup.pl --flavor=Minimum MyApp
+
+=head1 DESCRIPTION
+
+This is a flavor for benchmarking...
+
+=head1 AUTHOR
+
+Tokuhiro Matsuno
