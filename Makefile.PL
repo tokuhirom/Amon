@@ -17,6 +17,7 @@ requires(
     'Data::OptList' => 0.106,
     'MRO::Compat'   => 0,
 	'Data::Section::Simple' => 0, # for ::Lite
+	'HTTP::Date'                      => 6,
 );
 
 # Not core, but default components.
