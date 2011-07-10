@@ -55,15 +55,45 @@ __END__
 
 =encoding utf-8
 
+=head1 NAME
+
+Amon2::Plugin::Web::JSON - JSON plugin
+
 =head1 SYNOPSIS
 
-    package MyApp::Web;
-    use base qw/MyApp Amon2::Web/;
+    use Amon2::Lite;
 
     __PACKAGE__->load_plugins(qw/Web::JSON/);
 
-    # in your controller
-    return $c->render_json(+{foo => 'bar'}); # return $res
+    get '/' => sub {
+        return $c->render_json(+{foo => 'bar'});
+    };
+
+    __PACKAGE__->to_app();
+
+=head1 DESCRIPTION
+
+This is a JSON plugin.
+
+=head1 METHODS
+
+=over 4
+
+=item $c->render_json(\%dat);
+
+Generate JSON data from C<< \%dat >> and returns instance of L<Plack::Response>.
+
+=back
+
+=head1 FAQ
+
+=over 4
+
+=item How can I use JSONP?
+
+You can use JSONP by using L<Plack::Middleware::JSONP>.
+
+=back
 
 =head1 JSON and security
 
