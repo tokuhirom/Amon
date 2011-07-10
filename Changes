@@ -1,3 +1,8 @@
+2.41
+
+    - fixed testing issue(maybe cpan-tester's issue)
+    - added EXPERIMENTAL Amon2::Lite module for small web site.
+
 2.40
 
     - fix xslate related issue in setup script(reported by gfx++)
