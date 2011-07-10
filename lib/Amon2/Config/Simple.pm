@@ -24,7 +24,7 @@ Amon2::Config::Simple - Default configuration file loader
 
 =head1 SYNOPSIS
 
-    package MyApp;
+    package MyApp2;
     # do "config/@{{ $c->mode_name ]}.pl"
     use Amon2::Config::Simple;
     sub load_config { Amon2::Config::Simple->load(shift) }

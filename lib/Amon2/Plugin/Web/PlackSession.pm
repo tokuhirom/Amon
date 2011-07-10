@@ -19,21 +19,31 @@ __END__
 
 =head1 NAME
 
+Amon2::Plugin::Web::PlackSession - Plack::Session integration for Amon2
+
 =head1 SYNOPSIS
 
-    # in you .psgi
+    use Amon2::Lite;
+    use Plack::Builder;
+
+    get '/' => sub {
+        my $c = shift;
+        my $cnt = $c->session->get('cnt') || 0;
+        $c->session->set( 'cnt', ++$cnt );
+        return $c->create_response(
+            200,
+            [
+                'Content-Type'   => 'text/plain',
+                'Content-Length' => length($cnt)
+            ],
+            [$cnt]
+        );
+    };
+
     builder {
         enable 'Session';
         MyApp::Web->to_app();
     };
-
-    # in your code
-    sub dispatch {
-        my $c = shift;
-        my $cnt = $c->session->get('cnt') || 0;
-        $c->session->set('cnt', ++$cnt);
-        return $c->create_response(200, ['Content-Type' => 'text/plain', 'Content-Length' => length($cnt)], [$cnt]);
-    }
 
 =head1 DESCRIPTION
 

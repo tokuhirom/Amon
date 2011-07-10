@@ -44,23 +44,19 @@ Amon2::Plugin::Web::FillInFormLite - HTML::FillInForm::Lite
 
 =head1 SYNOPSIS
 
-  package MyApp;
-  use parent qw/Amon2/;
+    use Amon2::Lite;
 
-  package MyApp::Web;
-  use parent qw/MyApp Amon2::Web;
-  __PACKAGE__->load_plugins(qw/Web::FillInFormLite/);
-  1;
+    __PACKAGE__->load_plugins(qw/Web::FillInFormLite/);
 
-  package MyApp::Web::C::Root;
-
-  sub post_edit {
-    my $c = shift;
-    $c->fillin_form($c->req());
-    $c->render('edit.html');
-  }
-
-  1;
+    post '/edit' => sub {
+        my $c = shift;
+        unless (is_valid()) {
+            $c->fillin_form($c->req);
+            return $c->render('edit.html');
+        }
+        $c->dbh->update($c->req());
+        return $c->redirect('/finished');
+    };
 
 =head1 DESCRIPTION
 

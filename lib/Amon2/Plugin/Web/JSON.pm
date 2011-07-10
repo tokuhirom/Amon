@@ -66,6 +66,7 @@ Amon2::Plugin::Web::JSON - JSON plugin
     __PACKAGE__->load_plugins(qw/Web::JSON/);
 
     get '/' => sub {
+        my $c = shift;
         return $c->render_json(+{foo => 'bar'});
     };
 

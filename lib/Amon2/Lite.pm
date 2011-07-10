@@ -100,7 +100,7 @@ Amon2::Lite - sinatra-ish
 
     get '/' => sub {
         my ($c) = @_;
-        $c->render('index.tt');
+        return $c->render('index.tt');
     };
 
     __PACKAGE__->to_app();

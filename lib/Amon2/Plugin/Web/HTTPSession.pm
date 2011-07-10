@@ -63,8 +63,8 @@ Amon2::Plugin::Web::HTTPSession - Plugin system for Amon2
 
 =head1 SYNOPSIS
 
-    package MyApp::Web;
-    use parent qw/MyApp Amon2::Web/;
+    use Amon2::Lite;
+
     use HTTP::Session::Store::Memcached;
     __PACKAGE__->load_plugins(qw/Web::HTTPSession/ => {
         state => 'URI',
@@ -76,19 +76,16 @@ Amon2::Plugin::Web::HTTPSession - Plugin system for Amon2
         },
     });
 
-    package MyApp::C::Root;
-    use strict;
-    use warnings;
+    get '/' => sub {
+        my $c = shift;
 
-    sub index {
-        my ($class, $c) = @_;
         my $foo = $c->session->get('foo');
         if ($foo) {
               $c->session->set('foo' => $foo+1);
         } else {
               $c->session->set('foo' => 1);
         }
-    }
+    };
 
 =head1 DESCRIPTION
 
