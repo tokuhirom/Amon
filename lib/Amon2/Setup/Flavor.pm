@@ -77,4 +77,43 @@ sub write_file_raw {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Amon2::Setup::Flavor - Abstract base class for flavors.
+
+=head1 DESCRIPTION
+
+This is an abstract base class for flavors. But you don't need to inherit this class. Amon2 uses duck typing. You should implement only C<< Class->run >> method.
+
+In amon2, flavor means setup script.
+
+=head1 METHODS
+
+This class provides some useful methods to write setup script.
+
+=over 4
+
+=item $flavor->init()
+
+Hook point to initialize module directory.
+
+=item $flavor->mkpath($dir)
+
+same as C<< `mkdir -p $dir` >>.
+
+=item $flavor->write_file($fnametmpl, $template)
+
+C<< $fnametmpl >> will be replace with the parameters.
+
+Generate file using L<Text::Xslate>.
+
+For more details, read the source luke! Or please write docs...
+
+=item $flavor->write_file_raw($fname, $content)
+
+Write C<< $content>> to the C<< $fname >>.
+
+=back
 
