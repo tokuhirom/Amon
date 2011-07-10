@@ -16,6 +16,12 @@ use lib File::Spec->catdir(dirname(__FILE__), 'lib');
 use Plack::Builder;
 use Amon2::Lite;
 
+# put your configuration here
+sub config {
+    +{
+    }
+}
+
 get '/' => sub {
     my $c = shift;
     return $c->render('index.tt');
@@ -136,23 +142,6 @@ test_psgi
         is $res->code, 200;
         diag $res->content if $res->code != 200;
     };
-
-done_testing;
-...
-
-    $self->write_file('t/02_mech.t', <<'...');
-use strict;
-use warnings;
-use t::Util;
-use Plack::Test;
-use Plack::Util;
-use Test::More;
-use Test::Requires 'Test::WWW::Mechanize::PSGI';
-
-my $app = Plack::Util::load_psgi 'app.psgi';
-
-my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
-$mech->get_ok('/');
 
 done_testing;
 ...
