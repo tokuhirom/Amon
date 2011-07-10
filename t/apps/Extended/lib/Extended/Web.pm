@@ -27,6 +27,7 @@ __PACKAGE__->load_plugins(
         state => 'Cookie',
         store => 'OnMemory',
     },
+    'Web::MobileAgent'
 );
 
 1;

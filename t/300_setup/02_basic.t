@@ -6,7 +6,9 @@ use Amon2::Setup::Flavor::Basic;
 use File::Temp qw/tempdir/;
 use App::Prove;
 use File::Basename;
+use Cwd;
 
+my $orig_dir = Cwd::getcwd();
 my $dir = tempdir(CLEANUP => 1);
 chdir($dir);
 
@@ -26,6 +28,8 @@ my $libpath = File::Spec->rel2abs(File::Spec->catfile(dirname(__FILE__), '..', '
 my $app = App::Prove->new();
 $app->process_args('-Ilib', "-I$libpath", <t/*.t>);
 ok($app->run);
+
+chdir($orig_dir);
 
 done_testing;
 

@@ -11,7 +11,11 @@ test_psgi
     client => sub {
         my $cb = shift;
         my $req = HTTP::Request->new(GET => 'http://localhost/die');
-        my $res = $cb->($req);
+        my $res = do {
+            local *STDERR;
+            open *STDERR, '>', \my $out or die $!;
+            $cb->($req);
+        };
         is $res->code, 500;
         like $res->content, qr/OKAY/;
         return;
