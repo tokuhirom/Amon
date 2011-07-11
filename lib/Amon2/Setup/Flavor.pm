@@ -105,7 +105,7 @@ For more details, read the source luke! Or please write docs...
 
 =item $flavor->write_file_raw($fname, $content)
 
-Write C<< $content>> to the C<< $fname >>.
+Write C<< $content >> to the C<< $fname >>.
 
 =back
 
