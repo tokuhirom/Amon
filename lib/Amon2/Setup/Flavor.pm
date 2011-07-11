@@ -38,14 +38,6 @@ sub new {
     bless { %args }, $class;
 }
 
-sub init {
-    my $self = shift;
-
-    my $dist = $self->{dist};
-    mkdir $dist or die "Cannot mkdir '$dist': $!";
-    chdir $dist or die $!;
-}
-
 sub run { die "This is abstract base method" }
 
 sub mkpath {

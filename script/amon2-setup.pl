@@ -4,6 +4,7 @@ use warnings;
 use Getopt::Long;
 use Pod::Usage;
 use Amon2::Setup::Flavor::Basic;
+use Cwd ();
 
 my @flavors;
 GetOptions(
@@ -17,9 +18,22 @@ push @flavors, 'Basic' if @flavors == 0;
 
 sub main {
     my $module = shift @ARGV or pod2usage(0);
+       $module =~ s!-!::!g;
+
+    # $module = "Foo::Bar"
+    # $dist   = "Foo-Bar"
+    # $path   = "Foo/Bar"
+    my @pkg  = split /::/, $args{module};
+    my $dist = join "-", @pkg;
+    my $path = join "/", @pkg;
+
+    mkdir $dist or die "Cannot mkdir '$dist': $!";
+    chdir $dist or die $!;
 
     for my $flavor (@flavors) {
-        run_flavor($module => $flavor);
+        my $cwd = Cwd::getcwd(); # save cwd
+            run_flavor($module => $flavor);
+        chdir($cwd);
     }
 }
 
@@ -31,7 +45,6 @@ sub run_flavor {
 
     print "-- Running flavor: $flavor_name --\n";
     my $flavor = $flavor_class->new(module => $module);
-       $flavor->init;
        $flavor->run;
 }
 
