@@ -23,7 +23,7 @@ sub main {
     # $module = "Foo::Bar"
     # $dist   = "Foo-Bar"
     # $path   = "Foo/Bar"
-    my @pkg  = split /::/, $args{module};
+    my @pkg  = split /::/, $module;
     my $dist = join "-", @pkg;
     my $path = join "/", @pkg;
 
