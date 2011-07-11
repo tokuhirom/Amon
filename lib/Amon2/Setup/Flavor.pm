@@ -79,7 +79,7 @@ Amon2::Setup::Flavor - Abstract base class for flavors.
 
 This is an abstract base class for flavors. But you don't need to inherit this class. Amon2 uses duck typing. You should implement only C<< Class->run >> method.
 
-In amon2, flavor means setup script.
+In Amon2, flavor means setup script.
 
 =head1 METHODS
 
@@ -101,7 +101,7 @@ C<< $fnametmpl >> will be replace with the parameters.
 
 Generate file using L<Text::Xslate>.
 
-For more details, read the source luke! Or please write docs...
+For more details, read the source Luke! Or please write docs...
 
 =item $flavor->write_file_raw($fname, $content)
 

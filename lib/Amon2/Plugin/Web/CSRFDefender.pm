@@ -93,7 +93,7 @@ Amon2::Plugin::Web::CSRFDefender - Anti CSRF filter
 
 =head1 DESCRIPTION
 
-This plugin denys CSRF request.
+This plugin denies CSRF request.
 
 =head1 METHODS
 

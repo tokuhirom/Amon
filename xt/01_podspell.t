@@ -72,3 +72,12 @@ TTerse
 cpanm
 irc
 org
+CSRF
+hasegawayosuke
+hasegawayosuke's
+JSONP
+NoCache
+API
+Sinatra-ish
+Str
+callback

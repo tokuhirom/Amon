@@ -205,7 +205,7 @@ You can override this method to change request object's class.
 
 =item $c->create_response($code, \@headers, \@body)
 
-Create new response objct.
+Create new response object.
 
 You can override this method to change response object's class.
 
@@ -219,13 +219,13 @@ You can override this method to change view object's class.
 
 Do dispatch request. This method must return instance of L<Plack::Response>.
 
-You can override this method to change behaviour.
+You can override this method to change behavior.
 
 =item $c->html_content_type() : Str
 
 Returns default Content-Type value for the HTML response.
 
-You can override this method to change behaviour.
+You can override this method to change behavior.
 
 =item $c->request() : Plack::Request
 
@@ -239,7 +239,7 @@ Create a response object to redirect for C< $location > with C<< \%parameters >>
 
     $c->redirect('/foo', +{bar => 3})
 
-is same as following(if base url is http://localhost:5000/)
+is same as following(if base URL is http://localhost:5000/)
 
     $c->create_response(302, [Location => 'http://localhost:5000/foo?bar=3'])
 
@@ -265,12 +265,12 @@ This method render HTML.
 
 Return a encoding object using C<< Encode::find_encoding() >>.
 
-You can override this method to change behaviour.
+You can override this method to change behavior.
 
 =item $c->encode_html($html) : Str
 
 This method encode HTML from bytes.
 
-You can override this method to change behaviour.
+You can override this method to change behavior.
 
 =back

@@ -92,7 +92,7 @@ __END__
 
 =head1 NAME
 
-Amon2::Lite - sinatra-ish
+Amon2::Lite - Sinatra-ish
 
 =head1 SYNOPSIS
 
@@ -115,7 +115,7 @@ Amon2::Lite - sinatra-ish
 
 =head1 DESCRIPTION
 
-This is a sinatra-ish wrapper for Amon2.
+This is a Sinatra-ish wrapper for Amon2.
 
 B<THIS MODULE IS BETA STATE. API MAY CHANGE WITHOUT NOTICE>.
 
@@ -143,7 +143,7 @@ Load a plugin to the context object.
 
 =item __PACKAGE__->to_app()
 
-Create new PSGI app instance.
+Create new PSGI application instance.
 
 =back
 
