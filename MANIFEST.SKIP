@@ -23,3 +23,6 @@
 \bblib\b
 .+/inc\b
 \.ja\.pod$
+^eg/Hello/Makefile$
+^eg/Hello/META.yml$
+^eg/Hello/test.db$

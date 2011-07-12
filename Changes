@@ -1,3 +1,9 @@
+2.45
+
+    - ->init() method was deprecated on Setup::Flavor.
+    - test fix
+    - minor tweaks around pod.
+
 2.44
 
     - doc fix(tokuhirom)

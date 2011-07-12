@@ -11,3 +11,6 @@ MANIFEST.bak
 *.old
 MANIFEST
 MYMETA.yml
+eg/Hello/Makefile
+eg/Hello/META.yml
+eg/Hello/test.db
