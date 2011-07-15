@@ -9,6 +9,9 @@ sub run {
     my ($self) = @_;
 
     $self->write_file('app.psgi', <<'...');
+use strict;
+use warnings;
+use utf8;
 use File::Spec;
 use File::Basename;
 use lib File::Spec->catdir(dirname(__FILE__), 'extlib', 'lib', 'perl5');
