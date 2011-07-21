@@ -289,6 +289,12 @@ nytprof.out
 nytprof/
 development.db
 test.db
+blib/
+pm_to_blib
+META.json
+META.yml
+MYMETA.json
+MYMETA.yml
 ...
 
     for my $status (qw/404 500 502 503 504/) {
