@@ -70,6 +70,7 @@ sub import {
     *{"${base_class}::create_view"} = sub {
         # using lazy loading to read __DATA__ section.
         my $vpath = Data::Section::Simple->new($caller)->get_data_section();
+        my $config = $caller->config->{'Text::Xslate'} || +{};
         my $xslate = Text::Xslate->new(+{
             'syntax'   => 'TTerse',
             'module'   => [ 'Text::Xslate::Bridge::TT2Like' ],
@@ -79,6 +80,7 @@ sub import {
                 uri_with => sub { Amon2->context()->req->uri_with(@_) },
                 uri_for  => sub { Amon2->context()->uri_for(@_) },
             },
+            %$config,
         });
         no warnings 'redefine';
         *{"${caller}::create_view"} = sub { $xslate };
@@ -144,6 +146,40 @@ Load a plugin to the context object.
 =item __PACKAGE__->to_app()
 
 Create new PSGI application instance.
+
+=back
+
+=head1 FAQ
+
+=over 4
+
+=item How can I configure the options for Xslate?
+
+
+You can provide a constructore arguments by configuration.
+Write following lines on your app.psgi.
+
+    sub config {
+        +{
+            'Text::Xslate' => {
+                syntax => 'Kolon'
+            }
+        }
+    }
+
+=item How can I use other template engines instead of Text::Xslate?
+
+You can use any template engine with Amon2::Lite. You can overwrite create_view method same as normal Amon2.
+
+This is a example to use L<Text::MicroTemplate::File>.
+
+    use Tiffany::Text::MicroTemplate::File;
+
+    sub create_view {
+        Tiffany::Text::MicroTemplate::File->new(+{
+            include_path => ['./tmpl/']
+        })
+    }
 
 =back
 
