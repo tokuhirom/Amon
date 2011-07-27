@@ -1,3 +1,7 @@
+2.49
+
+    - revert 2.48 changes. and Do not load config/$ENV{PLACK_ENV}.pl if the config/ directory does not exists.
+
 2.48
 
     - fixed testing issue(reported by sugyan++)
