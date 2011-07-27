@@ -7,6 +7,8 @@ use Test::Requires qw/HTTP::Request::Common/;
 
 use Amon2::Lite;
 
+sub config { +{ } }
+
 get '/' => sub {
     my ($c) = @_;
     return Amon2::Web::Response->new(200, [], 'OK');
