@@ -10,6 +10,7 @@ use Text::Xslate::Bridge::TT2Like;
 use File::Spec;
 use File::Basename qw(dirname);
 use Data::Section::Simple ();
+use Amon2::Config::Simple;
 
 my $COUNTER;
 
@@ -87,6 +88,11 @@ sub import {
         $xslate;
     };
 
+    if (-d File::Spec->catdir($caller->base_dir, 'config')) {
+        *{"${base_class}::load_config"} = sub { Amon2::Config::Simple->load(shift) };
+    } else {
+        *{"${base_class}::load_config"} = sub { +{ } };
+    }
 }
 
 1;
