@@ -1,3 +1,7 @@
+2.48
+
+    - fixed testing issue(reported by sugyan++)
+
 2.47
 
     - Template engine is now customizalbe on Amon2::Lite.

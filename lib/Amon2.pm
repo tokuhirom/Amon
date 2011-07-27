@@ -8,7 +8,7 @@ use Data::OptList ();
 use Carp ();
 use Amon2::Config::Simple;
 
-our $VERSION = '2.47';
+our $VERSION = '2.48';
 {
     our $CONTEXT; # You can localize this variable in your application.
     sub context { $CONTEXT }
