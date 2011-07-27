@@ -81,3 +81,6 @@ API
 Sinatra-ish
 Str
 callback
+Xslate
+app
+psgi

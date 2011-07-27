@@ -155,8 +155,7 @@ Create new PSGI application instance.
 
 =item How can I configure the options for Xslate?
 
-
-You can provide a constructore arguments by configuration.
+You can provide a constructor arguments by configuration.
 Write following lines on your app.psgi.
 
     sub config {
