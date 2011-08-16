@@ -110,7 +110,7 @@ WriteMakefile(
     VERSION_FROM  => 'lib/<% $path %>.pm',
     PREREQ_PM     => {
         'Amon2'                           => '<% $amon2_version %>',
-        'Text::Xslate'                    => '1.1005',
+        'Text::Xslate'                    => '1.4001',
         'Text::Xslate::Bridge::TT2Like'   => '0.00008',
         'Plack::Middleware::ReverseProxy' => '0.09',
         'HTML::FillInForm::Lite'          => '1.09',

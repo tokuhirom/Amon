@@ -6,7 +6,7 @@ all_from 'lib/Amon2.pm';
 license 'perl';
 
 requires(
-    'Plack'         => 0.9943,
+    'Plack'         => 0.9974,   # IIS6 fix middleware(see Cat's Makefile.PL)
     'Try::Tiny'     => 0.06,
     'Test::More'    => 0.98,     # 0.98 or later is required for better testing.
     'Exporter'      => 5.64,
@@ -22,8 +22,8 @@ requires(
 
 # Not core, but default components.
 requires(
-    'Text::Xslate'                  => 1.0012,
-    'Text::Xslate::Bridge::TT2Like' => '0.00007',
+    'Text::Xslate'                  => 1.4001,
+    'Text::Xslate::Bridge::TT2Like' => '0.00008',
     'Router::Simple'             => 0.06,
     'Router::Simple::Sinatraish' => 0.02,
     'HTML::FillInForm::Lite'     => 1.09,
