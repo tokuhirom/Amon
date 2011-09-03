@@ -1,3 +1,10 @@
+2.50
+
+    - depend on Test::More 0.98
+      (fixes $? issue on subtest)
+    - bundle jquery 1.3.6
+    - bundle blueprint 1.0.1
+
 2.49
 
     - revert 2.48 changes. and Do not load config/$ENV{PLACK_ENV}.pl if the config/ directory does not exists.

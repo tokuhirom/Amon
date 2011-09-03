@@ -5,7 +5,7 @@ use Test::More;
 use Amon2::Setup::Asset::jQuery;
 use Amon2::Setup::Asset::Blueprint;
 
-like(Amon2::Setup::Asset::jQuery->jquery_min_content(), qr/Resig/);
+like(Amon2::Setup::Asset::jQuery->jquery_min_content(), qr{http://jquery.org/license});
 like(Amon2::Setup::Asset::jQuery->jquery_min_basename(), qr/^jquery-.+\.js$/);
 
 like(Amon2::Setup::Asset::Blueprint->ie_css(), qr/ie.css/);
