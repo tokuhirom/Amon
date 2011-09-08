@@ -1,3 +1,7 @@
+2.51
+
+    - updated dependencies to fix issues from depended libraries.
+
 2.50
 
     - depend on Test::More 0.98
