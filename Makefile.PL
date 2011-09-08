@@ -6,7 +6,7 @@ all_from 'lib/Amon2.pm';
 license 'perl';
 
 requires(
-    'Plack'         => 0.9974,   # IIS6 fix middleware(see Cat's Makefile.PL)
+    'Plack'         => 0.9982,   # sanity check to remove newlines from headers
     'Try::Tiny'     => 0.06,
     'Test::More'    => 0.98,     # 0.98 or later is required for better testing.
     'Exporter'      => 5.64,
