@@ -150,11 +150,17 @@ This method loads plugin for the application.
 I<$module_name:> package name of the plugin. You can write it as two form like L<DBIx::Class>:
 
     __PACKAGE__->load_plugin("Web::HTTPSession");    # => loads Amon2::Plugin::Web::HTTPSession
+
+If you want to load a plugin in your own namespace, use '+' character before package name like following:
     __PACKAGE__->load_plugin("+MyApp::Plugin::Foo"); # => loads MyApp::Plugin::Foo
 
 =item C<< MyApp->load_plugins($module_name[, \%config ], ...) >>
 
 Load multiple plugins at one time. The arguments are processed by L<Data::OptList>.
+
+If you want to load a plugin in your own namespace, use '+' character before package name like following:
+
+    __PACKAGE__->load_plugins("+MyApp::Plugin::Foo"); # => loads MyApp::Plugin::Foo
 
 =item C<< MyApp->load_config() >>
 
