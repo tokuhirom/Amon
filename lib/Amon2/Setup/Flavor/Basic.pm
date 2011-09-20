@@ -223,6 +223,8 @@ any '/' => sub {
     $self->write_file_raw('static/css/blueprint/print.css', Amon2::Setup::Asset::Blueprint->print_css());
     $self->write_file_raw('static/css/blueprint/ie.css', Amon2::Setup::Asset::Blueprint->ie_css());
 
+    $self->write_file('static/robots.txt', '');
+
     $self->write_file('static/css/main.css', <<'...');
 header {
     height: 50px;
@@ -295,6 +297,29 @@ META.json
 META.yml
 MYMETA.json
 MYMETA.yml
+...
+
+    $self->write_file('t/03_assets.t', <<'...');
+use strict;
+use warnings;
+use t::Util;
+use Plack::Test;
+use Plack::Util;
+use Test::More;
+
+my $app = Plack::Util::load_psgi 'app.psgi';
+test_psgi
+    app => $app,
+    client => sub {
+        my $cb = shift;
+        for my $fname (qw(static/css/blueprint/screen.css robots.txt)) {
+            my $req = HTTP::Request->new(GET => "http://localhost/$fname");
+            my $res = $cb->($req);
+            is($res->code, 200, $fname) or diag $res->content;
+        }
+    };
+
+done_testing;
 ...
 
     for my $status (qw/404 500 502 503 504/) {
