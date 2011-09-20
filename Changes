@@ -1,3 +1,8 @@
+2.52
+
+    - use jquery-1.6.4.min.js.
+    - [BUG] fixed routing rule for robots.txt, favicon.ico
+
 2.51
 
     - updated dependencies to fix issues from depended libraries.
