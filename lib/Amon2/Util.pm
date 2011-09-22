@@ -16,6 +16,7 @@ sub base_dir($) {
     my $path = shift;
     $path =~ s!::!/!g;
     if (my $libpath = $INC{"$path.pm"}) {
+        $libpath =~ s!\\!/!g;
         $libpath =~ s!(?:blib/)?lib/+$path\.pm$!!;
         File::Spec->rel2abs($libpath || './');
     } else {
