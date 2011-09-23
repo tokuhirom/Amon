@@ -1,3 +1,8 @@
+2.54
+
+    - switch to twitter's bootstrap
+    - rewrite Asset's architecture
+
 2.53
 
     - win32 fix on Amon2->base_dir(mattn)

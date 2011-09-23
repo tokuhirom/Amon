@@ -30,6 +30,7 @@ $app->process_args('-Ilib', "-I$libpath", <t/*.t>);
 ok($app->run);
 
 chdir($orig_dir);
+undef $dir;
 
 done_testing;
 
