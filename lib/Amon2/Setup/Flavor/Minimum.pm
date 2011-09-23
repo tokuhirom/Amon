@@ -142,7 +142,7 @@ done_testing;
 ...
 
     $self->write_file('t/Util.pm', <<'...');
-package t::Util;
+package <% '' %>t::Util;
 BEGIN {
     unless ($ENV{PLACK_ENV}) {
         $ENV{PLACK_ENV} = 'test';
