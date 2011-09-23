@@ -8,6 +8,7 @@ use File::Spec;
 use File::Basename;
 use File::Path ();
 use Amon2;
+use Plack::Util ();
 
 my $xslate = Text::Xslate->new(
     syntax => 'Kolon',
@@ -16,7 +17,20 @@ my $xslate = Text::Xslate->new(
     tag_end   => '%>',
 );
 
-sub infof { @_==1 ? print(@_) : printf(@_); print "\n" }
+sub infof {
+    my $caller = do {
+        my $x;
+        for (1..10) {
+            $x = caller($_);
+            last if $x ne __PACKAGE__;
+        }
+        $x;
+    };
+    $caller =~ s/^Amon2::Setup:://;
+    print "[$caller] ";
+    @_==1 ? print(@_) : printf(@_);
+    print "\n";
+}
 
 sub new {
     my $class = shift;
@@ -66,6 +80,17 @@ sub write_file_raw {
     open my $ofh, '>:utf8', $filename or die "Cannot open file: $filename: $!";
     print {$ofh} $content;
     close $ofh;
+}
+
+sub load_asset {
+    my ($self, $asset) = @_;
+    my $klass = Plack::Util::load_class($asset, 'Amon2::Setup::Asset');
+
+    my $require_newline = $self->{tags} ? 1 : 0;
+    $self->{tags} .= $klass->tags;
+    $self->{tags} .= "\n" if $require_newline;
+
+    $klass->run($self);
 }
 
 1;
