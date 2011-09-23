@@ -4,8 +4,6 @@ use utf8;
 
 package Amon2::Setup::Flavor::Basic;
 use parent qw(Amon2::Setup::Flavor::Minimum);
-use Amon2::Setup::Asset::jQuery;
-use Amon2::Setup::Asset::Blueprint;
 use HTTP::Status qw/status_message/;
 
 sub run {
@@ -15,6 +13,9 @@ sub run {
 
     $self->mkpath('static/img/');
     $self->mkpath('static/js/');
+
+    $self->load_asset('jQuery');
+    $self->load_asset('Bootstrap');
 
     $self->write_file('lib/<<PATH>>.pm', <<'...');
 package <% $module %>;
@@ -158,31 +159,88 @@ any '/' => sub {
     $self->write_file('tmpl/index.tt', <<'...');
 [% WRAPPER 'include/layout.tt' %]
 
-<hr class="space">
+<div class="row">
+    <div class="span10">
+        <h1>Hello, Amon2 world!</h1>
 
-<div class="span-15 colborder">
-    <h1>Hello, Amon2 world!</h1>
-
-    <h2>For benchmarkers...</h2>
-    <p>If you want to benchmarking between Plack based web application frameworks, you should use <B>Amon2::Setup::Flavor::Minimum</B> instead.</p>
-    <p>You can use it as following one liner:</p>
-    <pre>% amon2-setup.pl --flavor Minimum <% $module %></pre>
+        <h2>For benchmarkers...</h2>
+        <p>If you want to benchmarking between Plack based web application frameworks, you should use <B>Amon2::Setup::Flavor::Minimum</B> instead.</p>
+        <p>You can use it as following one liner:</p>
+        <pre>% amon2-setup.pl --flavor Minimum <% $module %></pre>
+    </div>
+    <div class="span6">
+        <p>Amon2 is right for you if ...</p>
+        <ul>
+        <li>You need exceptional performance.</li>
+        <li>You want a framework with a small footprint.</li>
+        <li>You want a framework that requires nearly zero configuration.</li>
+        </ul>
+    </div>
 </div>
-<div class="span-8 last">
-    <p>Amon2 is right for you if ...</p>
-    <ul>
-    <li>You need exceptional performance.</li>
-    <li>You want a framework with a small footprint.</li>
-    <li>You want a framework that requires nearly zero configuration.</li>
-    </ul>
-</div>
 
-<hr class="space">
+<hr />
+
+<h1>Components?</h1>
+
+<section class="row">
+    <div class="span4">
+        <h2>CSS Library</h2>
+    </div>
+    <div class="span12">
+        Current version of Amon2 using twitter's bootstrap.css as a default CSS library.<br />
+        If you want to learn it, please access to <a href="http://twitter.github.com/bootstrap/">twitter.github.com/bootstrap/</a>
+    </div>
+</section>
+
+<hr />
+
+<section class="row">
+    <div class="span4">
+        <h2>JS Library</h2>
+    </div>
+    <div class="span12">
+        <a href="http://jquery.com/">jQuery</a> included.
+    </div>
+</section>
+
+<hr />
+
+<section class="row">
+    <div class="span4">
+        <h2>Template Engine</h2>
+    </div>
+    <div class="span12">
+        Amon2 uses Text::Xslate(TTerse) as a primary template engine.<br />
+        But you can use any template engine easily.
+    </div>
+</section>
+
+<hr />
+
+<section class="row">
+    <div class="span4">
+        <h2>O/R Mapper?</h2>
+    </div>
+    <div class="span12">
+        There is no O/R Mapper support. But I recommend to use Teng.<br />
+        You can integrate Teng very easily.<br />
+        See <a href="http://amon.64p.org/database.html#teng">This page</a> for more details.
+    </div>
+</section>
+
+<hr />
+
+<section class="row">
+    <div class="span16">
+        <h1>Documents?</h1>
+        <p>Complete docs are available on <a href="http://amon.64p.org/">amon.64p.org</a></p>
+        <p>And there is module specific docs on <a href="https://metacpan.org/release/Amon2">CPAN</a></p>
+    </div>
+</section>
 
 [% END %]
 ...
 
-    $self->{jquery_min_basename} = Amon2::Setup::Asset::jQuery->jquery_min_basename();
     $self->write_file('tmpl/include/layout.tt', <<'...');
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -193,39 +251,77 @@ any '/' => sub {
     <meta http-equiv="Content-Script-Type" content="text/javascript" />  
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0"]]>
     <meta name="format-detection" content="telephone=no" />
-    <link href="[% uri_for('/static/css/blueprint/screen.css') %]" rel="stylesheet" type="text/css" media="screen" />
-    <link href="[% uri_for('/static/css/blueprint/print.css') %]" rel="stylesheet" type="text/css" media="print" />
-    <!--[if lt IE 8]><link rel="stylesheet" href="[% uri_for('/static/css/blueprint/ie.css') %]" type="text/css" media="screen, projection"><![endif]--> 
+    <% $tags %>
     <link href="[% uri_for('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
-    <script src="[% uri_for('/static/js/<% $jquery_min_basename %>') %]"></script>
+    <link href="[% uri_for('/static/js/main.js') %]" rel="stylesheet" type="text/css" media="screen" />
     <!--[if lt IE 9]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 </head>
 <body[% IF bodyID %] class="[% bodyID %]"[% END %]>
+    <div class="topbar-wrapper" style="z-index: 5;">
+        <div class="topbar" data-dropdown="dropdown">
+            <div class="topbar-inner">
+                <div class="container">
+                <h3><a href="#"><% $dist %></a></h3>
+                <ul class="nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">Link</a></li>
+                    <li><a href="#">Link</a></li>
+                    <li><a href="#">Link</a></li>
+                    <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">Dropdown</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Secondary link</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Another link</a></li>
+                    </ul>
+                    </li>
+                </ul>
+                <form class="pull-left" action="">
+                    <input type="text" placeholder="Search">
+                </form>
+                <ul class="nav secondary-nav">
+                    <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">Dropdown</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Secondary link</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Another link</a></li>
+                    </ul>
+                    </li>
+                </ul>
+                </div>
+            </div><!-- /topbar-inner -->
+        </div><!-- /topbar -->
+    </div>
     <div class="container">
-        <header>
-            <a href="[% uri_for('/') %]"><%= $dist %></a>
-        </header>
         <div id="main">
             [% content %]
         </div>
-        <footer>
-            Powered by <a href="http://amon.64p.org/">Amon2</a>
-        </footer>
     </div>
+    <footer class="footer">
+        Powered by <a href="http://amon.64p.org/">Amon2</a>
+    </footer>
 </body>
 </html>
 ...
 
-    $self->write_file('static/js/' . Amon2::Setup::Asset::jQuery->jquery_min_basename(), Amon2::Setup::Asset::jQuery->jquery_min_content());
-    $self->write_file_raw('static/css/blueprint/screen.css', Amon2::Setup::Asset::Blueprint->screen_css());
-    $self->write_file_raw('static/css/blueprint/print.css', Amon2::Setup::Asset::Blueprint->print_css());
-    $self->write_file_raw('static/css/blueprint/ie.css', Amon2::Setup::Asset::Blueprint->ie_css());
-
     $self->write_file('static/robots.txt', '');
 
+    $self->write_file('static/js/main.js', <<'...');
+$(function () {
+    $('#topbar').dropdown();
+})();
+...
+
     $self->write_file('static/css/main.css', <<'...');
+body {
+    margin-top: 50px;
+}
+
 header {
     height: 50px;
     font-size: 36px;
@@ -312,7 +408,7 @@ test_psgi
     app => $app,
     client => sub {
         my $cb = shift;
-        for my $fname (qw(static/css/blueprint/screen.css robots.txt)) {
+        for my $fname (qw(static/bootstrap/bootstrap.min.css robots.txt)) {
             my $req = HTTP::Request->new(GET => "http://localhost/$fname");
             my $res = $cb->($req);
             is($res->code, 200, $fname) or diag $res->content;
@@ -320,6 +416,10 @@ test_psgi
     };
 
 done_testing;
+...
+
+    $self->write_file('.proverc', <<'...');
+-l
 ...
 
     for my $status (qw/404 500 502 503 504/) {
