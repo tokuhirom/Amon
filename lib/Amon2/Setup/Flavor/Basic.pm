@@ -385,8 +385,7 @@ MANIFEST
 *.old
 nytprof.out
 nytprof/
-development.db
-test.db
+*.db
 blib/
 pm_to_blib
 META.json
