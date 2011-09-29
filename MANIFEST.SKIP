@@ -26,3 +26,4 @@
 ^eg/Hello/Makefile$
 ^eg/Hello/META.yml$
 ^eg/Hello/test.db$
+^Foo/
