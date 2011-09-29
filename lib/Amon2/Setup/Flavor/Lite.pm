@@ -4,11 +4,10 @@ use utf8;
 
 package Amon2::Setup::Flavor::Lite;
 
-sub prepare {
-    my ($self, $ctx) = @_;
+1;
+__DATA__
 
-    # Note: this file contains '@@'
-    $ctx->write_file('app.psgi', <<'...');
+@@ app.psgi
 use strict;
 use warnings;
 use utf8;
@@ -59,9 +58,9 @@ builder {
     __PACKAGE__->to_app();
 };
 
-__DATA__
+<% '__DATA__' %>
 
-@@ index.tt
+<% '@@' %> index.tt
 <!doctype html>
 <html>
 <head>
@@ -73,11 +72,6 @@ __DATA__
     <% $module %>
 </body>
 </html>
-...
-}
-
-1;
-__DATA__
 
 @@ Makefile.PL
 use ExtUtils::MakeMaker;
