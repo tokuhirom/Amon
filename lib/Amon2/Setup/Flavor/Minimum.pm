@@ -3,12 +3,11 @@ use warnings;
 use utf8;
 
 package Amon2::Setup::Flavor::Minimum;
-use parent qw/Amon2::Setup::Flavor/;
 
-sub run {
-    my ($self) = @_;
+1;
+__DATA__
 
-    $self->write_file('lib/<<PATH>>.pm', <<'...');
+@@ lib/<<PATH>>.pm
 package <% $module %>;
 use strict;
 use warnings;
@@ -23,9 +22,8 @@ sub load_config {
 }
 
 1;
-...
 
-    $self->write_file('lib/<<PATH>>/Web.pm', <<'...');
+@@ lib/<<PATH>>/Web.pm
 package <% $module %>::Web;
 use strict;
 use warnings;
@@ -68,9 +66,8 @@ __PACKAGE__->add_trigger(
 );
 
 1;
-...
 
-    $self->write_file('tmpl/index.tt', <<'...');
+@@ tmpl/index.tt
 <!doctype html>
 <html>
 <head>
@@ -82,9 +79,7 @@ __PACKAGE__->add_trigger(
     <% $module %>
 </body>
 </html>
-...
-
-    $self->write_file('app.psgi', <<'...');
+@@ app.psgi
 use File::Spec;
 use File::Basename;
 use lib File::Spec->catdir(dirname(__FILE__), 'extlib', 'lib', 'perl5');
@@ -102,9 +97,7 @@ builder {
     enable 'Plack::Middleware::ReverseProxy';
     <% $module %>::Web->to_app();
 };
-...
-
-    $self->write_file('Makefile.PL', <<'...');
+@@ Makefile.PL
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
@@ -126,22 +119,21 @@ WriteMakefile(
         },
     ) : (),
 );
-...
 
-    $self->write_file('t/00_compile.t', <<'...');
+@@ t/00_compile.t
 use strict;
 use warnings;
 use Test::More;
 
 use_ok $_ for qw(
+: block modules -> {
     <% $module %>
     <% $module %>::Web
+: }
 );
 
 done_testing;
-...
-
-    $self->write_file('t/Util.pm', <<'...');
+@@ t/Util.pm
 package <% '' %>t::Util;
 BEGIN {
     unless ($ENV{PLACK_ENV}) {
@@ -168,9 +160,7 @@ our @EXPORT = qw//;
 }
 
 1;
-...
-
-    $self->write_file('t/01_root.t', <<'...');
+@@ t/01_root.t
 use strict;
 use warnings;
 use t::Util;
@@ -190,9 +180,7 @@ test_psgi
     };
 
 done_testing;
-...
-
-    $self->write_file('t/02_mech.t', <<'...');
+@@ t/02_mech.t
 use strict;
 use warnings;
 use t::Util;
@@ -207,17 +195,12 @@ my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
 $mech->get_ok('/');
 
 done_testing;
-...
-
-    $self->write_file('xt/03_pod.t', <<'...');
+@@ xt/03_pod.t
 use Test::More;
 eval "use Test::Pod 1.00";
 plan skip_all => "Test::Pod 1.00 required for testing POD" if $@;
 all_pod_files_ok();
-...
-}
 
-1;
 __END__
 
 =head1 NAME
@@ -235,3 +218,4 @@ This is a flavor for benchmarking...
 =head1 AUTHOR
 
 Tokuhiro Matsuno
+

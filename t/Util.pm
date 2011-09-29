@@ -10,6 +10,7 @@ use App::Prove;
 use File::Basename;
 
 our @EXPORT = qw/run_app_test/;
+our @EXPORT_OK = qw(slurp);
 
 sub run_app_test {
     my $name = shift;
@@ -22,6 +23,12 @@ sub run_app_test {
     $app->process_args('-Ilib', "-I$libpath", <t/*.t>);
     ok($app->run);
     done_testing;
+}
+
+sub slurp {
+    my $fname = shift;
+    open my $fh, '<:utf8', $fname or die "Cannot open $fname: $!";
+    do { local $/; <$fh> };
 }
 
 1;

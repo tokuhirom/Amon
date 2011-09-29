@@ -2,17 +2,19 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
-use Amon2::Setup::Flavor::Basic;
+use Amon2::Setup;
 use File::Temp qw/tempdir/;
 use App::Prove;
 use File::Basename;
 use Cwd;
+use t::Util qw(slurp);
 
 my $orig_dir = Cwd::getcwd();
 my $dir = tempdir(CLEANUP => 1);
 chdir($dir);
 
-Amon2::Setup::Flavor::Basic->new(PATH => 'My/App', module => 'My::App')->run();
+my $setup = Amon2::Setup->new(module => 'My::App');
+$setup->run_flavors('Basic');
 
 ok(-f 'lib/My/App.pm', 'lib/My/App.pm exists');
 ok((do 'lib/My/App.pm'), 'lib/My/App.pm is valid') or do {
@@ -23,6 +25,13 @@ ok((do 'lib/My/App.pm'), 'lib/My/App.pm is valid') or do {
     };
 };
 is( scalar( my @files = glob('static/js/jquery-*.js') ), 1 );
+
+{
+    my $_00_compile = slurp("t/00_compile.t");
+    like $_00_compile, qr(My::App);
+    like $_00_compile, qr(My::App::Web);
+    like $_00_compile, qr(My::App::Web::Dispatcher);
+};
 
 my $libpath = File::Spec->rel2abs(File::Spec->catfile(dirname(__FILE__), '..', '..', 'lib'));
 my $app = App::Prove->new();

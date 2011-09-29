@@ -1,9 +1,11 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
+use FindBin;
+use lib "$FindBin::Bin/../lib/";
 use Getopt::Long;
 use Pod::Usage;
-use Amon2::Setup::Flavor::Basic;
+use Amon2::Setup;
 use Cwd ();
 
 my @flavors;
@@ -30,22 +32,8 @@ sub main {
     mkdir $dist or die "Cannot mkdir '$dist': $!";
     chdir $dist or die $!;
 
-    for my $flavor (@flavors) {
-        my $cwd = Cwd::getcwd(); # save cwd
-            run_flavor($module => $flavor);
-        chdir($cwd);
-    }
-}
-
-sub run_flavor {
-    my ($module, $flavor_name) = @_;
-
-    my $flavor_class = $flavor_name =~ s/^\+// ? $flavor_name : "Amon2::Setup::Flavor::$flavor_name";
-    eval "use $flavor_class; 1" or die "Cannot load $flavor_class: $@";
-
-    print "-- Running flavor: $flavor_name --\n";
-    my $flavor = $flavor_class->new(module => $module);
-       $flavor->run;
+    my $setup = Amon2::Setup->new(module => $module);
+    $setup->run_flavors(@flavors);
 }
 
 __END__

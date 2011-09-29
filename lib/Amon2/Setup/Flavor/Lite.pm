@@ -3,12 +3,12 @@ use warnings;
 use utf8;
 
 package Amon2::Setup::Flavor::Lite;
-use parent qw/Amon2::Setup::Flavor/;
 
-sub run {
-    my ($self) = @_;
+sub prepare {
+    my ($self, $ctx) = @_;
 
-    $self->write_file('app.psgi', <<'...');
+    # Note: this file contains '@@'
+    $ctx->write_file('app.psgi', <<'...');
 use strict;
 use warnings;
 use utf8;
@@ -74,8 +74,12 @@ __DATA__
 </body>
 </html>
 ...
+}
 
-    $self->write_file('Makefile.PL', <<'...');
+1;
+__DATA__
+
+@@ Makefile.PL
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
@@ -96,9 +100,8 @@ WriteMakefile(
         },
     ) : (),
 );
-...
 
-    $self->write_file('t/Util.pm', <<'...');
+@@ t/Util.pm
 package t::Util;
 BEGIN {
     unless ($ENV{PLACK_ENV}) {
@@ -125,9 +128,8 @@ our @EXPORT = qw//;
 }
 
 1;
-...
 
-    $self->write_file('t/01_root.t', <<'...');
+@@ t/01_root.t
 use strict;
 use warnings;
 use t::Util;
@@ -147,17 +149,14 @@ test_psgi
     };
 
 done_testing;
-...
 
-    $self->write_file('xt/03_pod.t', <<'...');
+@@ xt/03_pod.t
 use Test::More;
 eval "use Test::Pod 1.00";
 plan skip_all => "Test::Pod 1.00 required for testing POD" if $@;
 all_pod_files_ok();
-...
-}
 
-1;
+
 __END__
 
 =head1 NAME

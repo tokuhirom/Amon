@@ -3,21 +3,64 @@ use warnings;
 use utf8;
 
 package Amon2::Setup::Flavor::Basic;
-use parent qw(Amon2::Setup::Flavor::Minimum);
 use HTTP::Status qw/status_message/;
 
-sub run {
-    my $self = shift;
+sub parent { 'Minimum' }
 
-    $self->SUPER::run();
+sub prepare {
+    my ($self, $ctx) = @_;
 
-    $self->mkpath('static/img/');
-    $self->mkpath('static/js/');
+    $ctx->mkpath('static/img/');
+    $ctx->mkpath('static/js/');
+    $ctx->load_asset('jQuery');
+    $ctx->load_asset('Bootstrap');
 
-    $self->load_asset('jQuery');
-    $self->load_asset('Bootstrap');
+    # TODO: it can be write with @@.
+    for my $status (qw/404 500 502 503 504/) {
+        $self->write_status_file($ctx, "static/$status.html", $status);
+    }
+}
 
-    $self->write_file('lib/<<PATH>>.pm', <<'...');
+sub write_status_file {
+    my ($self, $ctx, $fname, $status) = @_;
+
+    local $ctx->{status}         = $status;
+    local $ctx->{status_message} = status_message($status);
+ 
+    $ctx->write_file($fname, <<'...');
+<!doctype html> 
+<html> 
+    <head> 
+        <meta charset=utf-8 /> 
+        <style type="text/css"> 
+            body {
+                text-align: center;
+                font-family: 'Menlo', 'Monaco', Courier, monospace;
+                background-color: whitesmoke;
+                padding-top: 10%;
+            }
+            .number {
+                font-size: 800%;
+                font-weight: bold;
+                margin-bottom: 40px;
+            }
+            .message {
+                font-size: 400%;
+            }
+        </style> 
+    </head> 
+    <body> 
+        <div class="number"><%= $status %></div> 
+        <div class="message"><%= $status_message %></div> 
+    </body> 
+</html> 
+...
+}
+
+1;
+__DATA__
+
+@@ lib/<<PATH>>.pm
 package <% $module %>;
 use strict;
 use warnings;
@@ -28,9 +71,8 @@ use 5.008001;
 # __PACKAGE__->load_plugin(qw/DBI/);
 
 1;
-...
 
-    $self->write_file('lib/<<PATH>>/Web.pm', <<'...');
+@@ lib/<<PATH>>/Web.pm
 package <% $module %>::Web;
 use strict;
 use warnings;
@@ -98,9 +140,8 @@ __PACKAGE__->add_trigger(
 );
 
 1;
-...
 
-    $self->write_file("lib/<<PATH>>/Web/Dispatcher.pm", <<'...');
+@@ lib/<<PATH>>/Web/Dispatcher.pm
 package <% $module %>::Web::Dispatcher;
 use strict;
 use warnings;
@@ -112,9 +153,8 @@ any '/' => sub {
 };
 
 1;
-...
 
-    $self->write_file("config/development.pl", <<'...');
+@@ config/development.pl
 +{
     'DBI' => [
         'dbi:SQLite:dbname=development.db',
@@ -125,9 +165,8 @@ any '/' => sub {
         }
     ],
 };
-...
 
-    $self->write_file("config/deployment.pl", <<'...');
+@@ config/deployment.pl
 +{
     'DBI' => [
         'dbi:SQLite:dbname=deployment.db',
@@ -138,9 +177,8 @@ any '/' => sub {
         }
     ],
 };
-...
 
-    $self->write_file("config/test.pl", <<'...');
+@@ config/test.pl
 +{
     'DBI' => [
         'dbi:SQLite:dbname=test.db',
@@ -151,12 +189,11 @@ any '/' => sub {
         }
     ],
 };
-...
 
-    $self->write_file("sql/my.sql", '');
-    $self->write_file("sql/sqlite3.sql", '');
+@@ sql/my.sql
+@@ sql/sqlite3.sql
 
-    $self->write_file('tmpl/index.tt', <<'...');
+@@ tmpl/index.tt
 [% WRAPPER 'include/layout.tt' %]
 
 <div class="row">
@@ -239,9 +276,8 @@ any '/' => sub {
 </section>
 
 [% END %]
-...
 
-    $self->write_file('tmpl/include/layout.tt', <<'...');
+@@ tmpl/include/layout.tt
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -307,17 +343,15 @@ any '/' => sub {
     </footer>
 </body>
 </html>
-...
 
-    $self->write_file('static/robots.txt', '');
+@@ static/robots.txt
 
-    $self->write_file('static/js/main.js', <<'...');
+@@ static/js/main.js
 $(function () {
     $('#topbar').dropdown();
 })();
-...
 
-    $self->write_file('static/css/main.css', <<'...');
+@@ static/css/main.css
 body {
     margin-top: 50px;
 }
@@ -345,9 +379,8 @@ footer {
 /* smart phones */
 @media screen and (max-device-width: 480px) {
 }
-...
 
-    $self->write_file("t/00_compile.t", <<'...');
+@@ t/00_compile.t
 use strict;
 use warnings;
 use Test::More;
@@ -359,9 +392,8 @@ use_ok $_ for qw(
 );
 
 done_testing;
-...
 
-    $self->write_file("xt/02_perlcritic.t", <<'...');
+@@ xt/02_perlcritic.t
 use strict;
 use Test::More;
 eval q{
@@ -375,9 +407,8 @@ eval q{
 };
 plan skip_all => "Test::Perl::Critic 1.02+ and Perl::Critic 1.113+ is not installed." if $@;
 all_critic_ok('lib');
-...
 
-    $self->write_file('.gitignore', <<'...');
+@@ .gitignore
 Makefile
 inc/
 MANIFEST
@@ -392,9 +423,8 @@ META.json
 META.yml
 MYMETA.json
 MYMETA.yml
-...
 
-    $self->write_file('t/03_assets.t', <<'...');
+@@ t/03_assets.t
 use strict;
 use warnings;
 use t::Util;
@@ -415,54 +445,10 @@ test_psgi
     };
 
 done_testing;
-...
 
-    $self->write_file('.proverc', <<'...');
+@@ .proverc
 -l
-...
 
-    for my $status (qw/404 500 502 503 504/) {
-        $self->write_status_file("static/$status.html", $status);
-    }
-}
-
-sub write_status_file {
-    my ($self, $fname, $status) = @_;
-
-    local $self->{status}         = $status;
-    local $self->{status_message} = status_message($status);
- 
-    $self->write_file($fname, <<'...');
-<!doctype html> 
-<html> 
-    <head> 
-        <meta charset=utf-8 /> 
-        <style type="text/css"> 
-            body {
-                text-align: center;
-                font-family: 'Menlo', 'Monaco', Courier, monospace;
-                background-color: whitesmoke;
-                padding-top: 10%;
-            }
-            .number {
-                font-size: 800%;
-                font-weight: bold;
-                margin-bottom: 40px;
-            }
-            .message {
-                font-size: 400%;
-            }
-        </style> 
-    </head> 
-    <body> 
-        <div class="number"><%= $status %></div> 
-        <div class="message"><%= $status_message %></div> 
-    </body> 
-</html> 
-...
-}
-
-1;
 __END__
 
 =head1 NAME
