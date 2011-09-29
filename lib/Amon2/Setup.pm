@@ -15,7 +15,9 @@ use Plack::Util ();
 our $CURRENT_FLAVOR = 'main';
 
 sub infof {
-    print "[$CURRENT_FLAVOR] ";
+    my $flavor = $CURRENT_FLAVOR;
+    $flavor =~ s!^Amon2::Setup::Flavor::!!;
+    print "[$flavor] ";
     @_==1 ? print(@_) : printf(@_);
     print "\n";
 }
@@ -85,7 +87,7 @@ sub _load_templates {
     my $reader = Data::Section::Simple->new($klass);
     my $all = $reader->get_data_section();
     unless ($all) {
-        infof("There is no template");
+        infof("There is no template: $klass");
     }
     return $all;
 }
@@ -94,12 +96,12 @@ sub _load_flavor {
     my ($self, $flavor) = @_;
 
     local $CURRENT_FLAVOR = $flavor;
-    infof("Running $flavor");
+    infof("Loading $flavor");
     my $klass = Plack::Util::load_class($flavor, 'Amon2::Setup::Flavor');
     if ($klass->can('prepare')) {
+        infof("Preparing");
         $klass->prepare($self);
     }
-    infof("$klass");
     my $all = $self->_load_templates($klass);
     return ($klass, $all);
 }
