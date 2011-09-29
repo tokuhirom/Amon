@@ -51,38 +51,57 @@ sub new {
     return $self;
 }
 
+# $setup->run_flavors('Teng', 'Basic')
 sub run_flavors {
     my ($self, @flavors)= @_;
 
+    my @path;
     for my $flavor (@flavors) {
-        $self->_run_flavor($flavor);
+        my ($klass, $tmpl) = $self->_load_flavor($flavor);
+        my @p = ([$klass, $tmpl]);
+        if ($klass->can('parent')) {
+            for my $parent ($klass->parent()) {
+                push @p, [$self->_load_flavor($parent)];
+            }
+        }
+        push @path, @p;
+    }
+    # TODO: uniq @path
+    my %flavor_seen;
+    my %tmpl_seen;
+    for my $p (@path) {
+        next if $flavor_seen{$p->[0]};
+        local $CURRENT_FLAVOR = $p->[0];
+        for my $fname (sort keys %{$p->[1]}) {
+            next if $tmpl_seen{$fname}++;
+            next if $fname =~ /^#/;
+            $self->write_file($fname, $p->[1]->{$fname});
+        }
     }
 }
 
-sub _run_flavor {
-    my ($self, $flavor) = @_;
-
-    local $CURRENT_FLAVOR = $flavor;
-    infof("Running $flavor");
-    my $klass = Plack::Util::load_class($flavor, 'Amon2::Setup::Flavor');
-    if ($klass->can('parent')) {
-        for my $parent ($klass->parent()) {
-            $self->_run_flavor($parent);
-        }
-    }
-    if ($klass->can('prepare')) {
-        $klass->prepare($self);
-    }
-    infof("$klass");
+sub _load_templates {
+    my ($self, $klass) = @_;
     my $reader = Data::Section::Simple->new($klass);
     my $all = $reader->get_data_section();
     unless ($all) {
         infof("There is no template");
     }
-    while (my ($fname, $tmpl) = each %$all) {
-        next if $fname =~ /^#/;
-        $self->write_file($fname, $tmpl);
+    return $all;
+}
+
+sub _load_flavor {
+    my ($self, $flavor) = @_;
+
+    local $CURRENT_FLAVOR = $flavor;
+    infof("Running $flavor");
+    my $klass = Plack::Util::load_class($flavor, 'Amon2::Setup::Flavor');
+    if ($klass->can('prepare')) {
+        $klass->prepare($self);
     }
+    infof("$klass");
+    my $all = $self->_load_templates($klass);
+    return ($klass, $all);
 }
 
 sub write_file {
@@ -109,6 +128,8 @@ sub write_file_raw {
 
 sub load_asset {
     my ($self, $asset) = @_;
+    return if $self->{_asset_seen}->{$asset}++;
+
     my $klass = Plack::Util::load_class($asset, 'Amon2::Setup::Asset');
 
     my $require_newline = $self->{tags} ? 1 : 0;
@@ -133,7 +154,7 @@ use parent qw(Text::Xslate);
 sub find_file {
     my ($self, $file) = @_;
 
-    my $klass = Plack::Util::load_class($CURRENT_FLAVOR, 'Amon2::Setup::Flavor');
+    my $klass = $CURRENT_FLAVOR;
     my $reader = Data::Section::Simple->new($klass);
     my $tmpl = $reader->get_data_section($file);
     my $cachepath = File::Spec->catfile(
