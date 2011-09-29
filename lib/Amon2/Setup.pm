@@ -14,6 +14,7 @@ use Plack::Util ();
 
 our $CURRENT_FLAVOR_NAME;
 our $CURRENT_FLAVOR_TMPL;
+our $RENDERING_FILE;
 our @PARENTS;
 
 sub infof {
@@ -81,6 +82,7 @@ sub run_flavors {
         for my $fname (sort keys %{$p->[1]}) {
             next if $tmpl_seen{$fname}++;
             next if $fname =~ /^#/;
+            local $RENDERING_FILE = $fname;
             $self->write_file($fname, $p->[1]->{$fname});
         }
     }
@@ -162,7 +164,11 @@ sub find_file {
 
     my $tmpl = sub {
         my @path = @PARENTS;
-        unless ($file =~ s/^!//) {
+        if ($file eq '!') {
+            $file = $RENDERING_FILE;
+        } elsif ($file =~ s/^!//) {
+            # nop
+        } else {
             unshift @path, [$CURRENT_FLAVOR_NAME, $CURRENT_FLAVOR_TMPL];
         }
         for my $parent (@path) {

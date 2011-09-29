@@ -340,7 +340,7 @@ footer {
 }
 
 @@ t/00_compile.t
-: cascade "!t/00_compile.t";
+: cascade "!";
 : after modules -> {
     <% $module %>::Web::Dispatcher
 : }
