@@ -30,13 +30,18 @@ use warnings;
 use parent qw/<% $module %> Amon2::Web/;
 use File::Spec;
 
+: block prepare -> { }
+
+: block dispatch -> {
 # write your code here.
 sub dispatch {
     my ($c) = @_;
 
     $c->render('index.tt');
 }
+: }
 
+: block create_view -> {
 # setup view class
 use Text::Xslate;
 {
@@ -56,7 +61,11 @@ use Text::Xslate;
     });
     sub create_view { $view }
 }
+: }
 
+: block load_plugins -> { }
+
+: block triggers -> {
 # for your security
 __PACKAGE__->add_trigger(
     AFTER_DISPATCH => sub {
@@ -64,6 +73,7 @@ __PACKAGE__->add_trigger(
         $res->header( 'X-Content-Type-Options' => 'nosniff' );
     },
 );
+: }
 
 1;
 

@@ -108,6 +108,11 @@ sub _load_flavor {
         infof("Preparing");
         $klass->prepare($self);
     }
+    if ($klass->can('assets')) {
+        for my $asset ($klass->assets()) {
+            $self->load_asset($asset);
+        }
+    }
     my $all = $self->_load_templates($klass);
     return ($klass, $all);
 }

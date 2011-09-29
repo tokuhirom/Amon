@@ -3,18 +3,10 @@ use warnings;
 use utf8;
 
 package Amon2::Setup::Flavor::Basic;
-use HTTP::Status qw/status_message/;
 
 sub parent { 'Minimum' }
 
-sub prepare {
-    my ($self, $ctx) = @_;
-
-    $ctx->mkpath('static/img/');
-    $ctx->mkpath('static/js/');
-    $ctx->load_asset('jQuery');
-    $ctx->load_asset('Bootstrap');
-}
+sub assets { qw(jQuery Bootstrap) }
 
 1;
 __DATA__
@@ -32,42 +24,23 @@ use 5.008001;
 1;
 
 @@ lib/<<PATH>>/Web.pm
-package <% $module %>::Web;
-use strict;
-use warnings;
-use parent qw/<% $module %> Amon2::Web/;
-use File::Spec;
+: cascade "!";
 
+: after prepare -> {
 # load all controller classes
 use Module::Find ();
 Module::Find::useall("<% $module %>::Web::C");
+: }
 
+: around dispatcher -> {
 # dispatcher
 use <% $module %>::Web::Dispatcher;
 sub dispatch {
     return <% $module %>::Web::Dispatcher->dispatch($_[0]) or die "response is not generated";
 }
+: }
 
-# setup view class
-use Text::Xslate;
-{
-    my $view_conf = __PACKAGE__->config->{'Text::Xslate'} || +{};
-    unless (exists $view_conf->{path}) {
-        $view_conf->{path} = [ File::Spec->catdir(__PACKAGE__->base_dir(), 'tmpl') ];
-    }
-    my $view = Text::Xslate->new(+{
-        'syntax'   => 'TTerse',
-        'module'   => [ 'Text::Xslate::Bridge::TT2Like' ],
-        'function' => {
-            c => sub { Amon2->context() },
-            uri_with => sub { Amon2->context()->req->uri_with(@_) },
-            uri_for  => sub { Amon2->context()->uri_for(@_) },
-        },
-        %$view_conf
-    });
-    sub create_view { $view }
-}
-
+: after load_plugins -> {
 # load plugins
 use HTTP::Session::Store::File;
 __PACKAGE__->load_plugins(
@@ -81,15 +54,9 @@ __PACKAGE__->load_plugins(
         )
     },
 );
+: }
 
-# for your security
-__PACKAGE__->add_trigger(
-    AFTER_DISPATCH => sub {
-        my ( $c, $res ) = @_;
-        $res->header( 'X-Content-Type-Options' => 'nosniff' );
-    },
-);
-
+: after triggers -> {
 __PACKAGE__->add_trigger(
     BEFORE_DISPATCH => sub {
         my ( $c ) = @_;
@@ -97,8 +64,7 @@ __PACKAGE__->add_trigger(
         return;
     },
 );
-
-1;
+: }
 
 @@ lib/<<PATH>>/Web/Dispatcher.pm
 package <% $module %>::Web::Dispatcher;
@@ -375,6 +341,8 @@ META.json
 META.yml
 MYMETA.json
 MYMETA.yml
+pm_to_blib
+*.sw[po]
 
 @@ t/03_assets.t
 use strict;
@@ -400,6 +368,8 @@ done_testing;
 
 @@ .proverc
 -l
+
+@@ static/img/.gitignore
 
 @@ #status.html
 <!doctype html> 
@@ -429,7 +399,7 @@ done_testing;
     </body> 
 </html> 
 
-@@ 404.html
+@@ static/404.html
 : include "#status.html" { status => 404 };
 
 @@ static/500.html
