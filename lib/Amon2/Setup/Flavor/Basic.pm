@@ -439,16 +439,16 @@ done_testing;
 @@ 404.html
 : include "#status.html" { status => 404 };
 
-@@ 500.html
+@@ static/500.html
 : include "#status.html" { status => 500 };
 
-@@ 502.html
+@@ static/502.html
 : include "#status.html" { status => 502 }
 
-@@ 503.html
+@@ static/503.html
 : include "#status.html" { status => 503 };
 
-@@ 504.html
+@@ static/504.html
 : include "#status.html" { status => 504 }
 
 __END__
