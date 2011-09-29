@@ -103,7 +103,7 @@ BEGIN {
     }
 }
 use parent qw/Exporter/;
-use Test::More 0.96;
+use Test::More 0.98;
 
 our @EXPORT = qw//;
 
