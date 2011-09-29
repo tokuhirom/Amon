@@ -12,10 +12,12 @@ use File::Path ();
 use Amon2;
 use Plack::Util ();
 
-our $CURRENT_FLAVOR = 'main';
+our $CURRENT_FLAVOR_NAME;
+our $CURRENT_FLAVOR_TMPL;
+our @PARENTS;
 
 sub infof {
-    my $flavor = $CURRENT_FLAVOR;
+    my $flavor = $CURRENT_FLAVOR_NAME;
     $flavor =~ s!^Amon2::Setup::Flavor::!!;
     print "[$flavor] ";
     @_==1 ? print(@_) : printf(@_);
@@ -68,12 +70,14 @@ sub run_flavors {
         }
         push @path, @p;
     }
-    # TODO: uniq @path
+
     my %flavor_seen;
     my %tmpl_seen;
-    for my $p (@path) {
+    while (my $p = shift @path) {
         next if $flavor_seen{$p->[0]};
-        local $CURRENT_FLAVOR = $p->[0];
+        local @PARENTS = @path;
+        local $CURRENT_FLAVOR_NAME = $p->[0];
+        local $CURRENT_FLAVOR_TMPL = $p->[1];
         for my $fname (sort keys %{$p->[1]}) {
             next if $tmpl_seen{$fname}++;
             next if $fname =~ /^#/;
@@ -95,7 +99,7 @@ sub _load_templates {
 sub _load_flavor {
     my ($self, $flavor) = @_;
 
-    local $CURRENT_FLAVOR = $flavor;
+    local $CURRENT_FLAVOR_NAME = $flavor;
     infof("Loading $flavor");
     my $klass = Plack::Util::load_class($flavor, 'Amon2::Setup::Flavor');
     if ($klass->can('prepare')) {
@@ -156,9 +160,17 @@ use parent qw(Text::Xslate);
 sub find_file {
     my ($self, $file) = @_;
 
-    my $klass = $CURRENT_FLAVOR;
-    my $reader = Data::Section::Simple->new($klass);
-    my $tmpl = $reader->get_data_section($file);
+    my $tmpl = sub {
+        my @path = @PARENTS;
+        unless ($file =~ s/^!//) {
+            unshift @path, [$CURRENT_FLAVOR_NAME, $CURRENT_FLAVOR_TMPL];
+        }
+        for my $parent (@path) {
+            my $tmpl = $parent->[1]->{$file};
+            return $tmpl if $tmpl;
+        }
+        die "Unknown template: $file";
+    }->();
     my $cachepath = File::Spec->catfile(
         $self->{cache_dir},
         'CALLBACK',

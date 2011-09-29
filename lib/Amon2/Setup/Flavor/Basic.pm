@@ -340,17 +340,10 @@ footer {
 }
 
 @@ t/00_compile.t
-use strict;
-use warnings;
-use Test::More;
-
-use_ok $_ for qw(
-    <% $module %>
-    <% $module %>::Web
+: cascade "!t/00_compile.t";
+: after modules -> {
     <% $module %>::Web::Dispatcher
-);
-
-done_testing;
+: }
 
 @@ xt/02_perlcritic.t
 use strict;
