@@ -32,7 +32,7 @@ use Module::Find ();
 Module::Find::useall("<% $module %>::Web::C");
 : }
 
-: around dispatcher -> {
+: around dispatch -> {
 # dispatcher
 use <% $module %>::Web::Dispatcher;
 sub dispatch {
