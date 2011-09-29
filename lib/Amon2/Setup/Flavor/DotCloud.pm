@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use utf8;
 
-package Amon2::Setup::Flavor::Dotcloud;
+package Amon2::Setup::Flavor::DotCloud;
 
 1;
 __DATA__
@@ -15,7 +15,7 @@ __END__
 
 =head1 NAME
 
-Amon2::Setup::Flavor::Dotcloud - dotcloud
+Amon2::Setup::Flavor::DotCloud - dotcloud
 
 =head1 SYNOPSIS
 
