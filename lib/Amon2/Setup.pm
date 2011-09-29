@@ -10,7 +10,6 @@ use File::Spec;
 use File::Basename;
 use File::Path ();
 use Amon2;
-use Plack::Util ();
 
 our $_CURRENT_FLAVOR_NAME;
 our $_CURRENT_FLAVOR_TMPL;
