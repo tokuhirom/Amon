@@ -24,10 +24,8 @@ sub main {
 
     # $module = "Foo::Bar"
     # $dist   = "Foo-Bar"
-    # $path   = "Foo/Bar"
     my @pkg  = split /::/, $module;
     my $dist = join "-", @pkg;
-    my $path = join "/", @pkg;
 
     mkdir $dist or die "Cannot mkdir '$dist': $!";
     chdir $dist or die $!;
