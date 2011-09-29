@@ -1,6 +1,8 @@
 use strict;
 use warnings;
 use utf8;
+use FindBin;
+use lib "$FindBin::Bin/../../lib/";
 use Test::More;
 use Amon2::Setup;
 use File::Temp qw/tempdir/;
@@ -8,6 +10,9 @@ use App::Prove;
 use File::Basename;
 use Cwd;
 use t::Util qw(slurp);
+
+note $^X;
+note $];
 
 my $orig_dir = Cwd::getcwd();
 my $dir = tempdir(CLEANUP => 1);
