@@ -12,13 +12,13 @@ use File::Path ();
 use Amon2;
 use Plack::Util ();
 
-our $CURRENT_FLAVOR_NAME;
-our $CURRENT_FLAVOR_TMPL;
-our $RENDERING_FILE;
-our @PARENTS;
+our $_CURRENT_FLAVOR_NAME;
+our $_CURRENT_FLAVOR_TMPL;
+our $_RENDERING_FILE;
+our @_PARENTS;
 
 sub infof {
-    my $flavor = $CURRENT_FLAVOR_NAME;
+    my $flavor = $_CURRENT_FLAVOR_NAME;
     $flavor =~ s!^Amon2::Setup::Flavor::!!;
     print "[$flavor] ";
     @_==1 ? print(@_) : printf(@_);
@@ -76,13 +76,13 @@ sub run_flavors {
     my %tmpl_seen;
     while (my $p = shift @path) {
         next if $flavor_seen{$p->[0]};
-        local @PARENTS = @path;
-        local $CURRENT_FLAVOR_NAME = $p->[0];
-        local $CURRENT_FLAVOR_TMPL = $p->[1];
+        local @_PARENTS = @path;
+        local $_CURRENT_FLAVOR_NAME = $p->[0];
+        local $_CURRENT_FLAVOR_TMPL = $p->[1];
         for my $fname (sort keys %{$p->[1]}) {
             next if $tmpl_seen{$fname}++;
             next if $fname =~ /^#/;
-            local $RENDERING_FILE = $fname;
+            local $_RENDERING_FILE = $fname;
             $self->write_file($fname, $p->[1]->{$fname});
         }
     }
@@ -101,7 +101,7 @@ sub _load_templates {
 sub _load_flavor {
     my ($self, $flavor) = @_;
 
-    local $CURRENT_FLAVOR_NAME = $flavor;
+    local $_CURRENT_FLAVOR_NAME = $flavor;
     infof("Loading $flavor");
     my $klass = Plack::Util::load_class($flavor, 'Amon2::Setup::Flavor');
     if ($klass->can('prepare')) {
@@ -168,13 +168,13 @@ sub find_file {
     my ($self, $file) = @_;
 
     my $tmpl = sub {
-        my @path = @PARENTS;
+        my @path = @_PARENTS;
         if ($file eq '!') {
-            $file = $RENDERING_FILE;
+            $file = $_RENDERING_FILE;
         } elsif ($file =~ s/^!//) {
             # nop
         } else {
-            unshift @path, [$CURRENT_FLAVOR_NAME, $CURRENT_FLAVOR_TMPL];
+            unshift @path, [$_CURRENT_FLAVOR_NAME, $_CURRENT_FLAVOR_TMPL];
         }
         for my $parent (@path) {
             my $tmpl = $parent->[1]->{$file};
@@ -198,4 +198,16 @@ sub find_file {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Amon2::Setup - setup amon2 project
+
+=head1 SYNOPSIS
+
+    my $setup = Amon2::Setup->new(module => 'My::App');
+    $setup->run_flavors('Basic');
+    # or
+    $setup->run_flavors('Teng', 'Dotcloud', 'Basic');
 
