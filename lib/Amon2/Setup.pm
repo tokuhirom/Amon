@@ -55,8 +55,8 @@ sub new {
     return $self;
 }
 
-# $setup->run_flavors('Teng', 'Basic')
-sub run_flavors {
+# $setup->run('Teng', 'Basic')
+sub run {
     my ($self, @flavors)= @_;
 
     my @path;
@@ -206,7 +206,7 @@ Amon2::Setup - setup amon2 project
 =head1 SYNOPSIS
 
     my $setup = Amon2::Setup->new(module => 'My::App');
-    $setup->run_flavors('Basic');
+    $setup->run('Basic');
     # or
-    $setup->run_flavors('Teng', 'Dotcloud', 'Basic');
+    $setup->run('Teng', 'Dotcloud', 'Basic');
 

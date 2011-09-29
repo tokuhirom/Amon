@@ -17,7 +17,7 @@ my $cwd = Cwd::getcwd();
 chdir($dir);
 
 my $setup = Amon2::Setup->new(module => 'My::App');
-$setup->run_flavors('Lite');
+$setup->run('Lite');
 
 ok(-f 'app.psgi', 'app.psgi exists');
 ok((do 'app.psgi'), 'app.psgi is valid') or do {

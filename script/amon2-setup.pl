@@ -33,7 +33,7 @@ sub main {
     chdir $dist or die $!;
 
     my $setup = Amon2::Setup->new(module => $module);
-    $setup->run_flavors(@flavors);
+    $setup->run(@flavors);
 }
 
 __END__

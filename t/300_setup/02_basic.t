@@ -19,7 +19,7 @@ my $dir = tempdir(CLEANUP => 1);
 chdir($dir);
 
 my $setup = Amon2::Setup->new(module => 'My::App');
-$setup->run_flavors('Basic');
+$setup->run('Basic');
 
 ok(-d 'static/js/', 'js dir');
 ok(-d 'static/css/', 'css dir');
