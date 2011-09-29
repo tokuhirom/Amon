@@ -1,4 +1,4 @@
 plan for Amon22.0
 
 remove Amon2::Web::Dispatcher::Lite and use Router::Simple::Sinatraish directly...
-
+- static_file('/static/css/main.css')
