@@ -37,11 +37,16 @@ sub new {
     $args{dist} = join "-", @pkg;
     $args{path} = join "/", @pkg;
     my $self = bless { %args }, $class;
-    $self->{xslate} = Text::Xslate->new(
+    my %files;
+    $self->{xslate} ||= Amon2::Setup::Xslate->new(
         syntax => 'Kolon', # for template cascading
         type   => 'text',
         tag_start => '<%',
         tag_end   => '%>',
+        cache => 0,
+        module => [
+            'HTTP::Status' => ['status_message']
+        ],
     );
     return $self;
 }
@@ -75,6 +80,7 @@ sub _run_flavor {
         infof("There is no template");
     }
     while (my ($fname, $tmpl) = each %$all) {
+        next if $fname =~ /^#/;
         $self->write_file($fname, $tmpl);
     }
 }
@@ -116,6 +122,33 @@ sub mkpath {
     my ($self, $path) = @_;
     infof("mkpath: $path");
     File::Path::mkpath($path);
+}
+
+package # hide from pause
+    Amon2::Setup::Xslate;
+
+use parent qw(Text::Xslate);
+
+# THIS IS *HACK*. I SHOULD BE REQUEST THE FEATURE TO THE ORIGINAL AUTHOR OF XSLATE.
+sub find_file {
+    my ($self, $file) = @_;
+
+    my $klass = Plack::Util::load_class($CURRENT_FLAVOR, 'Amon2::Setup::Flavor');
+    my $reader = Data::Section::Simple->new($klass);
+    my $tmpl = $reader->get_data_section($file);
+    my $cachepath = File::Spec->catfile(
+        $self->{cache_dir},
+        'CALLBACK',
+        $file . 'c'
+    );
+
+    return {
+        name        => $file,
+        fullpath    => \$tmpl,
+        cachepath   => $cachepath,
+        orig_mtime  => 0,
+        cache_mtime => 0,
+    };
 }
 
 1;

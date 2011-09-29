@@ -14,47 +14,6 @@ sub prepare {
     $ctx->mkpath('static/js/');
     $ctx->load_asset('jQuery');
     $ctx->load_asset('Bootstrap');
-
-    # TODO: it can be write with @@.
-    for my $status (qw/404 500 502 503 504/) {
-        $self->write_status_file($ctx, "static/$status.html", $status);
-    }
-}
-
-sub write_status_file {
-    my ($self, $ctx, $fname, $status) = @_;
-
-    local $ctx->{status}         = $status;
-    local $ctx->{status_message} = status_message($status);
- 
-    $ctx->write_file($fname, <<'...');
-<!doctype html> 
-<html> 
-    <head> 
-        <meta charset=utf-8 /> 
-        <style type="text/css"> 
-            body {
-                text-align: center;
-                font-family: 'Menlo', 'Monaco', Courier, monospace;
-                background-color: whitesmoke;
-                padding-top: 10%;
-            }
-            .number {
-                font-size: 800%;
-                font-weight: bold;
-                margin-bottom: 40px;
-            }
-            .message {
-                font-size: 400%;
-            }
-        </style> 
-    </head> 
-    <body> 
-        <div class="number"><%= $status %></div> 
-        <div class="message"><%= $status_message %></div> 
-    </body> 
-</html> 
-...
 }
 
 1;
@@ -448,6 +407,49 @@ done_testing;
 
 @@ .proverc
 -l
+
+@@ #status.html
+<!doctype html> 
+<html> 
+    <head> 
+        <meta charset=utf-8 /> 
+        <style type="text/css"> 
+            body {
+                text-align: center;
+                font-family: 'Menlo', 'Monaco', Courier, monospace;
+                background-color: whitesmoke;
+                padding-top: 10%;
+            }
+            .number {
+                font-size: 800%;
+                font-weight: bold;
+                margin-bottom: 40px;
+            }
+            .message {
+                font-size: 400%;
+            }
+        </style> 
+    </head> 
+    <body> 
+        <div class="number"><%= $status %></div> 
+        <div class="message"><%= status_message($status) %></div> 
+    </body> 
+</html> 
+
+@@ 404.html
+: include "#status.html" { status => 404 };
+
+@@ 500.html
+: include "#status.html" { status => 500 };
+
+@@ 502.html
+: include "#status.html" { status => 502 }
+
+@@ 503.html
+: include "#status.html" { status => 503 };
+
+@@ 504.html
+: include "#status.html" { status => 504 }
 
 __END__
 

@@ -16,6 +16,7 @@ chdir($dir);
 my $setup = Amon2::Setup->new(module => 'My::App');
 $setup->run_flavors('Basic');
 
+ok(-f 'static/500.html', 'static/500.html');
 ok(-f 'lib/My/App.pm', 'lib/My/App.pm exists');
 ok((do 'lib/My/App.pm'), 'lib/My/App.pm is valid') or do {
     diag $@;
