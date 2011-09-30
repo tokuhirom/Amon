@@ -14,7 +14,6 @@ GetOptions(
     'flavor=s@' => \@flavors,
 ) or pod2usage(0);
 pod2usage(1) if $help;
-push @flavors, 'Basic' if @flavors == 0;
 @flavors = map { split /,/, $_ } @flavors;
 
 &main;exit;

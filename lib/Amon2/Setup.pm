@@ -59,18 +59,14 @@ sub new {
 sub run {
     my ($self, @flavors)= @_;
 
-    my @path;
-    for my $flavor (@flavors) {
-        my ($klass, $tmpl) = $self->_load_flavor($flavor);
-        my @p = ([$klass, $tmpl]);
-        if ($klass->can('parent')) {
-            for my $parent ($klass->parent()) {
-                push @p, [$self->_load_flavor($parent)];
-            }
-        }
-        push @path, @p;
-    }
+    $self->load_flavors(@flavors);
+    $self->run_flavors();
+}
 
+sub run_flavors {
+    my ($self) = @_;
+
+    my @path = @{$self->{flavors}};
     my %flavor_seen;
     my %tmpl_seen;
     while (my $p = shift @path) {
@@ -85,6 +81,19 @@ sub run {
             $self->write_file($fname, $p->[1]->{$fname});
         }
     }
+}
+
+sub load_flavors {
+    my ($self, @flavors) = @_;
+
+    my @path;
+    for my $flavor (@flavors) {
+        push @path, $self->_load_flavor($flavor);
+    }
+    unless (grep { $_->can('is_base') && $_->is_base } map { $_->[0] } @path) {
+        push @path, $self->_load_flavor('Basic');
+    }
+    $self->{flavors} = \@path;
 }
 
 sub _load_templates {
@@ -113,7 +122,14 @@ sub _load_flavor {
         }
     }
     my $all = $self->_load_templates($klass);
-    return ($klass, $all);
+
+    my @ret;
+    if ($klass->can('parent')) {
+        for my $parent ($klass->parent()) {
+            push @ret, $self->_load_flavor($parent);
+        }
+    }
+    return ([$klass, $all], @ret);
 }
 
 sub write_file {

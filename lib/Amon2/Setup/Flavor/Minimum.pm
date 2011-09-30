@@ -4,6 +4,8 @@ use utf8;
 
 package Amon2::Setup::Flavor::Minimum;
 
+sub is_base { 1 }
+
 1;
 __DATA__
 

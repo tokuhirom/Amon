@@ -17,7 +17,7 @@ my $cwd = Cwd::getcwd();
 chdir($dir);
 
 my $setup = Amon2::Setup->new(module => 'My::App');
-$setup->run('Dotcloud', 'Basic');
+$setup->run('DotCloud');
 
 ok -f 'dotcloud.yml', 'dotcloud.yml';
 ok(-f 'app.psgi', 'app.psgi exists');
