@@ -136,10 +136,6 @@ sub _load_flavor {
     local $_CURRENT_FLAVOR_NAME = $flavor;
     infof("Loading $flavor");
     my $klass = Plack::Util::load_class($flavor, 'Amon2::Setup::Flavor');
-    if ($klass->can('prepare')) {
-        infof("Preparing");
-        $klass->prepare($self);
-    }
     if ($klass->can('assets')) {
         for my $asset ($klass->assets()) {
             $self->load_asset($asset);
