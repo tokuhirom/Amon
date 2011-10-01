@@ -12,16 +12,8 @@ sub assets { qw(jQuery Bootstrap) }
 __DATA__
 
 @@ lib/<<PATH>>.pm
-package <% $module %>;
-use strict;
-use warnings;
-use parent qw/Amon2/;
-our $VERSION='0.01';
-use 5.008001;
-
-# __PACKAGE__->load_plugin(qw/DBI/);
-
-1;
+: cascade '!';
+: around load_config -> { }
 
 @@ lib/<<PATH>>/Web.pm
 : cascade "!";
