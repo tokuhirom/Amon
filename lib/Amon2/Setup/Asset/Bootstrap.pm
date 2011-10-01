@@ -397,7 +397,6 @@ button.btn::-moz-focus-inner,input[type=submit].btn::-moz-focus-inner{padding:0;
 }
 ;
 
-    $flavor->mkpath('static/bootstrap/');
     while (my ($fname, $content) = each %$files) {
         $flavor->write_file_raw("static/bootstrap/$fname", $content);
     }

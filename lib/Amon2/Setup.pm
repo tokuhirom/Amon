@@ -100,7 +100,6 @@ sub write_file {
 
     my $filename = $fname_tmpl;
     $filename =~ s/<<([^>]+)>>/$self->{lc($1)} or die "$1 is not defined. But you want to use $1 in filename."/ge;
-    infof("rendering $filename");
     my $content = $xslate->render("$thing->[0]->[0]/$fname_tmpl", +{%$self});
 
     $self->write_file_raw($filename, $content);
