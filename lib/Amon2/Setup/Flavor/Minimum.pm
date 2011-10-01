@@ -115,39 +115,6 @@ use_ok $_ for qw(
 );
 
 done_testing;
-@@ t/Util.pm
-package <% '' %>t::Util;
-BEGIN {
-    unless ($ENV{PLACK_ENV}) {
-        $ENV{PLACK_ENV} = 'test';
-    }
-}
-use parent qw/Exporter/;
-use Test::More 0.96;
-
-our @EXPORT = qw//;
-
-{
-    # utf8 hack.
-    binmode Test::More->builder->$_, ":utf8" for qw/output failure_output todo_output/;                       
-    no warnings 'redefine';
-    my $code = \&Test::Builder::child;
-    *Test::Builder::child = sub {
-        my $builder = $code->(@_);
-        binmode $builder->output,         ":utf8";
-        binmode $builder->failure_output, ":utf8";
-        binmode $builder->todo_output,    ":utf8";
-        return $builder;
-    };
-}
-
-1;
-
-@@ xt/03_pod.t
-use Test::More;
-eval "use Test::Pod 1.00";
-plan skip_all => "Test::Pod 1.00 required for testing POD" if $@;
-all_pod_files_ok();
 
 __END__
 
