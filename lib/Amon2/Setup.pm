@@ -58,14 +58,29 @@ sub load_plugins {
     }
 }
 
+sub create_xslate {
+    my ($self, @args) = @_;
+    my $xslate = Text::Xslate->new(
+        syntax => 'Kolon', # for template cascading
+        type   => 'text',
+        cache => 0,
+        module => [
+            'HTTP::Status' => ['status_message']
+        ],
+        @args,
+    );
+    return $xslate;
+}
+
 sub load_plugin {
     my ($self, $plugin) = @_;
     my $klass = Plack::Util::load_class($plugin, 'Amon2::Plugin');
     my $templates = $self->_load_templates($klass);
+    my $xslate = $self->create_xslate();
     for my $key (sort keys %$templates) {
         my $t = $self->{plugin}->{$key};
         $t .= "\n" if defined $t && $t !~ /\n$/;
-        $t .= $templates->{$key};
+        $t .= $xslate->render_string($templates->{$key}, {%$self});
         $self->{plugin}->{$key} = $t;
     }
 }
@@ -108,13 +123,7 @@ sub write_file {
         $cascading_path{"$flavor/$fname_tmpl"} = $tmpl;
     }
 
-    my $xslate = Text::Xslate->new(
-        syntax => 'Kolon', # for template cascading
-        type   => 'text',
-        cache => 0,
-        module => [
-            'HTTP::Status' => ['status_message']
-        ],
+    my $xslate = $self->create_xslate(
         path => [(map { $_->[1] } @$thing), \%cascading_path],
     );
 
