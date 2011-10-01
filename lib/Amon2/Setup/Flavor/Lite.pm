@@ -5,7 +5,7 @@ use utf8;
 package Amon2::Setup::Flavor::Lite;
 
 sub parent { 'Base' }
-sub is_base { 1 }
+sub is_standalone { 1 }
 
 1;
 __DATA__

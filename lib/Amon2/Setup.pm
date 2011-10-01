@@ -116,7 +116,7 @@ sub load_flavors {
     for my $flavor (@flavors) {
         push @path, $self->_load_flavor($flavor);
     }
-    unless (grep { $_->can('is_base') && $_->is_base } map { $_->[0] } @path) {
+    unless (grep { $_->can('is_standalone') && $_->is_standalone } map { $_->[0] } @path) {
         push @path, $self->_load_flavor('Basic');
     }
     $self->{flavors} = \@path;

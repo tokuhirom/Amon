@@ -1,5 +1,5 @@
 package F1;
-sub is_base { 1 }
+sub is_standalone { 1 }
 1;
 __DATA__
 
