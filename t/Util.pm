@@ -31,4 +31,21 @@ sub slurp {
     do { local $/; <$fh> };
 }
 
+package #
+    t::Util::Chdir;
+use File::Temp qw(tempdir);
+
+sub new {
+    my $class = shift;
+    my $dir = shift || tempdir(CLEANUP => 1);
+    my $cwd = Cwd::getcwd();
+    chdir($dir);
+    bless [$cwd, $dir], $class;
+}
+
+sub DESTROY {
+    my $self = shift;
+    chdir $self->[0];
+}
+
 1;
