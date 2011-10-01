@@ -14,7 +14,7 @@ use Amon2;
 our $_CURRENT_FLAVOR_NAME;
 
 sub infof {
-    my $flavor = $_CURRENT_FLAVOR_NAME;
+    my $flavor = $_CURRENT_FLAVOR_NAME || '-';
     $flavor =~ s!^(?:Amon2::Setup::Flavor::|\+)!!;
     print "[$flavor] ";
     @_==1 ? print(@_) : printf(@_);
@@ -54,6 +54,7 @@ sub run_flavors {
     my ($self) = @_;
 
     my @path = @{$self->{flavors}};
+    infof("Using flavors " . join(", ", map { $_->[0] } @path));
     my %flavor_seen;
     my %tmpl_seen;
     while (my $p = shift @path) {
