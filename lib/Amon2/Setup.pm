@@ -157,8 +157,9 @@ sub write_file_raw {
 
     infof("writing $filename");
 
-    my $dirname = dirname($filename);
-    File::Path::mkpath($dirname) if $dirname;
+    if (my $dirname = dirname($filename)) {
+        File::Path::mkpath($dirname);
+    }
 
     open my $ofh, '>:utf8', $filename or die "Cannot open file: $filename: $!";
     print {$ofh} $content;
@@ -176,12 +177,6 @@ sub load_asset {
     $self->{tags} .= "\n" if $require_newline;
 
     $klass->run($self);
-}
-
-sub mkpath {
-    my ($self, $path) = @_;
-    infof("mkpath: $path");
-    File::Path::mkpath($path);
 }
 
 1;
