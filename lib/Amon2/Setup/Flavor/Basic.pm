@@ -11,6 +11,13 @@ sub assets { qw(jQuery Bootstrap) }
 1;
 __DATA__
 
+@@ Makefile.PL
+: cascade "!"
+: around prereq_pm -> {
+        'HTML::FillInForm::Lite'          => '1.09',
+        'HTTP::Session'                   => '0.44',
+: }
+
 @@ app.psgi
 : cascade "!"
 : around app -> {
