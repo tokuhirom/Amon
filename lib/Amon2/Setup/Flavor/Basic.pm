@@ -230,8 +230,8 @@ any '/' => sub {
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0"]]>
     <meta name="format-detection" content="telephone=no" />
     <: $tags :>
-    <link href="[% uri_for('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
-    <link href="[% uri_for('/static/js/main.js') %]" rel="stylesheet" type="text/css" media="screen" />
+    <link href="[% static_file('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
+    <link href="[% static_file('/static/js/main.js') %]" rel="stylesheet" type="text/css" media="screen" />
     <!--[if lt IE 9]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
