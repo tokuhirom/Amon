@@ -22,7 +22,7 @@ __DATA__
 : cascade "!"
 : around app -> {
 use Plack::Builder;
-use <% $module %>::Web;
+use <: $module :>::Web;
 
 builder {
     enable 'Plack::Middleware::Static',
@@ -32,7 +32,7 @@ builder {
         path => qr{^(?:/robots\.txt|/favicon.ico)$},
         root => File::Spec->catdir(dirname(__FILE__), 'static');
     enable 'Plack::Middleware::ReverseProxy';
-    <% $module %>::Web->to_app();
+    <: $module :>::Web->to_app();
 };
 : }
 
@@ -46,14 +46,14 @@ builder {
 : after prepare -> {
 # load all controller classes
 use Module::Find ();
-Module::Find::useall("<% $module %>::Web::C");
+Module::Find::useall("<: $module :>::Web::C");
 : }
 
 : around dispatch -> {
 # dispatcher
-use <% $module %>::Web::Dispatcher;
+use <: $module :>::Web::Dispatcher;
 sub dispatch {
-    return <% $module %>::Web::Dispatcher->dispatch($_[0]) or die "response is not generated";
+    return <: $module :>::Web::Dispatcher->dispatch($_[0]) or die "response is not generated";
 }
 : }
 
@@ -84,7 +84,7 @@ __PACKAGE__->add_trigger(
 : }
 
 @@ lib/<<PATH>>/Web/Dispatcher.pm
-package <% $module %>::Web::Dispatcher;
+package <: $module :>::Web::Dispatcher;
 use strict;
 use warnings;
 use Amon2::Web::Dispatcher::Lite;
@@ -145,7 +145,7 @@ any '/' => sub {
         <h2>For benchmarkers...</h2>
         <p>If you want to benchmarking between Plack based web application frameworks, you should use <B>Amon2::Setup::Flavor::Minimum</B> instead.</p>
         <p>You can use it as following one liner:</p>
-        <pre>% amon2-setup.pl --flavor Minimum <% $module %></pre>
+        <pre>% amon2-setup.pl --flavor Minimum <: $module :></pre>
     </div>
     <div class="span6">
         <p>Amon2 is right for you if ...</p>
@@ -224,12 +224,12 @@ any '/' => sub {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>[% title || '<%= $dist %>' %]</title>
+    <title>[% title || '<:= $dist :>' %]</title>
     <meta http-equiv="Content-Style-Type" content="text/css" />  
     <meta http-equiv="Content-Script-Type" content="text/javascript" />  
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0"]]>
     <meta name="format-detection" content="telephone=no" />
-    <% $tags %>
+    <: $tags :>
     <link href="[% uri_for('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
     <link href="[% uri_for('/static/js/main.js') %]" rel="stylesheet" type="text/css" media="screen" />
     <!--[if lt IE 9]>
@@ -241,7 +241,7 @@ any '/' => sub {
         <div class="topbar" data-dropdown="dropdown">
             <div class="topbar-inner">
                 <div class="container">
-                <h3><a href="#"><% $dist %></a></h3>
+                <h3><a href="#"><: $dist :></a></h3>
                 <ul class="nav">
                     <li class="active"><a href="#">Home</a></li>
                     <li><a href="#">Link</a></li>
@@ -325,7 +325,7 @@ footer {
 @@ t/00_compile.t
 : cascade "!";
 : after modules -> {
-    <% $module %>::Web::Dispatcher
+    <: $module :>::Web::Dispatcher
 : }
 
 @@ xt/02_perlcritic.t

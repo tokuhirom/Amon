@@ -21,12 +21,12 @@ die "FLAVOR SHOULD BE OVERWRITE HERE";
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-    NAME          => '<% $module %>',
+    NAME          => '<: $module :>',
     AUTHOR        => 'Some Person <person@example.com>',
-    VERSION_FROM  => 'lib/<% $path %>.pm',
+    VERSION_FROM  => 'lib/<: $path :>.pm',
     PREREQ_PM     => {
 : block prereq_pm -> {
-        'Amon2'                           => '<% $amon2_version %>',
+        'Amon2'                           => '<: $amon2_version :>',
         'Text::Xslate'                    => '1.4001',
         'Text::Xslate::Bridge::TT2Like'   => '0.00008',
         'Plack::Middleware::ReverseProxy' => '0.09',
@@ -42,7 +42,7 @@ WriteMakefile(
 );
 
 @@ t/Util.pm
-package <% '' %>t::Util;
+package <: '' :>t::Util;
 BEGIN {
     unless ($ENV{PLACK_ENV}) {
         $ENV{PLACK_ENV} = 'test';

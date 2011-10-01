@@ -34,8 +34,8 @@ www:
         </style> 
     </head> 
     <body> 
-        <div class="number"><%= $status %></div> 
-        <div class="message"><%= status_message($status) %></div> 
+        <div class="number"><:= $status :></div> 
+        <div class="message"><:= status_message($status) :></div> 
     </body> 
 </html> 
 

@@ -56,18 +56,18 @@ builder {
     __PACKAGE__->to_app();
 };
 
-<% '__DATA__' %>
+<: '__DATA__' :>
 
-<% '@@' %> index.tt
+<: '@@' :> index.tt
 <!doctype html>
 <html>
 <head>
     <met charst="utf-8">
-    <title><% $module %></title>
+    <title><: $module :></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <% $module %>
+    <: $module :>
 </body>
 </html>
 : }

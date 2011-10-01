@@ -91,8 +91,6 @@ sub write_file {
     my $xslate = Text::Xslate->new(
         syntax => 'Kolon', # for template cascading
         type   => 'text',
-        tag_start => '<%',
-        tag_end   => '%>',
         cache => 0,
         module => [
             'HTTP::Status' => ['status_message']

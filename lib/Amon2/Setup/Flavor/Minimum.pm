@@ -11,7 +11,7 @@ sub is_standalone { 1 }
 __DATA__
 
 @@ lib/<<PATH>>.pm
-package <% $module %>;
+package <: $module :>;
 use strict;
 use warnings;
 use parent qw/Amon2/;
@@ -29,10 +29,10 @@ sub load_config {
 1;
 
 @@ lib/<<PATH>>/Web.pm
-package <% $module %>::Web;
+package <: $module :>::Web;
 use strict;
 use warnings;
-use parent qw/<% $module %> Amon2::Web/;
+use parent qw/<: $module :> Amon2::Web/;
 use File::Spec;
 
 : block prepare -> { }
@@ -87,19 +87,19 @@ __PACKAGE__->add_trigger(
 <html>
 <head>
     <meta charset="utf-8">
-    <title><% $module %></title>
+    <title><: $module :></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <% $module %>
+    <: $module :>
 </body>
 </html>
 @@ app.psgi
 : cascade "!"
 : around app -> {
-use <% $module %>::Web;
+use <: $module :>::Web;
 
-<% $module %>::Web->to_app();
+<: $module :>::Web->to_app();
 : }
 
 @@ t/00_compile.t
@@ -109,8 +109,8 @@ use Test::More;
 
 use_ok $_ for qw(
 : block modules -> {
-    <% $module %>
-    <% $module %>::Web
+    <: $module :>
+    <: $module :>::Web
 : }
 );
 
