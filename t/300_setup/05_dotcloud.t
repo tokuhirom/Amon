@@ -20,6 +20,9 @@ my $setup = Amon2::Setup->new(module => 'My::App');
 $setup->run('DotCloud');
 
 ok -f 'dotcloud.yml', 'dotcloud.yml';
+for (qw(500 404)) {
+    ok(-f "static/$_.html", "static/$_.html");
+}
 ok(-f 'app.psgi', 'app.psgi exists');
 ok((do 'app.psgi'), 'app.psgi is valid') or do {
     diag $@;
