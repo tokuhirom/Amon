@@ -34,6 +34,13 @@ sub _fillin_form {
 }
 
 1;
+__DATA__
+
+@@ prereq_pm
+        'HTML::FillInForm::Lite'          => '1.09',
+@@ web_context
+__PACKAGE__->load_plugin(qw/Web::FillInFormLite/);
+
 __END__
 
 =encoding utf-8

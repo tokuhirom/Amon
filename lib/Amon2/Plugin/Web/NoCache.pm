@@ -15,6 +15,10 @@ sub init {
 }
 
 1;
+__DATA__
+@@ web_context
+__PACKAGE__->load_plugin(qw/Web::NoCache/);
+
 __END__
 
 =encoding utf-8

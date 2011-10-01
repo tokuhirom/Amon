@@ -17,7 +17,7 @@ my $cwd = Cwd::getcwd();
 chdir($dir);
 
 my $setup = Amon2::Setup->new(module => 'My::App');
-$setup->run('DotCloud');
+$setup->run(['DotCloud']);
 
 ok -f 'dotcloud.yml', 'dotcloud.yml';
 for (qw(500 404)) {

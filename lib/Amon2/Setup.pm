@@ -44,10 +44,30 @@ sub new {
 
 # $setup->run('Teng', 'Basic')
 sub run {
-    my ($self, @flavors)= @_;
+    my ($self, $flavors, $plugins)= @_;
 
-    $self->load_flavors(@flavors);
+    $self->load_plugins(@{$plugins || []});
+    $self->load_flavors(@$flavors);
     $self->run_flavors();
+}
+
+sub load_plugins {
+    my ($self, @plugins) = @_;
+    for my $plugin (@plugins) {
+        $self->load_plugin($plugin);
+    }
+}
+
+sub load_plugin {
+    my ($self, $plugin) = @_;
+    my $klass = Plack::Util::load_class($plugin, 'Amon2::Plugin');
+    my $templates = $self->_load_templates($klass);
+    for my $key (sort keys %$templates) {
+        my $t = $self->{plugin}->{$key};
+        $t .= "\n" if defined $t && $t !~ /\n$/;
+        $t .= $templates->{$key};
+        $self->{plugin}->{$key} = $t;
+    }
 }
 
 sub run_flavors {
@@ -147,6 +167,9 @@ sub _load_flavor {
         for my $parent ($klass->parent()) {
             push @ret, $self->_load_flavor($parent);
         }
+    }
+    if ($klass->can('plugins')) {
+        $self->load_plugins($klass->plugins);
     }
     return ([$klass, $all], @ret);
 }

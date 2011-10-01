@@ -15,6 +15,15 @@ sub init {
 }
 
 1;
+__DATA__
+
+@@ prereq_pm
+        'Plack::Middleware::Session'      => '0',
+@@ web_context
+__PACKAGE__->load_plugin('Web::PlackSession');
+@@ middleware
+        enable 'Session';
+
 __END__
 
 =head1 NAME

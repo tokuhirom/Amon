@@ -82,6 +82,7 @@ use File::Spec;
 : }
 
 : block load_plugins -> { }
+: $plugin.web_context
 
 : block triggers -> {
 # for your security
@@ -111,8 +112,12 @@ __PACKAGE__->add_trigger(
 : cascade "!"
 : around app -> {
 use <: $module :>::Web;
+use Plack::Builder;
 
-<: $module :>::Web->to_app();
+builder {
+: $plugin.middleware
+    <: $module :>::Web->to_app();
+};
 : }
 
 @@ t/00_compile.t

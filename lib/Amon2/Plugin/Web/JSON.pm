@@ -51,6 +51,13 @@ sub _render_json {
 }
 
 1;
+__DATA__
+
+@@ prereq_pm
+        'JSON'                            => '2',
+@@ web_context
+__PACKAGE__->load_plugin(qw/Web::JSON/);
+
 __END__
 
 =encoding utf-8

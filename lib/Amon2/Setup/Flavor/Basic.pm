@@ -8,15 +8,18 @@ sub parent { 'Minimum' }
 
 sub assets { qw(jQuery Bootstrap) }
 
+sub plugins {
+    qw(
+        Web::HTTPSession
+        Web::JSON
+        Web::CSRFDefender
+        Web::FillInFormLite
+        Web::NoCache
+    );
+}
+
 1;
 __DATA__
-
-@@ Makefile.PL
-: cascade "!"
-: around prereq_pm -> {
-        'HTML::FillInForm::Lite'          => '1.09',
-        'HTTP::Session'                   => '0.44',
-: }
 
 @@ app.psgi
 : cascade "!"
@@ -32,6 +35,7 @@ builder {
         path => qr{^(?:/robots\.txt|/favicon.ico)$},
         root => File::Spec->catdir(dirname(__FILE__), 'static');
     enable 'Plack::Middleware::ReverseProxy';
+: $plugin.middleware
     <: $module :>::Web->to_app();
 };
 : }
@@ -55,22 +59,6 @@ use <: $module :>::Web::Dispatcher;
 sub dispatch {
     return <: $module :>::Web::Dispatcher->dispatch($_[0]) or die "response is not generated";
 }
-: }
-
-: after load_plugins -> {
-# load plugins
-use HTTP::Session::Store::File;
-__PACKAGE__->load_plugins(
-    'Web::FillInFormLite',
-    'Web::NoCache', # do not cache the dynamic content by default
-    'Web::CSRFDefender',
-    'Web::HTTPSession' => {
-        state => 'Cookie',
-        store => HTTP::Session::Store::File->new(
-            dir => File::Spec->tmpdir(),
-        )
-    },
-);
 : }
 
 : after triggers -> {

@@ -53,6 +53,21 @@ sub _load {
 }
 
 1;
+__DATA__
+
+@@ prereq_pm
+        'HTTP::Session'                   => '0.44',
+@@ web_context
+use HTTP::Session::Store::File;
+__PACKAGE__->load_plugins(
+    'Web::HTTPSession' => {
+        state => 'Cookie',
+        store => HTTP::Session::Store::File->new(
+            dir => File::Spec->tmpdir(),
+        )
+    },
+);
+
 __END__
 
 =encoding utf-8

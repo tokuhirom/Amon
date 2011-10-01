@@ -78,6 +78,11 @@ sub validate_csrf {
 }
 
 1;
+__DATA__
+
+@@ web_context
+__PACKAGE__->load_plugin(qw/Web::CSRFDefender/);
+
 __END__
 
 =head1 NAME

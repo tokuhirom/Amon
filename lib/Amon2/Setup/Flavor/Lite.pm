@@ -6,6 +6,7 @@ package Amon2::Setup::Flavor::Lite;
 
 sub parent { 'Base' }
 sub is_standalone { 1 }
+sub plugins { qw(Web::HTTPSession) }
 
 1;
 __DATA__
@@ -36,22 +37,17 @@ __PACKAGE__->add_trigger(
 );
 
 # load plugins
-use HTTP::Session::Store::File;
 __PACKAGE__->load_plugins(
     'Web::CSRFDefender',
-    'Web::HTTPSession' => {
-        state => 'Cookie',
-        store => HTTP::Session::Store::File->new(
-            dir => File::Spec->tmpdir(),
-        )
-    },
 );
+: $plugin.web_context
 
 builder {
     enable 'Plack::Middleware::Static',
         path => qr{^(?:/static/|/robot\.txt$|/favicon.ico$)},
         root => File::Spec->catdir(dirname(__FILE__));
     enable 'Plack::Middleware::ReverseProxy';
+: $plugin.middleware
 
     __PACKAGE__->to_app();
 };
