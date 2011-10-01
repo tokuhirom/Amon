@@ -11,6 +11,23 @@ sub assets { qw(jQuery Bootstrap) }
 1;
 __DATA__
 
+@@ app.psgi
+: cascade "!"
+: around app -> {
+use Plack::Builder;
+
+builder {
+    enable 'Plack::Middleware::Static',
+        path => qr{^(?:/static/)},
+        root => File::Spec->catdir(dirname(__FILE__));
+    enable 'Plack::Middleware::Static',
+        path => qr{^(?:/robots\.txt|/favicon.ico)$},
+        root => File::Spec->catdir(dirname(__FILE__), 'static');
+    enable 'Plack::Middleware::ReverseProxy';
+    <% $module %>::Web->to_app();
+};
+: }
+
 @@ lib/<<PATH>>.pm
 : cascade '!';
 : around load_config -> { }
@@ -309,16 +326,19 @@ use Test::More;
 eval q{
 	use Perl::Critic 1.113;
 	use Test::Perl::Critic 1.02 -exclude => [
+: block exclude -> {
 		'Subroutines::ProhibitSubroutinePrototypes',
 		'Subroutines::ProhibitExplicitReturnUndef',
 		'TestingAndDebugging::ProhibitNoStrict',
 		'ControlStructures::ProhibitMutatingListFunctions',
+: }
 	];
 };
 plan skip_all => "Test::Perl::Critic 1.02+ and Perl::Critic 1.113+ is not installed." if $@;
 all_critic_ok('lib');
 
 @@ .gitignore
+: block gitignore -> {
 Makefile
 inc/
 MANIFEST
@@ -335,6 +355,23 @@ MYMETA.json
 MYMETA.yml
 pm_to_blib
 *.sw[po]
+: }
+
+@@ t/02_mech.t
+use strict;
+use warnings;
+use t::Util;
+use Plack::Test;
+use Plack::Util;
+use Test::More;
+use Test::Requires 'Test::WWW::Mechanize::PSGI';
+
+my $app = Plack::Util::load_psgi 'app.psgi';
+
+my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
+$mech->get_ok('/');
+
+done_testing;
 
 @@ t/03_assets.t
 use strict;
