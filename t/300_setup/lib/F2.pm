@@ -14,3 +14,5 @@ __DATA__
 : after f -> {
 ZZZ
 : }
+@@ 2F
+F2

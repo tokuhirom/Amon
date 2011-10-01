@@ -7,3 +7,9 @@ __DATA__
 : block f -> {
 YYY
 : }
+@@ 1F
+F1
+@@ inc
+: include "#inc2"
+@@ #inc2
+OK

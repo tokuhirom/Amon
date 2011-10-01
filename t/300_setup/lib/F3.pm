@@ -10,3 +10,5 @@ __DATA__
 : before f -> {
 XXX
 : }
+@@ 3F
+F3

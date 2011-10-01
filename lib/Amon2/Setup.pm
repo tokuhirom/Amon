@@ -12,13 +12,10 @@ use File::Path ();
 use Amon2;
 
 our $_CURRENT_FLAVOR_NAME;
-our $_CURRENT_FLAVOR_TMPL;
-our $_RENDERING_FILE;
-our @_PARENTS;
 
 sub infof {
     my $flavor = $_CURRENT_FLAVOR_NAME;
-    $flavor =~ s!^Amon2::Setup::Flavor::!!;
+    $flavor =~ s!^(?:Amon2::Setup::Flavor::|\+)!!;
     print "[$flavor] ";
     @_==1 ? print(@_) : printf(@_);
     print "\n";
@@ -42,16 +39,6 @@ sub new {
     $args{path} = join "/", @pkg;
     my $self = bless { %args }, $class;
     my %files;
-    $self->{xslate} ||= Amon2::Setup::Xslate->new(
-        syntax => 'Kolon', # for template cascading
-        type   => 'text',
-        tag_start => '<%',
-        tag_end   => '%>',
-        cache => 0,
-        module => [
-            'HTTP::Status' => ['status_message']
-        ],
-    );
     return $self;
 }
 
@@ -71,17 +58,55 @@ sub run_flavors {
     my %tmpl_seen;
     while (my $p = shift @path) {
         next if $flavor_seen{$p->[0]};
-        local @_PARENTS = @path;
+
         local $_CURRENT_FLAVOR_NAME = $p->[0];
-        local $_CURRENT_FLAVOR_TMPL = $p->[1];
-        for my $fname (sort keys %{$p->[1]}) {
+        for my $fname (sort { $a cmp $b } keys %{$p->[1]}) {
             next if $tmpl_seen{$fname}++;
             next if $fname =~ /^#/;
-            local $_RENDERING_FILE = $fname;
-            $self->write_file($fname, $p->[1]->{$fname});
+            $self->write_file($fname, $p->[1]->{$fname}, [$p, @path]);
         }
     }
 }
+
+sub write_file {
+    my ($self, $fname_tmpl, $template, $thing) = @_;
+
+    my %cascading_path;
+    my @preprocessed =
+        map { [ $_->[0], $_->[1]->{$fname_tmpl} ] }
+        grep { defined($_->[1]->{$fname_tmpl}) }
+        @$thing;
+    while (my $it = shift @preprocessed) {
+        my $flavor = $it->[0];
+        my $tmpl = $it->[1];
+        $tmpl =~ s{^:\s*cascade\s+(["'])!\1\s*;?\s*$}{
+            my $path = $preprocessed[0]->[0]
+                or die "Missing parent template for '$fname_tmpl'";
+            ": cascade '$path/$fname_tmpl'\n";
+        }em;
+        $cascading_path{"$flavor/$fname_tmpl"} = $tmpl;
+    }
+
+    my $xslate = Text::Xslate->new(
+        syntax => 'Kolon', # for template cascading
+        type   => 'text',
+        tag_start => '<%',
+        tag_end   => '%>',
+        cache => 0,
+        module => [
+            'HTTP::Status' => ['status_message']
+        ],
+        path => [(map { $_->[1] } @$thing), \%cascading_path],
+    );
+
+    my $filename = $fname_tmpl;
+    $filename =~ s/<<([^>]+)>>/$self->{lc($1)} or die "$1 is not defined. But you want to use $1 in filename."/ge;
+    infof("rendering $filename");
+    my $content = $xslate->render("$thing->[0]->[0]/$fname_tmpl", +{%$self});
+
+    $self->write_file_raw($filename, $content);
+}
+
 
 sub load_flavors {
     my ($self, @flavors) = @_;
@@ -132,15 +157,6 @@ sub _load_flavor {
     return ([$klass, $all], @ret);
 }
 
-sub write_file {
-    my ($self, $filename, $template) = @_;
-
-    $filename =~ s/<<([^>]+)>>/$self->{lc($1)} or die "$1 is not defined. But you want to use $1 in filename."/ge;
-
-    my $content = $self->{xslate}->render_string($template, +{%$self});
-    $self->write_file_raw($filename, $content);
-}
-
 sub write_file_raw {
     my ($self, $filename, $content) = @_;
 
@@ -171,45 +187,6 @@ sub mkpath {
     my ($self, $path) = @_;
     infof("mkpath: $path");
     File::Path::mkpath($path);
-}
-
-package # hide from pause
-    Amon2::Setup::Xslate;
-
-use parent qw(Text::Xslate);
-
-# THIS IS *HACK*. I SHOULD BE REQUEST THE FEATURE TO THE ORIGINAL AUTHOR OF XSLATE.
-sub find_file {
-    my ($self, $file) = @_;
-
-    my $tmpl = sub {
-        my @path = @_PARENTS;
-        if ($file eq '!') {
-            $file = $_RENDERING_FILE;
-        } elsif ($file =~ s/^!//) {
-            # nop
-        } else {
-            unshift @path, [$_CURRENT_FLAVOR_NAME, $_CURRENT_FLAVOR_TMPL];
-        }
-        for my $parent (@path) {
-            my $tmpl = $parent->[1]->{$file};
-            return $tmpl if $tmpl;
-        }
-        die "Unknown template: $file";
-    }->();
-    my $cachepath = File::Spec->catfile(
-        $self->{cache_dir},
-        'CALLBACK',
-        $file . 'c'
-    );
-
-    return {
-        name        => $file,
-        fullpath    => \$tmpl,
-        cachepath   => $cachepath,
-        orig_mtime  => 0,
-        cache_mtime => 0,
-    };
 }
 
 1;
