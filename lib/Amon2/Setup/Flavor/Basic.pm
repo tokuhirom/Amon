@@ -22,6 +22,7 @@ __DATA__
 : cascade "!"
 : around app -> {
 use Plack::Builder;
+use <% $module %>::Web;
 
 builder {
     enable 'Plack::Middleware::Static',

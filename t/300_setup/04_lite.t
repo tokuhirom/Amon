@@ -19,6 +19,7 @@ chdir($dir);
 my $setup = Amon2::Setup->new(module => 'My::App');
 $setup->run('Lite');
 
+ok(!-d 'lib', 'lib/ should not appear here');
 ok(-f 'app.psgi', 'app.psgi exists');
 ok((do 'app.psgi'), 'app.psgi is valid') or do {
     diag $@;
