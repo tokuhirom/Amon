@@ -22,7 +22,21 @@ use Amon2::Lite;
 
 # put your configuration here
 sub config {
-    +{
+    my $env = $ENV{PLACK_ENV} || 'development';
+    if ($env eq 'development') {
+        +{
+: $plugin.config_development
+        }
+    } elsif ($env eq 'deployment') {
+        +{
+: $plugin.config_deployment
+        }
+    } elsif ($env eq 'test') {
+        +{
+: $plugin.config_test
+        }
+    } else {
+        die "Unknown PLACK_ENV: $env";
     }
 }
 

@@ -86,38 +86,17 @@ any '/' => sub {
 
 @@ config/development.pl
 +{
-    'DBI' => [
-        'dbi:SQLite:dbname=development.db',
-        '',
-        '',
-        +{
-            sqlite_unicode => 1,
-        }
-    ],
+: $plugin.config_development
 };
 
 @@ config/deployment.pl
 +{
-    'DBI' => [
-        'dbi:SQLite:dbname=deployment.db',
-        '',
-        '',
-        +{
-            sqlite_unicode => 1,
-        }
-    ],
+: $plugin.config_deployment
 };
 
 @@ config/test.pl
 +{
-    'DBI' => [
-        'dbi:SQLite:dbname=test.db',
-        '',
-        '',
-        +{
-            sqlite_unicode => 1,
-        }
-    ],
+: $plugin.config_test
 };
 
 @@ sql/my.sql

@@ -20,8 +20,24 @@ use 5.008001;
 
 : block load_config -> {
 sub load_config {
-    +{
-        'Text::Xslate' => +{}
+    my $env = $ENV{PLACK_ENV} || 'development';
+    if ($env eq 'development') {
+        +{
+            'Text::Xslate' => +{}
+: $plugin.config_development
+        }
+    } elsif ($env eq 'deployment') {
+        +{
+            'Text::Xslate' => +{}
+: $plugin.config_deployment
+        }
+    } elsif ($env eq 'test') {
+        +{
+            'Text::Xslate' => +{}
+: $plugin.config_test
+        }
+    } else {
+        die "Unknown PLACK_ENV: $env";
     }
 }
 : }
