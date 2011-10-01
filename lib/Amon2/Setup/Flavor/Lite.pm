@@ -6,7 +6,10 @@ package Amon2::Setup::Flavor::Lite;
 
 sub parent { 'Base' }
 sub is_standalone { 1 }
-sub plugins { qw(Web::HTTPSession) }
+sub plugins { qw(
+    Web::HTTPSession
+    Web::CSRFDefender
+) }
 
 1;
 __DATA__
@@ -36,10 +39,6 @@ __PACKAGE__->add_trigger(
     },
 );
 
-# load plugins
-__PACKAGE__->load_plugins(
-    'Web::CSRFDefender',
-);
 : $plugin.web_context
 
 builder {
