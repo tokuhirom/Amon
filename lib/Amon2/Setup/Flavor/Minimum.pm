@@ -18,6 +18,8 @@ use parent qw/Amon2/;
 our $VERSION='0.01';
 use 5.008001;
 
+: $plugin.context
+
 : block load_config -> {
 sub load_config {
     my $env = $ENV{PLACK_ENV} || 'development';

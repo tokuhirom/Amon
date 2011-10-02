@@ -53,6 +53,8 @@ __PACKAGE__->add_trigger(
     },
 );
 
+: $plugin.context
+
 : $plugin.web_context
 
 builder {
