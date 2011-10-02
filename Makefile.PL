@@ -30,7 +30,6 @@ requires(
     'HTTP::Session'              => 0.41,
     'Plack::Middleware::ReverseProxy' => 0,
 	'JSON'                            => 2,
-	'HTTP::Status'                    => '6.00',
 );
 
 # Optional components

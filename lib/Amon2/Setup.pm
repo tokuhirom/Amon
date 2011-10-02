@@ -64,9 +64,6 @@ sub create_xslate {
         syntax => 'Kolon', # for template cascading
         type   => 'text',
         cache => 0,
-        module => [
-            'HTTP::Status' => ['status_message']
-        ],
         @args,
     );
     return $xslate;
@@ -99,13 +96,13 @@ sub run_flavors {
         for my $fname (sort { $a cmp $b } keys %{$p->[1]}) {
             next if $tmpl_seen{$fname}++;
             next if $fname =~ /^#/;
-            $self->write_file($fname, $p->[1]->{$fname}, [$p, @path]);
+            $self->write_file($fname, [$p, @path]);
         }
     }
 }
 
 sub write_file {
-    my ($self, $fname_tmpl, $template, $thing) = @_;
+    my ($self, $fname_tmpl, $thing) = @_;
 
     my %cascading_path;
     my @preprocessed =

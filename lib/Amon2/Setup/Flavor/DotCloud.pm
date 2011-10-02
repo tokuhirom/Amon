@@ -35,24 +35,24 @@ www:
     </head> 
     <body> 
         <div class="number"><:= $status :></div> 
-        <div class="message"><:= status_message($status) :></div> 
+        <div class="message"><:= $message :></div> 
     </body> 
 </html> 
 
 @@ static/404.html
-: include "#status.html" { status => 404 };
+: include "#status.html" { status => 404, message => 'Not Found' };
 
 @@ static/500.html
-: include "#status.html" { status => 500 };
+: include "#status.html" { status => 500, message => 'Internal Server Error' };
 
 @@ static/502.html
-: include "#status.html" { status => 502 }
+: include "#status.html" { status => 502, message => 'Bad Gateway' }
 
 @@ static/503.html
-: include "#status.html" { status => 503 };
+: include "#status.html" { status => 503, message => 'Service Unavailable' };
 
 @@ static/504.html
-: include "#status.html" { status => 504 }
+: include "#status.html" { status => 504, message => 'Gateway Timeout' }
 
 __END__
 
