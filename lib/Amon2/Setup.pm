@@ -72,6 +72,18 @@ sub run_flavors {
     infof("Using flavors " . join(", ", map { $_->[0] } @path));
     my %flavor_seen;
     my %tmpl_seen;
+    my %special_vars;
+    for my $key (qw(CONTEXT_PATH WEB_CONTEXT_PATH)) {
+        $special_vars{$key} = sub {
+            for my $klass (map { $_->[0] } @path) {
+                if (my $code = $klass->can(lc $key)) {
+                    return $code->($klass);
+                }
+            }
+            die "Cannot detect @{[ lc $key ]} property in flavors";
+        }->();
+    }
+
     while (my $p = shift @path) {
         next if $flavor_seen{$p->[0]};
 
@@ -79,27 +91,18 @@ sub run_flavors {
         for my $fname (sort { $a cmp $b } keys %{$p->[1]}) {
             next if $tmpl_seen{$fname}++;
             next if $fname =~ /^#/;
-            my $filtered_tmpl = $self->write_file($fname, [$p, @path]);
+            my $filtered_tmpl = $self->write_file($fname, \%special_vars, [$p, @path]);
             $tmpl_seen{$filtered_tmpl}++;
         }
     }
 }
 
 sub write_file {
-    my ($self, $fname_tmpl, $thing) = @_;
+    my ($self, $fname_tmpl, $special_vars, $thing) = @_;
 
     (my $filtered_tmpl = $fname_tmpl);
     for my $key (qw(CONTEXT_PATH WEB_CONTEXT_PATH)) {
-        $filtered_tmpl =~ s/<<$key>>/
-            sub {
-                for my $t (@$thing) {
-                    if (my $code = $t->[0]->can(lc $key)) {
-                        return $code->($t->[0]);
-                    }
-                }
-                die "Cannot detect @{[ lc $key ]} properties";
-            }->();
-        /ge;
+        $filtered_tmpl =~ s/<<$key>>/$special_vars->{$key}/ge;
     }
 
     my %cascading_path;
