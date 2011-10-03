@@ -88,26 +88,19 @@ sub run_flavors {
 sub write_file {
     my ($self, $fname_tmpl, $thing) = @_;
 
-    (my $filtered_tmpl = $fname_tmpl) =~ s/<<CONTEXT_PATH>>/
-        sub {
-            for my $t ( @$thing) {
-                if (my $code = $t->[0]->can('context_path')) {
-                    return $code->($t->[0]);
+    (my $filtered_tmpl = $fname_tmpl);
+    for my $key (qw(CONTEXT_PATH WEB_CONTEXT_PATH)) {
+        $filtered_tmpl =~ s/<<$key>>/
+            sub {
+                for my $t (@$thing) {
+                    if (my $code = $t->[0]->can(lc $key)) {
+                        return $code->($t->[0]);
+                    }
                 }
-            }
-            die "Cannot detect context_path properties";
-        }->();
-    /ge;
-    $filtered_tmpl =~ s/<<WEB_CONTEXT_PATH>>/
-        sub {
-            for my $t ( @$thing) {
-                if (my $code = $t->[0]->can('web_context_path')) {
-                    return $code->($t->[0]);
-                }
-            }
-            die "Cannot detect web_context_path properties";
-        }->();
-    /ge;
+                die "Cannot detect @{[ lc $key ]} properties";
+            }->();
+        /ge;
+    }
 
     my %cascading_path;
     my @preprocessed =
