@@ -50,10 +50,6 @@ sub run {
     $self->run_flavors();
 }
 
-sub load_plugins {
-    my ($self, @plugins) = @_;
-}
-
 sub create_xslate {
     my ($self, @args) = @_;
     my $xslate = Text::Xslate->new(
