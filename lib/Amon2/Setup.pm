@@ -70,45 +70,59 @@ sub run_flavors {
 
     my @path = @{$self->{flavors}};
     infof("Using flavors " . join(", ", map { $_->[0] } @path));
+
+    # rewrite a path like <<CONTEXT_PATH>>
+    my @preprocessed = do {
+        my @preprocessed;
+        my %special_vars;
+        for my $key (qw(CONTEXT_PATH WEB_CONTEXT_PATH)) {
+            $special_vars{$key} = sub {
+                for my $klass (map { $_->[0] } @path) {
+                    if (my $code = $klass->can(lc $key)) {
+                        return $code->($klass);
+                    }
+                }
+                die "Cannot detect @{[ lc $key ]} property in flavors";
+            }->();
+        }
+
+        for my $p (@path) {
+            my $tmpl = $p->[1];
+            my %processed;
+            while (my ($x, $dat) = each %$tmpl) {
+                $x =~ s!<<(WEB_CONTEXT_PATH|CONTEXT_PATH)>>!
+                    $special_vars{$1}
+                !ge;
+                $processed{$x} = $dat;
+            }
+            push @preprocessed, [$p->[0], \%processed];
+        }
+        @preprocessed;
+    };
+
     my %flavor_seen;
     my %tmpl_seen;
-    my %special_vars;
-    for my $key (qw(CONTEXT_PATH WEB_CONTEXT_PATH)) {
-        $special_vars{$key} = sub {
-            for my $klass (map { $_->[0] } @path) {
-                if (my $code = $klass->can(lc $key)) {
-                    return $code->($klass);
-                }
-            }
-            die "Cannot detect @{[ lc $key ]} property in flavors";
-        }->();
-    }
-
-    while (my $p = shift @path) {
+    while (my $p = shift @preprocessed) {
         next if $flavor_seen{$p->[0]};
 
         local $_CURRENT_FLAVOR_NAME = $p->[0];
         for my $fname (sort { $a cmp $b } keys %{$p->[1]}) {
             next if $tmpl_seen{$fname}++;
             next if $fname =~ /^#/;
-            my $filtered_tmpl = $self->write_file($fname, \%special_vars, [$p, @path]);
-            $tmpl_seen{$filtered_tmpl}++;
+            $self->write_file($fname, [$p, @path]);
         }
     }
 }
 
 sub write_file {
-    my ($self, $fname_tmpl, $special_vars, $thing) = @_;
+    my ($self, $fname_tmpl, $thing) = @_;
 
-    (my $filtered_tmpl = $fname_tmpl);
-    for my $key (qw(CONTEXT_PATH WEB_CONTEXT_PATH)) {
-        $filtered_tmpl =~ s/<<$key>>/$special_vars->{$key}/ge;
-    }
+    my $filtered_tmpl = $fname_tmpl;
 
     my %cascading_path;
     my @preprocessed =
-        map { [ $_->[0], $_->[1]->{$filtered_tmpl} || $_->[1]->{$fname_tmpl} ] }
-        grep { defined($_->[1]->{$filtered_tmpl}) || defined($_->[1]->{$fname_tmpl}) }
+        map { [ $_->[0], $_->[1]->{$fname_tmpl} ] }
+        grep { defined($_->[1]->{$fname_tmpl}) }
         @$thing;
     while (my $it = shift @preprocessed) {
         my $flavor = $it->[0];
@@ -116,21 +130,20 @@ sub write_file {
         $tmpl =~ s{^:\s*cascade\s+(["'])!\1\s*;?\s*$}{
             my $path = $preprocessed[0]->[0]
                 or die "Missing parent template for '$fname_tmpl'";
-            ": cascade '$path/$filtered_tmpl'\n";
+            ": cascade '$path/$fname_tmpl'\n";
         }em;
-        $cascading_path{"$flavor/$filtered_tmpl"} = $tmpl;
+        $cascading_path{"$flavor/$fname_tmpl"} = $tmpl;
     }
 
     my $xslate = $self->create_xslate(
         path => [(map { $_->[1] } @$thing), \%cascading_path],
     );
 
-    my $filename = $filtered_tmpl;
+    my $filename = $fname_tmpl;
     $filename =~ s/<<([^>]+)>>/$self->{lc($1)} or die "$1 is not defined. But you want to use $1 in filename."/ge;
-    my $content = $xslate->render("$thing->[0]->[0]/$filtered_tmpl", +{%$self});
+    my $content = $xslate->render("$thing->[0]->[0]/$fname_tmpl", +{%$self});
 
     $self->write_file_raw($filename, $content);
-    return $filtered_tmpl;
 }
 
 
