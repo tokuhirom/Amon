@@ -53,10 +53,17 @@ sub _render_json {
 1;
 __DATA__
 
-@@ prereq_pm
+@@ Makefile.PL
+: cascade "!";
+: after prereq_pm -> {
         'JSON'                            => '2',
-@@ web_context
+: }
+
+@@ <<WEB_CONTEXT_PATH>>
+: cascade "!";
+: after load_plugins -> {
 __PACKAGE__->load_plugin(qw/Web::JSON/);
+: }
 
 __END__
 

@@ -8,6 +8,7 @@ use File::Basename;
 use Cwd;
 use FindBin;
 use Amon2::Setup;
+use t::Util qw(slurp);
 use lib "$FindBin::Bin/../../lib/";
 
 my $libpath = File::Spec->rel2abs(File::Spec->catfile(dirname(__FILE__), '..', '..', 'lib'));
@@ -21,6 +22,7 @@ $setup->run(['Lite']);
 
 ok(!-d 'lib', 'lib/ should not appear here');
 ok(-f 'app.psgi', 'app.psgi exists');
+like(slurp('app.psgi'), qr{Web::HTTPSession});
 ok((do 'app.psgi'), 'app.psgi is valid') or do {
     diag $@;
     diag do {

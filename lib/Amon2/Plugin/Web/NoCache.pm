@@ -16,8 +16,12 @@ sub init {
 
 1;
 __DATA__
-@@ web_context
+
+@@ <<WEB_CONTEXT_PATH>>
+: cascade "!";
+: after load_plugins -> {
 __PACKAGE__->load_plugin(qw/Web::NoCache/);
+: }
 
 __END__
 

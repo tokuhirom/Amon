@@ -17,12 +17,21 @@ sub init {
 1;
 __DATA__
 
-@@ prereq_pm
+@@ Makefile.PL
+: cascade "!";
+: after prereq_pm -> {
         'Plack::Middleware::Session'      => '0',
-@@ web_context
+: }
+@@ <<WEB_CONTEXT_PATH>>
+: cascade "!";
+: after load_plugins -> {
 __PACKAGE__->load_plugin('Web::PlackSession');
-@@ middleware
+: }
+@@ app.psgi
+: cascade "!";
+: after middlewares -> {
         enable 'Session';
+: }
 
 __END__
 

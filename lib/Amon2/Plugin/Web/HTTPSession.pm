@@ -55,9 +55,15 @@ sub _load {
 1;
 __DATA__
 
-@@ prereq_pm
+@@ Makefile.PL
+: cascade "!";
+: after prereq_pm -> {
         'HTTP::Session'                   => '0.44',
-@@ web_context
+: }
+
+@@ <<WEB_CONTEXT_PATH>>
+: cascade "!";
+: after load_plugins -> {
 use HTTP::Session::Store::File;
 __PACKAGE__->load_plugins(
     'Web::HTTPSession' => {
@@ -67,6 +73,7 @@ __PACKAGE__->load_plugins(
         )
     },
 );
+: }
 
 __END__
 

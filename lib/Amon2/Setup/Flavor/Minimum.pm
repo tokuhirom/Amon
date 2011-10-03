@@ -7,6 +7,9 @@ package Amon2::Setup::Flavor::Minimum;
 sub parent { 'Base' }
 sub is_standalone { 1 }
 
+sub web_context_path { 'lib/<<PATH>>/Web.pm' }
+sub context_path { 'lib/<<PATH>>.pm' }
+
 1;
 __DATA__
 
@@ -102,7 +105,8 @@ use <: $module :>::Web;
 use Plack::Builder;
 
 builder {
-: $plugin.middleware
+: block middlewares -> {
+: }
     <: $module :>::Web->to_app();
 };
 : }

@@ -10,6 +10,8 @@ sub plugins { qw(
     Web::HTTPSession
     Web::CSRFDefender
 ) }
+sub web_context_path { 'app.psgi' }
+sub context_path { 'app.psgi' }
 
 1;
 __DATA__
@@ -52,17 +54,16 @@ __PACKAGE__->add_trigger(
         $res->header( 'X-Content-Type-Options' => 'nosniff' );
     },
 );
-
-: $plugin.context
-
-: $plugin.web_context
+: block load_plugins -> {
+: }
 
 builder {
+: block middlewares -> {
     enable 'Plack::Middleware::Static',
         path => qr{^(?:/static/|/robot\.txt$|/favicon.ico$)},
         root => File::Spec->catdir(dirname(__FILE__));
     enable 'Plack::Middleware::ReverseProxy';
-: $plugin.middleware
+: }
 
     __PACKAGE__->to_app();
 };

@@ -23,11 +23,7 @@ __DATA__
 
 @@ app.psgi
 : cascade "!"
-: around app -> {
-use Plack::Builder;
-use <: $module :>::Web;
-
-builder {
+: after middlewares -> {
     enable 'Plack::Middleware::Static',
         path => qr{^(?:/static/)},
         root => File::Spec->catdir(dirname(__FILE__));
@@ -35,9 +31,6 @@ builder {
         path => qr{^(?:/robots\.txt|/favicon.ico)$},
         root => File::Spec->catdir(dirname(__FILE__), 'static');
     enable 'Plack::Middleware::ReverseProxy';
-: $plugin.middleware
-    <: $module :>::Web->to_app();
-};
 : }
 
 @@ lib/<<PATH>>.pm

@@ -46,16 +46,12 @@ sub new {
 sub run {
     my ($self, $flavors, $plugins)= @_;
 
-    $self->load_plugins(@{$plugins || []});
-    $self->load_flavors(@$flavors);
+    $self->load_flavors($flavors, $plugins || []);
     $self->run_flavors();
 }
 
 sub load_plugins {
     my ($self, @plugins) = @_;
-    for my $plugin (@plugins) {
-        $self->load_plugin($plugin);
-    }
 }
 
 sub create_xslate {
@@ -67,19 +63,6 @@ sub create_xslate {
         @args,
     );
     return $xslate;
-}
-
-sub load_plugin {
-    my ($self, $plugin) = @_;
-    my $klass = Plack::Util::load_class($plugin, 'Amon2::Plugin');
-    my $templates = $self->_load_templates($klass);
-    my $xslate = $self->create_xslate();
-    for my $key (sort keys %$templates) {
-        my $t = $self->{plugin}->{$key};
-        $t .= "\n" if defined $t && $t !~ /\n$/;
-        $t .= $xslate->render_string($templates->{$key}, {%$self});
-        $self->{plugin}->{$key} = $t;
-    }
 }
 
 sub run_flavors {
@@ -96,7 +79,8 @@ sub run_flavors {
         for my $fname (sort { $a cmp $b } keys %{$p->[1]}) {
             next if $tmpl_seen{$fname}++;
             next if $fname =~ /^#/;
-            $self->write_file($fname, [$p, @path]);
+            my $filtered_tmpl = $self->write_file($fname, [$p, @path]);
+            $tmpl_seen{$filtered_tmpl}++;
         }
     }
 }
@@ -104,10 +88,31 @@ sub run_flavors {
 sub write_file {
     my ($self, $fname_tmpl, $thing) = @_;
 
+    (my $filtered_tmpl = $fname_tmpl) =~ s/<<CONTEXT_PATH>>/
+        sub {
+            for my $t ( @$thing) {
+                if (my $code = $t->[0]->can('context_path')) {
+                    return $code->($t->[0]);
+                }
+            }
+            die "Cannot detect context_path properties";
+        }->();
+    /ge;
+    $filtered_tmpl =~ s/<<WEB_CONTEXT_PATH>>/
+        sub {
+            for my $t ( @$thing) {
+                if (my $code = $t->[0]->can('web_context_path')) {
+                    return $code->($t->[0]);
+                }
+            }
+            die "Cannot detect web_context_path properties";
+        }->();
+    /ge;
+
     my %cascading_path;
     my @preprocessed =
-        map { [ $_->[0], $_->[1]->{$fname_tmpl} ] }
-        grep { defined($_->[1]->{$fname_tmpl}) }
+        map { [ $_->[0], $_->[1]->{$filtered_tmpl} || $_->[1]->{$fname_tmpl} ] }
+        grep { defined($_->[1]->{$filtered_tmpl}) || defined($_->[1]->{$fname_tmpl}) }
         @$thing;
     while (my $it = shift @preprocessed) {
         my $flavor = $it->[0];
@@ -115,32 +120,36 @@ sub write_file {
         $tmpl =~ s{^:\s*cascade\s+(["'])!\1\s*;?\s*$}{
             my $path = $preprocessed[0]->[0]
                 or die "Missing parent template for '$fname_tmpl'";
-            ": cascade '$path/$fname_tmpl'\n";
+            ": cascade '$path/$filtered_tmpl'\n";
         }em;
-        $cascading_path{"$flavor/$fname_tmpl"} = $tmpl;
+        $cascading_path{"$flavor/$filtered_tmpl"} = $tmpl;
     }
 
     my $xslate = $self->create_xslate(
         path => [(map { $_->[1] } @$thing), \%cascading_path],
     );
 
-    my $filename = $fname_tmpl;
+    my $filename = $filtered_tmpl;
     $filename =~ s/<<([^>]+)>>/$self->{lc($1)} or die "$1 is not defined. But you want to use $1 in filename."/ge;
-    my $content = $xslate->render("$thing->[0]->[0]/$fname_tmpl", +{%$self});
+    my $content = $xslate->render("$thing->[0]->[0]/$filtered_tmpl", +{%$self});
 
     $self->write_file_raw($filename, $content);
+    return $filtered_tmpl;
 }
 
 
 sub load_flavors {
-    my ($self, @flavors) = @_;
+    my ($self, $flavors, $plugins) = @_;
 
     my @path;
-    for my $flavor (@flavors) {
-        push @path, $self->_load_flavor($flavor);
+    for my $plugin (@$plugins) {
+        push @path, $self->_load_flavor($plugin, 'Amon2::Plugin');
+    }
+    for my $flavor (@$flavors) {
+        push @path, $self->_load_flavor($flavor, 'Amon2::Setup::Flavor');
     }
     unless (grep { $_->can('is_standalone') && $_->is_standalone } map { $_->[0] } @path) {
-        push @path, $self->_load_flavor('Basic');
+        push @path, $self->_load_flavor('Basic', 'Amon2::Setup::Flavor');
     }
     $self->{flavors} = \@path;
 }
@@ -156,11 +165,11 @@ sub _load_templates {
 }
 
 sub _load_flavor {
-    my ($self, $flavor) = @_;
+    my ($self, $flavor, $namespace) = @_;
 
     local $_CURRENT_FLAVOR_NAME = $flavor;
     infof("Loading $flavor");
-    my $klass = Plack::Util::load_class($flavor, 'Amon2::Setup::Flavor');
+    my $klass = Plack::Util::load_class($flavor, $namespace);
     if ($klass->can('assets')) {
         for my $asset ($klass->assets()) {
             $self->load_asset($asset);
@@ -168,16 +177,19 @@ sub _load_flavor {
     }
     my $all = $self->_load_templates($klass);
 
-    my @ret;
+    my @parent;
     if ($klass->can('parent')) {
         for my $parent ($klass->parent()) {
-            push @ret, $self->_load_flavor($parent);
+            push @parent, $self->_load_flavor($parent, 'Amon2::Setup::Flavor');
         }
     }
+    my @plugins;
     if ($klass->can('plugins')) {
-        $self->load_plugins($klass->plugins);
+        for my $plugin ($klass->plugins()) {
+            push @plugins, $self->_load_flavor($plugin, 'Amon2::Plugin');
+        }
     }
-    return ([$klass, $all], @ret);
+    return (@plugins, [$klass, $all], @parent);
 }
 
 sub write_file_raw {
