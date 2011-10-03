@@ -74,24 +74,20 @@ sub run_flavors {
     # rewrite a path like <<CONTEXT_PATH>>
     my @preprocessed = do {
         my @preprocessed;
-        my %special_vars;
-        for my $key (qw(CONTEXT_PATH WEB_CONTEXT_PATH)) {
-            $special_vars{$key} = sub {
-                for my $klass (map { $_->[0] } @path) {
-                    if (my $code = $klass->can(lc $key)) {
-                        return $code->($klass);
-                    }
-                }
-                die "Cannot detect @{[ lc $key ]} property in flavors";
-            }->();
-        }
 
         for my $p (@path) {
             my $tmpl = $p->[1];
             my %processed;
             while (my ($x, $dat) = each %$tmpl) {
                 $x =~ s!<<(WEB_CONTEXT_PATH|CONTEXT_PATH)>>!
-                    $special_vars{$1}
+                    sub {
+                        for my $klass (map { $_->[0] } @path) {
+                            if (my $code = $klass->can(lc $1)) {
+                                return $code->($klass);
+                            }
+                        }
+                        die "Cannot detect @{[ lc $1 ]} property in flavors";
+                    }->()
                 !ge;
                 $processed{$x} = $dat;
             }
@@ -109,7 +105,7 @@ sub run_flavors {
         for my $fname (sort { $a cmp $b } keys %{$p->[1]}) {
             next if $tmpl_seen{$fname}++;
             next if $fname =~ /^#/;
-            $self->write_file($fname, [$p, @path]);
+            $self->write_file($fname, [$p, @preprocessed]);
         }
     }
 }
