@@ -78,6 +78,14 @@ sub validate_csrf {
 }
 
 1;
+__DATA__
+
+@@ <<WEB_CONTEXT_PATH>>
+: cascade "!";
+: after load_plugins -> {
+__PACKAGE__->load_plugin(qw/Web::CSRFDefender/);
+: }
+
 __END__
 
 =head1 NAME

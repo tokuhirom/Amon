@@ -19,14 +19,11 @@ my $dir = tempdir(CLEANUP => 1);
 chdir($dir);
 
 my $setup = Amon2::Setup->new(module => 'My::App');
-$setup->run('Basic');
+$setup->run(['Basic']);
 
 ok(-d 'static/js/', 'js dir');
 ok(-d 'static/css/', 'css dir');
 ok(-d 'static/img/', 'img dir');
-for (qw(500 404)) {
-    ok(-f "static/$_.html", "static/$_.html");
-}
 ok(-f 'lib/My/App.pm', 'lib/My/App.pm exists');
 ok((do 'lib/My/App.pm'), 'lib/My/App.pm is valid') or do {
     diag $@;
@@ -36,6 +33,8 @@ ok((do 'lib/My/App.pm'), 'lib/My/App.pm is valid') or do {
     };
 };
 is( scalar( my @files = glob('static/js/jquery-*.js') ), 1 );
+like(slurp('lib/My/App/Web.pm'), qr{Web::FillInFormLite});
+like(slurp('lib/My/App/Web.pm'), qr{Web::HTTPSession});
 
 {
     my $_00_compile = slurp("t/00_compile.t");

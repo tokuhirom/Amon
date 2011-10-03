@@ -8,6 +8,7 @@ use File::Basename;
 use Cwd;
 use FindBin;
 use Amon2::Setup;
+use t::Util qw(slurp);
 use lib "$FindBin::Bin/../../lib/";
 
 my $libpath = File::Spec->rel2abs(File::Spec->catfile(dirname(__FILE__), '..', '..', 'lib'));
@@ -17,9 +18,8 @@ my $cwd = Cwd::getcwd();
 chdir($dir);
 
 my $setup = Amon2::Setup->new(module => 'My::App');
-$setup->run('DotCloud');
+$setup->run(['Minimum'], ['Web::PlackSession']);
 
-ok -f 'dotcloud.yml', 'dotcloud.yml';
 ok(-f 'app.psgi', 'app.psgi exists');
 ok((do 'app.psgi'), 'app.psgi is valid') or do {
     diag $@;
@@ -28,6 +28,9 @@ ok((do 'app.psgi'), 'app.psgi is valid') or do {
         local $/; <$fh>;
     };
 };
+like(slurp('app.psgi'), qr{Session});
+like(slurp('lib/My/App/Web.pm'), qr{Web::PlackSession});
+like(slurp('Makefile.PL'), qr{Plack::Middleware::Session});
 
 my $app = App::Prove->new();
 $app->process_args('-Ilib', "-I$libpath", <t/*.t>);

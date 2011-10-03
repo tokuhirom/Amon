@@ -60,7 +60,6 @@ sub tags {
 
 sub run {
     my ($self, $flavor) = @_;
-    $flavor->mkpath('static/js/');
     $flavor->write_file_raw("static/js/<% basename %>", <% content %>);
 }
 
@@ -107,7 +106,6 @@ sub run {
     my ($class, $flavor) = @_;
     my $files = XXXYYY;
 
-    $flavor->mkpath('static/bootstrap/');
     while (my ($fname, $content) = each %$files) {
         $flavor->write_file_raw("static/bootstrap/$fname", $content);
     }

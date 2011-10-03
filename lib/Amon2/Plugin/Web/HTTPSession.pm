@@ -53,6 +53,28 @@ sub _load {
 }
 
 1;
+__DATA__
+
+@@ Makefile.PL
+: cascade "!";
+: after prereq_pm -> {
+        'HTTP::Session'                   => '0.44',
+: }
+
+@@ <<WEB_CONTEXT_PATH>>
+: cascade "!";
+: after load_plugins -> {
+use HTTP::Session::Store::File;
+__PACKAGE__->load_plugins(
+    'Web::HTTPSession' => {
+        state => 'Cookie',
+        store => HTTP::Session::Store::File->new(
+            dir => File::Spec->tmpdir(),
+        )
+    },
+);
+: }
+
 __END__
 
 =encoding utf-8

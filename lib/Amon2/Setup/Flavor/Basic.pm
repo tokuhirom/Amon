@@ -8,20 +8,34 @@ sub parent { 'Minimum' }
 
 sub assets { qw(jQuery Bootstrap) }
 
+sub plugins {
+    qw(
+        Web::HTTPSession
+        Web::JSON
+        Web::CSRFDefender
+        Web::FillInFormLite
+        Web::NoCache
+    );
+}
+
 1;
 __DATA__
 
+@@ app.psgi
+: cascade "!"
+: after middlewares -> {
+    enable 'Plack::Middleware::Static',
+        path => qr{^(?:/static/)},
+        root => File::Spec->catdir(dirname(__FILE__));
+    enable 'Plack::Middleware::Static',
+        path => qr{^(?:/robots\.txt|/favicon.ico)$},
+        root => File::Spec->catdir(dirname(__FILE__), 'static');
+    enable 'Plack::Middleware::ReverseProxy';
+: }
+
 @@ lib/<<PATH>>.pm
-package <% $module %>;
-use strict;
-use warnings;
-use parent qw/Amon2/;
-our $VERSION='0.01';
-use 5.008001;
-
-# __PACKAGE__->load_plugin(qw/DBI/);
-
-1;
+: cascade '!';
+: around load_config -> { }
 
 @@ lib/<<PATH>>/Web.pm
 : cascade "!";
@@ -29,31 +43,15 @@ use 5.008001;
 : after prepare -> {
 # load all controller classes
 use Module::Find ();
-Module::Find::useall("<% $module %>::Web::C");
+Module::Find::useall("<: $module :>::Web::C");
 : }
 
 : around dispatch -> {
 # dispatcher
-use <% $module %>::Web::Dispatcher;
+use <: $module :>::Web::Dispatcher;
 sub dispatch {
-    return <% $module %>::Web::Dispatcher->dispatch($_[0]) or die "response is not generated";
+    return <: $module :>::Web::Dispatcher->dispatch($_[0]) or die "response is not generated";
 }
-: }
-
-: after load_plugins -> {
-# load plugins
-use HTTP::Session::Store::File;
-__PACKAGE__->load_plugins(
-    'Web::FillInFormLite',
-    'Web::NoCache', # do not cache the dynamic content by default
-    'Web::CSRFDefender',
-    'Web::HTTPSession' => {
-        state => 'Cookie',
-        store => HTTP::Session::Store::File->new(
-            dir => File::Spec->tmpdir(),
-        )
-    },
-);
 : }
 
 : after triggers -> {
@@ -67,7 +65,7 @@ __PACKAGE__->add_trigger(
 : }
 
 @@ lib/<<PATH>>/Web/Dispatcher.pm
-package <% $module %>::Web::Dispatcher;
+package <: $module :>::Web::Dispatcher;
 use strict;
 use warnings;
 use Amon2::Web::Dispatcher::Lite;
@@ -81,38 +79,17 @@ any '/' => sub {
 
 @@ config/development.pl
 +{
-    'DBI' => [
-        'dbi:SQLite:dbname=development.db',
-        '',
-        '',
-        +{
-            sqlite_unicode => 1,
-        }
-    ],
+: $plugin.config_development
 };
 
 @@ config/deployment.pl
 +{
-    'DBI' => [
-        'dbi:SQLite:dbname=deployment.db',
-        '',
-        '',
-        +{
-            sqlite_unicode => 1,
-        }
-    ],
+: $plugin.config_deployment
 };
 
 @@ config/test.pl
 +{
-    'DBI' => [
-        'dbi:SQLite:dbname=test.db',
-        '',
-        '',
-        +{
-            sqlite_unicode => 1,
-        }
-    ],
+: $plugin.config_test
 };
 
 @@ sql/my.sql
@@ -128,7 +105,7 @@ any '/' => sub {
         <h2>For benchmarkers...</h2>
         <p>If you want to benchmarking between Plack based web application frameworks, you should use <B>Amon2::Setup::Flavor::Minimum</B> instead.</p>
         <p>You can use it as following one liner:</p>
-        <pre>% amon2-setup.pl --flavor Minimum <% $module %></pre>
+        <pre>% amon2-setup.pl --flavor Minimum <: $module :></pre>
     </div>
     <div class="span6">
         <p>Amon2 is right for you if ...</p>
@@ -207,14 +184,14 @@ any '/' => sub {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>[% title || '<%= $dist %>' %]</title>
+    <title>[% title || '<:= $dist :>' %]</title>
     <meta http-equiv="Content-Style-Type" content="text/css" />  
     <meta http-equiv="Content-Script-Type" content="text/javascript" />  
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0"]]>
     <meta name="format-detection" content="telephone=no" />
-    <% $tags %>
-    <link href="[% uri_for('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
-    <link href="[% uri_for('/static/js/main.js') %]" rel="stylesheet" type="text/css" media="screen" />
+    <: $tags :>
+    <link href="[% static_file('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
+    <link href="[% static_file('/static/js/main.js') %]" rel="stylesheet" type="text/css" media="screen" />
     <!--[if lt IE 9]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -224,7 +201,7 @@ any '/' => sub {
         <div class="topbar" data-dropdown="dropdown">
             <div class="topbar-inner">
                 <div class="container">
-                <h3><a href="#"><% $dist %></a></h3>
+                <h3><a href="#"><: $dist :></a></h3>
                 <ul class="nav">
                     <li class="active"><a href="#">Home</a></li>
                     <li><a href="#">Link</a></li>
@@ -308,7 +285,7 @@ footer {
 @@ t/00_compile.t
 : cascade "!";
 : after modules -> {
-    <% $module %>::Web::Dispatcher
+    <: $module :>::Web::Dispatcher
 : }
 
 @@ xt/02_perlcritic.t
@@ -317,16 +294,19 @@ use Test::More;
 eval q{
 	use Perl::Critic 1.113;
 	use Test::Perl::Critic 1.02 -exclude => [
+: block exclude -> {
 		'Subroutines::ProhibitSubroutinePrototypes',
 		'Subroutines::ProhibitExplicitReturnUndef',
 		'TestingAndDebugging::ProhibitNoStrict',
 		'ControlStructures::ProhibitMutatingListFunctions',
+: }
 	];
 };
 plan skip_all => "Test::Perl::Critic 1.02+ and Perl::Critic 1.113+ is not installed." if $@;
 all_critic_ok('lib');
 
 @@ .gitignore
+: block gitignore -> {
 Makefile
 inc/
 MANIFEST
@@ -343,6 +323,23 @@ MYMETA.json
 MYMETA.yml
 pm_to_blib
 *.sw[po]
+: }
+
+@@ t/02_mech.t
+use strict;
+use warnings;
+use t::Util;
+use Plack::Test;
+use Plack::Util;
+use Test::More;
+use Test::Requires 'Test::WWW::Mechanize::PSGI';
+
+my $app = Plack::Util::load_psgi 'app.psgi';
+
+my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
+$mech->get_ok('/');
+
+done_testing;
 
 @@ t/03_assets.t
 use strict;
@@ -366,53 +363,10 @@ test_psgi
 
 done_testing;
 
-@@ .proverc
--l
-
 @@ static/img/.gitignore
 
-@@ #status.html
-<!doctype html> 
-<html> 
-    <head> 
-        <meta charset=utf-8 /> 
-        <style type="text/css"> 
-            body {
-                text-align: center;
-                font-family: 'Menlo', 'Monaco', Courier, monospace;
-                background-color: whitesmoke;
-                padding-top: 10%;
-            }
-            .number {
-                font-size: 800%;
-                font-weight: bold;
-                margin-bottom: 40px;
-            }
-            .message {
-                font-size: 400%;
-            }
-        </style> 
-    </head> 
-    <body> 
-        <div class="number"><%= $status %></div> 
-        <div class="message"><%= status_message($status) %></div> 
-    </body> 
-</html> 
-
-@@ static/404.html
-: include "#status.html" { status => 404 };
-
-@@ static/500.html
-: include "#status.html" { status => 500 };
-
-@@ static/502.html
-: include "#status.html" { status => 502 }
-
-@@ static/503.html
-: include "#status.html" { status => 503 };
-
-@@ static/504.html
-: include "#status.html" { status => 504 }
+@@ .proverc
+-l
 
 __END__
 

@@ -34,6 +34,19 @@ sub _fillin_form {
 }
 
 1;
+__DATA__
+
+@@ Makefile.PL
+: cascade "!";
+: after prereq_pm -> {
+        'HTML::FillInForm::Lite'          => '1.09',
+: }
+@@ <<WEB_CONTEXT_PATH>>
+: cascade "!";
+: after load_plugins -> {
+__PACKAGE__->load_plugin(qw/Web::FillInFormLite/);
+: }
+
 __END__
 
 =encoding utf-8

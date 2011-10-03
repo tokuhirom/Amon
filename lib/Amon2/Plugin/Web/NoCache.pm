@@ -15,6 +15,14 @@ sub init {
 }
 
 1;
+__DATA__
+
+@@ <<WEB_CONTEXT_PATH>>
+: cascade "!";
+: after load_plugins -> {
+__PACKAGE__->load_plugin(qw/Web::NoCache/);
+: }
+
 __END__
 
 =encoding utf-8
