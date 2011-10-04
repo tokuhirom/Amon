@@ -8,6 +8,8 @@ use App::Prove;
 use File::Basename;
 use Cwd;
 use Amon2::Setup;
+use FindBin;
+use lib "$FindBin::Bin/../../lib/";
 
 my $dir = tempdir(CLEANUP => 1);
 my $cwd = Cwd::getcwd();
