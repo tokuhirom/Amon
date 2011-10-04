@@ -12,6 +12,9 @@ sub plugins { qw(
 ) }
 sub web_context_path { 'app.psgi' }
 sub context_path { 'app.psgi' }
+sub config_development_path { 'lib/<<PATH>>.pm' }
+sub config_deployment_path { 'lib/<<PATH>>.pm' }
+sub config_test_path { 'lib/<<PATH>>.pm' }
 
 1;
 __DATA__
@@ -27,15 +30,21 @@ sub config {
     my $env = $ENV{PLACK_ENV} || 'development';
     if ($env eq 'development') {
         +{
-: $plugin.config_development
+            'Text::Xslate' => +{},
+: block config_development -> {
+: }
         }
     } elsif ($env eq 'deployment') {
         +{
-: $plugin.config_deployment
+            'Text::Xslate' => +{},
+: block config_deployment -> {
+: }
         }
     } elsif ($env eq 'test') {
         +{
-: $plugin.config_test
+            'Text::Xslate' => +{},
+: block config_test -> {
+: }
         }
     } else {
         die "Unknown PLACK_ENV: $env";
