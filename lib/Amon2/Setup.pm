@@ -75,7 +75,7 @@ sub run_flavors {
             my $tmpl = $p->[1];
             my %processed;
             while (my ($x, $dat) = each %$tmpl) {
-                $x =~ s!<<(WEB_CONTEXT_PATH|CONTEXT_PATH)>>!
+                $x =~ s!<<(WEB_CONTEXT_PATH|CONTEXT_PATH|CONFIG_(?:DEVELOPMENT|DEPLOYMENT|TEST)_PATH)>>!
                     sub {
                         for my $klass (map { $_->[0] } @path) {
                             if (my $code = $klass->can(lc $1)) {

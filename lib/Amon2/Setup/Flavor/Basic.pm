@@ -18,6 +18,10 @@ sub plugins {
     );
 }
 
+sub config_development_path { 'config/development.pl' }
+sub config_deployment_path  { 'config/deployment.pl' }
+sub config_test_path        { 'config/test.pl' }
+
 1;
 __DATA__
 
@@ -79,17 +83,20 @@ any '/' => sub {
 
 @@ config/development.pl
 +{
-: $plugin.config_development
+: block config_development -> {
+: }
 };
 
 @@ config/deployment.pl
 +{
-: $plugin.config_deployment
+: block config_deployment -> {
+: }
 };
 
 @@ config/test.pl
 +{
-: $plugin.config_test
+: block config_test -> {
+: }
 };
 
 @@ sql/my.sql
