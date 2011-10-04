@@ -84,3 +84,5 @@ callback
 Xslate
 app
 psgi
+dotcloud
+amon
