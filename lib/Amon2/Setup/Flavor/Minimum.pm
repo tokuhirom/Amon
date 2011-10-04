@@ -9,6 +9,9 @@ sub is_standalone { 1 }
 
 sub web_context_path { 'lib/<<PATH>>/Web.pm' }
 sub context_path { 'lib/<<PATH>>.pm' }
+sub config_development_path { 'lib/<<PATH>>.pm' }
+sub config_deployment_path { 'lib/<<PATH>>.pm' }
+sub config_test_path { 'lib/<<PATH>>.pm' }
 
 1;
 __DATA__
@@ -28,23 +31,29 @@ sub load_config {
     my $env = $ENV{PLACK_ENV} || 'development';
     if ($env eq 'development') {
         +{
-            'Text::Xslate' => +{}
-: $plugin.config_development
+            'Text::Xslate' => +{},
+: block config_development -> {
+: }
         }
     } elsif ($env eq 'deployment') {
         +{
-            'Text::Xslate' => +{}
-: $plugin.config_deployment
+            'Text::Xslate' => +{},
+: block config_deployment -> {
+: }
         }
     } elsif ($env eq 'test') {
         +{
-            'Text::Xslate' => +{}
-: $plugin.config_test
+            'Text::Xslate' => +{},
+: block config_test -> {
+: }
         }
     } else {
         die "Unknown PLACK_ENV: $env";
     }
 }
+: }
+
+: block load_plugins -> {
 : }
 
 1;
