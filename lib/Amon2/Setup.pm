@@ -82,7 +82,7 @@ sub run_flavors {
                                 return $code->($klass);
                             }
                         }
-                        die "Cannot detect @{[ lc $1 ]} property in flavors";
+                        die "Cannot detect @{[ lc $1 ]} property in flavors : " . join(', ', map { $_->[0] } @path);
                     }->()
                 !ge;
                 $processed{$x} = $dat;
