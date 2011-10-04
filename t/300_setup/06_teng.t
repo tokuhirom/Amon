@@ -18,7 +18,7 @@ note $];
 
 my $orig_dir = Cwd::getcwd();
 my $dir = tempdir(CLEANUP => 1);
-chdir($dir);
+chdir($dir) or die;
 
 my $setup = Amon2::Setup->new(module => 'My::App');
 $setup->run(['Teng']);

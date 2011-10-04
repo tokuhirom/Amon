@@ -65,7 +65,7 @@ my $schema = Teng::Schema::Dumper->dump(
     namespace => '<: $module :>::DB',
 );
 
-my $dest = File::Spec->catfile( dirname(__FILE__), '..', 'lib', '<: $module :>',
+my $dest = File::Spec->catfile( dirname(__FILE__), '..', 'lib', '<: $path :>',
     'DB', 'Schema.pm' );
 open my $fh, '>', $dest or die "Cannot open file: $dest: $!";
 print {$fh} $schema;
