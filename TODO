@@ -1,4 +1,4 @@
 plan for Amon22.0
 
 remove Amon2::Web::Dispatcher::Lite and use Router::Simple::Sinatraish directly...
-@@ lib/<<PATH>>/Web.pm WEB_CONTEXT_PATH
+inject configuration for config/development.pl from plugin.

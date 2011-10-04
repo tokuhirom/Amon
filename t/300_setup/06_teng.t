@@ -11,7 +11,7 @@ use File::Basename;
 use Cwd;
 use t::Util qw(slurp);
 
-use Test::Requires qw(Amon2::DBI);
+use Test::Requires qw(Amon2::DBI Teng);
 
 note $^X;
 note $];
@@ -21,11 +21,8 @@ my $dir = tempdir(CLEANUP => 1);
 chdir($dir);
 
 my $setup = Amon2::Setup->new(module => 'My::App');
-$setup->run('Teng');
+$setup->run(['Teng']);
 
-for (qw(500 404)) {
-    ok(-f "static/$_.html", "static/$_.html");
-}
 ok(-f 'lib/My/App.pm', 'lib/My/App.pm exists');
 ok((do 'lib/My/App.pm'), 'lib/My/App.pm is valid') or do {
     diag $@;
@@ -34,6 +31,7 @@ ok((do 'lib/My/App.pm'), 'lib/My/App.pm is valid') or do {
         local $/; <$fh>;
     };
 };
+like(slurp('lib/My/App.pm'), qr{DBI});
 is( scalar( my @files = glob('static/js/jquery-*.js') ), 1 );
 
 {
@@ -41,10 +39,13 @@ is( scalar( my @files = glob('static/js/jquery-*.js') ), 1 );
     like $_00_compile, qr(My::App);
     like $_00_compile, qr(My::App::Web);
     like $_00_compile, qr(My::App::Web::Dispatcher);
+    like $_00_compile, qr(My::App::DB::Schema);
     like $_00_compile, qr(My::App::DB);
 };
 
 my $libpath = File::Spec->rel2abs(File::Spec->catfile(dirname(__FILE__), '..', '..', 'lib'));
+system("$^X", '-Ilib', "-I$libpath", "script/make_schema.pl")==0
+    or die "Cannot run schema dumper";
 my $app = App::Prove->new();
 $app->process_args('-Ilib', "-I$libpath", <t/*.t>);
 ok($app->run);
