@@ -81,7 +81,6 @@ sub dispatch {
 : }
 
 : block load_plugins -> { }
-: $plugin.web_context
 
 : block triggers -> {
 # for your security
