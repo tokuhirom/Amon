@@ -3,9 +3,11 @@ use warnings;
 use utf8;
 use Test::More;
 use File::Temp qw(tempdir);
+use FindBin;
+use lib "$FindBin::Bin/../../lib/";
 
 use Amon2::Setup::Asset::jQuery;
-use Amon2::Setup::Flavor;
+use Amon2::Setup;
 
 my $orig_cwd = Cwd::getcwd();
 
@@ -13,7 +15,7 @@ my $tmpdir = tempdir(CLEANUP => 1);
 
 chdir $tmpdir;
 
-my $flavor = Amon2::Setup::Flavor->new(module => 'Foo');
+my $flavor = Amon2::Setup->new(module => 'Foo');
 $flavor->load_asset('jQuery');
 $flavor->load_asset('Bootstrap');
 ok(-f 'static/bootstrap/bootstrap.min.css');
