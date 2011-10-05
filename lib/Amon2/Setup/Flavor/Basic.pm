@@ -44,12 +44,6 @@ __DATA__
 @@ lib/<<PATH>>/Web.pm
 : cascade "!";
 
-: after prepare -> {
-# load all controller classes
-use Module::Find ();
-Module::Find::useall("<: $module :>::Web::C");
-: }
-
 : around dispatch -> {
 # dispatcher
 use <: $module :>::Web::Dispatcher;
