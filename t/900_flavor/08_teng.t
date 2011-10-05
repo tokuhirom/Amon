@@ -3,6 +3,7 @@ use warnings;
 use utf8;
 use FindBin;
 use lib "$FindBin::Bin/../../lib/";
+use Test::Requires {'Amon2::DBI' => 0.06};
 use Test::More;
 use Amon2::Setup;
 use File::Temp qw/tempdir/;
@@ -11,7 +12,7 @@ use File::Basename;
 use Cwd;
 use t::Util qw(slurp);
 
-use Test::Requires qw(Amon2::DBI Teng);
+use Test::Requires qw(Teng);
 
 note $^X;
 note $];
