@@ -117,7 +117,9 @@ require <: $module :>::Web;
 builder {
 : block middlewares -> {
 : }
+: block to_app -> {
     <: $module :>::Web->to_app();
+: }
 };
 : }
 
