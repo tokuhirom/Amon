@@ -110,8 +110,9 @@ __PACKAGE__->add_trigger(
 @@ app.psgi
 : cascade "!"
 : around app -> {
-use <: $module :>::Web;
 use Plack::Builder;
+
+require <: $module :>::Web;
 
 builder {
 : block middlewares -> {
