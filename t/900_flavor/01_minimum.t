@@ -27,7 +27,7 @@ ok((do 'lib/My/App.pm'), 'lib/My/App.pm is valid') or do {
     };
 };
 
-my $libpath = File::Spec->rel2abs(File::Spec->catfile(dirname(__FILE__), '..', '..', 'lib'));
+my $libpath = File::Spec->rel2abs(File::Spec->catfile($FindBin::Bin, '..', '..', 'lib'));
 my $app = App::Prove->new();
 $app->process_args('-Ilib', "-I$libpath", <t/*.t>);
 ok($app->run);
