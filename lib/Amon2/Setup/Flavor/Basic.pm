@@ -61,6 +61,18 @@ use Text::Xslate;
             c => sub { Amon2->context() },
             uri_with => sub { Amon2->context()->req->uri_with(@_) },
             uri_for  => sub { Amon2->context()->uri_for(@_) },
+            static_file => do {
+                my %static_file_cache;
+                sub {
+                    my $fname = shift;
+                    my $c = Amon2->context;
+                    if (not exists $static_file_cache{$fname}) {
+                        my $fullpath = File::Spec->catfile($c->base_dir(), $fname);
+                        $static_file_cache{$fname} = (stat $fullpath)[9];
+                    }
+                    return $c->uri_for($fname, { 't' => $static_file_cache{$fname} || 0 });
+                }
+            },
         },
         %$view_conf
     });
@@ -252,8 +264,8 @@ any '/' => sub {
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0"]]>
     <meta name="format-detection" content="telephone=no" />
     <% $tags %>
-    <link href="[% uri_for('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
-    <link href="[% uri_for('/static/js/main.js') %]" rel="stylesheet" type="text/css" media="screen" />
+    <link href="[% static_file('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
+    <link href="[% static_file('/static/js/main.js') %]" rel="stylesheet" type="text/css" media="screen" />
     <!--[if lt IE 9]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
