@@ -60,12 +60,19 @@ sub mkpath {
     File::Path::mkpath($path);
 }
 
+sub render_string {
+    my $self = shift;
+    my $template = shift;
+    my %args = @_==1 ? %{$_[0]} : @_;
+    return $xslate->render_string($template, {%$self, %args});
+}
+
 sub write_file {
-    my ($self, $filename, $template) = @_;
+    my ($self, $filename, $template) = (shift, shift, shift);
 
     $filename =~ s/<<([^>]+)>>/$self->{lc($1)} or die "$1 is not defined. But you want to use $1 in filename."/ge;
 
-    my $content = $xslate->render_string($template, +{%$self});
+    my $content = $self->render_string($template, @_);
     $self->write_file_raw($filename, $content);
 }
 
