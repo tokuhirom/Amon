@@ -102,7 +102,7 @@ use File::Spec;
 {
     my $view_conf = __PACKAGE__->config->{'Text::Xslate'} || +{ };
     unless (exists $view_conf->{path}) {
-        $view_conf->{path} = [ File::Spec->catdir(__PACKAGE__->base_dir(), 'tmpl') ];
+        $view_conf->{path} = [ File::Spec->catdir(__PACKAGE__->base_dir(), <: $template_path || "'tmpl'" :>) ];
     }
     my $view = Text::Xslate->new(+{
         'syntax'   => 'TTerse',
@@ -120,7 +120,7 @@ use File::Spec;
                         my $fullpath = File::Spec->catfile($c->base_dir(), $fname);
                         $static_file_cache{$fname} = (stat $fullpath)[9];
                     }
-                    return $c->uri_for($fname, { 't' => $static_file_cache{$fname} });
+                    return $c->uri_for($fname, { 't' => $static_file_cache{$fname} || 0 });
                 }
             },
         },
