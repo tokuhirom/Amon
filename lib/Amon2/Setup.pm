@@ -117,7 +117,7 @@ sub run_flavors {
         for my $asset (@{ $self->{assets} }) {
             my $files = $asset->files;
             while (my ($fname, $data) = each %$files) {
-                $self->write_file_raw($fname, $data);
+                $self->write_file_raw("static/$fname", $data);
             }
         }
     }

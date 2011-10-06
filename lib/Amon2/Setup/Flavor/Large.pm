@@ -30,10 +30,8 @@ sub load_assets {
     for my $asset (@$assets) {
         my $files = $asset->files;
         while (my ($fname, $data) = each %$files) {
-            $fname =~ s!^static/!static/web/!;
-            $setup->write_file_raw($fname, $data);
-            $fname =~ s!^static/web/!static/admin/!;
-            $setup->write_file_raw($fname, $data);
+            $setup->write_file_raw("static/web/$fname", $data);
+            $setup->write_file_raw("static/admin/$fname", $data);
         }
     }
 }
