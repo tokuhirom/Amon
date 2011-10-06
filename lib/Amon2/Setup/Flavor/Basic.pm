@@ -334,16 +334,6 @@ body {
     margin-top: 50px;
 }
 
-header {
-    height: 50px;
-    font-size: 36px;
-    padding: 2px;
-    text-align: center; }
-    header a {
-        color: black;
-        font-weight: bold;
-        text-decoration: none; }
-
 footer {
     text-align: right;
     padding-right: 10px;
