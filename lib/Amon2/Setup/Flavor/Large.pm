@@ -22,6 +22,9 @@ require <: $module :>::Admin;
 : around to_app -> {
     builder {
         mount '/admin/' => builder {
+            enable 'Plack::Middleware::Static',
+                path => qr{^(?:/admin/static/)},
+                root => File::Spec->catdir(dirname(__FILE__));
             enable 'Auth::Basic', authenticator => sub {
                 my ($id, $pw) = @_;
                 return $id eq 'admin' && $pw eq 'admin';
@@ -155,6 +158,11 @@ test_psgi
 
 done_testing;
 
+@@ tmpl/admin/include/sidebar.tt
+<ul>
+    <li><a href="[% uri_for('/') %]">Home</a></li>
+</ul>
+
 @@ tmpl/admin/include/layout.tt
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -165,9 +173,10 @@ done_testing;
     <meta http-equiv="Content-Script-Type" content="text/javascript" />  
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0"]]>
     <meta name="format-detection" content="telephone=no" />
-    <: $tags :>
-    <link href="[% static_file('/static/admin/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
-    <link href="[% static_file('/static/admin/js/main.js') %]" rel="stylesheet" type="text/css" media="screen" />
+    <link href="[% static_file('/static/bootstrap/bootstrap.min.css') | replace('^/admin', '') %]" rel="stylesheet" type="text/css" />
+    <script src="[% static_file('/static/js/jquery-1.6.4.min.js') | replace('^/admin', '') %]"></script>
+    <link href="[% static_file('/static/admin/css/main.css') | replace('^/admin', '') %]" rel="stylesheet" type="text/css" media="screen" />
+    <link href="[% static_file('/static/admin/js/main.js') | replace('^/admin', '') %]" rel="stylesheet" type="text/css" media="screen" />
     <!--[if lt IE 9]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -178,135 +187,39 @@ done_testing;
             <div class="topbar-inner">
                 <div class="container">
                 <h3><a href="#"><: $dist :></a></h3>
-                <ul class="nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#">Link</a></li>
-                    <li><a href="#">Link</a></li>
-                    <li><a href="#">Link</a></li>
-                    <li class="dropdown">
-                    <a href="#" class="dropdown-toggle">Dropdown</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Secondary link</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Another link</a></li>
-                    </ul>
-                    </li>
-                </ul>
-                <form class="pull-left" action="">
-                    <input type="text" placeholder="Search">
-                </form>
-                <ul class="nav secondary-nav">
-                    <li class="dropdown">
-                    <a href="#" class="dropdown-toggle">Dropdown</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Secondary link</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Another link</a></li>
-                    </ul>
-                    </li>
-                </ul>
                 </div>
             </div><!-- /topbar-inner -->
         </div><!-- /topbar -->
     </div>
-    <div class="container">
-        <div id="main">
-            [% content %]
+    <div class="container clearfix">
+        <div class="row">
+            <div class="span4">
+                [% INCLUDE "include/sidebar.tt" %]
+            </div>
+            <div class="span12">
+                [% content %]
+            </div>
         </div>
+        <footer class="footer">
+            Powered by <a href="http://amon.64p.org/">Amon2</a>
+        </footer>
     </div>
-    <footer class="footer">
-        Powered by <a href="http://amon.64p.org/">Amon2</a>
-    </footer>
 </body>
 </html>
 
 @@ tmpl/admin/index.tt
 [% WRAPPER 'include/layout.tt' %]
 
-<div class="row">
-    <div class="span10">
-        <h1>Hello, Amon2 world!</h1>
-
-        <h2>For benchmarkers...</h2>
-        <p>If you want to benchmarking between Plack based web application frameworks, you should use <B>Amon2::Setup::Flavor::Minimum</B> instead.</p>
-        <p>You can use it as following one liner:</p>
-        <pre>% amon2-setup.pl --flavor Minimum <: $module :></pre>
-    </div>
-    <div class="span6">
-        <p>Amon2 is right for you if ...</p>
-        <ul>
-        <li>You need exceptional performance.</li>
-        <li>You want a framework with a small footprint.</li>
-        <li>You want a framework that requires nearly zero configuration.</li>
-        </ul>
-    </div>
+<div class="section">
+    <h1>This is a <: $module :>'s admin site</h1>
 </div>
-
-<hr />
-
-<h1>Components?</h1>
-
-<section class="row">
-    <div class="span4">
-        <h2>CSS Library</h2>
-    </div>
-    <div class="span12">
-        Current version of Amon2 using twitter's bootstrap.css as a default CSS library.<br />
-        If you want to learn it, please access to <a href="http://twitter.github.com/bootstrap/">twitter.github.com/bootstrap/</a>
-    </div>
-</section>
-
-<hr />
-
-<section class="row">
-    <div class="span4">
-        <h2>JS Library</h2>
-    </div>
-    <div class="span12">
-        <a href="http://jquery.com/">jQuery</a> included.
-    </div>
-</section>
-
-<hr />
-
-<section class="row">
-    <div class="span4">
-        <h2>Template Engine</h2>
-    </div>
-    <div class="span12">
-        Amon2 uses Text::Xslate(TTerse) as a primary template engine.<br />
-        But you can use any template engine easily.
-    </div>
-</section>
-
-<hr />
-
-<section class="row">
-    <div class="span4">
-        <h2>O/R Mapper?</h2>
-    </div>
-    <div class="span12">
-        There is no O/R Mapper support. But I recommend to use Teng.<br />
-        You can integrate Teng very easily.<br />
-        See <a href="http://amon.64p.org/database.html#teng">This page</a> for more details.
-    </div>
-</section>
-
-<hr />
-
-<section class="row">
-    <div class="span16">
-        <h1>Documents?</h1>
-        <p>Complete docs are available on <a href="http://amon.64p.org/">amon.64p.org</a></p>
-        <p>And there is module specific docs on <a href="https://metacpan.org/release/Amon2">CPAN</a></p>
-    </div>
-</section>
 
 [% END %]
 
-@@ tmpl/include/admin/css/main.css
+@@ static/admin/css/main.css
+body {
+    margin-top: 50px;
+}
 
 @@ tmpl/include/admin/css/main.js
 $(function () {
