@@ -13,6 +13,7 @@ use lib "$FindBin::Bin/../../lib/";
 my $dir = tempdir(CLEANUP => 1);
 my $cwd = Cwd::getcwd();
 chdir($dir);
+note($dir);
 
 my $setup = Amon2::Setup->new(module => 'My::App');
 $setup->run(['Large']);

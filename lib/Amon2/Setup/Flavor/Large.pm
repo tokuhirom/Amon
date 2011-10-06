@@ -21,7 +21,13 @@ require <: $module :>::Admin;
 : }
 : around to_app -> {
     builder {
-        mount '/admin/' => <: $module :>::Admin->to_app();
+        mount '/admin/' => builder {
+            enable 'Auth::Basic', authenticator => sub {
+                my ($id, $pw) = @_;
+                return $id eq 'admin' && $pw eq 'admin';
+            };
+            <: $module :>::Admin->to_app();
+        };
         mount '/'       => <: $module :>::Web->to_app();
     };
 : }
@@ -124,7 +130,6 @@ sub index {
     my ($class, $c) = @_;
     $c->render('index.tt');
 }
-
 1;
 
 @@ t/04_admin.t
@@ -141,7 +146,8 @@ test_psgi
     app => $app,
     client => sub {
         my $cb = shift;
-        my $req = HTTP::Request->new(GET => 'http://localhost/admin/');
+        my $req = HTTP::Request->new(GET => 'http://admin:admin@localhost/admin/');
+        $req->headers->authorization_basic('admin', 'admin');
         my $res = $cb->($req);
         is $res->code, 200;
         diag $res->content if $res->code != 200;
