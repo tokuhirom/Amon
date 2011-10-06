@@ -4,7 +4,9 @@ use utf8;
 
 package Amon2::Setup::Flavor::Basic;
 
-sub parent { 'Minimum' }
+sub parent { 'Base' }
+
+sub is_standalone { 1 }
 
 sub assets { qw(jQuery Bootstrap) }
 
@@ -18,6 +20,9 @@ sub plugins {
     );
 }
 
+sub web_context_path { 'lib/<<PATH>>/Web.pm' }
+sub context_path { 'lib/<<PATH>>.pm' }
+
 sub config_development_path { 'config/development.pl' }
 sub config_deployment_path  { 'config/deployment.pl' }
 sub config_test_path        { 'config/test.pl' }
@@ -26,8 +31,14 @@ sub config_test_path        { 'config/test.pl' }
 __DATA__
 
 @@ app.psgi
-: cascade "!"
-: after middlewares -> {
+: include "#app.psgi-header"
+
+use Plack::Builder;
+
+require <: $module :>::Web;
+
+builder {
+: block middlewares -> {
     enable 'Plack::Middleware::Static',
         path => qr{^(?:/static/)},
         root => File::Spec->catdir(dirname(__FILE__));
@@ -36,15 +47,30 @@ __DATA__
         root => File::Spec->catdir(dirname(__FILE__), 'static');
     enable 'Plack::Middleware::ReverseProxy';
 : }
+    <: $module :>::Web->to_app();
+};
 
 @@ lib/<<PATH>>.pm
-: cascade '!';
-: around load_config -> { }
+package <: $module :>;
+use strict;
+use warnings;
+use parent qw/Amon2/;
+our $VERSION='0.01';
+use 5.008001;
+
+: block load_plugins -> {
+: }
+
+1;
 
 @@ lib/<<PATH>>/Web.pm
-: cascade "!";
+package <: $module :>::Web;
+use strict;
+use warnings;
+use parent qw/<: $module :> Amon2::Web/;
+use File::Spec;
 
-: around dispatch -> {
+: block dispatch -> {
 # dispatcher
 use <: $module :>::Web::Dispatcher;
 sub dispatch {
@@ -52,7 +78,13 @@ sub dispatch {
 }
 : }
 
-: after triggers -> {
+: block create_view -> {
+: include "#xslate"
+: }
+
+: block load_plugins -> { }
+
+: block triggers -> {
 __PACKAGE__->add_trigger(
     BEFORE_DISPATCH => sub {
         my ( $c ) = @_;
@@ -61,6 +93,8 @@ __PACKAGE__->add_trigger(
     },
 );
 : }
+
+1;
 
 @@ lib/<<PATH>>/Web/Dispatcher.pm
 package <: $module :>::Web::Dispatcher;
@@ -264,10 +298,19 @@ body {
 }
 
 @@ t/00_compile.t
-: cascade "!";
-: after modules -> {
+use strict;
+use warnings;
+use Test::More;
+
+use_ok $_ for qw(
+: block modules -> {
+    <: $module :>
+    <: $module :>::Web
     <: $module :>::Web::Dispatcher
 : }
+);
+
+done_testing;
 
 @@ t/03_assets.t
 use strict;
