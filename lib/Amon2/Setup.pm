@@ -108,6 +108,20 @@ sub run_flavors {
         }
     }
 
+    my ($standalone) = grep { $_->can('is_standalone') && $_->is_standalone } map { $_->[0] } @preprocessed;
+    if ($standalone->can('load_assets')) {
+        infof("Writing assets");
+        local $_CURRENT_FLAVOR_NAME = $standalone;
+        $standalone->load_assets($self, $self->{assets} || []);
+    } else {
+        for my $asset (@{ $self->{assets} }) {
+            my $files = $asset->files;
+            while (my ($fname, $data) = each %$files) {
+                $self->write_file_raw($fname, $data);
+            }
+        }
+    }
+
     for my $flavor (@preprocessed) {
         my $klass = $flavor->[0];
         if ($klass->can('postprocess')) {
@@ -227,7 +241,7 @@ sub load_asset {
     $self->{tags} .= $klass->tags;
     $self->{tags} .= "\n" if $require_newline;
 
-    $klass->run($self);
+    push @{$self->{assets}}, $klass;
 }
 
 1;

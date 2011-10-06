@@ -5,65 +5,14 @@ use warnings;
 
 sub tags {
     <<',,,';
-    <link href="[% uri_for('/static/bootstrap/bootstrap.min.css') %]" rel="stylesheet" type="text/css" />
-    <script src="[% uri_for('/static/bootstrap/bootstrap-dropdown.js') %]"></script>
+    <link href="[% static_file('/static/bootstrap/bootstrap.min.css') %]" rel="stylesheet" type="text/css" />
 ,,,
 }
 
-sub run {
-    my ($class, $flavor) = @_;
-    my $files = {
-  'bootstrap-dropdown.js' => '/* ============================================================
- * bootstrap-dropdown.js v1.3.0
- * http://twitter.github.com/bootstrap/javascript.html#dropdown
- * ============================================================
- * Copyright 2011 Twitter, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * ============================================================ */
-
-
-!function( $ ){
-
-  var d = \'a.menu, .dropdown-toggle\'
-
-  function clearMenus() {
-    $(d).parent(\'li\').removeClass(\'open\')
-  }
-
-  $(function () {
-    $(\'html\').bind("click", clearMenus)
-    $(\'body\').dropdown( \'[data-dropdown] a.menu, [data-dropdown] .dropdown-toggle\' )
-  })
-
-  /* DROPDOWN PLUGIN DEFINITION
-   * ========================== */
-
-  $.fn.dropdown = function ( selector ) {
-    return this.each(function () {
-      $(this).delegate(selector || d, \'click\', function (e) {
-        var li = $(this).parent(\'li\')
-          , isActive = li.hasClass(\'open\')
-
-        clearMenus()
-        !isActive && li.toggleClass(\'open\')
-        return false
-      })
-    })
-  }
-
-}( window.jQuery || window.ender );',
-  'bootstrap.min.css' => 'html,body{margin:0;padding:0;}
+sub files {
+    my ($class) = @_;
+    return {
+  'static/bootstrap/bootstrap.min.css' => 'html,body{margin:0;padding:0;}
 h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,cite,code,del,dfn,em,img,q,s,samp,small,strike,strong,sub,sup,tt,var,dd,dl,dt,li,ol,ul,fieldset,form,label,legend,button,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;font-weight:normal;font-style:normal;font-size:100%;line-height:1;font-family:inherit;}
 table{border-collapse:collapse;border-spacing:0;}
 ol,ul{list-style:none;}
@@ -396,10 +345,6 @@ button.btn::-moz-focus-inner,input[type=submit].btn::-moz-focus-inner{padding:0;
 '
 }
 ;
-
-    while (my ($fname, $content) = each %$files) {
-        $flavor->write_file_raw("static/bootstrap/$fname", $content);
-    }
 }
 
 1;

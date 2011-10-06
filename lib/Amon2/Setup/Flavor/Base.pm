@@ -8,14 +8,18 @@ package Amon2::Setup::Flavor::Base;
 __DATA__
 
 @@ app.psgi
-use File::Spec;
-use File::Basename;
-use lib File::Spec->catdir(dirname(__FILE__), 'extlib', 'lib', 'perl5');
-use lib File::Spec->catdir(dirname(__FILE__), 'lib');
+: include "#app.psgi-header"
 
 : block app -> {
 die "FLAVOR SHOULD BE OVERWRITE HERE";
 : }
+
+@@ #app.psgi-header
+use strict;
+use File::Spec;
+use File::Basename;
+use lib File::Spec->catdir(dirname(__FILE__), 'extlib', 'lib', 'perl5');
+use lib File::Spec->catdir(dirname(__FILE__), 'lib');
 
 @@ Makefile.PL
 use ExtUtils::MakeMaker;
@@ -128,6 +132,61 @@ use File::Spec;
     });
     sub create_view { $view }
 }
+
+@@ xt/02_perlcritic.t
+use strict;
+use Test::More;
+eval q{
+	use Perl::Critic 1.113;
+	use Test::Perl::Critic 1.02 -exclude => [
+: block exclude -> {
+		'Subroutines::ProhibitSubroutinePrototypes',
+		'Subroutines::ProhibitExplicitReturnUndef',
+		'TestingAndDebugging::ProhibitNoStrict',
+		'ControlStructures::ProhibitMutatingListFunctions',
+: }
+	];
+};
+plan skip_all => "Test::Perl::Critic 1.02+ and Perl::Critic 1.113+ is not installed." if $@;
+all_critic_ok('lib');
+
+@@ .gitignore
+: block gitignore -> {
+Makefile
+inc/
+MANIFEST
+*.bak
+*.old
+nytprof.out
+nytprof/
+*.db
+blib/
+pm_to_blib
+META.json
+META.yml
+MYMETA.json
+MYMETA.yml
+pm_to_blib
+*.sw[po]
+: }
+
+@@ t/02_mech.t
+use strict;
+use warnings;
+use t::Util;
+use Plack::Test;
+use Plack::Util;
+use Test::More;
+use Test::Requires 'Test::WWW::Mechanize::PSGI';
+
+my $app = Plack::Util::load_psgi 'app.psgi'
+    or die "Cannot load app.psgi: $@";
+
+my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
+$mech->get_ok('/');
+
+done_testing;
+
 
 __END__
 

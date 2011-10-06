@@ -259,26 +259,6 @@ body {
     margin-top: 50px;
 }
 
-header {
-    height: 50px;
-    font-size: 36px;
-    padding: 2px;
-    text-align: center; }
-    header a {
-        color: black;
-        font-weight: bold;
-        text-decoration: none; }
-
-footer {
-    text-align: right;
-    padding-right: 10px;
-    padding-top: 2px; }
-    footer a {
-        text-decoration: none;
-        color: black;
-        font-weight: bold;
-    }
-
 /* smart phones */
 @media screen and (max-device-width: 480px) {
 }
@@ -288,59 +268,6 @@ footer {
 : after modules -> {
     <: $module :>::Web::Dispatcher
 : }
-
-@@ xt/02_perlcritic.t
-use strict;
-use Test::More;
-eval q{
-	use Perl::Critic 1.113;
-	use Test::Perl::Critic 1.02 -exclude => [
-: block exclude -> {
-		'Subroutines::ProhibitSubroutinePrototypes',
-		'Subroutines::ProhibitExplicitReturnUndef',
-		'TestingAndDebugging::ProhibitNoStrict',
-		'ControlStructures::ProhibitMutatingListFunctions',
-: }
-	];
-};
-plan skip_all => "Test::Perl::Critic 1.02+ and Perl::Critic 1.113+ is not installed." if $@;
-all_critic_ok('lib');
-
-@@ .gitignore
-: block gitignore -> {
-Makefile
-inc/
-MANIFEST
-*.bak
-*.old
-nytprof.out
-nytprof/
-*.db
-blib/
-pm_to_blib
-META.json
-META.yml
-MYMETA.json
-MYMETA.yml
-pm_to_blib
-*.sw[po]
-: }
-
-@@ t/02_mech.t
-use strict;
-use warnings;
-use t::Util;
-use Plack::Test;
-use Plack::Util;
-use Test::More;
-use Test::Requires 'Test::WWW::Mechanize::PSGI';
-
-my $app = Plack::Util::load_psgi 'app.psgi';
-
-my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
-$mech->get_ok('/');
-
-done_testing;
 
 @@ t/03_assets.t
 use strict;
