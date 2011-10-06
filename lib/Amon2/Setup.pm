@@ -92,16 +92,26 @@ sub run_flavors {
         @preprocessed;
     };
 
-    my %flavor_seen;
-    my %tmpl_seen;
-    while (my $p = shift @preprocessed) {
-        next if $flavor_seen{$p->[0]};
+    {
+        my @pp = @preprocessed;
+        my %flavor_seen;
+        my %tmpl_seen;
+        while (my $p = shift @pp) {
+            next if $flavor_seen{$p->[0]};
 
-        local $_CURRENT_FLAVOR_NAME = $p->[0];
-        for my $fname (sort { $a cmp $b } keys %{$p->[1]}) {
-            next if $tmpl_seen{$fname}++;
-            next if $fname =~ /^#/;
-            $self->write_file($fname, [$p, @preprocessed]);
+            local $_CURRENT_FLAVOR_NAME = $p->[0];
+            for my $fname (sort { $a cmp $b } keys %{$p->[1]}) {
+                next if $tmpl_seen{$fname}++;
+                next if $fname =~ /^#/;
+                $self->write_file($fname, [$p, @pp]);
+            }
+        }
+    }
+
+    for my $flavor (@preprocessed) {
+        my $klass = $flavor->[0];
+        if ($klass->can('postprocess')) {
+            $klass->postprocess();
         }
     }
 }

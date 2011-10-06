@@ -9,8 +9,6 @@ sub parent { 'Basic' }
 sub assets { qw(jQuery Bootstrap) }
 sub admin_context { 'lib/<<PATH>>/Admin.pm' }
 
-# TODO: basic auth?
-
 1;
 __DATA__
 
@@ -20,16 +18,17 @@ __DATA__
 require <: $module :>::Admin;
 : }
 : around to_app -> {
+    my $basedir = File::Spec->rel2abs(dirname(__FILE__));
     builder {
         mount '/admin/' => builder {
-            enable 'Plack::Middleware::Static',
-                path => qr{^(?:/admin/static/)},
-                root => File::Spec->catdir(dirname(__FILE__));
             enable 'Auth::Basic', authenticator => sub {
                 my ($id, $pw) = @_;
                 return $id eq 'admin' && $pw eq 'admin';
             };
-            <: $module :>::Admin->to_app();
+            mount '/static/' => Plack::App::File->new(
+                root => File::Spec->catdir($basedir, 'static', 'admin')
+            );
+            mount '/' => <: $module :>::Admin->to_app();
         };
         mount '/'       => <: $module :>::Web->to_app();
     };
@@ -173,10 +172,10 @@ done_testing;
     <meta http-equiv="Content-Script-Type" content="text/javascript" />  
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0"]]>
     <meta name="format-detection" content="telephone=no" />
-    <link href="[% static_file('/static/bootstrap/bootstrap.min.css') | replace('^/admin', '') %]" rel="stylesheet" type="text/css" />
-    <script src="[% static_file('/static/js/jquery-1.6.4.min.js') | replace('^/admin', '') %]"></script>
-    <link href="[% static_file('/static/admin/css/main.css') | replace('^/admin', '') %]" rel="stylesheet" type="text/css" media="screen" />
-    <link href="[% static_file('/static/admin/js/main.js') | replace('^/admin', '') %]" rel="stylesheet" type="text/css" media="screen" />
+    <link href="[% static_file('../static/bootstrap/bootstrap.min.css') %]" rel="stylesheet" type="text/css" />
+    <script src="[% static_file('../static/js/jquery-1.6.4.min.js') %]"></script>
+    <link href="[% static_file('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
+    <link href="[% static_file('/static/js/main.js') %]" rel="stylesheet" type="text/css" media="screen" />
     <!--[if lt IE 9]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -216,13 +215,10 @@ done_testing;
 
 [% END %]
 
+@@ static/admin/js/main.js
+
 @@ static/admin/css/main.css
 body {
     margin-top: 50px;
 }
-
-@@ tmpl/include/admin/css/main.js
-$(function () {
-    $('#topbar').dropdown();
-})();
 
