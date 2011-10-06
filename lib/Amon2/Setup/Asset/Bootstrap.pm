@@ -35,17 +35,6 @@ sub run {
 
 !function( $ ){
 
-  var d = \'a.menu, .dropdown-toggle\'
-
-  function clearMenus() {
-    $(d).parent(\'li\').removeClass(\'open\')
-  }
-
-  $(function () {
-    $(\'html\').bind("click", clearMenus)
-    $(\'body\').dropdown( \'[data-dropdown] a.menu, [data-dropdown] .dropdown-toggle\' )
-  })
-
   /* DROPDOWN PLUGIN DEFINITION
    * ========================== */
 
@@ -62,7 +51,22 @@ sub run {
     })
   }
 
-}( window.jQuery || window.ender );',
+  /* APPLY TO STANDARD DROPDOWN ELEMENTS
+   * =================================== */
+
+  var d = \'a.menu, .dropdown-toggle\'
+
+  function clearMenus() {
+    $(d).parent(\'li\').removeClass(\'open\')
+  }
+
+  $(function () {
+    $(\'html\').bind("click", clearMenus)
+    $(\'body\').dropdown( \'[data-dropdown] a.menu, [data-dropdown] .dropdown-toggle\' )
+  })
+
+}( window.jQuery || window.ender );
+',
   'bootstrap.min.css' => 'html,body{margin:0;padding:0;}
 h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,cite,code,del,dfn,em,img,q,s,samp,small,strike,strong,sub,sup,tt,var,dd,dl,dt,li,ol,ul,fieldset,form,label,legend,button,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;font-weight:normal;font-style:normal;font-size:100%;line-height:1;font-family:inherit;}
 table{border-collapse:collapse;border-spacing:0;}
