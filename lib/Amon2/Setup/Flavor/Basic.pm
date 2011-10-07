@@ -240,7 +240,7 @@ any '/' => sub {
     <meta name="format-detection" content="telephone=no" />
     <% $tags %>
     <link href="[% static_file('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
-    <link href="[% static_file('/static/js/main.js') %]" rel="stylesheet" type="text/css" media="screen" />
+    <script src="[% static_file('/static/js/main.js') %]"></script>
     <!--[if lt IE 9]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
