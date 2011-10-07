@@ -11,7 +11,6 @@ sub run {
 
     $self->SUPER::run();
 
-    $self->mkpath('static/img/');
     $self->mkpath('static/js/');
 
     $self->load_asset('jQuery');
@@ -51,16 +50,21 @@ sub dispatch {
 <% $xslate %>
 
 # load plugins
+use File::Path qw(mkpath);
 use HTTP::Session::Store::File;
 __PACKAGE__->load_plugins(
     'Web::FillInFormLite',
     'Web::NoCache', # do not cache the dynamic content by default
     'Web::CSRFDefender',
-    'Web::HTTPSession' => {
-        state => 'Cookie',
-        store => HTTP::Session::Store::File->new(
-            dir => File::Spec->tmpdir(),
-        )
+    'Web::HTTPSession' => do {
+        my $session_dir = File::Spec->catdir(File::Spec->tmpdir(), '<: $path :>');
+        mkpath($session_dir);
+        +{
+            state => 'Cookie',
+            store => HTTP::Session::Store::File->new(
+                dir => $session_dir,
+            )
+        }
     },
 );
 

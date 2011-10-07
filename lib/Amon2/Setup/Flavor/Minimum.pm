@@ -208,7 +208,7 @@ use Text::Xslate;
 {
     my $view_conf = __PACKAGE__->config->{'Text::Xslate'} || +{};
     unless (exists $view_conf->{path}) {
-        $view_conf->{path} = [ File::Spec->catdir(__PACKAGE__->base_dir(), 'tmpl') ];
+        $view_conf->{path} = [ File::Spec->catdir(__PACKAGE__->base_dir(), '<% $tmpl_path ? $tmpl_path : 'tmpl' %>') ];
     }
     my $view = Text::Xslate->new(+{
         'syntax'   => 'TTerse',
@@ -234,6 +234,17 @@ use Text::Xslate;
     });
     sub create_view { $view }
 }
+...
+}
+
+sub psgi_header {
+    <<'...';
+use strict;
+use File::Spec;
+use File::Basename;
+use lib File::Spec->catdir(dirname(__FILE__), 'extlib', 'lib', 'perl5');
+use lib File::Spec->catdir(dirname(__FILE__), 'lib');
+use Plack::Builder;
 ...
 }
 

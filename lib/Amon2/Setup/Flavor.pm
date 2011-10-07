@@ -9,6 +9,7 @@ use File::Basename;
 use File::Path ();
 use Amon2;
 use Plack::Util ();
+use Carp ();
 
 my $xslate = Text::Xslate->new(
     syntax => 'Kolon',
@@ -69,6 +70,7 @@ sub render_string {
 
 sub write_file {
     my ($self, $filename, $template) = (shift, shift, shift);
+    Carp::croak("filename should not be reference") if ref $filename;
 
     $filename =~ s/<<([^>]+)>>/$self->{lc($1)} or die "$1 is not defined. But you want to use $1 in filename."/ge;
 
@@ -78,6 +80,7 @@ sub write_file {
 
 sub write_file_raw {
     my ($self, $filename, $content) = @_;
+    Carp::croak("filename should not be reference") if ref $filename;
 
     infof("writing $filename");
 

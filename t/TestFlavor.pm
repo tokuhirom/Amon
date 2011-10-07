@@ -20,9 +20,10 @@ sub test_flavor {
     my $libpath = File::Spec->rel2abs(File::Spec->catfile(dirname(__FILE__), '..', '..', 'lib'));
     unshift @INC, $libpath;
 
-    my $dir = tempdir(CLEANUP => 1);
+    my $dir = tempdir(CLEANUP => $ENV{DEBUG} ? 0 : 1);
     my $cwd = Cwd::getcwd();
     chdir($dir);
+    note $dir;
 
     {
         $flavor->new(module => 'My::App')->run;

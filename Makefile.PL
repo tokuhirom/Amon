@@ -18,6 +18,7 @@ requires(
     'MRO::Compat'   => 0,
 	'Data::Section::Simple' => 0, # for ::Lite
 	'HTTP::Date'                      => 6,
+	'File::Copy::Recursive' => 0,
 );
 
 # Not core, but default components.
