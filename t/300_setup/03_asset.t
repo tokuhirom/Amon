@@ -16,6 +16,8 @@ chdir $tmpdir;
 my $flavor = Amon2::Setup::Flavor->new(module => 'Foo');
 $flavor->load_asset('jQuery');
 $flavor->load_asset('Bootstrap');
+$flavor->write_asset('jQuery');
+$flavor->write_asset('Bootstrap');
 ok(-f 'static/bootstrap/bootstrap.min.css');
 ok(-d 'static/js/');
 ok(-f 'static/bootstrap/bootstrap-dropdown.js');

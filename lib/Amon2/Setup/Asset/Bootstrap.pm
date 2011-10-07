@@ -10,9 +10,8 @@ sub tags {
 ,,,
 }
 
-sub files {
-    my $files = {
-  'bootstrap-dropdown.js' => '/* ============================================================
+sub files { {
+  'bootstrap/bootstrap-dropdown.js' => '/* ============================================================
  * bootstrap-dropdown.js v1.3.0
  * http://twitter.github.com/bootstrap/javascript.html#dropdown
  * ============================================================
@@ -66,7 +65,7 @@ sub files {
 
 }( window.jQuery || window.ender );
 ',
-  'bootstrap.min.css' => 'html,body{margin:0;padding:0;}
+  'bootstrap/bootstrap.min.css' => 'html,body{margin:0;padding:0;}
 h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,cite,code,del,dfn,em,img,q,s,samp,small,strike,strong,sub,sup,tt,var,dd,dl,dt,li,ol,ul,fieldset,form,label,legend,button,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;font-weight:normal;font-style:normal;font-size:100%;line-height:1;font-family:inherit;}
 table{border-collapse:collapse;border-spacing:0;}
 ol,ul{list-style:none;}
@@ -398,15 +397,16 @@ button.btn::-moz-focus-inner,input[type=submit].btn::-moz-focus-inner{padding:0;
 .media-grid a:hover{border-color:#0069d6;-webkit-box-shadow:0 1px 4px rgba(0, 105, 214, 0.25);-moz-box-shadow:0 1px 4px rgba(0, 105, 214, 0.25);box-shadow:0 1px 4px rgba(0, 105, 214, 0.25);}
 '
 }
-;
-
-}
+ }
 
 sub run {
     my ($class, $flavor) = @_;
+    warn "THIS METHOD WAS DEPRECATED";
+
+    my $files = $class->files;
     $flavor->mkpath('static/bootstrap/');
     while (my ($fname, $content) = each %$files) {
-        $flavor->write_file_raw("static/bootstrap/$fname", $content);
+        $flavor->write_file_raw("static/$fname", $content);
     }
 }
 
