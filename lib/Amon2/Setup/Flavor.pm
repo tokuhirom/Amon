@@ -12,7 +12,7 @@ use Plack::Util ();
 use Carp ();
 
 my $xslate = Text::Xslate->new(
-    syntax => 'Kolon',
+    syntax => 'TTerse',
     type   => 'text',
     tag_start => '<%',
     tag_end   => '%>',
