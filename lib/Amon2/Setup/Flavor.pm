@@ -16,6 +16,7 @@ my $xslate = Text::Xslate->new(
     type   => 'text',
     tag_start => '<%',
     tag_end   => '%>',
+    'module'   => [ 'Text::Xslate::Bridge::TT2Like' ],
 );
 
 sub infof {
