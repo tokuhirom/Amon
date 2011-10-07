@@ -7,6 +7,7 @@ use parent qw(Amon2::Setup::Flavor);
 
 sub run {
     my $self = shift;
+
     $self->write_file('dotcloud.yml', <<'...');
 www:
   perl
