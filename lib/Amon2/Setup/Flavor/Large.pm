@@ -87,7 +87,7 @@ __PACKAGE__->load_plugins(
     'Web::NoCache', # do not cache the dynamic content by default
     'Web::CSRFDefender',
     'Web::HTTPSession' => do {
-        my $session_dir = File::Spec->catdir(File::Spec->tmpdir(), '<: $path :>');
+        my $session_dir = File::Spec->catdir(File::Spec->tmpdir(), '<% $path %>');
         mkpath($session_dir);
         +{
             state => 'Cookie',
@@ -141,10 +141,61 @@ sub index {
 [% WRAPPER 'include/layout.tt' %]
 
 <div class="section">
-    <h1>This is a <: $dist :>'s admin site</h1>
+    <h1>This is a <% $dist %>'s admin site</h1>
 </div>
 
 [% END %]
+...
+
+    $self->write_file('tmpl/admin/include/layout.tt', <<'...');
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>[% title || '<%= $dist %>' %]</title>
+    <meta http-equiv="Content-Style-Type" content="text/css" />  
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />  
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0"]]>
+    <meta name="format-detection" content="telephone=no" />
+    <link href="[% static_file('../static/bootstrap/bootstrap.min.css') %]" rel="stylesheet" type="text/css" />
+    <script src="[% static_file('../static/js/jquery-1.6.4.min.js') %]"></script>
+    <link href="[% static_file('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
+    <link href="[% static_file('/static/js/main.js') %]" rel="stylesheet" type="text/css" media="screen" />
+    <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body[% IF bodyID %] class="[% bodyID %]"[% END %]>
+    <div class="topbar-wrapper" style="z-index: 5;">
+        <div class="topbar">
+            <div class="topbar-inner">
+                <div class="container">
+                <h3><a href="#"><% $dist %></a></h3>
+                </div>
+            </div><!-- /topbar-inner -->
+        </div><!-- /topbar -->
+    </div>
+    <div class="container clearfix">
+        <div class="row">
+            <div class="span4">
+                [% INCLUDE "include/sidebar.tt" %]
+            </div>
+            <div class="span12">
+                [% content %]
+            </div>
+        </div>
+        <footer class="footer">
+            Powered by <a href="http://amon.64p.org/">Amon2</a>
+        </footer>
+    </div>
+</body>
+</html>
+...
+
+    $self->write_file('tmpl/admin/include/sidebar.tt', <<'...');
+<ul>
+    <li><a href="[% uri_for('/') %]">Home</a></li>
+</ul>
 ...
 
     $self->write_file("t/00_compile.t", <<'...');
