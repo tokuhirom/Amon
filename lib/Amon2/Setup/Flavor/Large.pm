@@ -4,7 +4,7 @@ use utf8;
 
 package Amon2::Setup::Flavor::Large;
 use parent qw(Amon2::Setup::Flavor::Basic);
-use File::Path;
+use File::Path ();
 use File::Copy::Recursive qw(rmove rcopy);
 
 sub run {
