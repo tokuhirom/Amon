@@ -1,7 +1,17 @@
+2.56
+
+    [INCOMPATIBLE CHANGE]
+    * f895c31 use TTerse in setup script
+      (This chanage does not break your application)
+
+    [MISC]
+    * 2b2bcf4 make defaul admin page's top bar as green
+
 2.55
 
     [INCOMPATIBLE CHANGE]
     - flavor asset apis
+      (This chanage does not break your application)
     [FEATURE ENHANCMENTS]
     - added static_file() helper method
     - added EXPERIMENTAL Large flavor
