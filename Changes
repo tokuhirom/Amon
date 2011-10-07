@@ -1,3 +1,11 @@
+2.55
+
+    [INCOMPATIBLE CHANGE]
+    - flavor asset apis
+    [FEATURE ENHANCMENTS]
+    - added static_file() helper method
+    - added EXPERIMENTAL Large flavor
+
 2.54
 
     - switch to twitter's bootstrap
