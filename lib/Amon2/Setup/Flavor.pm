@@ -57,6 +57,7 @@ sub run { die "This is abstract base method" }
 
 sub mkpath {
     my ($self, $path) = @_;
+    Carp::croak("path should not be ref") if ref $path;
     infof("mkpath: $path");
     File::Path::mkpath($path);
 }

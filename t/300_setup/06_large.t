@@ -5,6 +5,11 @@ use Test::More;
 use t::TestFlavor;
 
 test_flavor(sub {
+    ok(!-e 'xxx');
+    ok(!-e 'yyy');
+    my @files = (<Amon2::*>);
+    is(0+@files, 0);
+
     for my $dir (qw(tmpl/ tmpl/web tmpl/admin/)) {
         ok(-d $dir, $dir);
     }
