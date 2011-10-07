@@ -24,6 +24,8 @@ sub run {
     rmove('yyy', 'tmpl/web') or die "$!";
     rcopy('tmpl/web', 'tmpl/admin') or die "$!";
 
+    unlink 'static/admin/css/main.css' or die $!;
+
     $self->write_file('app.psgi', <<'...', {header => $self->psgi_header});
 <% $header %>
 use <% $module %>::Web;
@@ -159,7 +161,7 @@ sub index {
     <meta name="format-detection" content="telephone=no" />
     <link href="[% static_file('../static/bootstrap/bootstrap.min.css') %]" rel="stylesheet" type="text/css" />
     <script src="[% static_file('../static/js/jquery-1.6.4.min.js') %]"></script>
-    <link href="[% static_file('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
+    <link href="[% static_file('/static/css/admin.css') %]" rel="stylesheet" type="text/css" media="screen" />
     <script src="[% static_file('/static/js/main.js') %]"></script>
     <!--[if lt IE 9]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -192,7 +194,7 @@ sub index {
 </html>
 ...
 
-    $self->write_file('static/admin/css/main.css', <<'...', {color1 => '#117711', color2 => '#119911'});
+    $self->write_file('static/admin/css/admin.css', <<'...', {color1 => '#117711', color2 => '#119911'});
 body {
     margin-top: 50px;
 }
