@@ -193,6 +193,24 @@ sub index {
 ...
 
     $self->write_file('static/admin/css/main.css', <<'...', {color1 => '#117711', color2 => '#119911'});
+body {
+    margin-top: 50px;
+}
+
+footer {
+    text-align: right;
+    padding-right: 10px;
+    padding-top: 2px; }
+    footer a {
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+    }
+
+/* smart phones */
+@media screen and (max-device-width: 480px) {
+}
+
 .topbar-inner,.topbar .fill{
     background-color:<% color1 %>;
     background-repeat:repeat-x;
