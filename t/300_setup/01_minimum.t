@@ -12,7 +12,7 @@ my $dir = tempdir(CLEANUP => 1);
 my $cwd = Cwd::getcwd();
 chdir($dir);
 
-Amon2::Setup::Flavor::Minimum->new(PATH => 'My/App', module => 'My::App')->run();
+Amon2::Setup::Flavor::Minimum->new(module => 'My::App')->run();
 
 ok(-f 'lib/My/App.pm', 'lib/My/App.pm exists');
 ok((do 'lib/My/App.pm'), 'lib/My/App.pm is valid') or do {
