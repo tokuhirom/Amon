@@ -17,6 +17,9 @@ sub run {
     $self->load_asset('jQuery');
     $self->load_asset('Bootstrap');
 
+    $self->write_asset('jQuery');
+    $self->write_asset('Bootstrap');
+
     $self->write_file('lib/<<PATH>>.pm', <<'...');
 package <% $module %>;
 use strict;
@@ -397,10 +400,7 @@ done_testing;
 sub write_status_file {
     my ($self, $fname, $status) = @_;
 
-    local $self->{status}         = $status;
-    local $self->{status_message} = status_message($status);
- 
-    $self->write_file($fname, <<'...');
+    $self->write_file($fname, <<'...', status => $status, status_message => status_message($status));
 <!doctype html> 
 <html> 
     <head> 

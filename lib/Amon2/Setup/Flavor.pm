@@ -97,7 +97,19 @@ sub load_asset {
     $self->{tags} .= $klass->tags;
     $self->{tags} .= "\n" if $require_newline;
 
-    $klass->run($self);
+    # $klass->run($self);
+}
+
+sub write_asset {
+    my ($self, $asset, $base) = @_;
+    $asset || die "Missing asset name";
+    $base ||= 'static/';
+
+    my $klass = Plack::Util::load_class($asset, 'Amon2::Setup::Asset');
+    my $files = $klass->files;
+    while (my ($fname, $content) = each %$files) {
+        $self->write_file_raw("$base/$fname", $content);
+    }
 }
 
 1;
