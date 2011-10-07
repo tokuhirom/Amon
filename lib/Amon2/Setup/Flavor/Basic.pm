@@ -20,6 +20,8 @@ sub run {
     $self->write_asset('jQuery');
     $self->write_asset('Bootstrap');
 
+    $self->write_file('static/img/.gitignore', '');
+
     $self->write_file('lib/<<PATH>>.pm', <<'...');
 package <% $module %>;
 use strict;
