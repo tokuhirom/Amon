@@ -33,6 +33,7 @@ requires(
 	'JSON'                            => 2,
 );
 
+recommends 'String::CamelCase' => '0.02';
 recommends 'Amon2::DBI' => '0.06';
 recommends 'DBD::SQLite' => '1.33';
 recommends 'Log::Minimal' => '0.06';
