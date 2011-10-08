@@ -9,7 +9,7 @@ use Plack::Test;
 use Cwd;
 use Test::More;
 use App::Prove;
-use Test::Requires 'HTML::FillInForm::Lite', 'Plack::Middleware::ReverseProxy';
+use Test::Requires 'HTML::FillInForm::Lite', 'Plack::Middleware::ReverseProxy', 'Amon2::DBI', 'DBD::SQLite';
 use Config;
 
 &main; done_testing; exit;
