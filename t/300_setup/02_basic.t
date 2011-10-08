@@ -8,6 +8,11 @@ use t::Util;
 test_flavor(sub {
     ok(-f 'Makefile.PL', 'Makefile.PL');
 	like(slurp('Makefile.PL'), qr{Amon2::Plugin::Web::HTTPSession});
+	for my $env (qw(development deployment test)) {
+		ok(-f "config/${env}.pl");
+		my $conf = do "config/${env}.pl";
+		is(ref($conf), 'HASH');
+	}
     ok(-f 'lib/My/App.pm', 'lib/My/App.pm exists');
     ok((do 'lib/My/App.pm'), 'lib/My/App.pm is valid') or do {
         diag $@;

@@ -107,23 +107,18 @@ any '/' => sub {
 1;
 ...
 
-    $self->write_file("config/development.pl", <<'...');
-+{
-    'DBI' => [
-        'dbi:SQLite:dbname=development.db',
-        '',
-        '',
-        +{
-            sqlite_unicode => 1,
-        }
-    ],
-};
+    $self->write_file('db/.gitignore', <<'...');
+*
 ...
 
-    $self->write_file("config/deployment.pl", <<'...');
+    for my $env (qw(development deployment test)) {
+        $self->write_file("config/${env}.pl", <<'...', {env => $env});
+use File::Spec;
+use File::Basename qw(dirname);
+my $basedir = File::Spec->rel2abs(File::Spec->catdir(dirname(__FILE__), '..'));
 +{
     'DBI' => [
-        'dbi:SQLite:dbname=deployment.db',
+        'dbi:SQLite:dbname=' . File::Spec->catfile($basedir, 'db', 'development.db'),
         '',
         '',
         +{
@@ -132,19 +127,7 @@ any '/' => sub {
     ],
 };
 ...
-
-    $self->write_file("config/test.pl", <<'...');
-+{
-    'DBI' => [
-        'dbi:SQLite:dbname=test.db',
-        '',
-        '',
-        +{
-            sqlite_unicode => 1,
-        }
-    ],
-};
-...
+    }
 
     $self->write_file("sql/my.sql", '');
     $self->write_file("sql/sqlite3.sql", '');
