@@ -19,7 +19,9 @@ test_flavor(sub {
     for my $dir (qw(tmpl/ tmpl/web tmpl/admin/)) {
         ok(-d $dir, $dir);
     }
-    ok(-f 'lib/My/App.pm', 'lib/My/App.pm exists');
+	for my $file (qw(Makefile.PL lib/My/App.pm t/Util.pm .proverc)) {
+		ok(-f $file, "$file exists");
+	}
     ok((do 'lib/My/App.pm'), 'lib/My/App.pm is valid') or do {
         diag $@;
         diag do {
