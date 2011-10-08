@@ -118,7 +118,7 @@ use File::Basename qw(dirname);
 my $basedir = File::Spec->rel2abs(File::Spec->catdir(dirname(__FILE__), '..'));
 +{
     'DBI' => [
-        'dbi:SQLite:dbname=' . File::Spec->catfile($basedir, 'db', 'development.db'),
+        'dbi:SQLite:dbname=' . File::Spec->catfile($basedir, 'db', '<% $env %>.db'),
         '',
         '',
         +{
