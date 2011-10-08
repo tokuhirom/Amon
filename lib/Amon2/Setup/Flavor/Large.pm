@@ -177,7 +177,7 @@ my @controllers = Module::Find::useall('<% $module %>::<% $moniker %>::C');
                 controller => $p0,
                 action     => $method,
             });
-            print STDERR "map: /$p1/$method => ${p0}::${method}\n";
+            print STDERR "map: /$p1/$method => ${p0}::${method}\n" unless $ENV{HARNESS_ACTIVE};
         }
     }
 }
