@@ -10,6 +10,7 @@ use URI::Escape ();
 use Amon2::Web::Request;
 use Amon2::Web::Response;
 use Scalar::Util ();
+use Plack::Session;
 
 # -------------------------------------------------------------------------
 # hook points:
@@ -23,6 +24,11 @@ sub html_content_type { 'text/html; charset=UTF-8' }
 BEGIN {
     my $encoding = Encode::find_encoding('utf-8') || die;
     sub encoding          { $encoding }
+}
+
+sub session {
+	my $self = shift;
+	$self->{session} ||= Plack::Session->new($self->request->env);
 }
 
 # -------------------------------------------------------------------------

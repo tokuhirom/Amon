@@ -44,12 +44,6 @@ __PACKAGE__->load_plugins(
     'Web::CSRFDefender',
 );
 
-# session
-use Plack::Session;
-sub session {
-    $_[0]->{session} ||= Plack::Session->new($_[0]->request->env)
-}
-
 builder {
     enable 'Plack::Middleware::Static',
         path => qr{^(?:/static/|/robot\.txt$|/favicon.ico$)},
