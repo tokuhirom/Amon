@@ -217,6 +217,10 @@ BEGIN {
 		die "Do not run a test script on deployment environment";
 	}
 }
+use File::Spec;
+use File::Basename;
+use lib File::Spec->rel2abs(File::Spec->catdir(dirname(__FILE__), '..', 'extlib', 'lib', 'perl5'));
+use lib File::Spec->rel2abs(File::Spec->catdir(dirname(__FILE__), '..', 'lib'));
 use parent qw/Exporter/;
 use Test::More 0.98;
 

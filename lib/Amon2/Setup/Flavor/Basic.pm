@@ -69,7 +69,7 @@ sub setup_schema {
     my $dbh = $self->dbh();
     my $driver_name = $dbh->{Driver}->{Name};
     my $fname = lc("sql/${driver_name}.sql");
-    open my $fh, '<:utf8', $fname or die "$fname: $!";
+    open my $fh, '<:encoding(UTF-8)', $fname or die "$fname: $!";
     my $source = do { local $/; <$fh> };
 	for my $stmt (split /;/, $source) {
 		$dbh->do($stmt) or die $dbh->errstr();
@@ -347,23 +347,6 @@ $(function () {
 })();
 ...
 
-	$self->create_t_util_pm([qw(slurp)], <<'...');
-sub slurp {
-	my $fname = shift;
-	open my $fh, '<:utf8', $fname or die "$fname: $!";
-	do { local $/; <$fh> };
-}
-
-# initialize database
-use <% $module %>;
-{
-    unlink 'db/test.db' if -f 'db/test.db';
-
-    my $c = <% $module %>->new();
-    $c->setup_schema();
-}
-...
-
     $self->write_file('static/css/main.css', <<'...');
 body {
     margin-top: 50px;
@@ -456,6 +439,8 @@ done_testing;
 
     $self->write_file('.proverc', <<'...');
 -l
+-r t
+-Mt::Util
 ...
 
     for my $status (qw/404 500 502 503 504/) {
@@ -517,6 +502,28 @@ $mech->get_ok('/account/logout');
 ...
 }
 
+sub create_t_util_pm {
+    my ($self, $export, $more) = @_;
+    $export ||= [];
+    $more ||= '';
+
+	$self->SUPER::create_t_util_pm([@$export, qw(slurp)], $more . "\n" . <<'...');
+sub slurp {
+	my $fname = shift;
+	open my $fh, '<:encoding(UTF-8)', $fname or die "$fname: $!";
+	do { local $/; <$fh> };
+}
+
+# initialize database
+use <% $module %>;
+{
+    unlink 'db/test.db' if -f 'db/test.db';
+
+    my $c = <% $module %>->new();
+    $c->setup_schema();
+}
+...
+}
 
 1;
 __END__
