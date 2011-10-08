@@ -16,7 +16,7 @@ test_flavor(sub {
     my @files = (<Amon2::*>);
     is(0+@files, 0);
 
-    for my $dir (qw(tmpl/ tmpl/web tmpl/admin/)) {
+    for my $dir (qw(tmpl/ tmpl/pc tmpl/admin/ static/pc static/admin)) {
         ok(-d $dir, $dir);
     }
 	for my $file (qw(Makefile.PL lib/My/App.pm t/Util.pm .proverc)) {

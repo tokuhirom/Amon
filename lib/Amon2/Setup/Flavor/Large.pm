@@ -27,20 +27,20 @@ sub run {
     # restructure static dir
     rmove('static', 'xxx') or die "$!";
     $self->mkpath('static');
-    rmove('xxx', 'static/web') or die "$!";
-    rcopy('static/web', 'static/admin') or die "$!";
+    rmove('xxx', 'static/pc') or die "$!";
+    rcopy('static/pc', 'static/admin') or die "$!";
 
     # restructure tmpl dir
     rmove('tmpl/', 'yyy') or die "$!";
     $self->mkpath('tmpl');
-    rmove('yyy', 'tmpl/web') or die "$!";
-    rcopy('tmpl/web', 'tmpl/admin') or die "$!";
+    rmove('yyy', 'tmpl/pc') or die "$!";
+    rcopy('tmpl/pc', 'tmpl/admin') or die "$!";
 
     unlink 'static/admin/css/main.css' or die $!;
 
     $self->write_file('app.psgi', <<'...', {header => $self->psgi_header});
 <% $header %>
-use <% $module %>::Web;
+use <% $module %>::PC;
 use Plack::App::File;
 use Plack::Util;
 use Plack::Session::Store::DBI;
@@ -55,7 +55,7 @@ my $db_config = <% $module %>->config->{DBI} || die "Missing configuration for D
 builder {
     enable 'Plack::Middleware::Static',
         path => qr{^(?:/robots\.txt|/favicon.ico)$},
-        root => File::Spec->catdir(dirname(__FILE__), 'static', 'web');
+        root => File::Spec->catdir(dirname(__FILE__), 'static', 'pc');
     enable 'Plack::Middleware::ReverseProxy';
 	enable 'Plack::Middleware::Session',
         store => Plack::Session::Store::DBI->new(
@@ -66,8 +66,8 @@ builder {
         );
 
     mount '/admin/' => Plack::Util::load_psgi('admin.psgi');
-    mount '/static/' => Plack::App::File->new(root => File::Spec->catdir($basedir, 'static', 'web'));
-    mount '/' => <% $module %>::Web->to_app();
+    mount '/static/' => Plack::App::File->new(root => File::Spec->catdir($basedir, 'static', 'pc'));
+    mount '/' => <% $module %>::PC->to_app();
 };
 ...
 
@@ -104,7 +104,7 @@ builder {
 };
 ...
 
-    for my $moniker (qw(Web Admin)) {
+    for my $moniker (qw(PC Admin)) {
         $self->write_file("lib/<<PATH>>/${moniker}.pm", <<'...', { xslate => $self->create_view(tmpl_path => 'tmpl/' . lc($moniker)), moniker => $moniker });
 package <% $module %>::<% $moniker %>;
 use strict;
@@ -207,8 +207,8 @@ sub index {
 
     }
 
-	$self->write_file("lib/<<PATH>>/Web/C/Account.pm", <<'...');
-package <% $module %>::Web::C::Account;
+	$self->write_file("lib/<<PATH>>/PC/C/Account.pm", <<'...');
+package <% $module %>::PC::C::Account;
 use strict;
 use warnings;
 use utf8;
@@ -326,9 +326,10 @@ use Test::More;
 
 use_ok $_ for qw(
     <% $module %>
-    <% $module %>::Web
-    <% $module %>::Web::Dispatcher
-    <% $module %>::Web::C::Root
+    <% $module %>::PC
+    <% $module %>::PC::Dispatcher
+    <% $module %>::PC::C::Root
+    <% $module %>::PC::C::Account
     <% $module %>::Admin
     <% $module %>::Admin::Dispatcher
     <% $module %>::Admin::C::Root
