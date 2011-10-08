@@ -66,13 +66,9 @@ __PACKAGE__->add_trigger(
 </html>
 ...
 
-    $self->write_file('app.psgi', <<'...');
-use File::Spec;
-use File::Basename;
-use lib File::Spec->catdir(dirname(__FILE__), 'extlib', 'lib', 'perl5');
-use lib File::Spec->catdir(dirname(__FILE__), 'lib');
+    $self->write_file('app.psgi', <<'...', {header => $self->psgi_header});
+<% header %>
 use <% $module %>::Web;
-use Plack::Builder;
 
 builder {
     enable 'Plack::Middleware::Static',
