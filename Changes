@@ -1,3 +1,13 @@
+3.00
+
+    [FEATURE ENHANCEMENTS]
+    - use Plack::Session by default
+    - use Amon2::DBI on Large/Basic flavor
+    - default database path is now db/
+    - load t/Util.pm automatically in .proverc
+    [MISC]
+    - depended on latest Text::Xslate::Bridge::TT2Like
+
 2.56
 
     [INCOMPATIBLE CHANGE]
