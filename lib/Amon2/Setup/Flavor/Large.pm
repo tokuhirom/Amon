@@ -1,11 +1,23 @@
 use strict;
-use warnings;
+use warnings FATAL => 'all';
 use utf8;
 
 package Amon2::Setup::Flavor::Large;
 use parent qw(Amon2::Setup::Flavor::Basic);
 use File::Path ();
 use File::Copy::Recursive qw(rmove rcopy);
+
+sub create_makefile_pl {
+    my ($self, $prereq_pm) = @_;
+
+    $self->SUPER::create_makefile_pl(
+        +{
+            %{ $prereq_pm || {} },
+            'String::CamelCase' => '0.02',
+			'Mouse'             => '0.95', # Mouse::Util
+        },
+    );
+}
 
 sub run {
     my $self = shift;
@@ -31,13 +43,27 @@ sub run {
 use <% $module %>::Web;
 use Plack::App::File;
 use Plack::Util;
+use Plack::Session::Store::DBI;
+use DBI;
 
 my $basedir = File::Spec->rel2abs(dirname(__FILE__));
+my $db_config = <% $module %>->config->{DBI} || die "Missing configuration for DBI";
+{
+    my $c = <% $module %>->new();
+    $c->setup_schema();
+}
 builder {
     enable 'Plack::Middleware::Static',
         path => qr{^(?:/robots\.txt|/favicon.ico)$},
         root => File::Spec->catdir(dirname(__FILE__), 'static', 'web');
     enable 'Plack::Middleware::ReverseProxy';
+	enable 'Plack::Middleware::Session',
+        store => Plack::Session::Store::DBI->new(
+            get_dbh => sub {
+                DBI->connect( @$db_config )
+                    or die $DBI::errstr;
+            }
+        );
 
     mount '/admin/' => Plack::Util::load_psgi('admin.psgi');
     mount '/static/' => Plack::App::File->new(root => File::Spec->catdir($basedir, 'static', 'web'));
@@ -49,8 +75,15 @@ builder {
 <% $header %>
 use <% $module %>::Admin;
 use Plack::App::File;
+use Plack::Session::Store::DBI;
+use DBI;
 
 my $basedir = File::Spec->rel2abs(dirname(__FILE__));
+my $db_config = <% $module %>->config->{DBI} || die "Missing configuration for DBI";
+{
+    my $c = <% $module %>->new();
+    $c->setup_schema();
+}
 builder {
     enable 'Plack::Middleware::Auth::Basic',
         authenticator => sub { $_[0] eq 'admin' && $_[1] eq 'admin' };
@@ -58,6 +91,13 @@ builder {
         path => qr{^(?:/robots\.txt|/favicon.ico)$},
         root => File::Spec->catdir(dirname(__FILE__), 'static', 'adin');
     enable 'Plack::Middleware::ReverseProxy';
+	enable 'Plack::Middleware::Session',
+        store => Plack::Session::Store::DBI->new(
+            get_dbh => sub {
+                DBI->connect( @$db_config )
+                    or die $DBI::errstr;
+            }
+        );
 
     mount '/static/' => Plack::App::File->new(root => File::Spec->catdir($basedir, 'static', 'admin'));
     mount '/' => <% $module %>::Admin->to_app();
@@ -83,22 +123,17 @@ sub dispatch {
 
 # load plugins
 use File::Path qw(mkpath);
-use HTTP::Session::Store::File;
 __PACKAGE__->load_plugins(
     'Web::FillInFormLite',
     'Web::NoCache', # do not cache the dynamic content by default
     'Web::CSRFDefender',
-    'Web::HTTPSession' => do {
-        my $session_dir = File::Spec->catdir(File::Spec->tmpdir(), '<% $path %>');
-        mkpath($session_dir);
-        +{
-            state => 'Cookie',
-            store => HTTP::Session::Store::File->new(
-                dir => $session_dir
-            ),
-        }
-    },
 );
+
+# session
+use Plack::Session;
+sub session {
+    $_[0]->{session} ||= Plack::Session->new($_[0]->request->env)
+}
 
 # for your security
 __PACKAGE__->add_trigger(
@@ -114,12 +149,50 @@ __PACKAGE__->add_trigger(
 package <% $module %>::<% $moniker %>::Dispatcher;
 use strict;
 use warnings;
-use Amon2::Web::Dispatcher::RouterSimple;
+use Router::Simple::Declare;
+use Mouse::Util qw(get_code_package);
+use Module::Find ();
+use String::CamelCase qw(decamelize);
 
-use Module::Find;
-Module::Find::useall('<% $module %>::<% $moniker %>::C');
+# define roots here.
+my $router = router {
+	connect '/' => {controller => 'Root', action => 'index' };
+};
 
-connect '/' => {controller => 'Root', action => 'index' };
+my @controllers = Module::Find::useall('<% $module %>::<% $moniker %>::C');
+{
+    no strict 'refs';
+    for my $controller (@controllers) {
+        my $p0 = $controller;
+        $p0 =~ s/^<% $module %>::<% $moniker %>::C:://;
+        my $p1 = decamelize($p0);
+        next if $p0 eq 'Root';
+
+        for my $method (sort keys %{"${controller}::"}) {
+            next if $method =~ /(?:^_|^BEGIN$|^import$)/;
+            my $code = *{"${controller}::${method}"}{CODE};
+            next unless $code;
+            next if get_code_package($code) ne $controller;
+            $router->connect("/$p1/$method" => {
+                controller => $p0,
+                action     => $method,
+            });
+            print STDERR "map: /$p1/$method => ${p0}::${method}\n";
+        }
+    }
+}
+
+sub dispatch {
+    my ($class, $c) = @_;
+    my $req = $c->request;
+    if (my $p = $router->match($req->env)) {
+        my $action = $p->{action};
+        $c->{args} = $p;
+        "@{[ ref Amon2->context ]}::C::$p->{controller}"->$action($c, $p);
+    } else {
+        $c->res_404();
+    }
+}
 
 1;
 ...
@@ -137,7 +210,23 @@ sub index {
 
 1;
 ...
+
     }
+
+	$self->write_file("lib/<<PATH>>/Web/C/Account.pm", <<'...');
+package <% $module %>::Web::C::Account;
+use strict;
+use warnings;
+use utf8;
+
+sub logout {
+    my ($class, $c) = @_;
+	$c->session->expire();
+	$c->redirect('/');
+}
+
+1;
+...
 
     $self->write_file('tmpl/admin/index.tt', <<'...');
 [% WRAPPER 'include/layout.tt' %]

@@ -1,5 +1,5 @@
 use strict;
-use warnings;
+use warnings FATAL => 'all';
 use utf8;
 
 package Amon2::Setup::Flavor::Basic;
@@ -19,11 +19,36 @@ sub run {
     $self->write_asset('jQuery');
     $self->write_asset('Bootstrap');
 
-    $self->create_makefile_pl(
-        +{
-            'Amon2::Plugin::Web::HTTPSession' => 0,
-        },
-    );
+    $self->write_file('app.psgi', <<'...', {header => $self->psgi_header});
+<% header %>
+use <% $module %>::Web;
+use <% $module %>;
+use Plack::Session::Store::DBI;
+use DBI;
+
+{
+    my $c = <% $module %>->new();
+    $c->setup_schema();
+}
+my $db_config = <% $module %>->config->{DBI} || die "Missing configuration for DBI";
+builder {
+    enable 'Plack::Middleware::Static',
+        path => qr{^(?:/static/)},
+        root => File::Spec->catdir(dirname(__FILE__));
+    enable 'Plack::Middleware::Static',
+        path => qr{^(?:/robots\.txt|/favicon.ico)$},
+        root => File::Spec->catdir(dirname(__FILE__), 'static');
+    enable 'Plack::Middleware::ReverseProxy';
+	enable 'Plack::Middleware::Session',
+        store => Plack::Session::Store::DBI->new(
+            get_dbh => sub {
+                DBI->connect( @$db_config )
+                    or die $DBI::errstr;
+            }
+        );
+    <% $module %>::Web->to_app();
+};
+...
 
     $self->write_file('static/img/.gitignore', '');
 
@@ -35,7 +60,21 @@ use parent qw/Amon2/;
 our $VERSION='0.01';
 use 5.008001;
 
-# __PACKAGE__->load_plugin(qw/DBI/);
+__PACKAGE__->load_plugin(qw/DBI/);
+
+# initialize database
+use DBI;
+sub setup_schema {
+    my $self = shift;
+    my $dbh = $self->dbh();
+    my $driver_name = $dbh->{Driver}->{Name};
+    my $fname = lc("sql/${driver_name}.sql");
+    open my $fh, '<:utf8', $fname or die "$fname: $!";
+    my $source = do { local $/; <$fh> };
+	for my $stmt (split /;/, $source) {
+		$dbh->do($stmt) or die $dbh->errstr();
+	}
+}
 
 1;
 ...
@@ -56,23 +95,16 @@ sub dispatch {
 <% $xslate %>
 
 # load plugins
-use File::Path qw(mkpath);
-use HTTP::Session::Store::File;
 __PACKAGE__->load_plugins(
     'Web::FillInFormLite',
     'Web::NoCache', # do not cache the dynamic content by default
     'Web::CSRFDefender',
-    'Web::HTTPSession' => do {
-        my $session_dir = File::Spec->catdir(File::Spec->tmpdir(), '<: $path :>');
-        mkpath($session_dir);
-        +{
-            state => 'Cookie',
-            store => HTTP::Session::Store::File->new(
-                dir => $session_dir,
-            )
-        }
-    },
 );
+
+use Plack::Session;
+sub session {
+    $_[0]->{session} ||= Plack::Session->new($_[0]->request->env)
+}
 
 # for your security
 __PACKAGE__->add_trigger(
@@ -104,6 +136,12 @@ any '/' => sub {
     $c->render('index.tt');
 };
 
+get '/account/logout' => sub {
+    my ($c) = @_;
+    $c->session->expire();
+    $c->redirect('/');
+};
+
 1;
 ...
 
@@ -116,9 +154,15 @@ any '/' => sub {
 use File::Spec;
 use File::Basename qw(dirname);
 my $basedir = File::Spec->rel2abs(File::Spec->catdir(dirname(__FILE__), '..'));
+my $dbpath;
+if ( -d '/home/dotcloud/') {
+    $dbpath = "/home/dotcloud/<% $env %>.db";
+} else {
+    $dbpath = File::Spec->catfile($basedir, 'db', '<% $env %>.db');
+}
 +{
     'DBI' => [
-        'dbi:SQLite:dbname=' . File::Spec->catfile($basedir, 'db', '<% $env %>.db'),
+        "dbi:SQLite:dbname=$dbpath",
         '',
         '',
         +{
@@ -129,8 +173,18 @@ my $basedir = File::Spec->rel2abs(File::Spec->catdir(dirname(__FILE__), '..'));
 ...
     }
 
-    $self->write_file("sql/my.sql", '');
-    $self->write_file("sql/sqlite3.sql", '');
+    $self->write_file("sql/mysql.sql", <<'...');
+CREATE TABLE IF NOT EXISTS sessions (
+    id           CHAR(72) PRIMARY KEY,
+    session_data TEXT
+);
+...
+    $self->write_file("sql/sqlite.sql", <<'...');
+CREATE TABLE IF NOT EXISTS sessions (
+    id           CHAR(72) PRIMARY KEY,
+    session_data TEXT
+);
+...
 
     $self->write_file('tmpl/index.tt', <<'...');
 [% WRAPPER 'include/layout.tt' %]
@@ -293,6 +347,23 @@ $(function () {
 })();
 ...
 
+	$self->create_t_util_pm([qw(slurp)], <<'...');
+sub slurp {
+	my $fname = shift;
+	open my $fh, '<:utf8', $fname or die "$fname: $!";
+	do { local $/; <$fh> };
+}
+
+# initialize database
+use <% $module %>;
+{
+    unlink 'db/test.db' if -f 'db/test.db';
+
+    my $c = <% $module %>->new();
+    $c->setup_schema();
+}
+...
+
     $self->write_file('static/css/main.css', <<'...');
 body {
     margin-top: 50px;
@@ -424,6 +495,28 @@ sub write_status_file {
 </html> 
 ...
 }
+
+sub create_makefile_pl {
+    my ($self, $prereq_pm) = @_;
+
+    $self->SUPER::create_makefile_pl(
+        +{
+            %{ $prereq_pm || {} },
+            'Plack::Session' => '0.14',
+            'Amon2::DBI'     => '0.05',
+            'DBD::SQLite'    => '1.33',
+        },
+    );
+}
+
+sub create_t_02_mech_t {
+    my ($self, $more) = @_;
+    $more ||= '';
+    $self->SUPER::create_t_02_mech_t(<<'...' . $more);
+$mech->get_ok('/account/logout');
+...
+}
+
 
 1;
 __END__

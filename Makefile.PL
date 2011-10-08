@@ -28,11 +28,14 @@ requires(
     'Router::Simple'             => 0.06,
     'Router::Simple::Sinatraish' => 0.02,
     'HTML::FillInForm::Lite'     => 1.09,
-    'HTTP::Session'              => 0.41,
+    'Plack::Session'             => 0.14,
     'Plack::Middleware::ReverseProxy' => 0,
 	'JSON'                            => 2,
 	'HTTP::Status'                    => '6.00',
 );
+
+recommends 'Amon2::DBI' => '0.06';
+recommends 'DBD::SQLite' => '1.33';
 
 # Optional components
 recommends 'Test::WWW::Mechanize::PSGI';

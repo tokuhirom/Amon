@@ -3,6 +3,12 @@ use warnings;
 use utf8;
 use Test::More;
 use t::TestFlavor;
+use Test::Requires {
+	'String::CamelCase' => '0.02',
+	'Mouse'             => '0.95', # Mouse::Util
+	'Amon2::DBI'                      => '0.05',
+	'DBD::SQLite'                     => '1.33',
+};
 
 test_flavor(sub {
     ok(!-e 'xxx');
