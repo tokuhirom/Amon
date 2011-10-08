@@ -86,29 +86,7 @@ builder {
 };
 ...
 
-    $self->write_file('Makefile.PL', <<'...');
-use ExtUtils::MakeMaker;
-
-WriteMakefile(
-    NAME          => '<% $module %>',
-    AUTHOR        => 'Some Person <person@example.com>',
-    VERSION_FROM  => 'lib/<% $path %>.pm',
-    PREREQ_PM     => {
-        'Amon2'                           => '<% $amon2_version %>',
-        'Text::Xslate'                    => '1.4001',
-        'Text::Xslate::Bridge::TT2Like'   => '0.00008',
-        'Plack::Middleware::ReverseProxy' => '0.09',
-        'HTML::FillInForm::Lite'          => '1.09',
-        'Time::Piece'                     => '1.20',
-    },
-    MIN_PERL_VERSION => '5.008001',
-    (-d 'xt' and $ENV{AUTOMATED_TESTING} || $ENV{RELEASE_TESTING}) ? (
-        test => {
-            TESTS => 't/*.t xt/*.t',
-        },
-    ) : (),
-);
-...
+    $self->create_makefile_pl();
 
     $self->write_file('t/00_compile.t', <<'...');
 use strict;
@@ -245,6 +223,37 @@ use File::Basename;
 use lib File::Spec->catdir(dirname(__FILE__), 'extlib', 'lib', 'perl5');
 use lib File::Spec->catdir(dirname(__FILE__), 'lib');
 use Plack::Builder;
+...
+}
+
+sub create_makefile_pl {
+    my ($self, $deps) = @_;
+
+    $self->write_file('Makefile.PL', <<'...', {deps => $deps});
+use ExtUtils::MakeMaker;
+
+WriteMakefile(
+    NAME          => '<% $module %>',
+    AUTHOR        => 'Some Person <person@example.com>',
+    VERSION_FROM  => 'lib/<% $path %>.pm',
+    PREREQ_PM     => {
+        'Amon2'                           => '<% $amon2_version %>',
+        'Text::Xslate'                    => '1.4001',
+        'Text::Xslate::Bridge::TT2Like'   => '0.00008',
+        'Plack::Middleware::ReverseProxy' => '0.09',
+        'HTML::FillInForm::Lite'          => '1.09',
+        'Time::Piece'                     => '1.20',
+<% FOR v IN deps.keys() %>
+        '<% v %>'                         => '<% deps.keys.item(v) %>',
+<% END %>
+    },
+    MIN_PERL_VERSION => '5.008001',
+    (-d 'xt' and $ENV{AUTOMATED_TESTING} || $ENV{RELEASE_TESTING}) ? (
+        test => {
+            TESTS => 't/*.t xt/*.t',
+        },
+    ) : (),
+);
 ...
 }
 

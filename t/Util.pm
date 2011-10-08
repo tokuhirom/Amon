@@ -9,7 +9,7 @@ use Test::More;
 use App::Prove;
 use File::Basename;
 
-our @EXPORT = qw/run_app_test/;
+our @EXPORT = qw/run_app_test slurp/;
 
 sub run_app_test {
     my $name = shift;
@@ -22,6 +22,12 @@ sub run_app_test {
     $app->process_args('-Ilib', "-I$libpath", <t/*.t>);
     ok($app->run);
     done_testing;
+}
+
+sub slurp {
+	my $fname = shift;
+	open my $fh, '<', $fname or die "$fname: $!";
+	do { local $/; <$fh> };
 }
 
 1;

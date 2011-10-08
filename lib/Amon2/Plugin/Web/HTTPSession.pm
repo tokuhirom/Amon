@@ -93,6 +93,10 @@ HTTP::Session integrate to Amon2.
 
 After load this plugin, you can get instance of HTTP::Session from C<$c->session> method.
 
+=head1 NOTE
+
+I will remove this plugin from core distribution. If you want to use this plugin, add to prereq_pm.
+
 =head1 SEE ALSO
 
 L<HTTP::Session>
