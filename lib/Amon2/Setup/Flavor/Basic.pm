@@ -4,7 +4,6 @@ use utf8;
 
 package Amon2::Setup::Flavor::Basic;
 use parent qw(Amon2::Setup::Flavor::Minimum);
-use HTTP::Status qw/status_message/;
 
 sub run {
     my $self = shift;
@@ -451,7 +450,14 @@ done_testing;
 sub write_status_file {
     my ($self, $fname, $status) = @_;
 
-    $self->write_file($fname, <<'...', status => $status, status_message => status_message($status));
+    my $message = {
+        '503' => 'Service Unavailable',
+        '502' => 'Bad Gateway',
+        '500' => 'Internal Server Error',
+        '504' => 'Gateway Timeout',
+        '404' => 'Not Found'
+    }->{$status};
+    $self->write_file($fname, <<'...', status => $status, status_message => $message);
 <!doctype html> 
 <html> 
     <head> 

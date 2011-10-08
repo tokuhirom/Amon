@@ -31,7 +31,6 @@ requires(
     'Plack::Session'             => 0.14,
     'Plack::Middleware::ReverseProxy' => 0,
 	'JSON'                            => 2,
-	'HTTP::Status'                    => '6.00',
 );
 
 recommends 'Amon2::DBI' => '0.06';
