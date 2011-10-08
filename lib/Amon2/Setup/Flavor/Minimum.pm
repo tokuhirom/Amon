@@ -262,9 +262,9 @@ WriteMakefile(
         'HTML::FillInForm::Lite'          => '1.09',
         'Time::Piece'                     => '1.20',
 		'Test::More'                      => '0.98',
-<% FOR v IN deps.keys() %>
+<% FOR v IN deps.keys() -%>
         '<% v %>'                         => '<% deps.item(v) %>',
-<% END %>
+<% END -%>
     },
     MIN_PERL_VERSION => '5.008001',
     (-d 'xt' and $ENV{AUTOMATED_TESTING} || $ENV{RELEASE_TESTING}) ? (
