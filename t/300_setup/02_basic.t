@@ -27,6 +27,7 @@ test_flavor(sub {
     };
     is( scalar( my @files = glob('static/js/jquery-*.js') ), 1 );
 	like(slurp('t/02_mech.t'), qr{account/logout});
+	like(slurp('Makefile.PL'), qr{'Amon2::DBI'\s+=>\s*'[0-9.]+'});
 }, 'Basic');
 
 done_testing;

@@ -263,7 +263,7 @@ WriteMakefile(
         'Time::Piece'                     => '1.20',
 		'Test::More'                      => '0.98',
 <% FOR v IN deps.keys() %>
-        '<% v %>'                         => '<% deps.keys.item(v) %>',
+        '<% v %>'                         => '<% deps.item(v) %>',
 <% END %>
     },
     MIN_PERL_VERSION => '5.008001',
