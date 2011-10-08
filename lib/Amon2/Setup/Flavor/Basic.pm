@@ -19,6 +19,12 @@ sub run {
     $self->write_asset('jQuery');
     $self->write_asset('Bootstrap');
 
+    $self->create_makefile_pl(
+        +{
+            'Amon2::Plugin::Web::HTTPSession' => 0,
+        },
+    );
+
     $self->write_file('static/img/.gitignore', '');
 
     $self->write_file('lib/<<PATH>>.pm', <<'...');
