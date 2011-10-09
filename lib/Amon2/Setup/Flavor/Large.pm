@@ -38,7 +38,7 @@ sub run {
 
     unlink 'static/admin/css/main.css' or die $!;
 
-    $self->write_file('app.psgi', <<'...', {header => $self->psgi_header});
+    $self->write_file('pc.psgi', <<'...', {header => $self->psgi_header});
 <% $header %>
 use <% $module %>::PC;
 use Plack::App::File;
@@ -65,9 +65,20 @@ builder {
             }
         );
 
-    mount '/admin/' => Plack::Util::load_psgi('admin.psgi');
     mount '/static/' => Plack::App::File->new(root => File::Spec->catdir($basedir, 'static', 'pc'));
     mount '/' => <% $module %>::PC->to_app();
+};
+...
+
+    $self->write_file('app.psgi', <<'...', {header => $self->psgi_header});
+<% $header %>
+use <% $module %>::PC;
+use Plack::Util;
+use Plack::Builder;
+
+builder {
+    mount '/admin/' => Plack::Util::load_psgi('admin.psgi');
+    mount '/' => Plack::Util::load_psgi('pc.psgi');
 };
 ...
 
@@ -172,7 +183,7 @@ my @controllers = Module::Find::useall('<% $module %>::<% $moniker %>::C');
                 controller => $p0,
                 action     => $method,
             });
-            print STDERR "map: $path => ${p0}::${method}\n";# unless $ENV{HARNESS_ACTIVE};
+            print STDERR "map: $path => ${p0}::${method}\n" unless $ENV{HARNESS_ACTIVE};
         }
     }
 }
