@@ -338,7 +338,7 @@ CREATE TABLE IF NOT EXISTS sessions (
     $self->write_file('static/js/main.js', <<'...');
 $(function () {
     $('#topbar').dropdown();
-})();
+});
 ...
 
     $self->write_file('static/css/main.css', <<'...');
