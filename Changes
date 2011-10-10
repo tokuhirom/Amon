@@ -1,3 +1,9 @@
+3.02
+
+    [BUG FIX]
+    - jquery assets was broken in 3.00
+    - main.js is invalid from bootstrap support
+
 3.01
 
     [FEATURE ENHANCEMENTS]
