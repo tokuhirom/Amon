@@ -3,6 +3,7 @@ use warnings;
 use utf8;
 use Test::More;
 use File::Temp qw(tempdir);
+use t::Util;
 
 use Amon2::Setup::Asset::jQuery;
 use Amon2::Setup::Flavor;
@@ -21,6 +22,9 @@ $flavor->write_asset('Bootstrap');
 ok(-f 'static/bootstrap/bootstrap.min.css');
 ok(-d 'static/js/');
 ok(-f 'static/bootstrap/bootstrap-dropdown.js');
+my $jquery = [<static/js/jquery*.js>]->[0];
+ok($jquery);
+ok(-f $jquery);
 
 like($flavor->{tags}, qr/jquery-.+\.js/);
 like($flavor->{tags}, qr/bootstrap.min.css/);
