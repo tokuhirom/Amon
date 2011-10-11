@@ -87,6 +87,7 @@ sub run_bootstrap {
     for my $url (qw(
         http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css
         http://twitter.github.com/bootstrap/1.3.0/bootstrap-dropdown.js
+        http://twitter.github.com/bootstrap/1.3.0/bootstrap-twipsy.js
     )) {
         my $basename = do {
             local $_ = $url;

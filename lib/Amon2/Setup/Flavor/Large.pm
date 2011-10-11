@@ -237,9 +237,9 @@ sub logout {
     $self->write_file('tmpl/admin/index.tt', <<'...');
 [% WRAPPER 'include/layout.tt' %]
 
-<div class="section">
+<section>
     <h1>This is a <% $dist %>'s admin site</h1>
-</div>
+</section>
 
 [% END %]
 ...
@@ -272,19 +272,17 @@ sub logout {
             </div><!-- /topbar-inner -->
         </div><!-- /topbar -->
     </div>
-    <div class="container clearfix">
-        <div class="row">
-            <div class="span4">
+    <div class="container-fluid">
+        <div class="sidebar">
                 [% INCLUDE "include/sidebar.tt" %]
-            </div>
-            <div class="span12">
-                [% content %]
-            </div>
-        </div>
-        <footer class="footer">
-            Powered by <a href="http://amon.64p.org/">Amon2</a>
-        </footer>
+		</div>
+		<div class="content">
+			[% content %]
+		</div>
     </div>
+	<footer class="footer">
+		Powered by <a href="http://amon.64p.org/">Amon2</a>
+	</footer>
 </body>
 </html>
 ...
