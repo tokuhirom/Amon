@@ -1,3 +1,10 @@
+3.04
+
+    [FEATURE ENHACEMENTS]
+    * Flavor::Large: better div structure on admin page
+    * a44b06f Flavor::Basic: added test case for jslint
+    * 5334ef7 Asset::Bootstrap: generate bootstrap/bootstrap-twipsy.js.
+
 3.03
 
     [BUG FIX]
