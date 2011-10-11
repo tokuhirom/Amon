@@ -11,14 +11,14 @@ requires(
     'Test::More'    => 0.98,     # 0.98 or later is required for better testing.
     'Exporter'      => 5.64,
     'parent'        => 0.223,
-    'Module::Find'  => 0.10,
+    'Module::Find'  => '0.10',
     'URI'           => 1.54,
     'URI::Escape'   => 3.30,
     'Data::OptList' => 0.106,
-    'MRO::Compat'   => 0,
-	'Data::Section::Simple' => 0, # for ::Lite
-	'HTTP::Date'                      => 6,
-	'File::Copy::Recursive' => 0,
+    'MRO::Compat'   => '0.11',
+	'Data::Section::Simple' => '0.03', # for ::Lite
+	'HTTP::Date'                      => '6.00',
+	'File::Copy::Recursive' => '0.38',
 );
 
 # Not core, but default components.
@@ -29,7 +29,7 @@ requires(
     'Router::Simple::Sinatraish' => 0.02,
     'HTML::FillInForm::Lite'     => 1.09,
     'Plack::Session'             => 0.14,
-    'Plack::Middleware::ReverseProxy' => 0,
+    'Plack::Middleware::ReverseProxy' => '0.10',
 	'JSON'                            => 2,
 );
 
