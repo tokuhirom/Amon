@@ -39,7 +39,6 @@ __PACKAGE__->add_trigger(
 );
 
 # load plugins
-use HTTP::Session::Store::File;
 __PACKAGE__->load_plugins(
     'Web::CSRFDefender',
 );
