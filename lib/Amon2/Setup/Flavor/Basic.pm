@@ -130,7 +130,7 @@ any '/' => sub {
     $c->render('index.tt');
 };
 
-get '/account/logout' => sub {
+post '/account/logout' => sub {
     my ($c) = @_;
     $c->session->expire();
     $c->redirect('/');
