@@ -1,3 +1,9 @@
+3.05
+
+    [ENHANCEMENTS]
+    - Flavor::Minimum: more minimalistic
+    - Flavor::Basic: logout endpoint should be only accept post
+
 3.04
 
     [FEATURE ENHACEMENTS]
