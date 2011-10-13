@@ -77,8 +77,6 @@ builder {
     enable 'Plack::Middleware::Static',
         path => qr{^(?:/robots\.txt|/favicon.ico)$},
         root => File::Spec->catdir(dirname(__FILE__), 'static');
-    enable 'Plack::Middleware::ReverseProxy';
-	enable 'Plack::Middleware::Session';
     <% $module %>::Web->to_app();
 };
 ...
@@ -258,9 +256,6 @@ WriteMakefile(
         'Amon2'                           => '<% $amon2_version %>',
         'Text::Xslate'                    => '1.4001',
         'Text::Xslate::Bridge::TT2Like'   => '0.00008',
-        'Plack::Middleware::ReverseProxy' => '0.09',
-        'HTML::FillInForm::Lite'          => '1.09',
-        'Time::Piece'                     => '1.20',
 		'Test::More'                      => '0.98',
 <% FOR v IN deps.keys() -%>
         '<% v %>'                         => '<% deps.item(v) %>',
