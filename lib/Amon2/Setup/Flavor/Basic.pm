@@ -531,7 +531,6 @@ sub create_t_02_mech_t {
     my ($self, $more) = @_;
     $more ||= '';
     $self->SUPER::create_t_02_mech_t(<<'...' . $more);
-$mech->get_ok('/account/logout');
 ...
 }
 
