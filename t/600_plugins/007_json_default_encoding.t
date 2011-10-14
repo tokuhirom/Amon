@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 use Test::More;
+use Test::Requires 'JSON';
 
 {
     package MyApp;
