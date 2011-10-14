@@ -154,6 +154,7 @@ __PACKAGE__->add_trigger(
 package <% $module %>::<% $moniker %>::Dispatcher;
 use strict;
 use warnings;
+use utf8;
 use Router::Simple::Declare;
 use Mouse::Util qw(get_code_package);
 use Module::Find ();
@@ -351,6 +352,7 @@ done_testing;
     $self->write_file('t/04_admin.t', <<'...');
 use strict;
 use warnings;
+use utf8;
 use t::Util;
 use Plack::Test;
 use Plack::Util;

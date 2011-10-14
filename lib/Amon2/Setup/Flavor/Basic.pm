@@ -55,6 +55,7 @@ builder {
 package <% $module %>;
 use strict;
 use warnings;
+use utf8;
 use parent qw/Amon2/;
 our $VERSION='0.01';
 use 5.008001;
@@ -82,6 +83,7 @@ sub setup_schema {
 package <% $module %>::Web;
 use strict;
 use warnings;
+use utf8;
 use parent qw/<% $module %> Amon2::Web/;
 use File::Spec;
 
@@ -123,6 +125,7 @@ __PACKAGE__->add_trigger(
 package <% $module %>::Web::Dispatcher;
 use strict;
 use warnings;
+use utf8;
 use Amon2::Web::Dispatcher::Lite;
 
 any '/' => sub {
@@ -364,6 +367,7 @@ footer {
     $self->write_file("t/00_compile.t", <<'...');
 use strict;
 use warnings;
+use utf8;
 use Test::More;
 
 use_ok $_ for qw(
@@ -411,6 +415,7 @@ MYMETA.yml
     $self->write_file('t/03_assets.t', <<'...');
 use strict;
 use warnings;
+use utf8;
 use t::Util;
 use Plack::Test;
 use Plack::Util;

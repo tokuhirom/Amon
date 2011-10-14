@@ -128,6 +128,7 @@ our @EXPORT = qw//;
     $self->write_file('t/01_root.t', <<'...');
 use strict;
 use warnings;
+use utf8;
 use t::Util;
 use Plack::Test;
 use Plack::Util;

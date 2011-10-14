@@ -12,6 +12,7 @@ sub run {
 package <% $module %>;
 use strict;
 use warnings;
+use utf8;
 use parent qw/Amon2/;
 our $VERSION='0.01';
 use 5.008001;
@@ -29,6 +30,7 @@ sub load_config {
 package <% $module %>::Web;
 use strict;
 use warnings;
+use utf8;
 use parent qw/<% $module %> Amon2::Web/;
 use File::Spec;
 
@@ -99,6 +101,7 @@ done_testing;
     $self->write_file('t/01_root.t', <<'...');
 use strict;
 use warnings;
+use utf8;
 use t::Util;
 use Plack::Test;
 use Plack::Util;
@@ -137,6 +140,7 @@ sub create_t_02_mech_t {
     $self->write_file('t/02_mech.t', <<'...' . $more . "\ndone_testing();\n");
 use strict;
 use warnings;
+use utf8;
 use t::Util;
 use Plack::Test;
 use Plack::Util;
@@ -192,6 +196,7 @@ use Text::Xslate;
 sub psgi_header {
     <<'...';
 use strict;
+use utf8;
 use File::Spec;
 use File::Basename;
 use lib File::Spec->catdir(dirname(__FILE__), 'extlib', 'lib', 'perl5');
