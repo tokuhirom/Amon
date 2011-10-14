@@ -19,6 +19,7 @@ requires(
 	'Data::Section::Simple' => '0.03', # for ::Lite
 	'HTTP::Date'                      => '6.00',
 	'File::Copy::Recursive' => '0.38',
+	'Plack::Session' => 0, # required in Amon2::Web
 );
 
 # Not core, but default components.
