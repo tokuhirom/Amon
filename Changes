@@ -1,3 +1,8 @@
+3.08
+
+    [BUG FIX]
+    - Flavor: Added 'use utf8' to some of *.pm .
+
 3.07
 
     [BUG FIX]
