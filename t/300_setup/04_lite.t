@@ -3,7 +3,7 @@ use warnings;
 use utf8;
 use Test::More;
 use t::TestFlavor;
-use Test::Requires 'JSON';
+use Test::Requires 'JSON', 'Plack::Middleware::ReverseProxy';
 
 test_flavor(sub {
     ok(-f 'app.psgi', 'app.psgi exists');
