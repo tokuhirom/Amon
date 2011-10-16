@@ -14,7 +14,13 @@ GetOptions(
     'help'      => \my $help,
     'flavor=s@' => \@flavors,
 	'vc=s'      => \$vc,
+    'version'   => \my $version,
 ) or pod2usage(0);
+if ($version) {
+    require Amon2;
+    print "Amon2: $Amon2::VERSION\n";
+    exit(0);
+}
 pod2usage(1) if $help;
 push @flavors, 'Basic' if @flavors == 0;
 @flavors = map { split /,/, $_ } @flavors;
