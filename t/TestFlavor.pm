@@ -15,6 +15,8 @@ use Test::More;
 
 sub test_flavor {
     my ($code, $flavor) = @_;
+
+	local $ENV{PLACK_ENV} = 'development';
     $flavor = Plack::Util::load_class($flavor, 'Amon2::Setup::Flavor');
 
     my $libpath = File::Spec->rel2abs(File::Spec->catfile(dirname(__FILE__), '..', '..', 'lib'));

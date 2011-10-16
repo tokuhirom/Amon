@@ -16,6 +16,7 @@ use Config;
 
 sub main {
     my $old_cwd = Cwd::cwd;
+		local $ENV{PLACK_ENV} = 'development';
         &main_test;
     chdir $old_cwd;
 }
