@@ -4,12 +4,16 @@ use warnings;
 use Getopt::Long;
 use Pod::Usage;
 use Amon2::Setup::Flavor::Basic;
+use Amon2::Setup::VC::Git;
 use Cwd ();
+use Plack::Util;
 
 my @flavors;
+my $vc = 'Git';
 GetOptions(
     'help'      => \my $help,
     'flavor=s@' => \@flavors,
+	'vc=s'      => \$vc,
 ) or pod2usage(0);
 pod2usage(1) if $help;
 push @flavors, 'Basic' if @flavors == 0;
@@ -36,6 +40,12 @@ sub main {
             run_flavor($module => $flavor);
         chdir($cwd);
     }
+
+	{
+		$vc = Plack::Util::load_class($vc, 'Amon2::Setup::VC');
+		$vc = $vc->new();
+		$vc->do_import();
+	}
 }
 
 sub run_flavor {
