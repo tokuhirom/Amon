@@ -1,3 +1,8 @@
+3.09
+
+    [FEATURE ENHANCEMENT]
+    - set "X-Frame-Options: DENY" by default
+
 3.08
 
     [BUG FIX]
