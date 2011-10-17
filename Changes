@@ -1,3 +1,9 @@
+3.11
+
+    [BUG FIX]
+    - Win32 fix(mattn)
+    https://github.com/tokuhirom/Amon/issues/33
+
 3.10
 
     [FEATURE ENHANCEMENT]
