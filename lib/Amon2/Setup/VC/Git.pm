@@ -18,7 +18,7 @@ sub do_import {
 
     !system("git init") or die $?;
     !system("git add .") or die $?;
-    !system("git commit -m 'initial import'") or die $?;
+    !system(q{git commit -m "initial import"}) or die $?;
 }
 
 1;
