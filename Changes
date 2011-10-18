@@ -1,3 +1,11 @@
+3.12
+
+    [TESTING FIX]
+    - fixed some testing issue(antipop)
+
+    [DOC FIX]
+    - tiny doc fix in amon2-setup.pl(reported by sugyan++)
+
 3.11
 
     [BUG FIX]
