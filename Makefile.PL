@@ -33,7 +33,7 @@ requires(
 
 # Optional components
 
-test_requires 'Test::Requires';
+test_requires 'Test::Requires' => 0.06;
 
 tests 't/*.t t/*/*.t t/*/*/*.t';
 recursive_author_tests('xt');

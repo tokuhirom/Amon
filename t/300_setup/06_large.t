@@ -8,6 +8,7 @@ use Test::Requires {
 	'Mouse'             => '0.95', # Mouse::Util
 	'Amon2::DBI'                      => '0.05',
 	'DBD::SQLite'                     => '1.33',
+    'Plack::Session'                  => '0.14',
 };
 
 test_flavor(sub {

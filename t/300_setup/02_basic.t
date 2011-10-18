@@ -7,6 +7,8 @@ use t::Util;
 use Test::Requires +{
 	'Amon2::DBI'                      => '0.05',
 	'DBD::SQLite'                     => '1.33',
+    'DBI'                             => 0,
+    'Plack::Session'                  => '0.14',
 };
 
 test_flavor(sub {
