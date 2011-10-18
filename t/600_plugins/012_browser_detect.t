@@ -24,5 +24,5 @@ my $env = {
 my $c = MyApp::Web->new();
 my $req = $c->create_request($env);
 $c->{request} = $req;
-ok $c->browser->iphone;
+ok $c->browser_detect->iphone;
 done_testing;
