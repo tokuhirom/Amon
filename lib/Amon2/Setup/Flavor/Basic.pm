@@ -286,7 +286,7 @@ CREATE TABLE IF NOT EXISTS sessions (
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 </head>
-<body[% IF bodyID %] class="[% bodyID %]"[% END %]>
+<body[% IF bodyID %] id="[% bodyID %]"[% END %]>
     <div class="topbar-wrapper" style="z-index: 5;">
         <div class="topbar" data-dropdown="dropdown">
             <div class="topbar-inner">
