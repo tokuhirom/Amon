@@ -1,16 +1,12 @@
 package DeepNamespace::Web::Admin::Dispatcher;
 use strict;
-use feature 'switch';
 
 sub dispatch {
     my ($class, $c) = @_;
-    given ($c->request->path_info) {
-        when ('/') {
-            return DeepNamespace::Web::Admin::C::Root->index($c);
-        }
-        default {
-            return res_404();
-        }
+    if ($c->request->path_info eq '/') {
+        return DeepNamespace::Web::Admin::C::Root->index($c);
+    } else {
+        return $c->res_404();
     }
 }
 
