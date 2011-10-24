@@ -2,6 +2,7 @@ package Amon2::Config::Simple;
 use strict;
 use warnings;
 use File::Spec;
+use Carp ();
 
 sub load {
     my ($class, $c) = (shift, shift);
@@ -9,7 +10,12 @@ sub load {
 
     my $env = $conf{environment} || $c->mode_name || 'development';
     my $fname = File::Spec->catfile($c->base_dir, 'config', "${env}.pl");
-    my $config = do $fname or die "Cannot load configuration file: $fname";
+    my $config = do $fname;
+    Carp::croak("$fname: $@") if $@;
+    Carp::croak("$fname: $!") unless defined $config;
+    unless ( ref($config) eq 'HASH' ) {
+        Carp::croak("$fname does not return HashRef.");
+    }
     return $config;
 }
 
