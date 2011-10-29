@@ -4,6 +4,7 @@ use warnings;
 use HTTP::Session;
 use Amon2::Util;
 use Plack::Util ();
+use Plack::Request;
 
 sub init {
     my ($class, $c, $conf) = @_;
@@ -19,7 +20,8 @@ sub init {
             HTTP::Session->new(
                 state   => $state_code->($self),
                 store   => $store_code->($self),
-                request => $self->request,
+                # Note: Do not decode session id
+                request => Plack::Request->new($self->request->env),
             );
         };
     });
