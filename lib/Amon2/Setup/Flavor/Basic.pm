@@ -35,10 +35,10 @@ builder {
         path => qr{^(?:/static/)},
         root => File::Spec->catdir(dirname(__FILE__));
     enable 'Plack::Middleware::Static',
-        path => qr{^(?:/robots\.txt|/favicon.ico)$},
+        path => qr{^(?:/robots\.txt|/favicon\.ico)$},
         root => File::Spec->catdir(dirname(__FILE__), 'static');
     enable 'Plack::Middleware::ReverseProxy';
-	enable 'Plack::Middleware::Session',
+    enable 'Plack::Middleware::Session',
         store => Plack::Session::Store::DBI->new(
             get_dbh => sub {
                 DBI->connect( @$db_config )
@@ -71,9 +71,9 @@ sub setup_schema {
     my $fname = lc("sql/${driver_name}.sql");
     open my $fh, '<:encoding(UTF-8)', $fname or die "$fname: $!";
     my $source = do { local $/; <$fh> };
-	for my $stmt (split /;/, $source) {
-		$dbh->do($stmt) or die $dbh->errstr();
-	}
+    for my $stmt (split /;/, $source) {
+        $dbh->do($stmt) or die $dbh->errstr();
+    }
 }
 
 1;
@@ -275,8 +275,8 @@ CREATE TABLE IF NOT EXISTS sessions (
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>[% title || '<%= $dist %>' %]</title>
-    <meta http-equiv="Content-Style-Type" content="text/css" />  
-    <meta http-equiv="Content-Script-Type" content="text/javascript" />  
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0"]]>
     <meta name="format-detection" content="telephone=no" />
     <% $tags %>
@@ -384,13 +384,13 @@ done_testing;
 use strict;
 use Test::More;
 eval q{
-	use Perl::Critic 1.113;
-	use Test::Perl::Critic 1.02 -exclude => [
-		'Subroutines::ProhibitSubroutinePrototypes',
-		'Subroutines::ProhibitExplicitReturnUndef',
-		'TestingAndDebugging::ProhibitNoStrict',
-		'ControlStructures::ProhibitMutatingListFunctions',
-	];
+    use Perl::Critic 1.113;
+    use Test::Perl::Critic 1.02 -exclude => [
+        'Subroutines::ProhibitSubroutinePrototypes',
+        'Subroutines::ProhibitExplicitReturnUndef',
+        'TestingAndDebugging::ProhibitNoStrict',
+        'ControlStructures::ProhibitMutatingListFunctions',
+    ];
 };
 plan skip_all => "Test::Perl::Critic 1.02+ and Perl::Critic 1.113+ is not installed." if $@;
 all_critic_ok('lib');
@@ -491,11 +491,11 @@ sub write_status_file {
         '404' => 'Not Found'
     }->{$status};
     $self->write_file($fname, <<'...', status => $status, status_message => $message);
-<!doctype html> 
-<html> 
-    <head> 
-        <meta charset=utf-8 /> 
-        <style type="text/css"> 
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <style type="text/css">
             body {
                 text-align: center;
                 font-family: 'Menlo', 'Monaco', Courier, monospace;
@@ -510,13 +510,13 @@ sub write_status_file {
             .message {
                 font-size: 400%;
             }
-        </style> 
-    </head> 
-    <body> 
-        <div class="number"><%= $status %></div> 
-        <div class="message"><%= $status_message %></div> 
-    </body> 
-</html> 
+        </style>
+    </head>
+    <body>
+        <div class="number"><%= $status %></div>
+        <div class="message"><%= $status_message %></div>
+    </body>
+</html>
 ...
 }
 
@@ -526,19 +526,19 @@ sub create_makefile_pl {
     $self->SUPER::create_makefile_pl(
         +{
             %{ $prereq_pm || {} },
-			'HTML::FillInForm::Lite'          => '1.09',
-			'Time::Piece'                     => '1.20',
-            'Plack::Session' => '0.14',
-            'Amon2::DBI'     => '0.05',
-            'DBD::SQLite'    => '1.33',
-			'Plack::Middleware::Session' => 0,
-			'Plack::Middleware::ReverseProxy' => '0.09',
-			'JSON'                            => '2.50',
-			'String::CamelCase' => '0.02',
-			'Amon2::DBI' => '0.06',
-			'DBD::SQLite' => '1.33',
-			'Log::Minimal' => '0.06',
-			'Test::WWW::Mechanize::PSGI' => 0,
+            'HTML::FillInForm::Lite'          => '1.09',
+            'Time::Piece'                     => '1.20',
+            'Plack::Session'                  => '0.14',
+            'Amon2::DBI'                      => '0.05',
+            'DBD::SQLite'                     => '1.33',
+            'Plack::Middleware::Session'      => 0,
+            'Plack::Middleware::ReverseProxy' => '0.09',
+            'JSON'                            => '2.50',
+            'String::CamelCase'               => '0.02',
+            'Amon2::DBI'                      => '0.06',
+            'DBD::SQLite'                     => '1.33',
+            'Log::Minimal'                    => '0.06',
+            'Test::WWW::Mechanize::PSGI'      => 0,
         },
     );
 }
@@ -555,11 +555,11 @@ sub create_t_util_pm {
     $export ||= [];
     $more ||= '';
 
-	$self->SUPER::create_t_util_pm([@$export, qw(slurp)], $more . "\n" . <<'...');
+    $self->SUPER::create_t_util_pm([@$export, qw(slurp)], $more . "\n" . <<'...');
 sub slurp {
-	my $fname = shift;
-	open my $fh, '<:encoding(UTF-8)', $fname or die "$fname: $!";
-	do { local $/; <$fh> };
+    my $fname = shift;
+    open my $fh, '<:encoding(UTF-8)', $fname or die "$fname: $!";
+    do { local $/; <$fh> };
 }
 
 # initialize database

@@ -46,10 +46,10 @@ __PACKAGE__->load_plugins(
 
 builder {
     enable 'Plack::Middleware::Static',
-        path => qr{^(?:/static/|/robot\.txt$|/favicon.ico$)},
+        path => qr{^(?:/static/|/robot\.txt$|/favicon\.ico$)},
         root => File::Spec->catdir(dirname(__FILE__));
     enable 'Plack::Middleware::ReverseProxy';
-	enable 'Plack::Middleware::Session';
+    enable 'Plack::Middleware::Session';
 
     __PACKAGE__->to_app();
 };
@@ -83,8 +83,8 @@ WriteMakefile(
         'Text::Xslate::Bridge::TT2Like'   => '0.00008',
         'Plack::Middleware::ReverseProxy' => '0.09',
         'Time::Piece'                     => '1.20',
-        'HTML::FillInForm::Lite'          => 1.09,
-        'Plack::Session'                  => 0.14,
+        'HTML::FillInForm::Lite'          => '1.09',
+        'Plack::Session'                  => '0.14',
         'Plack::Middleware::ReverseProxy' => '0.10',
         'JSON'                            => 2,
     },
@@ -111,7 +111,7 @@ our @EXPORT = qw//;
 
 {
     # utf8 hack.
-    binmode Test::More->builder->$_, ":utf8" for qw/output failure_output todo_output/;                       
+    binmode Test::More->builder->$_, ":utf8" for qw/output failure_output todo_output/;
     no warnings 'redefine';
     my $code = \&Test::Builder::child;
     *Test::Builder::child = sub {
