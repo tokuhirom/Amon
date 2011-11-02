@@ -54,7 +54,7 @@ my $db_config = <% $module %>->config->{DBI} || die "Missing configuration for D
 }
 builder {
     enable 'Plack::Middleware::Static',
-        path => qr{^(?:/robots\.txt|/favicon.ico)$},
+        path => qr{^(?:/robots\.txt|/favicon\.ico)$},
         root => File::Spec->catdir(dirname(__FILE__), 'static', 'pc');
     enable 'Plack::Middleware::ReverseProxy';
     enable 'Plack::Middleware::Session',
@@ -99,7 +99,7 @@ builder {
     enable 'Plack::Middleware::Auth::Basic',
         authenticator => sub { $_[0] eq 'admin' && $_[1] eq 'admin' };
     enable 'Plack::Middleware::Static',
-        path => qr{^(?:/robots\.txt|/favicon.ico)$},
+        path => qr{^(?:/robots\.txt|/favicon\.ico)$},
         root => File::Spec->catdir(dirname(__FILE__), 'static', 'adin');
     enable 'Plack::Middleware::ReverseProxy';
     enable 'Plack::Middleware::Session',

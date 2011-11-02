@@ -46,7 +46,7 @@ __PACKAGE__->load_plugins(
 
 builder {
     enable 'Plack::Middleware::Static',
-        path => qr{^(?:/static/|/robot\.txt$|/favicon.ico$)},
+        path => qr{^(?:/static/|/robot\.txt$|/favicon\.ico$)},
         root => File::Spec->catdir(dirname(__FILE__));
     enable 'Plack::Middleware::ReverseProxy';
     enable 'Plack::Middleware::Session';

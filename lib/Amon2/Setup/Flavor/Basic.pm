@@ -35,7 +35,7 @@ builder {
         path => qr{^(?:/static/)},
         root => File::Spec->catdir(dirname(__FILE__));
     enable 'Plack::Middleware::Static',
-        path => qr{^(?:/robots\.txt|/favicon.ico)$},
+        path => qr{^(?:/robots\.txt|/favicon\.ico)$},
         root => File::Spec->catdir(dirname(__FILE__), 'static');
     enable 'Plack::Middleware::ReverseProxy';
     enable 'Plack::Middleware::Session',
