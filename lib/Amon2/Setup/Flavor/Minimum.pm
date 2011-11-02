@@ -264,7 +264,7 @@ WriteMakefile(
         'Text::Xslate::Bridge::TT2Like'   => '0.00008',
         'Test::More'                      => '0.98',
 <% FOR v IN deps.keys() -%>
-        '<% v %>'                         => '<% deps.item(v) %>',
+        <% v | format("'%s'") | format("%-33s") %> => '<% deps.item(v) %>',
 <% END -%>
     },
     MIN_PERL_VERSION => '5.008001',
