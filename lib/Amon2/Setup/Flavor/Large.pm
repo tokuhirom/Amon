@@ -14,7 +14,7 @@ sub create_makefile_pl {
         +{
             %{ $prereq_pm || {} },
             'String::CamelCase' => '0.02',
-			'Mouse'             => '0.95', # Mouse::Util
+            'Mouse'             => '0.95', # Mouse::Util
         },
     );
 }
@@ -54,10 +54,10 @@ my $db_config = <% $module %>->config->{DBI} || die "Missing configuration for D
 }
 builder {
     enable 'Plack::Middleware::Static',
-        path => qr{^(?:/robots\.txt|/favicon.ico)$},
+        path => qr{^(?:/robots\.txt|/favicon\.ico)$},
         root => File::Spec->catdir(dirname(__FILE__), 'static', 'pc');
     enable 'Plack::Middleware::ReverseProxy';
-	enable 'Plack::Middleware::Session',
+    enable 'Plack::Middleware::Session',
         store => Plack::Session::Store::DBI->new(
             get_dbh => sub {
                 DBI->connect( @$db_config )
@@ -99,10 +99,10 @@ builder {
     enable 'Plack::Middleware::Auth::Basic',
         authenticator => sub { $_[0] eq 'admin' && $_[1] eq 'admin' };
     enable 'Plack::Middleware::Static',
-        path => qr{^(?:/robots\.txt|/favicon.ico)$},
+        path => qr{^(?:/robots\.txt|/favicon\.ico)$},
         root => File::Spec->catdir(dirname(__FILE__), 'static', 'adin');
     enable 'Plack::Middleware::ReverseProxy';
-	enable 'Plack::Middleware::Session',
+    enable 'Plack::Middleware::Session',
         store => Plack::Session::Store::DBI->new(
             get_dbh => sub {
                 DBI->connect( @$db_config )
@@ -163,7 +163,7 @@ use String::CamelCase qw(decamelize);
 
 # define roots here.
 my $router = router {
-	# connect '/' => {controller => 'Root', action => 'index' };
+    # connect '/' => {controller => 'Root', action => 'index' };
 };
 
 my @controllers = Module::Find::useall('<% $module %>::<% $moniker %>::C');
@@ -179,8 +179,8 @@ my @controllers = Module::Find::useall('<% $module %>::<% $moniker %>::C');
             my $code = *{"${controller}::${method}"}{CODE};
             next unless $code;
             next if get_code_package($code) ne $controller;
-			my $p2 = $method eq 'index' ? '' : $method;
-			my $path = "/$p1$p2";
+            my $p2 = $method eq 'index' ? '' : $method;
+            my $path = "/$p1$p2";
             $router->connect($path => {
                 controller => $p0,
                 action     => $method,
@@ -221,7 +221,7 @@ sub index {
 
     }
 
-	$self->write_file("lib/<<PATH>>/PC/C/Account.pm", <<'...');
+    $self->write_file("lib/<<PATH>>/PC/C/Account.pm", <<'...');
 package <% $module %>::PC::C::Account;
 use strict;
 use warnings;
@@ -229,8 +229,8 @@ use utf8;
 
 sub logout {
     my ($class, $c) = @_;
-	$c->session->expire();
-	$c->redirect('/');
+    $c->session->expire();
+    $c->redirect('/');
 }
 
 1;
@@ -252,8 +252,8 @@ sub logout {
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>[% title || '<%= $dist %>' %]</title>
-    <meta http-equiv="Content-Style-Type" content="text/css" />  
-    <meta http-equiv="Content-Script-Type" content="text/javascript" />  
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0"]]>
     <meta name="format-detection" content="telephone=no" />
     <link href="[% static_file('../static/bootstrap/bootstrap.min.css') %]" rel="stylesheet" type="text/css" />
@@ -277,14 +277,14 @@ sub logout {
     <div class="container-fluid">
         <div class="sidebar">
                 [% INCLUDE "include/sidebar.tt" %]
-		</div>
-		<div class="content">
-			[% content %]
-		</div>
+        </div>
+        <div class="content">
+            [% content %]
+        </div>
     </div>
-	<footer class="footer">
-		Powered by <a href="http://amon.64p.org/">Amon2</a>
-	</footer>
+    <footer class="footer">
+        Powered by <a href="http://amon.64p.org/">Amon2</a>
+    </footer>
 </body>
 </html>
 ...

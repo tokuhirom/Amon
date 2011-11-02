@@ -78,7 +78,7 @@ builder {
         path => qr{^(?:/static/)},
         root => File::Spec->catdir(dirname(__FILE__));
     enable 'Plack::Middleware::Static',
-        path => qr{^(?:/robots\.txt|/favicon.ico)$},
+        path => qr{^(?:/robots\.txt|/favicon\.ico)$},
         root => File::Spec->catdir(dirname(__FILE__), 'static');
     <% $module %>::Web->to_app();
 };
@@ -122,9 +122,9 @@ test_psgi
 done_testing;
 ...
 
-	$self->create_t_02_mech_t();
+    $self->create_t_02_mech_t();
 
-	$self->create_t_util_pm();
+    $self->create_t_util_pm();
 
     $self->write_file('xt/03_pod.t', <<'...');
 use Test::More;
@@ -135,8 +135,8 @@ all_pod_files_ok();
 }
 
 sub create_t_02_mech_t {
-	my ($self, $more) = @_;
-	$more ||= '';
+    my ($self, $more) = @_;
+    $more ||= '';
 
     $self->write_file('t/02_mech.t', <<'...' . $more . "\ndone_testing();\n");
 use strict;
@@ -207,9 +207,9 @@ use Plack::Builder;
 }
 
 sub create_t_util_pm {
-	my ($self, $exports, $more) = @_;
-	$exports ||= [];
-	$more ||= '';
+    my ($self, $exports, $more) = @_;
+    $exports ||= [];
+    $more ||= '';
 
     $self->write_file('t/Util.pm', <<'...' . $more . "\n1;\n", {exports => $exports});
 package <% '' %>t::Util;
@@ -217,9 +217,9 @@ BEGIN {
     unless ($ENV{PLACK_ENV}) {
         $ENV{PLACK_ENV} = 'test';
     }
-	if ($ENV{PLACK_ENV} eq 'deployment') {
-		die "Do not run a test script on deployment environment";
-	}
+    if ($ENV{PLACK_ENV} eq 'deployment') {
+        die "Do not run a test script on deployment environment";
+    }
 }
 use File::Spec;
 use File::Basename;
@@ -232,7 +232,7 @@ our @EXPORT = qw(<% exports.join(' ') %>);
 
 {
     # utf8 hack.
-    binmode Test::More->builder->$_, ":utf8" for qw/output failure_output todo_output/;                       
+    binmode Test::More->builder->$_, ":utf8" for qw/output failure_output todo_output/;
     no warnings 'redefine';
     my $code = \&Test::Builder::child;
     *Test::Builder::child = sub {
@@ -262,9 +262,9 @@ WriteMakefile(
         'Amon2'                           => '<% $amon2_version %>',
         'Text::Xslate'                    => '1.4001',
         'Text::Xslate::Bridge::TT2Like'   => '0.00008',
-		'Test::More'                      => '0.98',
+        'Test::More'                      => '0.98',
 <% FOR v IN deps.keys() -%>
-        '<% v %>'                         => '<% deps.item(v) %>',
+        <% v | format("'%s'") | format("%-33s") %> => '<% deps.item(v) %>',
 <% END -%>
     },
     MIN_PERL_VERSION => '5.008001',
