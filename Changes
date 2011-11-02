@@ -1,3 +1,9 @@
+3.15
+
+    * 97626d1 favicon.ico -> favicon\.ico (in regex literals)(yibe)
+    * 089c3c3 Fix fat comma alignment(yibe)
+    * aaaa36e Fix indentation in flavor files(yibe)
+
 3.14
 
     [BUG] Amon2::Web::Request decodes parameter automatically, but it breaks Amon2::Plugin::Web::HTTPSession
