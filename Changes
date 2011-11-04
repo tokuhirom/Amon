@@ -1,3 +1,7 @@
+3.16
+
+    - Setup::Flavor::Basic: added tmpl/include/pager.tt
+
 3.15
 
     * 97626d1 favicon.ico -> favicon\.ico (in regex literals)(yibe)
