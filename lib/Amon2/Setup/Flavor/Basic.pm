@@ -337,6 +337,35 @@ CREATE TABLE IF NOT EXISTS sessions (
 </html>
 ...
 
+    $self->write_file('tmpl/include/pager.tt', <<'...');
+[% IF pager %]
+    <div class="pagination">
+        <ul>
+            [% IF pager.previous_page %]
+                <li class="prev"><a href="[% uri_with({page => pager.previous_page}) %]" rel="previous">&larr; Back</a><li>
+            [% ELSE %]
+                <li class="prev disabled"><a href="#">&larr; Back</a><li>
+            [% END %]
+
+            [% IF pager.can('pages_in_navigation') %]
+                [% # IF Data::Page::Navigation is loaded %]
+                [% FOR p IN pager.pages_in_navigation(5) %]
+                    <li [% IF p==pager.current_page %]class="active"[% END %]><a href="[% uri_with({page => p}) %]">[% p %]</a></li>
+                [% END %]
+            [% ELSE %]
+                <li><a href="#">[% pager.current_page %]</a></li>
+            [% END %]
+
+            [% IF pager.next_page %]
+                <li class="next"><a href="[% uri_with({page => pager.next_page}) %]" rel="next">Back &rarr;</a><li>
+            [% ELSE %]
+                <li class="next disabled"><a href="#">Back &rarr;</a><li>
+            [% END %]
+        </ul>
+    </div>
+[% END %]
+...
+
     $self->write_file('static/robots.txt', '');
 
     $self->write_file('static/js/main.js', <<'...');
