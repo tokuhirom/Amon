@@ -40,7 +40,7 @@ sub slurp {
 }
 
 sub run_jquery {
-    my $url = 'http://code.jquery.com/jquery-1.6.4.min.js';
+    my $url = 'http://code.jquery.com/jquery-1.7.min.js';
     my $res = $ua->get($url);
     $res->is_success or die "Cannot fetch $url: " . $res->status_line;
 
@@ -85,9 +85,9 @@ sub fetch {
 sub run_bootstrap {
     my $files = {};
     for my $url (qw(
-        http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css
-        http://twitter.github.com/bootstrap/1.3.0/bootstrap-dropdown.js
-        http://twitter.github.com/bootstrap/1.3.0/bootstrap-twipsy.js
+        http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css
+        http://twitter.github.com/bootstrap/1.4.0/bootstrap-dropdown.js
+        http://twitter.github.com/bootstrap/1.4.0/bootstrap-twipsy.js
     )) {
         my $basename = do {
             local $_ = $url;
