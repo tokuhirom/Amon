@@ -357,9 +357,9 @@ CREATE TABLE IF NOT EXISTS sessions (
             [% END %]
 
             [% IF pager.next_page %]
-                <li class="next"><a href="[% uri_with({page => pager.next_page}) %]" rel="next">Back &rarr;</a><li>
+                <li class="next"><a href="[% uri_with({page => pager.next_page}) %]" rel="next">Next &rarr;</a><li>
             [% ELSE %]
-                <li class="next disabled"><a href="#">Back &rarr;</a><li>
+                <li class="next disabled"><a href="#">Next &rarr;</a><li>
             [% END %]
         </ul>
     </div>
