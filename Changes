@@ -1,3 +1,7 @@
+3.18
+
+    - Setup::Flavor::Basic: s/Back/Next/ in html template... orz.
+
 3.17
 
     - upgrade binding libraries.
