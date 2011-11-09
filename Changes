@@ -1,3 +1,10 @@
+3.20
+
+    - Amon2::Setup::Flavor::DotCloud:
+      [rt.cpan.org #72301] dotcloud.yml error.
+      https://rt.cpan.org/Public/Bug/Display.html?id=72301
+      (reported by hsksyusk)
+
 3.19
 
     - Setup::Flavor: Amon2 don't use Plugin::Web::NoCache by default.
