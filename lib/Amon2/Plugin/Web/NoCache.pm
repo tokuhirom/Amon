@@ -21,7 +21,7 @@ __END__
 
 =head1 NAME
 
-Amon2::Plugin::Web::NoCache - NoCache(DEPRECATED)
+Amon2::Plugin::Web::NoCache - NoCache
 
 =head1 SYNOPSIS
 
@@ -31,12 +31,16 @@ Amon2::Plugin::Web::NoCache - NoCache(DEPRECATED)
 
 =head1 DESCRIPTION
 
+B<THIS PLUGIN WILL BE REMOVE FROM CORE DISTRIBUTION AT 2012-11-09.>
+
 This plugin adds following headers by AFTER_DISPATCH hook.
 
     Pragma: no-cache
     Cache-Control: no-cache
 
 This is very useful if your application don't want to cache by client side.
+
+B<THIS PLUGIN WILL BE REMOVE FROM CORE DISTRIBUTION AT 2012-11-09.>
 
 =head1 AUTHOR
 
