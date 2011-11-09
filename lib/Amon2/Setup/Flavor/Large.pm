@@ -154,9 +154,8 @@ __PACKAGE__->add_trigger(
         # http://blog.mozilla.com/security/2010/09/08/x-frame-options/
         $res->header( 'X-Frame-Options' => 'DENY' );
 
-        # Deny the cache by default.
-        $res->header( 'Pragma'        => 'no-cache' );
-        $res->header( 'Cache-Control' => 'no-cache' );
+        # Cache control.
+        $res->header( 'Cache-Control' => 'private' );
     },
 );
 
