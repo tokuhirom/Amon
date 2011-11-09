@@ -136,7 +136,6 @@ sub dispatch {
 use File::Path qw(mkpath);
 __PACKAGE__->load_plugins(
     'Web::FillInFormLite',
-    'Web::NoCache', # do not cache the dynamic content by default
     'Web::CSRFDefender',
 );
 
@@ -144,8 +143,16 @@ __PACKAGE__->load_plugins(
 __PACKAGE__->add_trigger(
     AFTER_DISPATCH => sub {
         my ( $c, $res ) = @_;
+
+        # http://blogs.msdn.com/b/ie/archive/2008/07/02/ie8-security-part-v-comprehensive-protection.aspx
         $res->header( 'X-Content-Type-Options' => 'nosniff' );
+
+        # http://blog.mozilla.com/security/2010/09/08/x-frame-options/
         $res->header( 'X-Frame-Options' => 'DENY' );
+
+        # Deny the cache by default.
+        $res->header( 'Pragma'        => 'no-cache' );
+        $res->header( 'Cache-Control' => 'no-cache' );
     },
 );
 

@@ -21,7 +21,7 @@ __END__
 
 =head1 NAME
 
-Amon2::Plugin::Web::NoCache - NoCache
+Amon2::Plugin::Web::NoCache - NoCache(DEPRECATED)
 
 =head1 SYNOPSIS
 
