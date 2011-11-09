@@ -10,7 +10,7 @@ sub run {
 
     $self->write_file('dotcloud.yml', <<'...');
 www:
-  perl
+  type: perl
 ...
 
     $self->write_file('t/07_dotcloud.t', <<'...');
