@@ -1,3 +1,7 @@
+3.22
+
+    - set Cache-Control: private header by default.
+
 3.21
 
     - Setup::Flavor: set HttpOnly attribute for cookies by default for security reason.
