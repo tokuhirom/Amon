@@ -1,3 +1,7 @@
+3.19
+
+    - Setup::Flavor: Amon2 don't use Plugin::Web::NoCache by default.
+
 3.18
 
     - Setup::Flavor::Basic: s/Back/Next/ in html template... orz.
