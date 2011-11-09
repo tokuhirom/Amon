@@ -44,6 +44,7 @@ use <% $module %>::PC;
 use Plack::App::File;
 use Plack::Util;
 use Plack::Session::Store::DBI;
+use Plack::Session::State::Cookie;
 use DBI;
 
 my $basedir = File::Spec->rel2abs(dirname(__FILE__));
@@ -63,6 +64,9 @@ builder {
                 DBI->connect( @$db_config )
                     or die $DBI::errstr;
             }
+        ),
+        state => Plack::Session::State::Cookie->new(
+            httponly => 1,
         );
 
     mount '/static/' => Plack::App::File->new(root => File::Spec->catdir($basedir, 'static', 'pc'));

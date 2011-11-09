@@ -23,6 +23,7 @@ sub run {
 use <% $module %>::Web;
 use <% $module %>;
 use Plack::Session::Store::DBI;
+use Plack::Session::State::Cookie;
 use DBI;
 
 {
@@ -44,6 +45,9 @@ builder {
                 DBI->connect( @$db_config )
                     or die $DBI::errstr;
             }
+        ),
+        state => Plack::Session::State::Cookie->new(
+            httponly => 1,
         );
     <% $module %>::Web->to_app();
 };
