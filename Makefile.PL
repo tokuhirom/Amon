@@ -17,7 +17,6 @@ requires(
     'Data::OptList' => 0.106,
     'MRO::Compat'   => '0.11',
 	'Data::Section::Simple' => '0.03', # for ::Lite
-	'HTTP::Date'                      => '6.00',
 	'File::Copy::Recursive' => '0.38',
 	'Plack::Session' => 0, # required in Amon2::Web
 	'File::Which' => 0,
