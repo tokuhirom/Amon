@@ -24,7 +24,6 @@ requires(
 # Not core, but default components.
 requires(
     'Text::Xslate'                  => 1.5006,
-    'Text::Xslate::Bridge::TT2Like' => '0.00010',
     'Router::Simple'             => 0.06,
     'Router::Simple::Sinatraish' => 0.02,
 );
