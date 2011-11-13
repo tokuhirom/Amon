@@ -14,7 +14,7 @@ requires(
 	'Data::Section::Simple' => '0.03', # for ::Lite
 	'File::Copy::Recursive' => '0.38',
 	'Plack::Session' => 0, # required in Amon2::Web
-	'File::Which' => 0,
+	'File::Which' => 0, # VC::Git
 );
 
 requires( 'MRO::Compat' => '0.11' ) if $] < 5.009_005;
