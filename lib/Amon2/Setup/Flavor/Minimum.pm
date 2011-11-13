@@ -169,7 +169,7 @@ use Text::Xslate;
     }
     my $view = Text::Xslate->new(+{
         'syntax'   => 'TTerse',
-        'module'   => [ 'Text::Xslate::Bridge::TT2Like' ],
+        'module'   => [ 'Text::Xslate::Bridge::Star' ],
         'function' => {
             c => sub { Amon2->context() },
             uri_with => sub { Amon2->context()->req->uri_with(@_) },
@@ -260,11 +260,10 @@ WriteMakefile(
     VERSION_FROM  => 'lib/<% $path %>.pm',
     PREREQ_PM     => {
         'Amon2'                           => '<% $amon2_version %>',
-        'Text::Xslate'                    => '1.4001',
-        'Text::Xslate::Bridge::TT2Like'   => '0.00008',
+        'Text::Xslate'                    => '1.5006',
         'Test::More'                      => '0.98',
 <% FOR v IN deps.keys() -%>
-        <% v | format("'%s'") | format("%-33s") %> => '<% deps.item(v) %>',
+        <% sprintf("%-33s", "'" _ v _ "'") %> => '<% deps[v] %>',
 <% END -%>
     },
     MIN_PERL_VERSION => '5.008001',

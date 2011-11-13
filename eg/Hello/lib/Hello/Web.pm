@@ -25,7 +25,7 @@ use Tiffany::Text::Xslate;
     my $view_conf = __PACKAGE__->config->{'Text::Xslate'} || die "missing configuration for Text::Xslate";
     my $view = Tiffany::Text::Xslate->new(+{
         'syntax'   => 'TTerse',
-        'module'   => [ 'Text::Xslate::Bridge::TT2Like' ],
+        'module'   => [ 'Text::Xslate::Bridge::Star' ],
         'function' => {
             c => sub { Amon2->context() },
             uri_with => sub { Amon2->context()->req->uri_with(@_) },
