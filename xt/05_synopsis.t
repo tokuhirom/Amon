@@ -4,7 +4,7 @@ use utf8;
 
 use Test::More;
 
-eval "use Test::Synopsis; use ExtUtils::Manifest";
+eval "use Test::Synopsis; use ExtUtils::Manifest; use Data::Section::Simple; ";
 plan skip_all => "Test::Synopsis, ExtUtils::Manifest required for testing" if $@;
 plan skip_all => "There is no MANIFEST file" unless -f 'MANIFEST';
 

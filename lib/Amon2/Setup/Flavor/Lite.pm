@@ -90,6 +90,7 @@ WriteMakefile(
         'Plack::Session'                  => '0.14',
         'Plack::Middleware::ReverseProxy' => '0.10',
         'JSON'                            => 2,
+        'Data::Section::Simple'           => '0.03',
     },
     MIN_PERL_VERSION => '5.008001',
     (-d 'xt' and $ENV{AUTOMATED_TESTING} || $ENV{RELEASE_TESTING}) ? (

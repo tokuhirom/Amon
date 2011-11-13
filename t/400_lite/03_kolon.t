@@ -3,7 +3,7 @@ use warnings;
 use utf8;
 use Test::More;
 use Plack::Test;
-use Test::Requires qw/HTTP::Request::Common/;
+use Test::Requires qw/HTTP::Request::Common/, 'Data::Section::Simple';
 use FindBin;
 use File::Spec;
 use lib File::Spec->catdir($FindBin::Bin, '../../lib');

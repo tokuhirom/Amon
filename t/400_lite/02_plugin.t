@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
-use Test::Requires 'JSON';
+use Test::Requires 'JSON', 'Data::Section::Simple';
 use Plack::Util;
 use Plack::Test;
 use HTTP::Request::Common;

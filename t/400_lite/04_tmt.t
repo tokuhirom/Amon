@@ -3,7 +3,7 @@ use warnings;
 use utf8;
 use Test::More;
 use Plack::Test;
-use Test::Requires qw/Text::MicroTemplate Tiffany::Text::MicroTemplate::File/;
+use Test::Requires qw/Text::MicroTemplate Tiffany::Text::MicroTemplate::File/, 'Data::Section::Simple';
 use HTTP::Request::Common;
 
 use Amon2::Lite;
