@@ -4,7 +4,6 @@ use warnings;
 use 5.008001;
 use Amon2::Util ();
 use Plack::Util ();
-use Data::OptList ();
 use Carp ();
 use Amon2::Config::Simple;
 
@@ -66,8 +65,9 @@ sub add_config {
 
 sub load_plugins {
     my ($class, @args) = @_;
-    for my $opt (@{Data::OptList::mkopt(\@args)}) {
-        my ($module, $conf) = ($opt->[0], $opt->[1]);
+    while (@args) {
+        my $module = shift @args;
+        my $conf   = @args>0 && ref($args[0]) eq 'HASH' ? shift @args : undef;
         $class->load_plugin($module, $conf);
     }
 }
@@ -156,7 +156,7 @@ If you want to load a plugin in your own name space, use '+' character before pa
 
 =item C<< MyApp->load_plugins($module_name[, \%config ], ...) >>
 
-Load multiple plugins at one time. The arguments are processed by L<Data::OptList>.
+Load multiple plugins at one time.
 
 If you want to load a plugin in your own name space, use '+' character before package name like following:
 

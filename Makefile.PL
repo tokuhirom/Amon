@@ -11,7 +11,6 @@ requires(
     'Exporter'      => 5.64,
     'parent'        => 0.223,
     'URI'           => 1.54,
-    'Data::OptList' => 0.106,
 	'Data::Section::Simple' => '0.03', # for ::Lite
 	'File::Copy::Recursive' => '0.38',
 	'Plack::Session' => 0, # required in Amon2::Web
