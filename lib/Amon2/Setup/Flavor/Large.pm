@@ -15,6 +15,7 @@ sub create_makefile_pl {
             %{ $prereq_pm || {} },
             'String::CamelCase' => '0.02',
             'Mouse'             => '0.95', # Mouse::Util
+            'Module::Find'      => '0.10',
         },
     );
 }

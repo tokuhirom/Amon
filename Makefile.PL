@@ -10,7 +10,6 @@ requires(
     'Try::Tiny'     => 0.06,
     'Exporter'      => 5.64,
     'parent'        => 0.223,
-    'Module::Find'  => '0.10',
     'URI'           => 1.54,
     'Data::OptList' => 0.106,
 	'Data::Section::Simple' => '0.03', # for ::Lite

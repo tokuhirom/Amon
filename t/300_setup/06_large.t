@@ -9,6 +9,7 @@ use Test::Requires {
 	'Amon2::DBI'                      => '0.05',
 	'DBD::SQLite'                     => '1.33',
     'Plack::Session'                  => '0.14',
+    'Module::Find'                    => '0.10',
 };
 
 test_flavor(sub {
