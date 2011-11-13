@@ -1,3 +1,9 @@
+3.24
+
+    * ef0ffbc load_plugins handles arguments manually without Data::OptList.
+    * 472ae1b Module::Find is no longer required by Amon2 core
+    * 5a82099 remove deps for MRO::Compat on perl 5.10+
+
 3.23
 
     - Text::Xslate::Bridge::TT2Like is no longer needed
