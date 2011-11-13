@@ -12,7 +12,6 @@ requires(
     'parent'        => 0.223,
     'Module::Find'  => '0.10',
     'URI'           => 1.54,
-    'URI::Escape'   => 3.30,
     'Data::OptList' => 0.106,
 	'Data::Section::Simple' => '0.03', # for ::Lite
 	'File::Copy::Recursive' => '0.38',
