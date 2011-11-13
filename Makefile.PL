@@ -8,7 +8,6 @@ license 'perl';
 requires(
     'Plack'         => 0.9982,   # sanity check to remove newlines from headers
     'Try::Tiny'     => 0.06,
-    'Test::More'    => 0.98,     # 0.98 or later is required for better testing.
     'Exporter'      => 5.64,
     'parent'        => 0.223,
     'Module::Find'  => '0.10',
@@ -33,6 +32,7 @@ requires(
 # Optional components
 
 test_requires 'Test::Requires' => 0.06;
+test_requires 'Test::More'     => 0.98;     # 0.98 or later is required for better testing.
 
 tests 't/*.t t/*/*.t t/*/*/*.t';
 recursive_author_tests('xt');

@@ -16,3 +16,13 @@ eg/Hello/META.yml
 eg/Hello/test.db
 MYMETA.*
 MyApp/
+ppport.h
+*.bak
+Build
+_build/
+xshelper.h
+tags
+META.json
+README
+^inc/
+Amon2-*/
