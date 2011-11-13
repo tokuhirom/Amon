@@ -3,7 +3,8 @@ use strict;
 use warnings;
 use parent qw/Exporter/;
 use Scalar::Util ();
-use MRO::Compat;
+use if $] >= 5.009_005, 'mro';
+use if $] < 5.009_005, 'MRO::Compat';
 
 our @EXPORT = qw/add_trigger call_trigger get_trigger_code/;
 

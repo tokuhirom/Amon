@@ -14,12 +14,13 @@ requires(
     'URI'           => 1.54,
     'URI::Escape'   => 3.30,
     'Data::OptList' => 0.106,
-    'MRO::Compat'   => '0.11',
 	'Data::Section::Simple' => '0.03', # for ::Lite
 	'File::Copy::Recursive' => '0.38',
 	'Plack::Session' => 0, # required in Amon2::Web
 	'File::Which' => 0,
 );
+
+requires( 'MRO::Compat' => '0.11' ) if $] < 5.009_005;
 
 # Not core, but default components.
 requires(
