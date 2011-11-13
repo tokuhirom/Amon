@@ -1,0 +1,23 @@
+This is Perl module Amon2.
+
+INSTALLATION
+
+Amon2 installation is straightforward. If your CPAN shell is set up,
+you should just be able to do
+
+% cpan Amon2
+
+Download it, unpack it, then build it as per the usual:
+
+% perl Makefile.PL
+% make && make test
+
+Then install it:
+
+% make install
+
+DOCUMENTATION
+
+Amon2 documentation is available as in POD. So you can do:
+
+% perldoc Amon2
