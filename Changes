@@ -1,3 +1,9 @@
+3.23
+
+    - Text::Xslate::Bridge::TT2Like is no longer needed
+      (switch to Text::Xslate::Bridge::Star)
+    - HTTP::Date is no longer needed
+
 3.22
 
     - set Cache-Control: private header by default.
