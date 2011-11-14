@@ -1,3 +1,13 @@
+3.25
+
+    [INCOMPATIBLE CHANGE]
+    - remove Amon2::Lite from core dist. Amon2::Lite is now standalone dist.
+      If you are using Amon2::Lite, please write it to Makefile.PL immidiately.
+
+    [MISC]
+    - do not use File::which for less deps
+    - do not depend to Exporter
+
 3.24
 
     * ef0ffbc load_plugins handles arguments manually without Data::OptList.
