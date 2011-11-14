@@ -8,7 +8,7 @@ license 'perl';
 requires(
     'Plack'         => 0.9982,   # sanity check to remove newlines from headers
     'Try::Tiny'     => 0.06,
-    'Exporter'      => 5.64,
+    'Exporter'      => 0,
     'parent'        => 0.223,
     'URI'           => 1.54,
 	'File::Copy::Recursive' => '0.38',
