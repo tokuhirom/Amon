@@ -13,7 +13,6 @@ requires(
     'URI'           => 1.54,
 	'File::Copy::Recursive' => '0.38',
 	'Plack::Session' => 0, # required in Amon2::Web
-	'File::Which' => 0, # VC::Git
 );
 
 requires( 'MRO::Compat' => '0.11' ) if $] < 5.009_005;
