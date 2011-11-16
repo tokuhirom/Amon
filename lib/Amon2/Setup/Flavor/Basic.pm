@@ -580,7 +580,6 @@ sub create_makefile_pl {
             'Plack::Middleware::Session'      => 0,
             'Plack::Middleware::ReverseProxy' => '0.09',
             'JSON'                            => '2.50',
-            'String::CamelCase'               => '0.02',
             'Amon2::DBI'                      => '0.06',
             'DBD::SQLite'                     => '1.33',
             'Test::WWW::Mechanize::PSGI'      => 0,
