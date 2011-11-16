@@ -24,14 +24,16 @@ test_flavor(sub {
 	for my $file (qw(Makefile.PL lib/My/App.pm t/Util.pm .proverc)) {
 		ok(-f $file, "$file exists");
 	}
-    local *My::App::setup_schema;
-    ok((do 'lib/My/App.pm'), 'lib/My/App.pm is valid') or do {
-        diag $@;
-        diag do {
-            open my $fh, '<', 'lib/My/App.pm' or die;
-            local $/; <$fh>;
+    {
+        local *My::App::setup_schema;
+        ok((do 'lib/My/App.pm'), 'lib/My/App.pm is valid') or do {
+            diag $@;
+            diag do {
+                open my $fh, '<', 'lib/My/App.pm' or die;
+                local $/; <$fh>;
+            };
         };
-    };
+    }
 }, 'Large');
 
 done_testing;
