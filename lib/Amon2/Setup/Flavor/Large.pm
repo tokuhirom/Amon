@@ -15,7 +15,7 @@ sub create_makefile_pl {
             %{ $prereq_pm || {} },
             'String::CamelCase' => '0.02',
             'Mouse'             => '0.95', # Mouse::Util
-            'Module::Find'      => '0.10',
+            'Module::Pluggable::Object' => 0, # was first released with perl v5.8.9
         },
     );
 }
@@ -361,15 +361,18 @@ use warnings;
 use utf8;
 use Router::Simple::Declare;
 use Mouse::Util qw(get_code_package);
-use Module::Find ();
 use String::CamelCase qw(decamelize);
+use Module::Pluggable::Object;
 
 # define roots here.
 my $router = router {
     # connect '/' => {controller => 'Root', action => 'index' };
 };
 
-my @controllers = Module::Find::useall('<% $module %>::<% $moniker %>::C');
+my @controllers = Module::Pluggable::Object->new(
+    require     => 1,
+    search_path => ['<% $module %>::<% $moniker %>::C'],
+)->plugins;
 {
     no strict 'refs';
     for my $controller (@controllers) {
