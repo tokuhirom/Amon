@@ -1,3 +1,10 @@
+3.27
+
+    [MINOR ENHACEMENTS]
+    * e2567f4 remove deps for File::Copy::Recursive
+    * 39a846d Setup::Flavor::Large: use Module::Pluggable::Object instead of Module::Find, for few deps.
+    * 2d899ec Flavor::Basic: doesn't using String::CamelCase.
+
 3.26
 
     [MINOR FIX]
