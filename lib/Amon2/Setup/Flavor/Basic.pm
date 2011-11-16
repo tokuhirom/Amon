@@ -583,7 +583,6 @@ sub create_makefile_pl {
             'String::CamelCase'               => '0.02',
             'Amon2::DBI'                      => '0.06',
             'DBD::SQLite'                     => '1.33',
-            'Log::Minimal'                    => '0.06',
             'Test::WWW::Mechanize::PSGI'      => 0,
         },
     );
