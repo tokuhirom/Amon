@@ -1,3 +1,13 @@
+3.26
+
+    [MINOR FIX]
+    * 5e8f1eb There is no reason to depended on Log::Minimal
+
+    [BUG FIX]
+    * 6fe10a5 Flavor::Large: fixed broken links to jQuery
+    * 481bc53 Setup::Large: Do not create lib/My/App/Web.pm, lib/My/App/Web/ in Large flavor.
+    * 2d10c86 Setup::Basic, Setup::Large: mysql throws exception with empty statements.
+
 3.25
 
     [INCOMPATIBLE CHANGE]
