@@ -5,129 +5,49 @@ use utf8;
 package Amon2::Setup::Flavor::Basic;
 use parent qw(Amon2::Setup::Flavor::Minimum);
 
-sub run {
-    my $self = shift;
+sub write_static_files {
+    my ($self, $base) = @_;
+    $base ||= 'static';
 
-    $self->SUPER::run();
+    $self->write_asset('jQuery', $base);
+    $self->write_asset('Bootstrap', $base);
 
-    $self->mkpath('static/js/');
+    $self->write_file("$base/img/.gitignore", '');
 
-    $self->load_asset('jQuery');
-    $self->load_asset('Bootstrap');
+    $self->write_file("$base/robots.txt", '');
 
-    $self->write_asset('jQuery');
-    $self->write_asset('Bootstrap');
-
-    $self->write_file('app.psgi', <<'...', {header => $self->psgi_header});
-<% header %>
-use <% $module %>::Web;
-use <% $module %>;
-use Plack::Session::Store::DBI;
-use Plack::Session::State::Cookie;
-use DBI;
-
-{
-    my $c = <% $module %>->new();
-    $c->setup_schema();
-}
-my $db_config = <% $module %>->config->{DBI} || die "Missing configuration for DBI";
-builder {
-    enable 'Plack::Middleware::Static',
-        path => qr{^(?:/static/)},
-        root => File::Spec->catdir(dirname(__FILE__));
-    enable 'Plack::Middleware::Static',
-        path => qr{^(?:/robots\.txt|/favicon\.ico)$},
-        root => File::Spec->catdir(dirname(__FILE__), 'static');
-    enable 'Plack::Middleware::ReverseProxy';
-    enable 'Plack::Middleware::Session',
-        store => Plack::Session::Store::DBI->new(
-            get_dbh => sub {
-                DBI->connect( @$db_config )
-                    or die $DBI::errstr;
-            }
-        ),
-        state => Plack::Session::State::Cookie->new(
-            httponly => 1,
-        );
-    <% $module %>::Web->to_app();
-};
+    $self->write_file("$base/js/main.js", <<'...');
+$(function () {
+    $('#topbar').dropdown();
+});
 ...
 
-    $self->write_file('static/img/.gitignore', '');
-
-    $self->write_file('lib/<<PATH>>.pm', <<'...');
-package <% $module %>;
-use strict;
-use warnings;
-use utf8;
-use parent qw/Amon2/;
-our $VERSION='0.01';
-use 5.008001;
-
-__PACKAGE__->load_plugin(qw/DBI/);
-
-# initialize database
-use DBI;
-sub setup_schema {
-    my $self = shift;
-    my $dbh = $self->dbh();
-    my $driver_name = $dbh->{Driver}->{Name};
-    my $fname = lc("sql/${driver_name}.sql");
-    open my $fh, '<:encoding(UTF-8)', $fname or die "$fname: $!";
-    my $source = do { local $/; <$fh> };
-    for my $stmt (split /;/, $source) {
-        next unless $stmt =~ /\S/;
-        $dbh->do($stmt) or die $dbh->errstr();
-    }
+    $self->write_file("$base/css/main.css", <<'...');
+body {
+    margin-top: 50px;
 }
 
-1;
-...
-
-    $self->create_web_pms();
-
-    $self->write_file('db/.gitignore', <<'...');
-*
-...
-
-    for my $env (qw(development deployment test)) {
-        $self->write_file("config/${env}.pl", <<'...', {env => $env});
-use File::Spec;
-use File::Basename qw(dirname);
-my $basedir = File::Spec->rel2abs(File::Spec->catdir(dirname(__FILE__), '..'));
-my $dbpath;
-if ( -d '/home/dotcloud/') {
-    $dbpath = "/home/dotcloud/<% $env %>.db";
-} else {
-    $dbpath = File::Spec->catfile($basedir, 'db', '<% $env %>.db');
-}
-+{
-    'DBI' => [
-        "dbi:SQLite:dbname=$dbpath",
-        '',
-        '',
-        +{
-            sqlite_unicode => 1,
-        }
-    ],
-};
-...
+footer {
+    text-align: right;
+    padding-right: 10px;
+    padding-top: 2px; }
+    footer a {
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
     }
 
-    $self->write_file("sql/mysql.sql", <<'...');
-CREATE TABLE IF NOT EXISTS sessions (
-    id           CHAR(72) PRIMARY KEY,
-    session_data TEXT
-);
+/* smart phones */
+@media screen and (max-device-width: 480px) {
+}
 ...
-    $self->write_file("sql/sqlite.sql", <<'...');
-CREATE TABLE IF NOT EXISTS sessions (
-    id           CHAR(72) PRIMARY KEY,
-    session_data TEXT
-);
-...
+}
 
-    $self->write_file('tmpl/index.tt', <<'...');
+sub write_templates {
+    my ($self, $base) = @_;
+    $base ||= 'tmpl';
+
+    $self->write_file("$base/index.tt", <<'...');
 [% WRAPPER 'include/layout.tt' %]
 
 <div class="row">
@@ -212,7 +132,7 @@ CREATE TABLE IF NOT EXISTS sessions (
 [% END %]
 ...
 
-    $self->write_file('tmpl/include/layout.tt', <<'...');
+    $self->write_file("$base/include/layout.tt", <<'...');
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -280,7 +200,7 @@ CREATE TABLE IF NOT EXISTS sessions (
 </html>
 ...
 
-    $self->write_file('tmpl/include/pager.tt', <<'...');
+    $self->write_file("$base/include/pager.tt", <<'...');
 [% IF pager %]
     <div class="pagination">
         <ul>
@@ -308,33 +228,123 @@ CREATE TABLE IF NOT EXISTS sessions (
     </div>
 [% END %]
 ...
+}
 
-    $self->write_file('static/robots.txt', '');
+sub run {
+    my $self = shift;
 
-    $self->write_file('static/js/main.js', <<'...');
-$(function () {
-    $('#topbar').dropdown();
-});
+    $self->SUPER::run();
+
+    $self->load_asset('jQuery');
+    $self->load_asset('Bootstrap');
+
+    $self->write_static_files();
+
+    $self->write_file('app.psgi', <<'...', {header => $self->psgi_header});
+<% header %>
+use <% $module %>::Web;
+use <% $module %>;
+use Plack::Session::Store::DBI;
+use Plack::Session::State::Cookie;
+use DBI;
+
+{
+    my $c = <% $module %>->new();
+    $c->setup_schema();
+}
+my $db_config = <% $module %>->config->{DBI} || die "Missing configuration for DBI";
+builder {
+    enable 'Plack::Middleware::Static',
+        path => qr{^(?:/static/)},
+        root => File::Spec->catdir(dirname(__FILE__));
+    enable 'Plack::Middleware::Static',
+        path => qr{^(?:/robots\.txt|/favicon\.ico)$},
+        root => File::Spec->catdir(dirname(__FILE__), 'static');
+    enable 'Plack::Middleware::ReverseProxy';
+    enable 'Plack::Middleware::Session',
+        store => Plack::Session::Store::DBI->new(
+            get_dbh => sub {
+                DBI->connect( @$db_config )
+                    or die $DBI::errstr;
+            }
+        ),
+        state => Plack::Session::State::Cookie->new(
+            httponly => 1,
+        );
+    <% $module %>::Web->to_app();
+};
 ...
 
-    $self->write_file('static/css/main.css', <<'...');
-body {
-    margin-top: 50px;
+    $self->write_file('lib/<<PATH>>.pm', <<'...');
+package <% $module %>;
+use strict;
+use warnings;
+use utf8;
+use parent qw/Amon2/;
+our $VERSION='0.01';
+use 5.008001;
+
+__PACKAGE__->load_plugin(qw/DBI/);
+
+# initialize database
+use DBI;
+sub setup_schema {
+    my $self = shift;
+    my $dbh = $self->dbh();
+    my $driver_name = $dbh->{Driver}->{Name};
+    my $fname = lc("sql/${driver_name}.sql");
+    open my $fh, '<:encoding(UTF-8)', $fname or die "$fname: $!";
+    my $source = do { local $/; <$fh> };
+    for my $stmt (split /;/, $source) {
+        next unless $stmt =~ /\S/;
+        $dbh->do($stmt) or die $dbh->errstr();
+    }
 }
 
-footer {
-    text-align: right;
-    padding-right: 10px;
-    padding-top: 2px; }
-    footer a {
-        text-decoration: none;
-        color: black;
-        font-weight: bold;
+1;
+...
+
+    $self->create_web_pms();
+
+    $self->write_file('db/.gitignore', <<'...');
+*
+...
+
+    for my $env (qw(development deployment test)) {
+        $self->write_file("config/${env}.pl", <<'...', {env => $env});
+use File::Spec;
+use File::Basename qw(dirname);
+my $basedir = File::Spec->rel2abs(File::Spec->catdir(dirname(__FILE__), '..'));
+my $dbpath;
+if ( -d '/home/dotcloud/') {
+    $dbpath = "/home/dotcloud/<% $env %>.db";
+} else {
+    $dbpath = File::Spec->catfile($basedir, 'db', '<% $env %>.db');
+}
++{
+    'DBI' => [
+        "dbi:SQLite:dbname=$dbpath",
+        '',
+        '',
+        +{
+            sqlite_unicode => 1,
+        }
+    ],
+};
+...
     }
 
-/* smart phones */
-@media screen and (max-device-width: 480px) {
-}
+    $self->write_file("sql/mysql.sql", <<'...');
+CREATE TABLE IF NOT EXISTS sessions (
+    id           CHAR(72) PRIMARY KEY,
+    session_data TEXT
+);
+...
+    $self->write_file("sql/sqlite.sql", <<'...');
+CREATE TABLE IF NOT EXISTS sessions (
+    id           CHAR(72) PRIMARY KEY,
+    session_data TEXT
+);
 ...
 
     $self->write_file("t/00_compile.t", <<'...');

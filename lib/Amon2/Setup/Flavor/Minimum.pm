@@ -27,34 +27,7 @@ sub load_config {
 ...
 
 
-    $self->write_file('tmpl/index.tt', <<'...');
-<!doctype html>
-<html>
-<head>
-    <met charst="utf-8">
-    <title><% $module %></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-    <% $module %>
-</body>
-</html>
-...
-
-    $self->write_file('app.psgi', <<'...', {header => $self->psgi_header});
-<% header %>
-use <% $module %>::Web;
-
-builder {
-    enable 'Plack::Middleware::Static',
-        path => qr{^(?:/static/)},
-        root => File::Spec->catdir(dirname(__FILE__));
-    enable 'Plack::Middleware::Static',
-        path => qr{^(?:/robots\.txt|/favicon\.ico)$},
-        root => File::Spec->catdir(dirname(__FILE__), 'static');
-    <% $module %>::Web->to_app();
-};
-...
+    $self->write_templates();
 
     $self->create_web_pms();
 
@@ -280,6 +253,40 @@ WriteMakefile(
         },
     ) : (),
 );
+...
+}
+
+sub write_templates {
+    my ($self, $base) = @_;
+    $base ||= 'tmpl';
+
+    $self->write_file("$base/index.tt", <<'...');
+<!doctype html>
+<html>
+<head>
+    <met charst="utf-8">
+    <title><% $module %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <% $module %>
+</body>
+</html>
+...
+
+    $self->write_file('app.psgi', <<'...', {header => $self->psgi_header});
+<% header %>
+use <% $module %>::Web;
+
+builder {
+    enable 'Plack::Middleware::Static',
+        path => qr{^(?:/static/)},
+        root => File::Spec->catdir(dirname(__FILE__));
+    enable 'Plack::Middleware::Static',
+        path => qr{^(?:/robots\.txt|/favicon\.ico)$},
+        root => File::Spec->catdir(dirname(__FILE__), 'static');
+    <% $module %>::Web->to_app();
+};
 ...
 }
 

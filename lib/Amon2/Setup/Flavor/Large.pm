@@ -5,7 +5,6 @@ use utf8;
 package Amon2::Setup::Flavor::Large;
 use parent qw(Amon2::Setup::Flavor::Basic);
 use File::Path ();
-use File::Copy::Recursive qw(rmove rcopy);
 
 sub create_makefile_pl {
     my ($self, $prereq_pm) = @_;
@@ -20,24 +19,26 @@ sub create_makefile_pl {
     );
 }
 
+sub write_static_files {
+    my $self = shift;
+
+    for my $base (qw(static/pc/ static/admin/)) {
+        $self->SUPER::write_static_files($base);
+    }
+}
+
+sub write_templates {
+    my $self = shift;
+
+    for my $base (qw(tmpl/pc/ tmpl/admin/)) {
+        $self->SUPER::write_templates($base);
+    }
+}
+
 sub run {
     my $self = shift;
 
     $self->SUPER::run();
-
-    # restructure static dir
-    rmove('static', 'xxx') or die "$!";
-    $self->mkpath('static');
-    rmove('xxx', 'static/pc') or die "$!";
-    rcopy('static/pc', 'static/admin') or die "$!";
-
-    # restructure tmpl dir
-    rmove('tmpl/', 'yyy') or die "$!";
-    $self->mkpath('tmpl');
-    rmove('yyy', 'tmpl/pc') or die "$!";
-    rcopy('tmpl/pc', 'tmpl/admin') or die "$!";
-
-    unlink 'static/admin/css/main.css' or die $!;
 
     $self->write_file('pc.psgi', <<'...', {header => $self->psgi_header});
 <% $header %>
