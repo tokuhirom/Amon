@@ -155,8 +155,7 @@ sub logout {
     <meta http-equiv="Content-Script-Type" content="text/javascript" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0"]]>
     <meta name="format-detection" content="telephone=no" />
-    <link href="[% static_file('../static/bootstrap/bootstrap.min.css') %]" rel="stylesheet" type="text/css" />
-    <script src="[% static_file('../static/js/jquery-1.6.4.min.js') %]"></script>
+    <% $tags %>
     <link href="[% static_file('/static/css/admin.css') %]" rel="stylesheet" type="text/css" media="screen" />
     <script src="[% static_file('/static/js/main.js') %]"></script>
     <!--[if lt IE 9]>
@@ -248,6 +247,8 @@ use_ok $_ for qw(
 
 done_testing;
 ...
+
+    $self->create_t_07_mech_links_t();
 
     $self->write_file('t/04_admin.t', <<'...');
 use strict;
@@ -422,6 +423,59 @@ sub index {
 ...
 
     }
+}
+
+sub create_t_07_mech_links_t {
+    my ($self, $more) = @_;
+    $self->write_file('t/07_mech_links.t', <<'...');
+use strict;
+use warnings;
+use utf8;
+use t::Util;
+use Plack::Test;
+use Plack::Util;
+use Test::More;
+use Test::Requires 'Test::WWW::Mechanize::PSGI', 'HTML::TokeParser';
+
+my %link_tags = (
+    a      => 'href',
+    area   => 'href',
+    frame  => 'src',
+    iframe => 'src',
+    link   => 'href',
+    script => 'src',
+);
+
+sub _extract_links {
+    my $mech = shift;
+
+    my @links;
+    my $parser = HTML::TokeParser->new( \( $mech->content ) );
+    while ( my $token = $parser->get_tag( keys %link_tags ) ) {
+        push @links, $token->[1]->{ $link_tags{ $token->[0] } };
+    }
+    return grep { m{^/} } @links;
+}
+
+for (qw(app.psgi:/ admin.psgi:/ app.psgi:/admin/)) {
+    my ( $psgi, $root ) = split /:/, $_;
+    subtest $psgi => sub {
+        my $app = Plack::Util::load_psgi($psgi);
+
+        my $mech = Test::WWW::Mechanize::PSGI->new( app => $app );
+        $mech->credentials( 'admin', 'admin' );
+        $mech->get_ok($root);
+
+        my @links = _extract_links($mech);
+        for (@links) {
+            $mech->get($root);
+            $mech->get_ok($_);
+        }
+    };
+}
+
+done_testing();
+...
 }
 
 1;
