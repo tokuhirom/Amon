@@ -120,118 +120,6 @@ builder {
 };
 ...
 
-    for my $moniker (qw(PC Admin)) {
-        $self->write_file("lib/<<PATH>>/${moniker}.pm", <<'...', { xslate => $self->create_view(tmpl_path => 'tmpl/' . lc($moniker)), moniker => $moniker });
-package <% $module %>::<% $moniker %>;
-use strict;
-use warnings;
-use utf8;
-use parent qw(<% $module %> Amon2::Web);
-use File::Spec;
-
-# dispatcher
-use <% $module %>::<% $moniker %>::Dispatcher;
-sub dispatch {
-    return <% $module %>::<% $moniker %>::Dispatcher->dispatch($_[0]) or die "response is not generated";
-}
-
-<% $xslate %>
-
-# load plugins
-use File::Path qw(mkpath);
-__PACKAGE__->load_plugins(
-    'Web::FillInFormLite',
-    'Web::CSRFDefender',
-);
-
-# for your security
-__PACKAGE__->add_trigger(
-    AFTER_DISPATCH => sub {
-        my ( $c, $res ) = @_;
-
-        # http://blogs.msdn.com/b/ie/archive/2008/07/02/ie8-security-part-v-comprehensive-protection.aspx
-        $res->header( 'X-Content-Type-Options' => 'nosniff' );
-
-        # http://blog.mozilla.com/security/2010/09/08/x-frame-options/
-        $res->header( 'X-Frame-Options' => 'DENY' );
-
-        # Cache control.
-        $res->header( 'Cache-Control' => 'private' );
-    },
-);
-
-1;
-...
-        $self->write_file("lib/<<PATH>>/$moniker/Dispatcher.pm", <<'...', {moniker => $moniker});
-package <% $module %>::<% $moniker %>::Dispatcher;
-use strict;
-use warnings;
-use utf8;
-use Router::Simple::Declare;
-use Mouse::Util qw(get_code_package);
-use Module::Find ();
-use String::CamelCase qw(decamelize);
-
-# define roots here.
-my $router = router {
-    # connect '/' => {controller => 'Root', action => 'index' };
-};
-
-my @controllers = Module::Find::useall('<% $module %>::<% $moniker %>::C');
-{
-    no strict 'refs';
-    for my $controller (@controllers) {
-        my $p0 = $controller;
-        $p0 =~ s/^<% $module %>::<% $moniker %>::C:://;
-        my $p1 = $p0 eq 'Root' ? '' : decamelize($p0) . '/';
-
-        for my $method (sort keys %{"${controller}::"}) {
-            next if $method =~ /(?:^_|^BEGIN$|^import$)/;
-            my $code = *{"${controller}::${method}"}{CODE};
-            next unless $code;
-            next if get_code_package($code) ne $controller;
-            my $p2 = $method eq 'index' ? '' : $method;
-            my $path = "/$p1$p2";
-            $router->connect($path => {
-                controller => $p0,
-                action     => $method,
-            });
-            print STDERR "map: $path => ${p0}::${method}\n" unless $ENV{HARNESS_ACTIVE};
-        }
-    }
-}
-
-sub dispatch {
-    my ($class, $c) = @_;
-    my $req = $c->request;
-    if (my $p = $router->match($req->env)) {
-        my $action = $p->{action};
-        $c->{args} = $p;
-        "@{[ ref Amon2->context ]}::C::$p->{controller}"->$action($c, $p);
-    } else {
-        $c->res_404();
-    }
-}
-
-1;
-...
-
-        $self->write_file("lib/<<PATH>>/$moniker/C/Root.pm", <<'...', {moniker => $moniker});
-package <% $module %>::<% $moniker %>::C::Root;
-use strict;
-use warnings;
-use utf8;
-
-sub index {
-    my ($class, $c) = @_;
-    $c->render('index.tt');
-}
-
-1;
-...
-
-    }
-
     $self->write_file("lib/<<PATH>>/PC/C/Account.pm", <<'...');
 package <% $module %>::PC::C::Account;
 use strict;
@@ -418,6 +306,122 @@ test_psgi
 
 done_testing;
 ...
+}
+
+sub create_web_pms {
+    my ($self) = @_;
+
+    for my $moniker (qw(PC Admin)) {
+        $self->write_file("lib/<<PATH>>/${moniker}.pm", <<'...', { xslate => $self->create_view(tmpl_path => 'tmpl/' . lc($moniker)), moniker => $moniker });
+package <% $module %>::<% $moniker %>;
+use strict;
+use warnings;
+use utf8;
+use parent qw(<% $module %> Amon2::Web);
+use File::Spec;
+
+# dispatcher
+use <% $module %>::<% $moniker %>::Dispatcher;
+sub dispatch {
+    return <% $module %>::<% $moniker %>::Dispatcher->dispatch($_[0]) or die "response is not generated";
+}
+
+<% $xslate %>
+
+# load plugins
+use File::Path qw(mkpath);
+__PACKAGE__->load_plugins(
+    'Web::FillInFormLite',
+    'Web::CSRFDefender',
+);
+
+# for your security
+__PACKAGE__->add_trigger(
+    AFTER_DISPATCH => sub {
+        my ( $c, $res ) = @_;
+
+        # http://blogs.msdn.com/b/ie/archive/2008/07/02/ie8-security-part-v-comprehensive-protection.aspx
+        $res->header( 'X-Content-Type-Options' => 'nosniff' );
+
+        # http://blog.mozilla.com/security/2010/09/08/x-frame-options/
+        $res->header( 'X-Frame-Options' => 'DENY' );
+
+        # Cache control.
+        $res->header( 'Cache-Control' => 'private' );
+    },
+);
+
+1;
+...
+        $self->write_file("lib/<<PATH>>/$moniker/Dispatcher.pm", <<'...', {moniker => $moniker});
+package <% $module %>::<% $moniker %>::Dispatcher;
+use strict;
+use warnings;
+use utf8;
+use Router::Simple::Declare;
+use Mouse::Util qw(get_code_package);
+use Module::Find ();
+use String::CamelCase qw(decamelize);
+
+# define roots here.
+my $router = router {
+    # connect '/' => {controller => 'Root', action => 'index' };
+};
+
+my @controllers = Module::Find::useall('<% $module %>::<% $moniker %>::C');
+{
+    no strict 'refs';
+    for my $controller (@controllers) {
+        my $p0 = $controller;
+        $p0 =~ s/^<% $module %>::<% $moniker %>::C:://;
+        my $p1 = $p0 eq 'Root' ? '' : decamelize($p0) . '/';
+
+        for my $method (sort keys %{"${controller}::"}) {
+            next if $method =~ /(?:^_|^BEGIN$|^import$)/;
+            my $code = *{"${controller}::${method}"}{CODE};
+            next unless $code;
+            next if get_code_package($code) ne $controller;
+            my $p2 = $method eq 'index' ? '' : $method;
+            my $path = "/$p1$p2";
+            $router->connect($path => {
+                controller => $p0,
+                action     => $method,
+            });
+            print STDERR "map: $path => ${p0}::${method}\n" unless $ENV{HARNESS_ACTIVE};
+        }
+    }
+}
+
+sub dispatch {
+    my ($class, $c) = @_;
+    my $req = $c->request;
+    if (my $p = $router->match($req->env)) {
+        my $action = $p->{action};
+        $c->{args} = $p;
+        "@{[ ref Amon2->context ]}::C::$p->{controller}"->$action($c, $p);
+    } else {
+        $c->res_404();
+    }
+}
+
+1;
+...
+
+        $self->write_file("lib/<<PATH>>/$moniker/C/Root.pm", <<'...', {moniker => $moniker});
+package <% $module %>::<% $moniker %>::C::Root;
+use strict;
+use warnings;
+use utf8;
+
+sub index {
+    my ($class, $c) = @_;
+    $c->render('index.tt');
+}
+
+1;
+...
+
+    }
 }
 
 1;

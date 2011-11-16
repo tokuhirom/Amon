@@ -26,34 +26,6 @@ sub load_config {
 1;
 ...
 
-    $self->write_file('lib/<<PATH>>/Web.pm', <<'...', { xslate => $self->create_view() });
-package <% $module %>::Web;
-use strict;
-use warnings;
-use utf8;
-use parent qw/<% $module %> Amon2::Web/;
-use File::Spec;
-
-# write your code here.
-sub dispatch {
-    my ($c) = @_;
-
-    $c->render('index.tt');
-}
-
-<% $xslate %>
-
-# for your security
-__PACKAGE__->add_trigger(
-    AFTER_DISPATCH => sub {
-        my ( $c, $res ) = @_;
-        $res->header( 'X-Content-Type-Options' => 'nosniff' );
-        $res->header( 'X-Frame-Options' => 'DENY' );
-    },
-);
-
-1;
-...
 
     $self->write_file('tmpl/index.tt', <<'...');
 <!doctype html>
@@ -83,6 +55,8 @@ builder {
     <% $module %>::Web->to_app();
 };
 ...
+
+    $self->create_web_pms();
 
     $self->create_makefile_pl();
 
@@ -131,6 +105,39 @@ use Test::More;
 eval "use Test::Pod 1.00";
 plan skip_all => "Test::Pod 1.00 required for testing POD" if $@;
 all_pod_files_ok();
+...
+}
+
+sub create_web_pms {
+    my ($self) = @_;
+
+    $self->write_file('lib/<<PATH>>/Web.pm', <<'...', { xslate => $self->create_view() });
+package <% $module %>::Web;
+use strict;
+use warnings;
+use utf8;
+use parent qw/<% $module %> Amon2::Web/;
+use File::Spec;
+
+# write your code here.
+sub dispatch {
+    my ($c) = @_;
+
+    $c->render('index.tt');
+}
+
+<% $xslate %>
+
+# for your security
+__PACKAGE__->add_trigger(
+    AFTER_DISPATCH => sub {
+        my ( $c, $res ) = @_;
+        $res->header( 'X-Content-Type-Options' => 'nosniff' );
+        $res->header( 'X-Frame-Options' => 'DENY' );
+    },
+);
+
+1;
 ...
 }
 
