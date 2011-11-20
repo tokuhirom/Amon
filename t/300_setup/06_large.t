@@ -2,6 +2,7 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
+use t::Util;
 use t::TestFlavor;
 use Test::Requires {
 	'String::CamelCase' => '0.02',
@@ -38,6 +39,7 @@ test_flavor(sub {
             };
         };
     }
+    like(slurp('tmpl/pc/include/layout.tt'), qr{jquery}, 'loads jquery');
 }, 'Large');
 
 done_testing;
