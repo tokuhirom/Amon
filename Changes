@@ -1,3 +1,7 @@
+3.28
+
+    * Setup::Basic, Setup::Large: fixed broken links to jQuery(broken at 3.26)
+
 3.27
 
     [MINOR ENHACEMENTS]
