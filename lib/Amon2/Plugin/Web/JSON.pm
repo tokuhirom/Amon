@@ -38,14 +38,7 @@ sub _render_json {
 
     my $encoding = $c->encoding();
     $encoding = lc($encoding->mime_name) if ref $encoding;
-    # chrome bug
-    if ( ( $c->req->user_agent || '' ) =~ /Chrome/ and
-        ( $c->req->env->{'HTTP_X_REQUESTED_WITH'} || '' ) ne 'XMLHttpRequest' ) {
-        $res->content_type("text/html; charset=$encoding");
-    }
-    else {
-        $res->content_type("application/json; charset=$encoding");
-    }
+    $res->content_type("application/json; charset=$encoding");
 
     # add UTF-8 BOM if the client is Safari
     if ( ( $c->req->user_agent || '' ) =~ m/Safari/ and $encoding eq 'utf-8' ) {
