@@ -126,7 +126,7 @@ L<Amon2::Plugin::Web::JSON> have a JSON hijacking detection feature. Amon2::Plug
 
 =item The request doesn't have 'X-Requested-With' header.
 
-=item The request contains /android|firefox/ string in 'User-Agent' header.
+=item The request contains /android/ string in 'User-Agent' header.
 
 =back
 
