@@ -1,3 +1,18 @@
+3.29
+
+    [INCOMPATIBLE CHANGES/SECURITY ENHACEMENTS]
+    * added JSON hijacking detection.
+      I hope this detector does not have a false positive issue.
+      If you got a issue, you should send a X-Requested-With header.
+      (Thanks to hasegawayosuke)
+
+    [ENHANCEMENTS]
+    * upgrade to jQuery 1.7.1 from jQuery 1.7
+
+    [MINOR FIX]
+    * Plugin::Web::JSON: Remove workaround to set 'Content-Type: text/html' on Chrome.
+      This workaround is no longer needed.
+
 3.28
 
     * Setup::Basic, Setup::Large: fixed broken links to jQuery(broken at 3.26)
