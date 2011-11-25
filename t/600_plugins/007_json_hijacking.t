@@ -20,6 +20,18 @@ subtest 'without X-Requested-With header' => sub {
     is($res->code, 403);
     is($res->content_length, length($res->content));
 };
+subtest 'POST request' => sub {
+    $app->{request} = Amon2::Web::Request->new(
+        +{
+            'REQUEST_METHOD' => 'POST',
+            'HTTP_USER_AGENT' => 'Mozilla/5.0 (Linux; U; Android 2.3.2; ja-jp; SonyEricssonSO-01C Build/3.0.D.2.79) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1',
+            'HTTP_COOKIE' => 'nantoka_sid=foo',
+        }
+    );
+    my $res = $app->render_json({});
+    is($res->code, 200);
+    is($res->content_length, length($res->content));
+};
 
 subtest 'with X-Requested-With header' => sub {
     $app->{request} = Amon2::Web::Request->new(

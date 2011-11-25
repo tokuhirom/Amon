@@ -26,7 +26,7 @@ sub _render_json {
     $output =~ s!([+<>])!$_ESCAPE{$1}!g;
 
     # defense from JSON hijacking
-    if ((!$c->request->header('X-Requested-With')) && ($c->req->user_agent||'') =~ /android/i && defined $c->req->header('Cookie')) {
+    if ((!$c->request->header('X-Requested-With')) && ($c->req->user_agent||'') =~ /android/i && defined $c->req->header('Cookie') && ($c->req->method||'GET') eq 'GET') {
         my $res = $c->create_response(403);
         $res->content_type('text/html; charset=utf-8');
         $res->content("Your request is maybe JSON hijacking.\nIf you are not a attacker, please add 'X-Requested-With' header to each request.");
