@@ -192,10 +192,10 @@ sub write_templates {
         <div id="main">
             [% content %]
         </div>
+        <footer class="footer">
+            Powered by <a href="http://amon.64p.org/">Amon2</a>
+        </footer>
     </div>
-    <footer class="footer">
-        Powered by <a href="http://amon.64p.org/">Amon2</a>
-    </footer>
 </body>
 </html>
 ...
