@@ -233,10 +233,10 @@ sub write_templates {
 sub run {
     my $self = shift;
 
-    $self->SUPER::run();
-
     $self->load_asset('jQuery');
     $self->load_asset('Bootstrap');
+
+    $self->SUPER::run();
 
     $self->write_static_files();
 

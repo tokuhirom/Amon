@@ -96,6 +96,7 @@ sub write_file_raw {
 
 sub load_asset {
     my ($self, $asset) = @_;
+    infof("Loading asset: $asset");
     my $klass = Plack::Util::load_class($asset, 'Amon2::Setup::Asset');
 
     my $require_newline = $self->{tags} ? 1 : 0;

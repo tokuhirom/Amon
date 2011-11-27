@@ -84,3 +84,6 @@ callback
 Xslate
 app
 psgi
+IEs
+UTF
+nosniff
