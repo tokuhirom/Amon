@@ -37,6 +37,8 @@ sub test_flavor {
         ok($app->run);
     }
 
+    note $dir;
+
     chdir($cwd);
 }
 
