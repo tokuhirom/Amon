@@ -1,3 +1,8 @@
+3.30
+
+    * Setup::Flavor::Large: added new show_error method.
+      (tokuhirom)
+
 3.29
 
     [INCOMPATIBLE CHANGES/SECURITY ENHACEMENTS]

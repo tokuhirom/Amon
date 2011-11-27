@@ -418,7 +418,7 @@ my @controllers = Module::Pluggable::Object->new(
                 controller => $p0,
                 action     => $method,
             });
-            print STDERR "map: $path => ${p0}::${method}\n" unless $ENV{XARNESS_ACTIVE};
+            print STDERR "map: $path => ${p0}::${method}\n" unless $ENV{HARNESS_ACTIVE};
         }
     }
 }
