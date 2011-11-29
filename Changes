@@ -1,3 +1,8 @@
+3.31
+
+    - fixed testing deps
+      (tokuhirom)
+
 3.30
 
     * Setup::Flavor::Large: added new show_error method.
