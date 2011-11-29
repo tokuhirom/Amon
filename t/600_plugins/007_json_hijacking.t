@@ -2,6 +2,7 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
+use Test::Requires 'JSON';
 
 my $app = do {
     package MyApp;
