@@ -106,7 +106,7 @@ builder {
         authenticator => sub { $_[0] eq 'admin' && $_[1] eq 'admin' };
     enable 'Plack::Middleware::Static',
         path => qr{^(?:/robots\.txt|/favicon\.ico)$},
-        root => File::Spec->catdir(dirname(__FILE__), 'static', 'adin');
+        root => File::Spec->catdir(dirname(__FILE__), 'static', 'admin');
     enable 'Plack::Middleware::ReverseProxy';
     enable 'Plack::Middleware::Session',
         store => Plack::Session::Store::DBI->new(
