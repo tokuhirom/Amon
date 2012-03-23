@@ -24,19 +24,24 @@ sub do_import {
 sub _is_git_available {
     my ($self) = @_;
 
-    my $pid = fork();
-    die "Cannot fork: $!" if !defined $pid;
-    if ($pid) { # parent
-        waitpid($pid, 0);
-        require POSIX;
-        POSIX::WIFEXITED($?) && POSIX::WEXITSTATUS($?)==0 ? 1 : 0;
-    } else { # child
-        my ($logfh, $logfile) = tempfile(UNLINK => 1);
-        open STDOUT, '>', $logfile or die "$!";
-        open STDERR, '>&STDOUT' or die "$!";
+    if ($^O eq 'MSWin32') {
         no warnings;
-        exec('git', '--version');
-        exit(9);
+        !system('git --version 2>&1 > NUL');
+    } else {
+        my $pid = fork();
+        die "Cannot fork: $!" if !defined $pid;
+        if ($pid) { # parent
+            waitpid($pid, 0);
+            require POSIX;
+            POSIX::WIFEXITED($?) && POSIX::WEXITSTATUS($?)==0 ? 1 : 0;
+        } else { # child
+            my ($logfh, $logfile) = tempfile(UNLINK => 1);
+            open STDOUT, '>', $logfile or die "$!";
+            open STDERR, '>&STDOUT' or die "$!";
+            no warnings;
+            exec('git', '--version');
+            exit(9);
+        }
     }
 }
 
