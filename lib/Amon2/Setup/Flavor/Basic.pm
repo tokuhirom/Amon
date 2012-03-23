@@ -140,7 +140,7 @@ sub write_templates {
     <title>[% title || '<%= $dist %>' %]</title>
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <meta http-equiv="Content-Script-Type" content="text/javascript" />
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0"]]>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
     <meta name="format-detection" content="telephone=no" />
     <% $tags %>
     <link href="[% static_file('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
