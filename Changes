@@ -1,3 +1,7 @@
+3.33
+
+    - fixed typo
+
 3.32
 
     - lib/Amon2/Setup/Flavor/Large.pm: fixed typo (reported by pochy++)
