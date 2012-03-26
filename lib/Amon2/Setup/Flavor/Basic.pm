@@ -150,44 +150,21 @@ sub write_templates {
     <![endif]-->
 </head>
 <body[% IF bodyID %] id="[% bodyID %]"[% END %]>
-    <div class="topbar-wrapper" style="z-index: 5;">
-        <div class="topbar" data-dropdown="dropdown">
-            <div class="topbar-inner">
-                <div class="container">
-                <h3><a href="#"><% $dist %></a></h3>
-                <ul class="nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#">Link</a></li>
-                    <li><a href="#">Link</a></li>
-                    <li><a href="#">Link</a></li>
-                    <li class="dropdown">
-                    <a href="#" class="dropdown-toggle">Dropdown</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Secondary link</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Another link</a></li>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href="#"><% $dist %></a>
+                <div class="nav-collapse">
+                    <ul class="nav">
+                        <li class="active"><a href="#">Home</a></li>
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
                     </ul>
-                    </li>
-                </ul>
-                <form class="pull-left" action="">
-                    <input type="text" placeholder="Search">
-                </form>
-                <ul class="nav secondary-nav">
-                    <li class="dropdown">
-                    <a href="#" class="dropdown-toggle">Dropdown</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Secondary link</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Another link</a></li>
-                    </ul>
-                    </li>
-                </ul>
                 </div>
-            </div><!-- /topbar-inner -->
-        </div><!-- /topbar -->
-    </div>
+            </div>
+        </div><!-- /.navbar-inner -->
+    </div><!-- /.navbar -->
     <div class="container">
         <div id="main">
             [% content %]
@@ -409,7 +386,7 @@ test_psgi
     app => $app,
     client => sub {
         my $cb = shift;
-        for my $fname (qw(static/bootstrap/bootstrap.min.css robots.txt)) {
+        for my $fname (qw(static/bootstrap/bootstrap.css robots.txt)) {
             my $req = HTTP::Request->new(GET => "http://localhost/$fname");
             my $res = $cb->($req);
             is($res->code, 200, $fname) or diag $res->content;
