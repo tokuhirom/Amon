@@ -1,3 +1,8 @@
+3.34
+
+    - upgrade jquery 1.7.2 to 1.7.3
+    - upgrade bootstrap 1.4.0 to 2.0.2
+
 3.33
 
     - fixed typo
