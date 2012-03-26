@@ -50,14 +50,14 @@ sub write_templates {
     $self->write_file("$base/index.tt", <<'...');
 [% WRAPPER 'include/layout.tt' %]
 
-<div class="row">
-    <div class="span10">
-        <h1>Hello, Amon2 world!</h1>
+<h1 style="text-align: center">Hello, Amon2 world!</h1>
 
+<div class="row">
+    <div class="span6">
         <h2>For benchmarkers...</h2>
         <p>If you want to benchmarking between Plack based web application frameworks, you should use <B>Amon2::Setup::Flavor::Minimum</B> instead.</p>
         <p>You can use it as following one liner:</p>
-        <pre>% amon2-setup.pl --flavor Minimum <% $module %></pre>
+        <pre>% amon2-setup.pl --flavor Minimum Foo</pre>
     </div>
     <div class="span6">
         <p>Amon2 is right for you if ...</p>
@@ -71,58 +71,55 @@ sub write_templates {
 
 <hr />
 
-<h1>Components?</h1>
+<style>
+    .marketing .row {
+        margin-top: 20px;
+    }
+</style>
+<div class="marketing">
+    <h1 style="text-align: center; font-size: 280%;">Battery Included?</h1>
 
-<section class="row">
-    <div class="span4">
-        <h2>CSS Library</h2>
+    <div class="row">
+        <div class="span4">
+            <h2>CSS Library</h2>
+            <div>
+                Current version of Amon2 using twitter's bootstrap.css as a default CSS library.<br />
+                If you want to learn it, please access to <a href="http://twitter.github.com/bootstrap/">twitter.github.com/bootstrap/</a>
+            </div>
+        </div>
+
+        <div class="span4">
+            <h2>JS Library</h2>
+            <div>
+                <a href="http://jquery.com/">jQuery</a> included.
+            </div>
+        </div>
+
+        <div class="span4">
+            <h2>Template Engine</h2>
+            <div>
+                Amon2 uses <B>Text::Xslate</B>(TTerse) as a primary template engine.<br />
+                But you can use any template engine easily.
+            </div>
+        </div>
     </div>
-    <div class="span12">
-        Current version of Amon2 using twitter's bootstrap.css as a default CSS library.<br />
-        If you want to learn it, please access to <a href="http://twitter.github.com/bootstrap/">twitter.github.com/bootstrap/</a>
+
+    <div class="row">
+        <div class="span4">
+            <h2>O/R Mapper?</h2>
+            <div>
+                There is no O/R Mapper support. But I recommend to use Teng.<br />
+                You can integrate Teng very easily.<br />
+                See <a href="http://amon.64p.org/database.html#teng">This page</a> for more details.
+            </div>
+        </div>
     </div>
-</section>
+</div>
 
 <hr />
 
 <section class="row">
-    <div class="span4">
-        <h2>JS Library</h2>
-    </div>
     <div class="span12">
-        <a href="http://jquery.com/">jQuery</a> included.
-    </div>
-</section>
-
-<hr />
-
-<section class="row">
-    <div class="span4">
-        <h2>Template Engine</h2>
-    </div>
-    <div class="span12">
-        Amon2 uses Text::Xslate(TTerse) as a primary template engine.<br />
-        But you can use any template engine easily.
-    </div>
-</section>
-
-<hr />
-
-<section class="row">
-    <div class="span4">
-        <h2>O/R Mapper?</h2>
-    </div>
-    <div class="span12">
-        There is no O/R Mapper support. But I recommend to use Teng.<br />
-        You can integrate Teng very easily.<br />
-        See <a href="http://amon.64p.org/database.html#teng">This page</a> for more details.
-    </div>
-</section>
-
-<hr />
-
-<section class="row">
-    <div class="span16">
         <h1>Documents?</h1>
         <p>Complete docs are available on <a href="http://amon.64p.org/">amon.64p.org</a></p>
         <p>And there is module specific docs on <a href="https://metacpan.org/release/Amon2">CPAN</a></p>

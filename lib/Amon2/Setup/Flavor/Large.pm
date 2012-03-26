@@ -184,20 +184,19 @@ sub logout {
     <![endif]-->
 </head>
 <body[% IF bodyID %] id="[% bodyID %]"[% END %]>
-    <div class="topbar-wrapper" style="z-index: 5;">
-        <div class="topbar">
-            <div class="topbar-inner">
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
                 <div class="container">
-                <h3><a href="#"><% $dist %></a></h3>
+                    <a href="#" class="brand"><% $dist %></a>
                 </div>
-            </div><!-- /topbar-inner -->
-        </div><!-- /topbar -->
+            </div><!-- /.navbar-inner -->
+        </div><!-- /.navbar -->
     </div>
     <div class="container-fluid">
-        <div class="sidebar">
+        <div class="span4">
                 [% INCLUDE "include/sidebar.tt" %]
         </div>
-        <div class="content">
+        <div class="span8">
             [% content %]
         </div>
     </div>
