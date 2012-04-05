@@ -490,7 +490,7 @@ use File::Spec;
 # dispatcher
 use <% $module %>::Web::Dispatcher;
 sub dispatch {
-    return <% $module %>::Web::Dispatcher->dispatch($_[0]) or die "response is not generated";
+    return (<% $module %>::Web::Dispatcher->dispatch($_[0]) or die "response is not generated");
 }
 
 <% $xslate %>

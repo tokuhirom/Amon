@@ -344,7 +344,7 @@ use File::Spec;
 # dispatcher
 use <% $module %>::<% $moniker %>::Dispatcher;
 sub dispatch {
-    return <% $module %>::<% $moniker %>::Dispatcher->dispatch($_[0]) or die "response is not generated";
+    return (<% $module %>::<% $moniker %>::Dispatcher->dispatch($_[0]) or die "response is not generated");
 }
 
 <% $xslate %>
