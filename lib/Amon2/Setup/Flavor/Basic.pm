@@ -540,6 +540,20 @@ any '/' => sub {
     $c->render('index.tt');
 };
 
+any '/streaming' => sub {
+    my ($c) = @_;
+    $c->streaming(sub {
+        my ($writer) = @_;
+        $writer->write("<html>\n");
+        for my $i (1..5) {
+            $writer->write("<div>$i</div>\n");
+            sleep 1;
+        }
+        $writer->write("</html>\n");
+        $writer->close;
+    });
+};
+
 post '/account/logout' => sub {
     my ($c) = @_;
     $c->session->expire();
