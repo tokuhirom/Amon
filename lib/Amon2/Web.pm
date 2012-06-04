@@ -135,7 +135,17 @@ sub to_app {
         $response = $self->dispatch() or die "cannot get any response";
     PROCESS_END:
         $self->call_trigger('AFTER_DISPATCH' => $response);
-        return $response->finalize;
+        if (defined $response->body) {
+            return $response->finalize;
+        }
+        else { # Streaming
+            my ($status, $headers) = @{ $response->finalize };
+            return sub {
+                my ($responder) = @_;
+                my $writer = $responder->([ $status, $headers ]);
+                $response->wait_for_events->($writer);
+            };
+        }
     };
 }
 
@@ -171,6 +181,16 @@ sub render {
         ],
         $html,
     );
+}
+
+sub streaming {
+    my ($self, $cb) = @_;
+    my $response = $self->create_response(
+        200,
+        [ 'Content-Type' => $self->html_content_type ],
+    );
+    $response->wait_for_events($cb);
+    return $response;
 }
 
 # you can override this method on your application
@@ -265,6 +285,10 @@ This method returns relative URI.
 =item $c->render($tmpl[, @args|%args]) : Plack::Web::Response
 
 This method render HTML.
+
+=item $c->streaming($body: CodeRef) : Plack::Web::Response
+
+This method stream the content.
 
 =item $c->encoding()
 
