@@ -2,7 +2,6 @@ package Amon2::Web::Response;
 use strict;
 use warnings;
 use parent qw/Plack::Response/;
-use Plack::Util::Accessor qw/wait_for_events/;
 
 
 1;
