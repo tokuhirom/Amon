@@ -41,9 +41,18 @@ sub main {
     mkdir $dist or die "Cannot mkdir '$dist': $!";
     chdir $dist or die $!;
 
+    my @flavor_classes;
     for my $flavor (@flavors) {
+        my $flavor_class = load_flavor($flavor);
+        push @flavor_classes, $flavor_class;
+
+        print "-- Running flavor: $flavor --\n";
+
         my $cwd = Cwd::getcwd(); # save cwd
-            run_flavor($module => $flavor);
+            {
+                my $flavor = $flavor_class->new(module => $module);
+                   $flavor->run;
+            }
         chdir($cwd);
     }
 
@@ -52,17 +61,21 @@ sub main {
 		$vc = $vc->new();
 		$vc->do_import();
 	}
+
+    for my $flavor_class (@flavor_classes) {
+        if ($flavor_class->can('call_trigger')) {
+            $flavor_class->call_trigger('AFTER_VC');
+        }
+    }
 }
 
-sub run_flavor {
-    my ($module, $flavor_name) = @_;
+sub load_flavor {
+    my $flavor_name = shift;
 
     my $flavor_class = $flavor_name =~ s/^\+// ? $flavor_name : "Amon2::Setup::Flavor::$flavor_name";
     eval "use $flavor_class; 1" or die "Cannot load $flavor_class: $@";
 
-    print "-- Running flavor: $flavor_name --\n";
-    my $flavor = $flavor_class->new(module => $module);
-       $flavor->run;
+    return $flavor_class;
 }
 
 __END__

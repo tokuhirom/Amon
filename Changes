@@ -1,3 +1,8 @@
+3.36
+
+    - upgrade bootstrap to 2.0.4
+    - added AFTER_VC hook for flavors
+
 3.35
 
     - fixed error handler

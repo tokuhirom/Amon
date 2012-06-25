@@ -10,6 +10,7 @@ use File::Path ();
 use Amon2;
 use Plack::Util ();
 use Carp ();
+use Amon2::Trigger;
 
 my $xslate = Text::Xslate->new(
     syntax => 'TTerse',
