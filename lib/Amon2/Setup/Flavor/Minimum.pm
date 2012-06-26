@@ -3,7 +3,7 @@ use warnings FATAL => 'all';
 use utf8;
 
 package Amon2::Setup::Flavor::Minimum;
-use parent qw/Amon2::Setup::Flavor/;
+use parent qw(Amon2::Setup::Flavor);
 
 sub run {
     my ($self) = @_;
