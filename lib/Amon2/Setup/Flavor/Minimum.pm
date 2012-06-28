@@ -264,7 +264,7 @@ sub write_templates {
 <!doctype html>
 <html>
 <head>
-    <met charst="utf-8">
+    <meta charset="utf-8">
     <title><% $module %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
