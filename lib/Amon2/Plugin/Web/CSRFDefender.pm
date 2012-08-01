@@ -24,8 +24,7 @@ sub init {
     $c->add_trigger(
         HTML_FILTER => sub {
             my ($self, $html) = @_;
-            my $token = $self->get_csrf_defender_token();
-            $html =~ s!(<form\s*.*?>)!$1\n<input type="hidden" name="csrf_token" value="$token" />!isg;
+            $html =~ s!(<form\s*.*?>)!qq{$1\n<input type="hidden" name="csrf_token" value="}.$self->get_csrf_defender_token().qq{" />}!isge;
             return $html;
         },
     );
