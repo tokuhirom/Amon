@@ -1,3 +1,14 @@
+3.38
+
+    commit ec8e3998d3d57ad885115d3cabb9478687f76e17
+    Author: Masahiro Nagano <kazeburo@gmail.com>
+    Date:   Wed Aug 1 17:42:30 2012 +0900
+
+        generate a token only when needed
+
+    lib/Amon2/Plugin/Web/CSRFDefender.pm |    3 +--
+    1 file changed, 1 insertion(+), 2 deletions(-)
+
 3.37
 
     - fixed typo(syohex++)
