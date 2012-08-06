@@ -9,7 +9,7 @@ sub write_static_files {
     my ($self, $base) = @_;
     $base ||= 'static';
 
-    for my $asset (qw(jQuery Bootstrap ES5Shim MicroTemplateJS StrftimeJS)) {
+    for my $asset (qw(jQuery Bootstrap ES5Shim MicroTemplateJS StrftimeJS SprintfJS SprintfJS)) {
         $self->write_asset($asset, $base);
     }
 
@@ -213,6 +213,7 @@ sub run {
     $self->load_asset('ES5Shim');
     $self->load_asset('MicroTemplateJS');
     $self->load_asset('StrftimeJS');
+    $self->load_asset('SprintfJS');
 
     $self->SUPER::run();
 

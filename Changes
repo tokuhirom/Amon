@@ -1,3 +1,7 @@
+3.39
+
+    - Bundled es5shim.js, sprintf.js, strftime.js, micro_template.js
+
 3.38
 
     commit ec8e3998d3d57ad885115d3cabb9478687f76e17

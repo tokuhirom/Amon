@@ -7,7 +7,7 @@ use Plack::Util ();
 use Carp ();
 use Amon2::Config::Simple;
 
-our $VERSION = '3.38';
+our $VERSION = '3.39';
 {
     our $CONTEXT; # You can localize this variable in your application.
     sub context { $CONTEXT }
