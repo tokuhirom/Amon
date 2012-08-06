@@ -9,8 +9,9 @@ sub write_static_files {
     my ($self, $base) = @_;
     $base ||= 'static';
 
-    $self->write_asset('jQuery', $base);
-    $self->write_asset('Bootstrap', $base);
+    for my $asset (qw(jQuery Bootstrap ES5Shim MicroTemplateJS StrftimeJS)) {
+        $self->write_asset($asset, $base);
+    }
 
     $self->write_file("$base/img/.gitignore", '');
 
@@ -209,6 +210,9 @@ sub run {
 
     $self->load_asset('jQuery');
     $self->load_asset('Bootstrap');
+    $self->load_asset('ES5Shim');
+    $self->load_asset('MicroTemplateJS');
+    $self->load_asset('StrftimeJS');
 
     $self->SUPER::run();
 
