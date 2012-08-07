@@ -1,3 +1,7 @@
+3.50
+
+    - websocket support
+
 3.39
 
     - Bundled es5shim.js, sprintf.js, strftime.js, micro_template.js
