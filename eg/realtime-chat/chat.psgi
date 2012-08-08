@@ -63,7 +63,7 @@ __DATA__
         <section class="row">
             <form id="form">
                 <input type="text" name="message" id="message">
-                <inptu type="submit">
+                <input type="submit">
             </form>
             <pre id="log"></pre>
         </section>
