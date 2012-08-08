@@ -14,7 +14,9 @@ my %_ESCAPE = (
 
 sub init {
     my ($class, $c, $conf) = @_;
-    Amon2::Util::add_method($c, 'render_json', \&_render_json);
+    unless ($c->can('render_json')) {
+        Amon2::Util::add_method($c, 'render_json', \&_render_json);
+    }
 }
 
 sub _render_json {
