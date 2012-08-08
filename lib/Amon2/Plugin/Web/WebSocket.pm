@@ -96,6 +96,8 @@ This plugin provides websocket feature for Amon2.
 
 You can use websocket very easily with Amon2.
 
+This plugin depended on AnyEvent. You can use this module on L<Twiggy> only.
+
 =head1 METHODS
 
 =over 4
@@ -103,3 +105,8 @@ You can use websocket very easily with Amon2.
 =item $c->websocket(\&callback);
 
 =back
+
+=head1 SEE ALSO
+
+L<Twiggy>, L<AnyEvent>
+
