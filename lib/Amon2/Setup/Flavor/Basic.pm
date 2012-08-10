@@ -18,6 +18,8 @@ sub write_static_files {
     $self->write_file("$base/robots.txt", '');
 
     $self->write_file("$base/js/main.js", <<'...');
+if (typeof(window.console) == "undefined") { console = {}; console.log = console.warn = console.error = function(a) {}; }
+
 $(function () {
     $('#topbar').dropdown();
 });
