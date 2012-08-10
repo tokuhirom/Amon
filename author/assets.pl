@@ -190,7 +190,7 @@ sub files {
 }
 
 sub run_jquery {
-    my $url = 'http://code.jquery.com/jquery-1.7.2.min.js';
+    my $url = 'http://code.jquery.com/jquery-1.8.0.min.js';
     my $res = $ua->get($url);
     $res->is_success or die "Cannot fetch $url: " . $res->status_line;
 
