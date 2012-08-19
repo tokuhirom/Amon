@@ -19,7 +19,7 @@ sub test_flavor {
 	local $ENV{PLACK_ENV} = 'development';
     $flavor = Plack::Util::load_class($flavor, 'Amon2::Setup::Flavor');
 
-    my $libpath = File::Spec->rel2abs(File::Spec->catfile(dirname(__FILE__), '..', '..', 'lib'));
+    my $libpath = File::Spec->rel2abs(File::Spec->catfile(dirname(__FILE__), '..', 'lib'));
     unshift @INC, $libpath;
 
     my $dir = tempdir(CLEANUP => $ENV{DEBUG} ? 0 : 1);
@@ -33,7 +33,7 @@ sub test_flavor {
 
         # run prove
         my $app = App::Prove->new();
-        $app->process_args('-Ilib', "-I$libpath", <t/*.t>);
+        $app->process_args('--exec', "$^X -Ilib -Mlib=$libpath", <t/*.t>);
         ok($app->run);
     }
 

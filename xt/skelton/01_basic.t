@@ -35,6 +35,6 @@ sub main_test {
     system "$^X Makefile.PL";
     system $Config{make};
     my $app = App::Prove->new();
-    $app->process_args('-Ilib', '-I'.File::Spec->catfile($FindBin::Bin, '..', '..', 'lib'), <t/*.t>, <xt/*.t>);
+    $app->process_args('--exec', "$^X -Ilib -I".File::Spec->catfile($FindBin::Bin, '..', '..', 'lib'), <t/*.t>, <xt/*.t>);
     ok($app->run);
 }
