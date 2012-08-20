@@ -35,6 +35,8 @@ Amon2::Web::Response::Callback - [EXPERIMENTAL]callback style psgi response for 
 
 =head1 SYNOPSIS
 
+    use Amon2::Lite;
+
     any '/cb' => sub {
         my $c = shift;
         Amon2::Web::Response::Callback->new(

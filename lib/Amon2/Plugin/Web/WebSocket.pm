@@ -85,6 +85,8 @@ Amon2::Plugin::Web::WebSocket - [EXPERIMENTAL]websocket plugin for Amon2
 
 =head1 SYNOPSIS
 
+    use Amon2::Lite;
+
     any '/echo' => sub {
         my ($c) = @_;
         return $c->websocket(sub {

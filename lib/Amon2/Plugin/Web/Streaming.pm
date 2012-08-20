@@ -66,13 +66,15 @@ Amon2::Plugin::Web::Streaming - streaming support for Amon2
 
 =head1 SYNOPSIS
 
+    use Amon2::Lite;
+
     __PACKAGE__->load_plugin(qw/Web::Streaming/);
 
     any '/poll' => sub {
         my $c = shift;
         return $c->streaming(sub {
             my $respond = shift;
-            ...
+            ...;
             $respond->write([200, [], ['OK']]);
         });
     };
@@ -81,8 +83,8 @@ Amon2::Plugin::Web::Streaming - streaming support for Amon2
         my $c = shift;
         return $c->streaming_json(sub {
             my $writer = shift;
-            ...
-            $writer->write_json($dat);
+            ...;
+            $writer->write_json(+{ });
             $writer->close;
         });
     };
