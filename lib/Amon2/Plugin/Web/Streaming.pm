@@ -90,9 +90,9 @@ Amon2::Plugin::Web::Streaming - streaming support for Amon2
 
 =head1 DESCRIPTION
 
-This is an Amon2 plugin to supoprt streaming.
+This is an Amon2 plugin to support streaming.
 
-You MUST use the http server supporting psgi.streaming.
+You MUST use the HTTP server supporting psgi.streaming.
 
 =head1 EXPORTED METHODS
 
@@ -108,7 +108,7 @@ Argument for $code is C<< $respond >>. It's same as a argument for PSGI callback
 
 It's a short hand utility to publish streaming JSON.
 
-The arugment is instance of Amon2::Plugin::Web::Streaming::Writer.
+The argument is instance of Amon2::Plugin::Web::Streaming::Writer.
 
 =back
 

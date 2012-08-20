@@ -28,6 +28,11 @@ sub _websocket {
         $c->req->env );
     $hs->parse($fh)
         or return $c->create_response( 400, [], [ $hs->error ] );
+    my @messages;
+    $ws->{send_message} = sub {
+        my $message = shift;
+        push @messages, $message;
+    };
     $code->( $ws );
     my $res = Amon2::Web::Response::Callback->new(
         code => sub {
@@ -42,6 +47,7 @@ sub _websocket {
                 };
                 my $frame = Protocol::WebSocket::Frame->new();
                 $h->push_write( $hs->to_string );
+                $ws->send_message($_) for @messages;
                 $h->on_read(
                     sub {
                         $frame->append( $_[0]->rbuf );
