@@ -58,12 +58,12 @@ sub _websocket {
                 );
                 $h->on_error(
                     sub {
-                        $ws->call_error();
+                        $ws->call_error($c);
                     }
                 );
                 $h->on_eof(
                     sub {
-                        $ws->call_eof();
+                        $ws->call_eof($c);
                     }
                 );
             };
