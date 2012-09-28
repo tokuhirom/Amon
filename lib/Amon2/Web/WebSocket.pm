@@ -34,16 +34,16 @@ sub call_receive_message {
 }
 
 sub call_error {
-    my $self = shift;
+    my ( $self, $c ) = @_;
     if ( $self->{on_error} ) {
-        $self->{on_error}->();
+        $self->{on_error}->($c);
     }
 }
 
 sub call_eof {
-    my $self = shift;
+    my ( $self, $c ) = @_;
     if ( $self->{on_eof} ) {
-        $self->{on_eof}->();
+        $self->{on_eof}->($c);
     }
 }
 
