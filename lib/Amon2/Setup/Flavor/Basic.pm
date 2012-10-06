@@ -58,24 +58,7 @@ sub write_templates {
     $self->write_file("$base/index.tt", <<'...');
 [% WRAPPER 'include/layout.tt' %]
 
-<h1 style="text-align: center">Hello, Amon2 world!</h1>
-
-<div class="row">
-    <div class="span6">
-        <h2>For benchmarkers...</h2>
-        <p>If you want to benchmarking between Plack based web application frameworks, you should use <B>Amon2::Setup::Flavor::Minimum</B> instead.</p>
-        <p>You can use it as following one liner:</p>
-        <pre>% amon2-setup.pl --flavor Minimum Foo</pre>
-    </div>
-    <div class="span6">
-        <p>Amon2 is right for you if ...</p>
-        <ul>
-        <li>You need exceptional performance.</li>
-        <li>You want a framework with a small footprint.</li>
-        <li>You want a framework that requires nearly zero configuration.</li>
-        </ul>
-    </div>
-</div>
+<h1 style="padding: 70px; text-align: center; font-size: 80px; line-height: 1; letter-spacing: -2px;">Hello, Amon2 world!</h1>
 
 <hr />
 
@@ -100,6 +83,13 @@ sub write_templates {
             <h2>JS Library</h2>
             <div>
                 <a href="http://jquery.com/">jQuery</a> included.
+                <ul>
+                    <li>es5-shim.min.js</li>
+                    <li>micro-location.js</li>
+                    <li>micro_template.js</li>
+                    <li>sprintf-0.7-beta1.js</li>
+                    <li>strftime.js</li>
+                </ul>
             </div>
         </div>
 
@@ -121,6 +111,19 @@ sub write_templates {
                 See <a href="http://amon.64p.org/database.html#teng">This page</a> for more details.
             </div>
         </div>
+    </div>
+</div>
+
+<hr />
+
+<div class="row">
+    <h1 style="text-align: center;">Amon2 is right for you if ...</h1>
+    <div class="span24">
+        <ul>
+        <li>You need exceptional performance.</li>
+        <li>You want a framework with a small footprint.</li>
+        <li>You want a framework that requires nearly zero configuration.</li>
+        </ul>
     </div>
 </div>
 
