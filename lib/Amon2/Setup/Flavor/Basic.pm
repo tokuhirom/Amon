@@ -414,30 +414,43 @@ use strict;
 use warnings;
 use Test::More;
 use Test::Requires 'Text::SimpleTable';
+use File::Basename;
 
-plan skip_all => 'this test requires "jsl" command'
-  unless `jsl` =~ /JavaScript Lint/;
+plan skip_all => 'this test requires "jshint" command'
+  unless `jshint --version` =~ /\d/;
 
 my @files = (<static/*/*.js>, <static/*/*/*.js>, <static/*/*/*/*.js>);
-plan tests => 1 * @files;
 
-my $table = Text::SimpleTable->new( 25, 5, 5 );
+my %WHITE_LIST = map { $_ => 1 } qw(
+    bootstrap-dropdown.js
+    bootstrap-tooltip.js
+    es5-shim.min.js
+    micro-location.js
+    micro_template.js
+);
+
+my $table = Text::SimpleTable->new( 25, 5 );
 
 for my $file (@files) {
-    # 0 error(s), 6 warning(s)
-    my $out = `jsl -stdin < $file`;
-    if ( $out =~ /((\d+) error\(s\), (\d+) warning\(s\))/ ) {
-        my ( $msg, $err, $warn ) = ( $1, $2, $3 );
-        $file =~ s!^static/[^/]+/!!;
-        $table->row( $file, $err, $warn );
-        is $err, 0, $file;
+    next if $WHITE_LIST{basename($file)};
+    next if basename($file) =~ /jquery-[0-9.]+.min.js$/;
+
+    my $out = `jshint $file`;
+    my $err = 0;
+    if ( $out =~ /(\d+) errors?/ ) {
+        ( $err ) = ( $1 );
+        is($err, 0, $file)
+            or note $out;
     }
     else {
-        ok 0;
+        ok(1);
     }
+    $table->row( basename($file), $err );
 }
 
 note $table->draw;
+
+done_testing;
 ...
 
     for my $status (qw/404 500 502 503 504/) {
