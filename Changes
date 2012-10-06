@@ -1,3 +1,8 @@
+3.55
+
+    - use jshint instead of jsl, for testing application.
+      in setup script.
+
 3.54
 
     - jquery 1.8.0 => 1.8.2
