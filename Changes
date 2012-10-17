@@ -1,3 +1,10 @@
+3.57
+
+    - upgrade es5shim.js to HEAD
+    - [Plugin::Web::HTTPSession] do not use '__PACKAGE__' as a capsuling key.
+      use +__PACKAGE__!
+      (reported by anazawa++)
+
 3.56
 
     - minor test fix(tokuhirom)
