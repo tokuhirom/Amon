@@ -42,6 +42,7 @@ use Text::Xslate;
         my $c = shift;
         if ($c->request->path_info eq '/') {
             $c->session->set(foo => 'bar');
+            ::ok(!$c->{"__PACKAGE__"});
             return $c->redirect('/step2');
         } elsif ($c->request->path_info eq '/step2') {
             return $c->render('step2');
