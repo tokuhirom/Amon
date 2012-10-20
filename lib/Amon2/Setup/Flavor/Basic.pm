@@ -584,7 +584,6 @@ sub create_makefile_pl {
             'HTML::FillInForm::Lite'          => '1.09',
             'Time::Piece'                     => '1.20',
             'Plack::Session'                  => '0.14',
-            'Amon2::DBI'                      => '0.05',
             'DBD::SQLite'                     => '1.33',
             'Plack::Middleware::Session'      => 0,
             'Plack::Middleware::ReverseProxy' => '0.09',
