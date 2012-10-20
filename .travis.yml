@@ -1,5 +1,5 @@
 language: perl
 before_install:
-  - cpanm inc::Module::Install Module::Install::AuthorTests Module::Install::ReadmeMarkdownFromPod
+  - cpanm inc::Module::Install Module::Install::AuthorTests Module::Install::ReadmeMarkdownFromPod Module::Install::Repository
 perl:
   - "5.14"
