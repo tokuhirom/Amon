@@ -73,7 +73,7 @@ done_testing;
 
     $self->create_t_util_pm();
 
-    $self->write_file('xt/03_pod.t', <<'...');
+    $self->write_file('xt/01_pod.t', <<'...');
 use Test::More;
 eval "use Test::Pod 1.00";
 plan skip_all => "Test::Pod 1.00 required for testing POD" if $@;
