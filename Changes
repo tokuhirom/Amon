@@ -1,3 +1,9 @@
+3.60
+
+    - depend to latest Amon2::DBI
+      (latest Amon2::DBI have incompatible change. check it first.)
+    - Dropped dotcloud support in setup script.
+
 3.57
 
     - upgrade es5shim.js to HEAD
