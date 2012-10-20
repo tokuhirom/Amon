@@ -301,12 +301,7 @@ sub setup_schema {
 use File::Spec;
 use File::Basename qw(dirname);
 my $basedir = File::Spec->rel2abs(File::Spec->catdir(dirname(__FILE__), '..'));
-my $dbpath;
-if ( -d '/home/dotcloud/') {
-    $dbpath = "/home/dotcloud/<% $env %>.db";
-} else {
-    $dbpath = File::Spec->catfile($basedir, 'db', '<% $env %>.db');
-}
+my $dbpath = File::Spec->catfile($basedir, 'db', '<% $env %>.db');
 +{
     'DBI' => [
         "dbi:SQLite:dbname=$dbpath",
