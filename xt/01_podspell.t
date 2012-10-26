@@ -91,3 +91,4 @@ AE
 natively
 websocket
 AnyEvent
+CLI
