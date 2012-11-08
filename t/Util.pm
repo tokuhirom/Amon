@@ -21,8 +21,8 @@ sub run_app_test {
     chdir "t/apps/$name/" or die $!;
 
     my $app = App::Prove->new();
-    $app->process_args('-Ilib', "-I$libpath", <t/*.t>);
-    ok($app->run);
+    $app->process_args('--norc', '-Ilib', "-I$libpath", <t/*.t>);
+    ok($app->run, 'all tests ok');
     done_testing;
 }
 

@@ -33,7 +33,7 @@ sub test_flavor {
 
         # run prove
         my $app = App::Prove->new();
-        $app->process_args('--exec', "$^X -Ilib -Mlib=$libpath", <t/*.t>);
+        $app->process_args('--norc', '--exec', "$^X -Ilib -Mlib=$libpath", <t/*.t>);
         ok($app->run);
     }
 
