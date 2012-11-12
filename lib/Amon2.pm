@@ -184,7 +184,7 @@ More complicated documents are available on L<http://amon.64p.org/>
 
 =head1 AUTHOR
 
-Tokuhiro Matsuno
+Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF@ GMAIL COME<gt>
 
 =head1 LICENSE
 

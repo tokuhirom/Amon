@@ -43,3 +43,5 @@ perltidy.ERR$
 \.bak$
 ^Amon2-
 ^\.travis\.yml$
+\B\.gitignore
+^inc/
