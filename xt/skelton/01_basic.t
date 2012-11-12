@@ -32,8 +32,8 @@ sub main_test {
     chdir 'Hello' or die $!;
 
     note '-- run prove';
-    system "$^X Makefile.PL";
-    system $Config{make};
+    system "$^X Build.PL";
+    system './Build';
     my $app = App::Prove->new();
     $app->process_args('--norc', '--exec', "$^X -Ilib -I".File::Spec->catfile($FindBin::Bin, '..', '..', 'lib'), <t/*.t>, <xt/*.t>);
     ok($app->run);

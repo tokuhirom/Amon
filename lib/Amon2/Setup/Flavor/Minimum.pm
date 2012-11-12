@@ -231,28 +231,65 @@ our @EXPORT = qw(<% exports.join(' ') %>);
 sub create_makefile_pl {
     my ($self, $deps) = @_;
 
-    $self->write_file('Makefile.PL', <<'...', {deps => $deps});
-use ExtUtils::MakeMaker;
+    $self->write_file('Build.PL', <<'...', {deps => $deps});
+use strict;
+use warnings;
+use Module::Build;
 
-WriteMakefile(
-    NAME          => '<% $module %>',
-    AUTHOR        => 'Some Person <person@example.com>',
-    VERSION_FROM  => 'lib/<% $path %>.pm',
-    PREREQ_PM     => {
+my $build = Module::Build->subclass(
+    code => q{
+        sub ACTION_install {
+            die "Do not install web application.\n";
+        }
+
+        # do not make blib.
+        sub ACTION_code {
+            my $self = shift;
+            $self->depends_on('config_data');
+        }
+
+        # run prove
+        sub ACTION_test {
+            my $self = shift;
+            my $tests = $self->find_test_files;
+
+            require App::Prove;
+            my $prove = App::Prove->new();
+            $prove->process_args('-l', @$tests);
+            $prove->run();
+        }
+    }
+)->new(
+    license              => 'unknown',
+    dynamic_config       => 0,
+
+    build_requires       => {
+        'Test::More' => '0.98',
+        'Test::Requires' => 0,
+    },
+    configure_requires   => { 'Module::Build' => '0.38' },
+    requires             => {
+        perl => '5.008001',
         'Amon2'                           => '<% $amon2_version %>',
         'Text::Xslate'                    => '1.5006',
-        'Test::More'                      => '0.98',
 <% FOR v IN deps.keys() -%>
         <% sprintf("%-33s", "'" _ v _ "'") %> => '<% deps[v] %>',
 <% END -%>
     },
-    MIN_PERL_VERSION => '5.008001',
-    (-d 'xt' and $ENV{AUTOMATED_TESTING} || $ENV{RELEASE_TESTING}) ? (
-        test => {
-            TESTS => 't/*.t xt/*.t',
-        },
-    ) : (),
+
+    no_index    => { 'directory' => [ 'inc' ] },
+    name        => '<% $module %>',
+    module_name => '<% $module %>',
+    author        => 'Some Person <person@example.com>',
+    dist_abstract => 'A web site based on Amon2',
+
+    test_files => (-d '.git' || $ENV{RELEASE_TESTING}) ? 't/ xt/' : 't/',
+    recursive_test_files => 1,
+
+    create_readme  => 0,
+    create_license => 0,
 );
+$build->create_build_script();
 ...
 }
 

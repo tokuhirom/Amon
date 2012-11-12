@@ -372,6 +372,8 @@ META.json
 META.yml
 MYMETA.json
 MYMETA.yml
+/Build
+/_build/
 ...
 
     $self->write_file('t/03_assets.t', <<'...');
