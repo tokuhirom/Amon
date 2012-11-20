@@ -336,8 +336,20 @@ use_ok $_ for qw(
     <% $module %>
     <% $module %>::Web
     <% $module %>::Web::Dispatcher
+    <% $module %>::Web::Request
 );
 
+done_testing;
+...
+
+    $self->write_file("t/04_request.t", <<'...');
+use strict;
+use warnings;
+use utf8;
+use Test::More;
+use <% $module %>::Web;
+
+isa_ok(<% $module %>::Web->new()->create_request({}), '<% $module %>::Web::Request');
 done_testing;
 ...
 
@@ -513,6 +525,9 @@ sub dispatch {
     return (<% $module %>::Web::Dispatcher->dispatch($_[0]) or die "response is not generated");
 }
 
+use <% $module %>::Web::Request;
+sub create_request  { <% $module %>::Web::Request->new($_[1]) }
+
 <% $xslate %>
 
 # load plugins
@@ -544,6 +559,16 @@ __PACKAGE__->add_trigger(
         return;
     },
 );
+
+1;
+...
+
+    $self->write_file('lib/<<PATH>>/Web/Request.pm', <<'...');
+package <% $module %>::Web::Request;
+use strict;
+use warnings;
+use utf8;
+use parent qw/Amon2::Web::Request/;
 
 1;
 ...
