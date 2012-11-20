@@ -1,3 +1,7 @@
+3.63
+
+    - Plugin::Web::JSON: micro optimization(cache user_agent value)
+
 3.62
 
     - switch to Module::Build.
