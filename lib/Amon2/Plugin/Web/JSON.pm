@@ -27,8 +27,10 @@ sub _render_json {
     my $output = $_JSON->encode($stuff);
     $output =~ s!([+<>])!$_ESCAPE{$1}!g;
 
+    my $user_agent = $c->req->user_agent || '';
+
     # defense from JSON hijacking
-    if ((!$c->request->header('X-Requested-With')) && ($c->req->user_agent||'') =~ /android/i && defined $c->req->header('Cookie') && ($c->req->method||'GET') eq 'GET') {
+    if ((!$c->request->header('X-Requested-With')) && $user_agent =~ /android/i && defined $c->req->header('Cookie') && ($c->req->method||'GET') eq 'GET') {
         my $res = $c->create_response(403);
         $res->content_type('text/html; charset=utf-8');
         $res->content("Your request is maybe JSON hijacking.\nIf you are not a attacker, please add 'X-Requested-With' header to each request.");
@@ -43,7 +45,7 @@ sub _render_json {
     $res->content_type("application/json; charset=$encoding");
 
     # add UTF-8 BOM if the client is Safari
-    if ( ( $c->req->user_agent || '' ) =~ m/Safari/ and $encoding eq 'utf-8' ) {
+    if ( $user_agent =~ m/Safari/ and $encoding eq 'utf-8' ) {
         $output = "\xEF\xBB\xBF" . $output;
     }
 
