@@ -141,7 +141,7 @@ sub create_view {
 
     $self->render_string(<<'...', @_);
 # setup view class
-use Text::Xslate;
+use Text::Xslate 1.0006;
 {
     my $view_conf = __PACKAGE__->config->{'Text::Xslate'} || +{};
     unless (exists $view_conf->{path}) {
@@ -167,6 +167,11 @@ use Text::Xslate;
                 }
             },
         },
+        (__PACKAGE__->debug_mode ? ( warn_handler => sub {
+            Text::Xslate->print( # print method escape html automatically
+                '[[', @_, ']]', 
+            );
+        } ) : () ),
         %$view_conf
     });
     sub create_view { $view }
