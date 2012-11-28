@@ -392,7 +392,7 @@ use Module::Pluggable::Object;
 
 # define roots here.
 my $router = router {
-    # connect '/' => {controller => 'Root', action => 'index' };
+    # connect '/' => {controller => 'Root', action => 'index', method => 'GET' };
 };
 
 my @controllers = Module::Pluggable::Object->new(
@@ -428,6 +428,9 @@ sub dispatch {
     if (my $p = $router->match($req->env)) {
         my $action = $p->{action};
         $c->{args} = $p;
+        if ($p->{method} && $p->{method} ne $c->req->method) {
+            return $c->create_response(403, ['Content-Type' => 'text/plain'], ['Method not allowed']);
+        }
         "@{[ ref Amon2->context ]}::C::$p->{controller}"->$action($c, $p);
     } else {
         $c->res_404();
