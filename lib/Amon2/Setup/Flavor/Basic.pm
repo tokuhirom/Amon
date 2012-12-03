@@ -294,6 +294,7 @@ sub setup_schema {
 
     $self->write_file('db/.gitignore', <<'...');
 *
+!.gitignore
 ...
 
     for my $env (qw(development deployment test)) {
