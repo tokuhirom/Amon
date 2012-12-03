@@ -33,7 +33,7 @@ sub _render_json {
     if ((!$c->request->header('X-Requested-With')) && $user_agent =~ /android/i && defined $c->req->header('Cookie') && ($c->req->method||'GET') eq 'GET') {
         my $res = $c->create_response(403);
         $res->content_type('text/html; charset=utf-8');
-        $res->content("Your request is maybe JSON hijacking.\nIf you are not a attacker, please add 'X-Requested-With' header to each request.");
+        $res->content("Your request may be JSON hijacking.\nIf you are not an attacker, please add 'X-Requested-With' header to each request.");
         $res->content_length(length $res->content);
         return $res;
     }
