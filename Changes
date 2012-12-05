@@ -1,3 +1,124 @@
+3.64
+
+    commit b0d08628c8524bb9d8f40eb1c94ad64d1d0a4b97
+    Author: tokuhirom <tokuhirom@gmail.com>
+    Date:   Wed Dec 5 11:19:46 2012 +0900
+
+        upgrade es5shim to latest
+
+    lib/Amon2/Setup/Asset/ES5Shim.pm |   31 ++++++++++++++++---------------
+    1 file changed, 16 insertions(+), 15 deletions(-)
+
+    commit f45060d80915a39c8e2c42d721ef9ad2777317a8
+    Author: tokuhirom <tokuhirom@gmail.com>
+    Date:   Wed Dec 5 11:18:06 2012 +0900
+
+        upgrade deps for fine version of HTML::FillInForm::Lite and Xslate
+
+    Build.PL                          |    2 +-
+    lib/Amon2/Setup/Flavor/Basic.pm   |    2 +-
+    lib/Amon2/Setup/Flavor/Minimum.pm |    2 +-
+    3 files changed, 3 insertions(+), 3 deletions(-)
+
+    commit 1dfe3b55cf9b218d835986a49682c9530d366e37
+    Merge: 3f3eebe 9d3dc1c
+    Author: tokuhirom <tokuhirom@gmail.com>
+    Date:   Mon Dec 3 11:19:50 2012 +0900
+
+        Merge branch 'master' of github.com:tokuhirom/Amon
+
+    commit 3f3eebe6ed005487dee18a58c34aa791aae544b3
+    Author: tokuhirom <tokuhirom@gmail.com>
+    Date:   Mon Dec 3 11:17:15 2012 +0900
+
+        testing memory leaks
+
+    t/100_core/004_web_to_app_leak.t |   51 ++++++++++++++++++++++++++++++++++++++
+    1 file changed, 51 insertions(+)
+
+    commit 9d3dc1c54ea81d94956c924a7b29578f21e3fcd4
+    Merge: 208c5b2 d63d6fe
+    Author: Tokuhiro Matsuno <tokuhirom@gmail.com>
+    Date:   Thu Nov 29 13:31:01 2012 -0800
+
+
+        Merge pull request #51 from walf443/patch-1
+
+        Update lib/Amon2/Plugin/Web/JSON.pm
+
+    commit d63d6fe1bf0b4a6a1d431dcb637116b55b4c4f34
+    Author: Keiji, Yoshimi <walf443@gmail.com>
+    Date:   Thu Nov 29 21:26:13 2012 +0900
+
+        Update lib/Amon2/Plugin/Web/JSON.pm
+
+        fix hijacking message.
+
+    lib/Amon2/Plugin/Web/JSON.pm |    2 +-
+    1 file changed, 1 insertion(+), 1 deletion(-)
+
+    commit 208c5b291d24c41c6e772dade8eb046257c55bc8
+    Author: tokuhirom <tokuhirom@gmail.com>
+    Date:   Wed Nov 28 18:41:48 2012 +0900
+
+        support method not allowed on Flavor::Large
+
+    lib/Amon2/Setup/Flavor/Large.pm |    5 ++++-
+    1 file changed, 4 insertions(+), 1 deletion(-)
+
+    commit e3ccffb50ce688a610ca2b78ec05af82e3017d98
+    Author: tokuhirom <tokuhirom@gmail.com>
+    Date:   Wed Nov 28 06:08:56 2012 +0900
+
+        - added Amon2->debug_mode()
+        - added warn_handler for default flavor
+
+    lib/Amon2.pm                      |   10 ++++++++++
+    lib/Amon2/Setup/Flavor/Minimum.pm |    7 ++++++-
+    t/100_core/015_debug_mode.t       |   18 ++++++++++++++++++
+    3 files changed, 34 insertions(+), 1 deletion(-)
+
+    commit 3b30c17292c24db1e03897479cda8e9cebac10cd
+    Author: tokuhirom <tokuhirom@gmail.com>
+    Date:   Wed Nov 21 18:07:43 2012 +0900
+
+        upgrade assets. jquery 1.8.3, and latest bootstrap.
+
+    lib/Amon2/Plugin/Web/JSON.pm |    2 +-
+    1 file changed, 1 insertion(+), 1 deletion(-)
+
+    commit 208c5b291d24c41c6e772dade8eb046257c55bc8
+    Author: tokuhirom <tokuhirom@gmail.com>
+    Date:   Wed Nov 28 18:41:48 2012 +0900
+
+        support method not allowed on Flavor::Large
+
+    lib/Amon2/Setup/Flavor/Large.pm |    5 ++++-
+    1 file changed, 4 insertions(+), 1 deletion(-)
+
+    commit e3ccffb50ce688a610ca2b78ec05af82e3017d98
+    Author: tokuhirom <tokuhirom@gmail.com>
+    Date:   Wed Nov 28 06:08:56 2012 +0900
+
+        - added Amon2->debug_mode()
+        - added warn_handler for default flavor
+
+    lib/Amon2.pm                      |   10 ++++++++++
+    lib/Amon2/Setup/Flavor/Minimum.pm |    7 ++++++-
+    t/100_core/015_debug_mode.t       |   18 ++++++++++++++++++
+    3 files changed, 34 insertions(+), 1 deletion(-)
+
+    commit 3b30c17292c24db1e03897479cda8e9cebac10cd
+    Author: tokuhirom <tokuhirom@gmail.com>
+    Date:   Wed Nov 21 18:07:43 2012 +0900
+
+        upgrade assets. jquery 1.8.2, and latest bootstrap.
+
+    author/assets.pl                   |    2 +-
+    lib/Amon2/Setup/Asset/Bootstrap.pm |  679 +++++++++++++++++++++---------------
+    lib/Amon2/Setup/Asset/jQuery.pm    |    8 +-
+    3 files changed, 403 insertions(+), 286 deletions(-)
+
 3.63
 
     - Plugin::Web::JSON: micro optimization(cache user_agent value)
