@@ -276,7 +276,7 @@ my $build = Module::Build->subclass(
     requires             => {
         perl => '5.008001',
         'Amon2'                           => '<% $amon2_version %>',
-        'Text::Xslate'                    => '1.5006',
+        'Text::Xslate'                    => '1.6001',
 <% FOR v IN deps.keys() -%>
         <% sprintf("%-33s", "'" _ v _ "'") %> => '<% deps[v] %>',
 <% END -%>

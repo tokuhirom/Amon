@@ -22,7 +22,7 @@ my $build = Module::Build->new(
         ($] < 5.009_005 ?  ('MRO::Compat' => '0.11') : ()),
 
         # Not core, but default components.
-        'Text::Xslate'               => '1.5006',
+        'Text::Xslate'               => '1.6001', # fixed possibly memory leaks
         'Router::Simple::Sinatraish' => '0.02',
         'Router::Simple'             => '0.06',
     },

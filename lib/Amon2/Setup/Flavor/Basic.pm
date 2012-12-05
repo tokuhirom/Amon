@@ -576,7 +576,7 @@ sub create_makefile_pl {
     $self->SUPER::create_makefile_pl(
         +{
             %{ $prereq_pm || {} },
-            'HTML::FillInForm::Lite'          => '1.09',
+            'HTML::FillInForm::Lite'          => '1.11',
             'Time::Piece'                     => '1.20',
             'Plack::Session'                  => '0.14',
             'DBD::SQLite'                     => '1.33',
