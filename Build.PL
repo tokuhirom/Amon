@@ -24,7 +24,7 @@ my $build = Module::Build->new(
         # Not core, but default components.
         'Text::Xslate'               => '1.6001', # fixed possibly memory leaks
         'Router::Simple::Sinatraish' => '0.02',
-        'Router::Simple'             => '0.06',
+        'Router::Simple'             => '0.14',
     },
     no_index    => { 'directory' => [ 'eg', 'inc', 't', 'xt' ] },
     name        => 'Amon2',
