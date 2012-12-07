@@ -291,6 +291,7 @@ sub setup_schema {
 ...
 
     $self->create_web_pms();
+    $self->create_view();
 
     $self->write_file('db/.gitignore', <<'...');
 *
@@ -500,7 +501,7 @@ sub write_status_file {
 sub create_web_pms {
     my ($self) = @_;
 
-    $self->write_file('lib/<<PATH>>/Web.pm', <<'...', { xslate => $self->create_view() });
+    $self->write_file('lib/<<PATH>>/Web.pm', <<'...');
 package <% $module %>::Web;
 use strict;
 use warnings;
@@ -514,13 +515,18 @@ sub dispatch {
     return (<% $module %>::Web::Dispatcher->dispatch($_[0]) or die "response is not generated");
 }
 
-<% $xslate %>
-
 # load plugins
 __PACKAGE__->load_plugins(
     'Web::FillInFormLite',
     'Web::CSRFDefender',
 );
+
+# setup view
+use <% $module %>::Web::View;
+{
+    my $view = <% $module %>::Web::View->make_instance(__PACKAGE__);
+    sub create_view { $view }
+}
 
 # for your security
 __PACKAGE__->add_trigger(

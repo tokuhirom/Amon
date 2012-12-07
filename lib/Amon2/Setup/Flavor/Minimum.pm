@@ -31,6 +31,8 @@ sub load_config {
 
     $self->create_web_pms();
 
+    $self->create_view();
+
     $self->create_makefile_pl();
 
     $self->write_file('t/00_compile.t', <<'...');
@@ -41,6 +43,7 @@ use Test::More;
 use_ok $_ for qw(
     <% $module %>
     <% $module %>::Web
+    <% $module %>::Web::View
 );
 
 done_testing;
@@ -84,7 +87,7 @@ all_pod_files_ok();
 sub create_web_pms {
     my ($self) = @_;
 
-    $self->write_file('lib/<<PATH>>/Web.pm', <<'...', { xslate => $self->create_view() });
+    $self->write_file('lib/<<PATH>>/Web.pm', <<'...');
 package <% $module %>::Web;
 use strict;
 use warnings;
@@ -92,19 +95,23 @@ use utf8;
 use parent qw/<% $module %> Amon2::Web/;
 use File::Spec;
 
-# write your code here.
 sub dispatch {
     my ($c) = @_;
 
     $c->render('index.tt');
 }
 
-<% $xslate %>
+# setup view
+use <% $module %>::Web::View;
+{
+    my $view = <% $module %>::Web::View->make_instance(__PACKAGE__);
+    sub create_view { $view }
+}
 
-# for your security
 __PACKAGE__->add_trigger(
     AFTER_DISPATCH => sub {
         my ( $c, $res ) = @_;
+        # for your security
         $res->header( 'X-Content-Type-Options' => 'nosniff' );
         $res->header( 'X-Frame-Options' => 'DENY' );
     },
@@ -137,15 +144,28 @@ $mech->get_ok('/');
 }
 
 sub create_view {
-    my $self = shift;
+    my ($self, %args) = @_;
 
-    $self->render_string(<<'...', @_);
+    my $path = $args{path} || 'lib/<<PATH>>/Web/View.pm';
+    $args{package} ||= "$self->{module}::Web::View";
+    $self->write_file($path, <<'...', \%args);
+package <% $package %>;
+use strict;
+use warnings;
+use utf8;
+use Carp ();
+use File::Spec ();
+
+use Text::Xslate 1.6001;
+
 # setup view class
-use Text::Xslate 1.0006;
-{
-    my $view_conf = __PACKAGE__->config->{'Text::Xslate'} || +{};
+sub make_instance {
+    my ($class, $context) = @_;
+    Carp::croak("Usage: <% $module %>::View->make_instance(\$context_class)") if @_!=2;
+
+    my $view_conf = $context->config->{'Text::Xslate'} || +{};
     unless (exists $view_conf->{path}) {
-        $view_conf->{path} = [ File::Spec->catdir(__PACKAGE__->base_dir(), '<% $tmpl_path ? $tmpl_path : 'tmpl' %>') ];
+        $view_conf->{path} = [ File::Spec->catdir($context->base_dir(), '<% $tmpl_path ? $tmpl_path : 'tmpl' %>') ];
     }
     my $view = Text::Xslate->new(+{
         'syntax'   => 'TTerse',
@@ -167,15 +187,17 @@ use Text::Xslate 1.0006;
                 }
             },
         },
-        (__PACKAGE__->debug_mode ? ( warn_handler => sub {
+        ($context->debug_mode ? ( warn_handler => sub {
             Text::Xslate->print( # print method escape html automatically
                 '[[', @_, ']]', 
             );
         } ) : () ),
         %$view_conf
     });
-    sub create_view { $view }
+    return $view;
 }
+
+1;
 ...
 }
 

@@ -329,11 +329,22 @@ done_testing;
 ...
 }
 
+sub create_view {
+    my $self = shift;
+    for my $moniker (qw(PC Admin)) {
+        $self->SUPER::create_view(
+            package   => "$self->{module}::${moniker}::View",
+            path      => "lib/<<PATH>>/${moniker}/View.pm",
+            tmpl_path => 'tmpl/' . lc($moniker),
+        );
+    }
+}
+
 sub create_web_pms {
     my ($self) = @_;
 
     for my $moniker (qw(PC Admin)) {
-        $self->write_file("lib/<<PATH>>/${moniker}.pm", <<'...', { xslate => $self->create_view(tmpl_path => 'tmpl/' . lc($moniker)), moniker => $moniker });
+        $self->write_file("lib/<<PATH>>/${moniker}.pm", <<'...', { moniker => $moniker });
 package <% $module %>::<% $moniker %>;
 use strict;
 use warnings;
@@ -347,7 +358,12 @@ sub dispatch {
     return (<% $module %>::<% $moniker %>::Dispatcher->dispatch($_[0]) or die "response is not generated");
 }
 
-<% $xslate %>
+# setup view
+use <% $module %>::<% $moniker %>::View;
+{
+    my $view = <% $module %>::<% $moniker %>::View->make_instance(__PACKAGE__);
+    sub create_view { $view }
+}
 
 # load plugins
 __PACKAGE__->load_plugins(
