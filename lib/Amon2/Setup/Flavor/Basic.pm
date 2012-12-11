@@ -6,7 +6,7 @@ package Amon2::Setup::Flavor::Basic;
 use parent qw(Amon2::Setup::Flavor::Minimum);
 
 my @ASSETS = qw/
-    jQuery Bootstrap ES5Shim MicroTemplateJS StrftimeJS SprintfJS SprintfJS
+    jQuery Bootstrap ES5Shim MicroTemplateJS StrftimeJS SprintfJS
     MicroLocationJS
 /;
 
