@@ -392,7 +392,7 @@ test_psgi
     app => $app,
     client => sub {
         my $cb = shift;
-        for my $fname (qw(static/bootstrap/bootstrap.css robots.txt)) {
+        for my $fname (qw(static/bootstrap/css/bootstrap.css robots.txt)) {
             my $req = HTTP::Request->new(GET => "http://localhost/$fname");
             my $res = $cb->($req);
             is($res->code, 200, $fname) or diag $res->content;
@@ -422,8 +422,8 @@ plan skip_all => 'this test requires "jshint" command'
 my @files = (<static/*/*.js>, <static/*/*/*.js>, <static/*/*/*/*.js>);
 
 my %WHITE_LIST = map { $_ => 1 } qw(
-    bootstrap-dropdown.js
-    bootstrap-tooltip.js
+    bootstrap.js
+    bootstrap.min.js
     es5-shim.min.js
     micro-location.js
     micro_template.js
