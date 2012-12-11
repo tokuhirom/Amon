@@ -149,7 +149,7 @@ sub write_templates {
     <meta http-equiv="Content-Script-Type" content="text/javascript" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
     <meta name="format-detection" content="telephone=no" />
-    <% $tags %>
+<% $tags -%>
     <link href="[% static_file('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
     <script src="[% static_file('/static/js/main.js') %]"></script>
     <!--[if lt IE 9]>
