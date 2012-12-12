@@ -1,3 +1,8 @@
+3.65
+
+    - [Setup] include all files from twitter-bootstrap. closed #53
+    - [Setup] move view class generator to ::View class.
+
 3.64
 
     commit b0d08628c8524bb9d8f40eb1c94ad64d1d0a4b97
