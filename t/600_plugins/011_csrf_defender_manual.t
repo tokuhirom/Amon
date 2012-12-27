@@ -27,19 +27,6 @@ my $app = do {
         my $c = shift;
         $c->render('form.tt');
     };
-    get '/form_get' => sub {
-        my $c = shift;
-        $c->render('form_get.tt');
-    };
-    get '/form_no_method' => sub {
-        my $c = shift;
-        $c->render('form_no_method.tt');
-    };
-    get '/do' => sub {
-        my $c = shift;
-        $COMMIT++;
-        $c->redirect('/finished');
-    };
     post '/do' => sub {
         my $c = shift;
         $COMMIT++;
@@ -72,28 +59,6 @@ subtest 'success case' => sub {
     $mech->get_ok('http://localhost/form');
     $mech->content_like(qr[<input type="hidden" name="csrf_token" value="[a-zA-Z0-9_]{32}" />]);
     $mech->submit_form(form_number => 1, fields => {body => 'yay'});
-    is $mech->base, 'http://localhost/finished';
-    is $COMMIT, 1;
-};
-
-subtest 'success case get method' => sub {
-    local $COMMIT = 0;
-    my $mech = Test::WWW::Mechanize::PSGI->new( app => $app, );
-    $mech->get_ok('http://localhost/form_get');
-    $mech->content_unlike(
-        qr[<input type="hidden" name="csrf_token" value="[a-zA-Z0-9_]{32}" />]);
-    $mech->submit_form( form_number => 1, fields => { body => 'yay' } );
-    is $mech->base, 'http://localhost/finished';
-    is $COMMIT, 1;
-};
-
-subtest 'success case no method' => sub {
-    local $COMMIT = 0;
-    my $mech = Test::WWW::Mechanize::PSGI->new( app => $app, );
-    $mech->get_ok('http://localhost/form_no_method');
-    $mech->content_unlike(
-        qr[<input type="hidden" name="csrf_token" value="[a-zA-Z0-9_]{32}" />]);
-    $mech->submit_form( form_number => 1, fields => { body => 'yay' } );
     is $mech->base, 'http://localhost/finished';
     is $COMMIT, 1;
 };
@@ -147,20 +112,3 @@ __DATA__
 </form>
 </html>
 
-@@ form_get.tt
-<!doctype html>
-<html>
-<form action="/do" method="get">
-    <input type="text" name="body" />
-    <input type="submit" name="get" />
-</form>
-</html>
-
-@@ form_no_method.tt
-<!doctype html>
-<html>
-<form action="/do">
-    <input type="text" name="body" />
-    <input type="submit" name="get" />
-</form>
-</html>
