@@ -21,10 +21,12 @@ our $ERROR_HTML = <<'...';
 sub init {
     my ($class, $c, $conf) = @_;
 
+    my $form_regexp = $conf->{post_only} ? qr{<form\s*.*?\s*method=['"]?post['"]?\s*.*?>}is : qr{<form\s*.*?>}is;
+
     $c->add_trigger(
         HTML_FILTER => sub {
             my ($self, $html) = @_;
-            $html =~ s!(<form\s*.*?>)!qq{$1\n<input type="hidden" name="csrf_token" value="}.$self->get_csrf_defender_token().qq{" />}!isge;
+            $html =~ s!($form_regexp)!qq{$1\n<input type="hidden" name="csrf_token" value="}.$self->get_csrf_defender_token().qq{" />}!ge;
             return $html;
         },
     );
