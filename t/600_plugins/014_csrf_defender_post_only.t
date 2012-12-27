@@ -24,7 +24,7 @@ my $app = do {
             store => sub { $session },
         },
         'Web::CSRFDefender',
-        { no_validate_hook => 1 }
+        { post_only => 1 }
     );
 
     get '/form' => sub {
@@ -60,7 +60,7 @@ my $app = do {
     __PACKAGE__->to_app;
 };
 
-subtest 'success case' => sub {
+subtest 'post method' => sub {
     local $COMMIT = 0;
     my $mech = Test::WWW::Mechanize::PSGI->new( app => $app, );
     $mech->get_ok('http://localhost/form');
@@ -71,7 +71,19 @@ subtest 'success case' => sub {
     is $COMMIT, 1;
 };
 
-subtest 'success case get method' => sub {
+subtest 'deny' => sub {
+    local $COMMIT = 0;
+    test_psgi
+        app => $app,
+        client => sub {
+            my $cb = shift;
+            my $res = $cb->(HTTP::Request->new(POST => 'http://localhost/do'));
+            is $res->code, '403';
+            is $COMMIT, 0;
+        };
+};
+
+subtest 'get method' => sub {
     local $COMMIT = 0;
     my $mech = Test::WWW::Mechanize::PSGI->new( app => $app, );
     $mech->get_ok('http://localhost/form_get');
@@ -82,7 +94,7 @@ subtest 'success case get method' => sub {
     is $COMMIT, 1;
 };
 
-subtest 'success case no method' => sub {
+subtest 'no method' => sub {
     local $COMMIT = 0;
     my $mech = Test::WWW::Mechanize::PSGI->new( app => $app, );
     $mech->get_ok('http://localhost/form_no_method');
