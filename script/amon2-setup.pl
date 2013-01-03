@@ -7,20 +7,24 @@ use Amon2::Setup::Flavor::Basic;
 use Amon2::Setup::VC::Git;
 use Cwd ();
 use Plack::Util;
+use File::Find ();
+use File::Spec ();
 
 my @flavors;
 my $vc = 'Git';
 GetOptions(
-    'help'      => \my $help,
-    'flavor=s@' => \@flavors,
-	'vc=s'      => \$vc,
-    'version'   => \my $version,
+    'help'           => \my $help,
+    'list-flavors|l' => \my $list_flavors,
+    'flavor=s@'      => \@flavors,
+    'vc=s'           => \$vc,
+    'version'        => \my $version,
 ) or pod2usage(0);
 if ($version) {
     require Amon2;
     print "Amon2: $Amon2::VERSION\n";
     exit(0);
 }
+list_flavors() if $list_flavors;
 pod2usage(1) if $help;
 push @flavors, 'Basic' if @flavors == 0;
 @flavors = map { split /,/, $_ } @flavors;
@@ -78,6 +82,57 @@ sub load_flavor {
     return $flavor_class;
 }
 
+sub list_flavors {
+
+    my $prefix = "Amon2::Setup::Flavor";
+
+    my $dir = File::Spec->catdir(split /::/, $prefix);
+
+    my @results;
+    my %seen;
+    foreach my $base(map { File::Spec->catdir($_, $dir) } @INC) {
+        next unless -d $base;
+
+        File::Find::find({
+                wanted => sub {
+                    return unless -r;
+                    my $name = File::Spec->abs2rel($_, $base);
+                    $name =~ s/\.pm$// or return;
+
+                    $seen{$name}++ and return;
+
+                    push @results, join '::', File::Spec->splitdir($name);
+                },
+                no_chdir => 1,
+            }, $base);
+    }
+
+    for my $moniker (sort @results) {
+        my $module = eval {
+            Plack::Util::load_class($moniker, $prefix);
+        };
+        # extract short description
+        my $content = do {
+            open my $fh, "<", $INC{join("/", split "::", $module).".pm"};
+            local $/;
+            <$fh>;
+        };
+        my($description) = $content =~ m{
+            ^=head1 \s+ NAME
+            \s+
+            \Q$module\E \s+ - \s+ ([^\n]+)
+        }xms;
+        if (defined $description) {
+            print $moniker, " - ", $description, "\n";
+        }
+        else {
+            print $moniker, "\n";
+        }
+    }
+
+    exit;
+}
+
 __END__
 
 =head1 NAME
@@ -88,9 +143,13 @@ amon2-setup.pl - setup script for amon2
 
     % amon2-setup.pl MyApp
 
-        --flavor=Basic   basic flavour(default)
-        --flavor=Lite    Amon2::Lite flavour
+        --flavor=Basic   basic flavour (default)
+        --flavor=Lite    Amon2::Lite flavour (need to install)
         --flavor=Minimum minimalistic flavour for benchmarking
+
+        --vc=Git         setup the git repository (default)
+
+        --list-flavors (or -l) Shows the list of flavors installed
 
         --help   Show this help
 
