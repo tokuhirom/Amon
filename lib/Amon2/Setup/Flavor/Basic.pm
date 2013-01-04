@@ -7,7 +7,7 @@ use parent qw(Amon2::Setup::Flavor::Minimum);
 
 my @ASSETS = qw/
     jQuery Bootstrap ES5Shim MicroTemplateJS StrftimeJS SprintfJS
-    MicroLocationJS
+    MicroLocationJS MicroDispatcherJS
 /;
 
 sub write_static_files {

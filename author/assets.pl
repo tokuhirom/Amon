@@ -41,6 +41,11 @@ __PACKAGE__->register_js(
     'https://raw.github.com/cho45/micro-location.js/master/lib/micro-location.js',
     'MicroLocationJS',
 );
+__PACKAGE__->register_js(
+    'run_micro_dispatcher_js',
+    'https://raw.github.com/tokuhirom/micro_dispatcher.js/master/micro_dispatcher.js',
+    'MicroDispatcherJS',
+);
 
 &main;exit;
 
@@ -60,6 +65,7 @@ sub main {
         run_micro_template_js();
         run_sprintf_js();
         run_micro_location_js();
+        run_micro_dispatcher_js();
     }
 }
 
