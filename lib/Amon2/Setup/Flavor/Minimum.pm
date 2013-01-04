@@ -359,7 +359,7 @@ __END__
 
 =head1 NAME
 
-Amon2::Setup::Flavor::Minimum - Minimalistic flavor sutable for benchmarking
+Amon2::Setup::Flavor::Minimum - Minimalistic flavor suitable for benchmarking
 
 =head1 SYNOPSIS
 
