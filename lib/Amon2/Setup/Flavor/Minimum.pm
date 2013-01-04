@@ -189,7 +189,7 @@ sub make_instance {
         },
         ($context->debug_mode ? ( warn_handler => sub {
             Text::Xslate->print( # print method escape html automatically
-                '[[', @_, ']]', 
+                '[[', @_, ']]',
             );
         } ) : () ),
         %$view_conf
@@ -359,7 +359,7 @@ __END__
 
 =head1 NAME
 
-Amon2::Setup::Flavor::Minimum - Amon2::Minimum flavor
+Amon2::Setup::Flavor::Minimum - Minimalistic flavor suitable for benchmarking
 
 =head1 SYNOPSIS
 

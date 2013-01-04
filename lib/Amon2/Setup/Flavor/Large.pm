@@ -528,3 +528,13 @@ done_testing();
 
 1;
 
+__END__
+
+=head1 NAME
+
+Amon2::Setup::Flavor::Large - Flavor with admin pages
+
+=head1 DESCRIPTION
+
+This is an Amon2 flavor based on Amon2::Setup::Flavor::Basic.
+
