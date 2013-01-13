@@ -6,8 +6,8 @@ package Amon2::Setup::Flavor::Basic;
 use parent qw(Amon2::Setup::Flavor::Minimum);
 
 my @ASSETS = qw/
-    jQuery Bootstrap ES5Shim MicroTemplateJS StrftimeJS SprintfJS SprintfJS
-    MicroLocationJS
+    jQuery Bootstrap ES5Shim MicroTemplateJS StrftimeJS SprintfJS
+    MicroLocationJS MicroDispatcherJS
 /;
 
 sub write_static_files {
@@ -26,7 +26,6 @@ sub write_static_files {
 if (typeof(window.console) == "undefined") { console = {}; console.log = console.warn = console.error = function(a) {}; }
 
 $(function () {
-    $('#topbar').dropdown();
 });
 ...
 
@@ -150,7 +149,7 @@ sub write_templates {
     <meta http-equiv="Content-Script-Type" content="text/javascript" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
     <meta name="format-detection" content="telephone=no" />
-    <% $tags %>
+<% $tags -%>
     <link href="[% static_file('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
     <script src="[% static_file('/static/js/main.js') %]"></script>
     <!--[if lt IE 9]>
@@ -291,9 +290,11 @@ sub setup_schema {
 ...
 
     $self->create_web_pms();
+    $self->create_view();
 
     $self->write_file('db/.gitignore', <<'...');
 *
+!.gitignore
 ...
 
     for my $env (qw(development deployment test)) {
@@ -390,7 +391,7 @@ test_psgi
     app => $app,
     client => sub {
         my $cb = shift;
-        for my $fname (qw(static/bootstrap/bootstrap.css robots.txt)) {
+        for my $fname (qw(static/bootstrap/css/bootstrap.css robots.txt)) {
             my $req = HTTP::Request->new(GET => "http://localhost/$fname");
             my $res = $cb->($req);
             is($res->code, 200, $fname) or diag $res->content;
@@ -420,8 +421,8 @@ plan skip_all => 'this test requires "jshint" command'
 my @files = (<static/*/*.js>, <static/*/*/*.js>, <static/*/*/*/*.js>);
 
 my %WHITE_LIST = map { $_ => 1 } qw(
-    bootstrap-dropdown.js
-    bootstrap-tooltip.js
+    bootstrap.js
+    bootstrap.min.js
     es5-shim.min.js
     micro-location.js
     micro_template.js
@@ -499,7 +500,7 @@ sub write_status_file {
 sub create_web_pms {
     my ($self) = @_;
 
-    $self->write_file('lib/<<PATH>>/Web.pm', <<'...', { xslate => $self->create_view() });
+    $self->write_file('lib/<<PATH>>/Web.pm', <<'...');
 package <% $module %>::Web;
 use strict;
 use warnings;
@@ -513,13 +514,18 @@ sub dispatch {
     return (<% $module %>::Web::Dispatcher->dispatch($_[0]) or die "response is not generated");
 }
 
-<% $xslate %>
-
 # load plugins
 __PACKAGE__->load_plugins(
     'Web::FillInFormLite',
     'Web::CSRFDefender',
 );
+
+# setup view
+use <% $module %>::Web::View;
+{
+    my $view = <% $module %>::Web::View->make_instance(__PACKAGE__);
+    sub create_view { $view }
+}
 
 # for your security
 __PACKAGE__->add_trigger(
@@ -625,7 +631,7 @@ __END__
 
 =head1 NAME
 
-Amon2::Setup::Flavor::Basic - Basic flavor for Amon2
+Amon2::Setup::Flavor::Basic - Basic flavor selected by default
 
 =head1 SYNOPSIS
 
@@ -633,7 +639,7 @@ Amon2::Setup::Flavor::Basic - Basic flavor for Amon2
 
 =head1 DESCRIPTION
 
-This is a basic flavor for Amon2. This is a default flavor.
+This is a basic flavor for Amon2. This is the default flavor.
 
 =head1 AUTHOR
 

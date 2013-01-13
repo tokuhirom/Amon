@@ -140,6 +140,28 @@ L<Amon2::Plugin::Web::JSON> have a JSON hijacking detection feature. Amon2::Plug
 
 See also the L<hasegawayosuke's article(Japanese)|http://www.atmarkit.co.jp/fcoding/articles/webapp/05/webapp05a.html>.
 
+=head1 FAQ
+
+=over 4
+
+=item HOW DO YOU CHANGE THE HTTP STATUS CODE FOR JSON?
+
+render_json method returns instance of Plack::Response. You can modify the response object.
+
+Here is a example code:
+
+    get '/' => sub {
+        my $c = shift;
+        if (-f '/tmp/maintenance') {
+            my $res = $c->render_json({err => 'Under maintenance'});
+            $res->status(503);
+            return $res;
+        }
+        return $c->render_json({err => undef});
+    };
+
+=back
+
 =head1 THANKS TO
 
 hasegawayosuke

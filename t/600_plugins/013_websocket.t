@@ -2,7 +2,10 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
-use Test::Requires 'Protocol::WebSocket', 'Twiggy', 'Protocol::WebSocket::Handshake::Client';
+use Test::Requires 'Twiggy', 'Protocol::WebSocket::Handshake::Client';
+use Test::Requires {
+    'Protocol::WebSocket' => '0.00906',
+};
 use Test::TCP;
 use AnyEvent;
 use AnyEvent::Handle;

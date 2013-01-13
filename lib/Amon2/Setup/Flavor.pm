@@ -102,7 +102,7 @@ sub load_asset {
 
     my $require_newline = $self->{tags} ? 1 : 0;
     $self->{tags} .= $klass->tags;
-    $self->{tags} .= "\n" if $require_newline;
+    $self->{tags} .= "\n" if $require_newline && $self->{tags} !~ /\n\z/;
 
     # $klass->run($self);
 }
