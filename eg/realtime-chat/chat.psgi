@@ -75,7 +75,7 @@ __DATA__
         }
 
         $(function () {
-            var ws = new WebSocket('ws://localhost:5000/echo2');
+            var ws = new WebSocket("ws://" + location.hostname + ":" + location.port + "/echo2");
             ws.onopen = function () {
                 log('connected');
             };
