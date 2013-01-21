@@ -57,13 +57,13 @@ __DATA__
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
 </head>
-<body>
+<body data-host_port="[% c().req.uri.host_port %]">
     <div class="container">
         <header><h1>WS</h1></header>
         <section class="row">
             <form id="form">
                 <input type="text" name="message" id="message">
-                <input type="submit">
+                <input type="submit" class="btn">
             </form>
             <pre id="log"></pre>
         </section>
@@ -75,7 +75,8 @@ __DATA__
         }
 
         $(function () {
-            var ws = new WebSocket('ws://localhost:5000/echo2');
+            var hostport = $(document.body).data('host_port');
+            var ws = new WebSocket('ws://' + hostport + '/echo2');
             ws.onopen = function () {
                 log('connected');
             };
