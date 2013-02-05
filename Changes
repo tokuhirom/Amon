@@ -1,3 +1,7 @@
+3.68
+
+    - upgrade to jQuery 1.9.1
+
 3.67
 
     - eg/realtime-chat/chat.psgi: fix a destination to connect via web socket.(reported by shoutm)
