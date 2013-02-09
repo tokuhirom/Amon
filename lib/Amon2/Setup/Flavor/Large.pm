@@ -13,8 +13,8 @@ sub create_makefile_pl {
         +{
             %{ $prereq_pm || {} },
             'String::CamelCase' => '0.02',
-            'Mouse'             => '0.95', # Mouse::Util
-            'Module::Pluggable::Object' => 0, # was first released with perl v5.8.9
+            'Module::Find'      => 0, # load controllers
+            'Module::Functions' => 0, # Dispatcher
         },
     );
 }
@@ -417,31 +417,23 @@ use strict;
 use warnings;
 use utf8;
 use Router::Simple::Declare;
-use Mouse::Util qw(get_code_package);
 use String::CamelCase qw(decamelize);
-use Module::Pluggable::Object;
+use Module::Find ();
+use Module::Functions qw(get_public_functions);
 
 # define roots here.
 my $router = router {
     # connect '/' => {controller => 'Root', action => 'index', method => 'GET' };
 };
 
-my @controllers = Module::Pluggable::Object->new(
-    require     => 1,
-    search_path => ['<% $module %>::<% $moniker %>::C'],
-)->plugins;
+my @controllers = Module::Find::useall('<% $module %>::<% $moniker %>::C');
 {
-    no strict 'refs';
     for my $controller (@controllers) {
         my $p0 = $controller;
         $p0 =~ s/^<% $module %>::<% $moniker %>::C:://;
         my $p1 = $p0 eq 'Root' ? '' : decamelize($p0) . '/';
-
-        for my $method (sort keys %{"${controller}::"}) {
-            next if $method =~ /(?:^_|^BEGIN$|^import$)/;
-            my $code = *{"${controller}::${method}"}{CODE};
-            next unless $code;
-            next if get_code_package($code) ne $controller;
+        for my $method (get_public_functions($controller)) {
+            next if $method eq 'import';
             my $p2 = $method eq 'index' ? '' : $method;
             my $path = "/$p1$p2";
             $router->connect($path => {
@@ -462,7 +454,7 @@ sub dispatch {
         if ($p->{method} && $p->{method} ne $c->req->method) {
             return $c->create_response(403, ['Content-Type' => 'text/plain'], ['Method not allowed']);
         }
-        "@{[ ref Amon2->context ]}::C::$p->{controller}"->$action($c, $p);
+        "<% $module %>::<% $moniker %>::C::$p->{controller}"->$action($c, $p);
     } else {
         $c->res_404();
     }
