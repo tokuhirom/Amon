@@ -11,14 +11,14 @@ sub new {
     my ($class, $env, $c) = @_;
     my $self = $class->SUPER::new($env);
     if (@_==3) {
-        $self->{_encoding} = $c->encoding;
+        $self->{_web_pkg} = $c;
     }
     return $self;
 }
 
 sub _encoding {
     my $self = shift;
-    return $self->{_encoding} ? $self->{_encoding} : Amon2->context->encoding;
+    return $self->{_web_pkg} ? $self->{_web_pkg}->context->encoding : Amon2->context->encoding;
 }
 
 # ------------------------------------------------------------------------- 
