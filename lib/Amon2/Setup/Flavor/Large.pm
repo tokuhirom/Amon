@@ -14,7 +14,7 @@ sub create_makefile_pl {
             %{ $prereq_pm || {} },
             'String::CamelCase' => '0.02',
             'Module::Find'      => 0, # load controllers
-            'Module::Functions' => 0, # Dispatcher
+            'Module::Functions' => 2, # Dispatcher
         },
     );
 }
@@ -433,7 +433,6 @@ my @controllers = Module::Find::useall('<% $module %>::<% $moniker %>::C');
         $p0 =~ s/^<% $module %>::<% $moniker %>::C:://;
         my $p1 = $p0 eq 'Root' ? '' : decamelize($p0) . '/';
         for my $method (get_public_functions($controller)) {
-            next if $method eq 'import';
             my $p2 = $method eq 'index' ? '' : $method;
             my $path = "/$p1$p2";
             $router->connect($path => {

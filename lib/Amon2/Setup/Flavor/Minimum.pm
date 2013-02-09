@@ -297,7 +297,7 @@ our @EXPORT = qw(<% exports.join(' ') %>);
 
 sub create_makefile_pl {
     my ($self, $deps) = @_;
-    $deps->{'Module::Functions'} ||= 1;
+    $deps->{'Module::Functions'} ||= 2;
 
     $self->write_file('Build.PL', <<'...', {deps => $deps});
 use strict;
