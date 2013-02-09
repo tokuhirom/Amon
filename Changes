@@ -1,3 +1,12 @@
+3.69-TRIAL 2013-02-09T13:00:45
+
+    [Large flavor]
+    - use Module::Find instead of Module::Pluggable::Object.
+      M::F can detects compilation error in controller.
+      (tokuhirom)
+    [All flavors]
+    - added ViewFunctions class for more clean code
+
 3.68
 
     - upgrade to jQuery 1.9.1
