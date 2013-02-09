@@ -14,7 +14,7 @@ use Plack::Session;
 # -------------------------------------------------------------------------
 # hook points:
 # you can override these methods.
-sub create_request  { Amon2::Web::Request->new($_[1]) }
+sub create_request  { Amon2::Web::Request->new($_[1], $_[0]) }
 sub create_response { shift; Amon2::Web::Response->new(@_) }
 sub create_view     { die "This is abstract method: create_view" }
 sub dispatch        { die "This is abstract method: dispatch"    }

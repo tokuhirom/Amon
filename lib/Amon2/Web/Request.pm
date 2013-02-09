@@ -7,6 +7,20 @@ use Carp ();
 use URI::QueryParam;
 use Hash::MultiValue;
 
+sub new {
+    my ($class, $env, $c) = @_;
+    my $self = $class->SUPER::new($env);
+    if (@_==3) {
+        $self->{_encoding} = $c->encoding;
+    }
+    return $self;
+}
+
+sub _encoding {
+    my $self = shift;
+    return $self->{_encoding} ? $self->{_encoding} : Amon2->context->encoding;
+}
+
 # ------------------------------------------------------------------------- 
 # This object returns decoded parameter values by default
 
@@ -23,7 +37,7 @@ sub query_parameters {
 sub _decode_parameters {
     my ($self, $stuff) = @_;
 
-    my $encoding = Amon2->context->encoding;
+    my $encoding = $self->_encoding();
     my @flatten = $stuff->flatten();
     my @decoded;
     while ( my ($k, $v) = splice @flatten, 0, 2 ) {
