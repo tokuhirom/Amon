@@ -3,6 +3,9 @@ use warnings;
 use utf8;
 use Test::More;
 use t::TestFlavor;
+use Test::Requires +{
+    'Module::Functions'               => '0',
+};
 
 test_flavor(sub {
     ok(-f 'Build.PL', 'Build.PL');

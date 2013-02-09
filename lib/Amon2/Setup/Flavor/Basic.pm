@@ -336,6 +336,7 @@ use Test::More;
 use_ok $_ for qw(
     <% $module %>
     <% $module %>::Web
+    <% $module %>::Web::ViewFunctions
     <% $module %>::Web::Dispatcher
 );
 

@@ -33,6 +33,8 @@ sub load_config {
 
     $self->create_view();
 
+    $self->create_view_functions();
+
     $self->create_makefile_pl();
 
     $self->write_file('t/00_compile.t', <<'...');
@@ -44,6 +46,7 @@ use_ok $_ for qw(
     <% $module %>
     <% $module %>::Web
     <% $module %>::Web::View
+    <% $module %>::Web::ViewFunctions
 );
 
 done_testing;
@@ -148,6 +151,7 @@ sub create_view {
 
     my $path = $args{path} || 'lib/<<PATH>>/Web/View.pm';
     $args{package} ||= "$self->{module}::Web::View";
+    $args{view_functions_package} ||= "$self->{module}::Web::ViewFunctions";
     $self->write_file($path, <<'...', \%args);
 package <% $package %>;
 use strict;
@@ -157,6 +161,7 @@ use Carp ();
 use File::Spec ();
 
 use Text::Xslate 1.6001;
+use <% $view_functions_package %>;
 
 # setup view class
 sub make_instance {
@@ -169,23 +174,11 @@ sub make_instance {
     }
     my $view = Text::Xslate->new(+{
         'syntax'   => 'TTerse',
-        'module'   => [ 'Text::Xslate::Bridge::Star' ],
+        'module'   => [
+            'Text::Xslate::Bridge::Star',
+            '<% $view_functions_package %>',
+        ],
         'function' => {
-            c => sub { Amon2->context() },
-            uri_with => sub { Amon2->context()->req->uri_with(@_) },
-            uri_for  => sub { Amon2->context()->uri_for(@_) },
-            static_file => do {
-                my %static_file_cache;
-                sub {
-                    my $fname = shift;
-                    my $c = Amon2->context;
-                    if (not exists $static_file_cache{$fname}) {
-                        my $fullpath = File::Spec->catfile($c->base_dir(), $fname);
-                        $static_file_cache{$fname} = (stat $fullpath)[9];
-                    }
-                    return $c->uri_for($fname, { 't' => $static_file_cache{$fname} || 0 });
-                }
-            },
         },
         ($context->debug_mode ? ( warn_handler => sub {
             Text::Xslate->print( # print method escape html automatically
@@ -195,6 +188,53 @@ sub make_instance {
         %$view_conf
     });
     return $view;
+}
+
+1;
+...
+}
+
+sub create_view_functions {
+    my ($self, %args) = @_;
+
+    my $path = $args{path} || 'lib/<<PATH>>/Web/ViewFunctions.pm';
+    $args{package} ||= "$self->{module}::Web::ViewFunctions";
+    $self->write_file($path, <<'...', \%args);
+package <% $package %>;
+use strict;
+use warnings;
+use utf8;
+use parent qw(Exporter);
+use Module::Functions;
+use File::Spec;
+
+our @EXPORT = get_public_functions();
+
+sub commify {
+    local $_  = shift;
+    1 while s/((?:\A|[^.0-9])[-+]?\d+)(\d{3})/$1,$2/s;
+    return $_;
+}
+
+sub c { Amon2->context() }
+sub uri_with { Amon2->context()->req->uri_with(@_) }
+sub uri_for { Amon2->context()->uri_for(@_) }
+
+{
+    my %static_file_cache;
+    sub static_file {
+        my $fname = shift;
+        my $c = Amon2->context;
+        if (not exists $static_file_cache{$fname}) {
+            my $fullpath = File::Spec->catfile($c->base_dir(), $fname);
+            $static_file_cache{$fname} = (stat $fullpath)[9];
+        }
+        return $c->uri_for(
+            $fname, {
+                't' => $static_file_cache{$fname} || 0
+            }
+        );
+    }
 }
 
 1;
@@ -257,6 +297,7 @@ our @EXPORT = qw(<% exports.join(' ') %>);
 
 sub create_makefile_pl {
     my ($self, $deps) = @_;
+    $deps->{'Module::Functions'} ||= 1;
 
     $self->write_file('Build.PL', <<'...', {deps => $deps});
 use strict;

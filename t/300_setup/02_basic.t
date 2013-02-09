@@ -9,6 +9,7 @@ use Test::Requires +{
 	'DBD::SQLite'                     => '1.33',
     'DBI'                             => 0,
     'Plack::Session'                  => '0.14',
+    'Module::Functions'               => '0',
 };
 
 test_flavor(sub {

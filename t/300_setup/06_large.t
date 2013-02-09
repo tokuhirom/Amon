@@ -12,6 +12,7 @@ use Test::Requires {
     'Plack::Session'                  => '0.14',
     'Module::Find'                    => '0.10',
     'Test::WWW::Mechanize::PSGI'      => 0,
+    'Module::Functions'               => '0',
 };
 
 test_flavor(sub {

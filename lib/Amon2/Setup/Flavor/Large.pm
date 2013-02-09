@@ -260,9 +260,13 @@ use_ok $_ for qw(
     <% $module %>::PC::Dispatcher
     <% $module %>::PC::C::Root
     <% $module %>::PC::C::Account
+    <% $module %>::PC::ViewFunctions
+    <% $module %>::PC::View
     <% $module %>::Admin
     <% $module %>::Admin::Dispatcher
     <% $module %>::Admin::C::Root
+    <% $module %>::Admin::ViewFunctions
+    <% $module %>::Admin::View
 );
 
 done_testing;
@@ -334,8 +338,19 @@ sub create_view {
     for my $moniker (qw(PC Admin)) {
         $self->SUPER::create_view(
             package   => "$self->{module}::${moniker}::View",
+            view_functions_package   => "$self->{module}::${moniker}::ViewFunctions",
             path      => "lib/<<PATH>>/${moniker}/View.pm",
             tmpl_path => 'tmpl/' . lc($moniker),
+        );
+    }
+}
+
+sub create_view_functions {
+    my $self = shift;
+    for my $moniker (qw(PC Admin)) {
+        $self->SUPER::create_view_functions(
+            package   => "$self->{module}::${moniker}::ViewFunctions",
+            path      => "lib/<<PATH>>/${moniker}/ViewFunctions.pm",
         );
     }
 }
