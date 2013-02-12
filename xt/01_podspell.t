@@ -92,3 +92,5 @@ natively
 websocket
 AnyEvent
 CLI
+Minimalistic
+admin
