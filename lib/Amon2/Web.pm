@@ -123,9 +123,7 @@ sub to_app {
         my $self = $class->new(
             request => $req,
         );
-
-        no warnings 'redefine';
-        local $Amon2::CONTEXT = $self;
+        my $guard = $self->context_guard();
 
         my $response;
         for my $code ($self->get_trigger_code('BEFORE_DISPATCH')) {
@@ -135,6 +133,7 @@ sub to_app {
         $response = $self->dispatch() or die "cannot get any response";
     PROCESS_END:
         $self->call_trigger('AFTER_DISPATCH' => $response);
+
         return $response->finalize;
     };
 }
