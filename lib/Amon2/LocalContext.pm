@@ -45,6 +45,22 @@ This module makes the context to project local.
 
 It means, normally context class using Amon2 use C<$Amon2::CONTEXT> in each project, but context class using Amon2::LocalContext use C<$MyApp::CONTEXT>.
 
+=head1 NOTES ABOUT create_request
+
+Older Amon2's setup script defines create_request method as following, and it uses C<< Amon2->context >> to get encoding:
+
+    sub create_request {
+        my ($class, $env) = @_;
+        Amon2::Web::Request->new($env);
+    }
+
+If you want to use Amon2::LocalContext, you need to pass class name of context class, as following:
+
+    sub create_request {
+        my ($class, $env) = @_;
+        Amon2::Web::Request->new($env, $class);
+    }
+
 =head1 METHODS
 
 This module inserts 3 methods to your context class.
