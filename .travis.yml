@@ -1,5 +1,6 @@
 language: perl
+install: cpanm --installdeps --notest --verbose .
 before_install:
-  - cpanm --verbose inc::Module::Install Module::Install::AuthorTests Module::Install::ReadmeMarkdownFromPod Module::Install::Repository Digest::SHA1 Mouse
+  - cpanm --notest inc::Module::Install Module::Install::AuthorTests Module::Install::ReadmeMarkdownFromPod Module::Install::Repository
 perl:
   - "5.14"
