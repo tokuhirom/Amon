@@ -78,5 +78,5 @@ Some plugin and your code are depended on C<<Amon2->context>>.
 =head1 FUTURE PLAN
 
 This behavior will be default at Amon3.
-(It mean I don't introduce this incompatbile behavior to Amon2)
+(It mean I don't introduce this incompatible behavior to Amon2)
 
