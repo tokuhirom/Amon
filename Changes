@@ -1,3 +1,11 @@
+3.70 2013-02-12T09:03:28
+
+    [Web::Request]
+    - is no longer call `Amon2->context`.
+      You can make Amon2 application does not depend to $Amon2::CONTEXT,
+      easier.
+      (tokuhirom)
+
 3.69-TRIAL 2013-02-09T13:00:45
 
     [Large flavor]
