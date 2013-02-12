@@ -1,5 +1,5 @@
 language: perl
 before_install:
-  - cpanm inc::Module::Install Module::Install::AuthorTests Module::Install::ReadmeMarkdownFromPod Module::Install::Repository
+  - cpanm --verbose inc::Module::Install Module::Install::AuthorTests Module::Install::ReadmeMarkdownFromPod Module::Install::Repository Digest::SHA1 Mouse
 perl:
   - "5.14"
