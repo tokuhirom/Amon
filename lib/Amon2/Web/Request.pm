@@ -8,10 +8,10 @@ use URI::QueryParam;
 use Hash::MultiValue;
 
 sub new {
-    my ($class, $env, $c) = @_;
+    my ($class, $env, $context_class) = @_;
     my $self = $class->SUPER::new($env);
     if (@_==3) {
-        $self->{_web_pkg} = $c;
+        $self->{_web_pkg} = $context_class;
     }
     return $self;
 }
