@@ -6,7 +6,7 @@ use Test::More;
 {
     package Foo;
     use parent qw(Amon2);
-    use Amon2::LocalContext;
+    __PACKAGE__->make_local_context();
 }
 
 subtest 'simple set context' => sub {

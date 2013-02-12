@@ -84,6 +84,27 @@ sub load_plugin {
     $module->init($class, $conf);
 }
 
+# -------------------------------------------------------------------------
+# local context maker
+
+sub make_local_context {
+    my $class = shift;
+
+    ## no critic.
+    eval sprintf(q{
+        package %s;
+
+        sub context     { $%s::CONTEXT }
+
+        sub set_context { $%s::CONTEXT = $_[1] }
+
+        sub context_guard {
+            Amon2::ContextGuard->new($_[0], \$%s::CONTEXT);
+        }
+    }, $class, $class, $class, $class);
+    die $@ if $@;
+}
+
 1;
 __END__
 
@@ -184,6 +205,60 @@ B<((EXPERIMENTAL))>
 This method returns boolean value. It returns true when $ENV{AMON2_DEBUG} is true value, false otherwise.
 
 You can override this method if you need.
+
+=back
+
+=head1 PROJECT LOCAL MODE
+
+B<THIS MODE IS HIGHLY EXPERIMENTAL>
+
+Normally, Amon2's context is stored in global variable.
+
+This module makes the context to project local.
+
+It means, normally context class using Amon2 use C<$Amon2::CONTEXT> in each project, but context class using L</PROJECT LOCAL MODE> use C<$MyApp::CONTEXT>.
+
+B<It means you can't use code depend C<<Amon2->context>> and C<<Amon2->context>> under this mode.>
+
+=head2 NOTES ABOUT create_request
+
+Older L<Amon2::Web::Request> has only 1 argument like following, it uses C<< Amon2->context >> to get encoding:
+
+    sub create_request {
+        my ($class, $env) = @_;
+        Amon2::Web::Request->new($env);
+    }
+
+If you want to use L</PROJECT LOCAL MODE>, you need to pass class name of context class, as following:
+
+    sub create_request {
+        my ($class, $env) = @_;
+        Amon2::Web::Request->new($env, $class);
+    }
+
+=head2 METHODS
+
+This module inserts 3 methods to your context class.
+
+=over 4
+
+=item MyApp->context()
+
+Shorthand for $MyApp::CONTEXT
+
+=item MyApp->set_context($context)
+
+It's same as:
+
+    $MyApp::CONTEXT = $context
+
+=item my $guard = MyApp->context_guard()
+
+Create new context guard class.
+
+It's same as:
+
+    Amon2::ContextGuard->new(shift, \$MyApp::CONTEXT);
 
 =back
 
