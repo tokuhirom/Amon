@@ -116,27 +116,28 @@ sub res_404 {
 
 sub to_app {
     my ($class, ) = @_;
+    return sub { $class->handle_request(shift) };
+}
 
-    return sub {
-        my ($env) = @_;
-        my $req = $class->create_request($env);
-        my $self = $class->new(
-            request => $req,
-        );
+sub handle_request {
+    my ($class, $env) = @_;
 
-        no warnings 'redefine';
-        local $Amon2::CONTEXT = $self;
+    my $req = $class->create_request($env);
+    my $self = $class->new(
+        request => $req,
+    );
+    my $guard = $self->context_guard();
 
-        my $response;
-        for my $code ($self->get_trigger_code('BEFORE_DISPATCH')) {
-            $response = $code->($self);
-            goto PROCESS_END if Scalar::Util::blessed($response) && $response->isa('Plack::Response');
-        }
-        $response = $self->dispatch() or die "cannot get any response";
-    PROCESS_END:
-        $self->call_trigger('AFTER_DISPATCH' => $response);
-        return $response->finalize;
-    };
+    my $response;
+    for my $code ($self->get_trigger_code('BEFORE_DISPATCH')) {
+        $response = $code->($self);
+        goto PROCESS_END if Scalar::Util::blessed($response) && $response->isa('Plack::Response');
+    }
+    $response = $self->dispatch() or die "cannot get any response";
+PROCESS_END:
+    $self->call_trigger('AFTER_DISPATCH' => $response);
+
+    return $response->finalize;
 }
 
 sub uri_for {

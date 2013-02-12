@@ -6,12 +6,16 @@ use Amon2::Util ();
 use Plack::Util ();
 use Carp ();
 use Amon2::Config::Simple;
+use Amon2::ContextGuard;
 
 our $VERSION = '3.70';
 {
     our $CONTEXT; # You can localize this variable in your application.
     sub context { $CONTEXT }
     sub set_context { $CONTEXT = $_[1] }
+    sub context_guard {
+        Amon2::ContextGuard->new($_[0], \$CONTEXT);
+    }
 }
 
 sub new {
@@ -24,7 +28,7 @@ sub new {
 sub bootstrap {
     my $class = shift;
     my $self = $class->new(@_);
-    Amon2->set_context($self);
+    $class->set_context($self);
     return $self;
 }
 
@@ -80,7 +84,6 @@ sub load_plugin {
     $module->init($class, $conf);
 }
 
-
 1;
 __END__
 
@@ -107,11 +110,11 @@ Amon2 is simple, readable, extensible, B<STABLE>, B<FAST> web application framew
 
 =over 4
 
-=item my $c = Amon2->context();
+=item my $c = MyApp->context();
 
 Get the context object.
 
-=item Amon2->set_context($c)
+=item MyApp->set_context($c)
 
 Set your context object(INTERNAL USE ONLY).
 

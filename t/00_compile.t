@@ -7,6 +7,7 @@ use_ok($_) for qw/
     Amon2::Web
     Amon2::Web::Response
     Amon2::Web::Request
+    Amon2::LocalContext
 /;
 
 use Plack;

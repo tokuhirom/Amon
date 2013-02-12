@@ -1,6 +1,7 @@
 language: perl
+install: cpanm --installdeps --notest --verbose .
 before_install:
   - perlbrew install-cpanm -f
-  - cpanm inc::Module::Install Module::Install::AuthorTests Module::Install::ReadmeMarkdownFromPod Module::Install::Repository
+  - cpanm --notest inc::Module::Install Module::Install::AuthorTests Module::Install::ReadmeMarkdownFromPod Module::Install::Repository
 perl:
   - "5.14"
