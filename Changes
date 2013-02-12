@@ -1,3 +1,10 @@
+3.72 2013-02-13T08:51:52
+
+    - Added Amon2#make_local_context() method.
+      (tokuhirom)
+    - Removed EXPERIMENTAL Amon2::LocalContext class.
+      Introduced in 3.71.
+
 3.71 2013-02-12T18:04:33
 
     [EXPERIMENTAL FEATURE]
