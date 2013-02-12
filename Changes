@@ -1,3 +1,11 @@
+3.71 2013-02-12T18:04:33
+
+    [EXPERIMENTAL FEATURE]
+    - Added Amon2::ContextGuard class.
+      (tokuhirom)
+    - Added Amon2::LocalContext class
+      (tokuhirom)
+
 3.70 2013-02-12T09:03:28
 
     [Web::Request]
