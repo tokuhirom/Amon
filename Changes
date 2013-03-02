@@ -1,3 +1,8 @@
+3.73 2013-03-02T09:21:45
+
+    - [Setup] Set post_only attr for CSRFDefender, by default.
+    - [Setup] upgrade jquery and twitter bootstrap
+
 3.72 2013-02-13T08:51:52
 
     - Added Amon2#make_local_context() method.
