@@ -1,3 +1,7 @@
+3.74 2013-03-02T10:16:26
+
+    - [Setup] use cpanfile to support Carton.
+
 3.73 2013-03-02T09:21:45
 
     - [Setup] Set post_only attr for CSRFDefender, by default.
