@@ -14,7 +14,7 @@ use Test::Requires +{
 
 test_flavor(sub {
     ok(-f 'Build.PL', 'Build.PL');
-	like(slurp('Build.PL'), qr{Plack::Session});
+	like(slurp('cpanfile'), qr{Plack::Session});
 	for my $env (qw(development deployment test)) {
 		ok(-f "config/${env}.pl");
 		my $conf = do "config/${env}.pl";
@@ -29,7 +29,7 @@ test_flavor(sub {
         };
     };
     is( scalar( my @files = glob('static/js/jquery-*.js') ), 1 );
-	like(slurp('Build.PL'), qr{'Amon2::DBI'\s+=>\s*'[0-9.]+'});
+	like(slurp('cpanfile'), qr{'Amon2::DBI'\s+=>\s*'[0-9.]+'});
 }, 'Basic');
 
 done_testing;

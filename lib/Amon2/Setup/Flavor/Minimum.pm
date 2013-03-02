@@ -303,6 +303,10 @@ sub create_makefile_pl {
 use strict;
 use warnings;
 use Module::Build;
+use Module::CPANfile;
+
+my $file = Module::CPANfile->load("cpanfile");
+my $prereq = $file->prereq_specs;
 
 my $build = Module::Build->subclass(
     code => q{
@@ -332,17 +336,15 @@ my $build = Module::Build->subclass(
     dynamic_config       => 0,
 
     build_requires       => {
-        'Test::More' => '0.98',
-        'Test::Requires' => 0,
+        $prereq->{build} ? %{$prereq->{build}->{requires}} : (),
+        $prereq->{test} ? %{$prereq->{test}->{requires}} : (),
     },
-    configure_requires   => { 'Module::Build' => '0.38' },
+    configure_requires   => {
+        %{$prereq->{configure}->{requires}},
+    },
     requires             => {
         perl => '5.008001',
-        'Amon2'                           => '<% $amon2_version %>',
-        'Text::Xslate'                    => '1.6001',
-<% FOR v IN deps.keys() -%>
-        <% sprintf("%-33s", "'" _ v _ "'") %> => '<% deps[v] %>',
-<% END -%>
+        %{$prereq->{runtime}->{requires}},
     },
 
     no_index    => { 'directory' => [ 'inc' ] },
@@ -358,6 +360,23 @@ my $build = Module::Build->subclass(
     create_license => 0,
 );
 $build->create_build_script();
+...
+
+    $self->write_file('cpanfile', <<'...', {deps => $deps});
+requires 'Amon2'                           => '<% $amon2_version %>';
+requires 'Text::Xslate'                    => '1.6001';
+<% FOR v IN deps.keys() -%>
+requires <% sprintf("%-33s", "'" _ v _ "'") %> => '<% deps[v] %>';
+<% END -%>
+
+on 'configure' => sub {
+   requires 'Module::Build'     => '0.38';
+   requires 'Module::CPANfile' => '0.9010';
+};
+
+on 'test' => sub {
+   requires 'Test::More'     => '0.98';
+};
 ...
 }
 

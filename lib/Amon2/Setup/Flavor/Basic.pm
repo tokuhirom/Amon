@@ -361,14 +361,14 @@ all_critic_ok('lib');
 
     $self->write_file('.gitignore', <<'...');
 Makefile
-inc/
+/inc/
 MANIFEST
 *.bak
 *.old
 nytprof.out
 nytprof/
 *.db
-blib/
+/blib/
 pm_to_blib
 META.json
 META.yml
@@ -376,6 +376,8 @@ MYMETA.json
 MYMETA.yml
 /Build
 /_build/
+/local/
+/.carton/
 ...
 
     $self->write_file('t/03_assets.t', <<'...');
