@@ -518,7 +518,9 @@ sub dispatch {
 # load plugins
 __PACKAGE__->load_plugins(
     'Web::FillInFormLite',
-    'Web::CSRFDefender',
+    'Web::CSRFDefender' => {
+        post_only => 1,
+    },
 );
 
 # setup view
