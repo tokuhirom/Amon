@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 3;
+use Test::More tests => 4;
 
 {
     package MyApp;
@@ -44,6 +44,13 @@ my $app = MyApp::Web->to_app();
         REQUEST_METHOD => 'GET',
     });
     is $ret->[2]->[0], 'hi, tokuhirom';
+}
+{
+    my $ret = $app->({
+        PATH_INFO      => '/hello/tokuhirom',
+        REQUEST_METHOD => 'POST',
+    });
+    is $ret->[0], 405, 'Method not allowed';
 }
 {
     my $ret = $app->({

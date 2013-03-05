@@ -2,7 +2,7 @@ package Amon2::Web::Dispatcher::Lite;
 use strict;
 use warnings;
 use parent 'Amon2::Web';
-use Router::Simple 0.04;
+use Router::Simple 0.14;
 use Router::Simple::Sinatraish;
 
 sub import {
@@ -15,10 +15,15 @@ sub import {
     no strict 'refs';
     *{"$caller\::dispatch"} = sub {
         my ($klass, $c) = @_;
+
         if (my $p = $router->match($c->request->env)) {
             return $p->{code}->($c, $p);
         } else {
-            return $c->res_404();
+            if ($router->method_not_allowed) {
+                return $c->res_405();
+            } else {
+                return $c->res_404();
+            }
         }
     };
 }
