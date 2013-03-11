@@ -151,7 +151,12 @@ sub uri_for {
         $val = URI::Escape::uri_escape(Encode::encode($self->encoding, $val));
         push @q, "${key}=${val}";
     }
-    $root . $path . (scalar @q ? '?' . join('&', @q) : '');
+    my $path_query = $root . $path . (scalar @q ? '?' . join('&', @q) : '');
+
+    my $uri = $self->req->uri->clone;
+    $uri->path_query($path_query);
+
+    return $uri;
 }
 
 sub render {
