@@ -71,7 +71,7 @@ builder {
             httponly => 1,
         );
 
-    mount '/static/' => Plack::App::File->new(root => File::Spec->catdir($basedir, 'static', 'pc'));
+    mount '/static/' => Plack::App::File->new(root => File::Spec->catdir($basedir, 'static', 'pc'))->to_app();
     mount '/' => <% $module %>::PC->to_app();
 };
 ...
@@ -116,7 +116,7 @@ builder {
             }
         );
 
-    mount '/static/' => Plack::App::File->new(root => File::Spec->catdir($basedir, 'static', 'admin'));
+    mount '/static/' => Plack::App::File->new(root => File::Spec->catdir($basedir, 'static', 'admin'))->to_app();
     mount '/' => <% $module %>::Admin->to_app();
 };
 ...
