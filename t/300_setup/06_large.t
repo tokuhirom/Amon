@@ -59,6 +59,17 @@ sub error {
         };
     }
 
+    for my $type (qw(pc admin)) {
+        my $f = "${type}.psgi";
+        my $buff = << "...";
+\$SIG{__WARN__} = sub { die 'Warned! ' . shift };
+@{[slurp($f)]}
+...
+        open my $fh, '>', $f;
+        print $fh $buff;
+        close $fh;
+    }
+
     my $app = Plack::Util::load_psgi('app.psgi');
     my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
     {
