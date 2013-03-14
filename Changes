@@ -1,3 +1,8 @@
+3.77 2013-03-14T17:27:50
+
+    - [Plugin::ShareDir] was split to another dist
+
+
 3.76 2013-03-14T16:58:17
 
     - [Plugin::ShareDir] (EXPERIMENTAL) Added
