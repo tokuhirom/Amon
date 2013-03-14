@@ -1,3 +1,7 @@
+3.76 2013-03-14T16:58:17
+
+    - [Plugin::ShareDir] (EXPERIMENTAL) Added
+
 3.75 2013-03-07T11:01:59
 
     - [Dispatcher::Lite] Supported 405 Method Not Allowed
