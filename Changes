@@ -1,3 +1,8 @@
+3.78 2013-03-29T09:49:24
+
+    - Test case fixes
+      (by hisaichi5518++)
+
 3.77 2013-03-14T17:27:50
 
     - [Plugin::ShareDir] was split to another dist
