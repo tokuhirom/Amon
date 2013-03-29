@@ -43,7 +43,7 @@ my $app = do {
         my $c = shift;
         $c->render('form_multi.tt');
     };
-    get '/do' => sub {
+    get '/get-do' => sub {
         my $c = shift;
         $COMMIT++;
         $c->redirect('/finished');
@@ -136,7 +136,7 @@ __DATA__
 @@ form_get.tt
 <!doctype html>
 <html>
-<form action="/do" method="get">
+<form action="/get-do" method="get">
     <input type="text" name="body" />
     <input type="submit" name="get" />
 </form>
@@ -145,7 +145,7 @@ __DATA__
 @@ form_no_method.tt
 <!doctype html>
 <html>
-<form action="/do">
+<form action="/get-do">
     <input type="text" name="body" />
     <input type="submit" name="get" />
 </form>
