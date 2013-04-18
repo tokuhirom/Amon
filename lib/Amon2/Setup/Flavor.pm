@@ -82,15 +82,16 @@ sub write_file {
 }
 
 sub write_file_raw {
-    my ($self, $filename, $content) = @_;
+    my ($self, $filename, $content, $input_mode) = @_;
     Carp::croak("filename should not be reference") if ref $filename;
+    $input_mode ||= '>:encoding(utf-8)';
 
     infof("writing $filename");
 
     my $dirname = dirname($filename);
     File::Path::mkpath($dirname) if $dirname;
 
-    open my $ofh, '>:encoding(utf-8)', $filename or die "Cannot open file: $filename: $!";
+    open my $ofh, $input_mode, $filename or die "Cannot open file: $filename: $!";
     print {$ofh} $content;
     close $ofh;
 }
@@ -115,7 +116,7 @@ sub write_asset {
     my $klass = Plack::Util::load_class($asset, 'Amon2::Setup::Asset');
     my $files = $klass->files;
     while (my ($fname, $content) = each %$files) {
-        $self->write_file_raw("$base/$fname", $content);
+        $self->write_file_raw("$base/$fname", $content, '>:raw');
     }
 }
 
