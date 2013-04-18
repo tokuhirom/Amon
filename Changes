@@ -1,3 +1,10 @@
+3.79 2013-04-18T18:08:44
+
+    - Write asset files with :raw.
+      Older version of Amon2 write png files in ":encoding(utf-8)". orz.
+      (Reported by geraud++)
+    - Upgrade es5shim.js to latest.
+
 3.78 2013-03-29T09:49:24
 
     - Test case fixes
