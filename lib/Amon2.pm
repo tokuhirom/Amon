@@ -175,7 +175,7 @@ This method returns application base directory.
 
 This method loads plugin for the application.
 
-I<$module_name:> package name of the plugin. You can write it as two form like L<DBIx::Class>:
+I<$module_name> package name of the plugin. You can write it as two form like L<DBIx::Class>:
 
     __PACKAGE__->load_plugin("Web::HTTPSession");    # => loads Amon2::Plugin::Web::HTTPSession
 
@@ -272,7 +272,7 @@ More complicated documents are available on L<http://amon.64p.org/>
 
 =head1 AUTHOR
 
-Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF@ GMAIL COME<gt>
+Tokuhiro Matsuno E<lt>tokuhirom@gmail.comE<gt>
 
 =head1 LICENSE
 
