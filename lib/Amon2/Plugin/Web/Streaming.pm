@@ -15,6 +15,7 @@ sub init {
 
 sub _streaming {
     my ($self, $code) = @_;
+    
     return Amon2::Web::Response::Callback->new(
         code => sub {
             $code->(@_);
