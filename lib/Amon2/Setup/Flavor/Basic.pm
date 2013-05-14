@@ -105,9 +105,9 @@ sub write_templates {
         <div class="span4">
             <h2>O/R Mapper?</h2>
             <div>
-                There is no O/R Mapper support. But I recommend to use Teng.<br />
+                There is no O/R Mapper support. But I recommend use Teng.<br />
                 You can integrate Teng very easily.<br />
-                See <a href="http://amon.64p.org/database.html#teng">This page</a> for more details.
+                Refer to <a href="http://amon.64p.org/database.html#teng">this page</a> for more details.
             </div>
         </div>
     </div>
@@ -132,7 +132,7 @@ sub write_templates {
     <div class="span12">
         <h1>Documents?</h1>
         <p>Complete docs are available on <a href="http://amon.64p.org/">amon.64p.org</a></p>
-        <p>And there is module specific docs on <a href="https://metacpan.org/release/Amon2">CPAN</a></p>
+        <p>And there are module specific docs on <a href="https://metacpan.org/release/Amon2">CPAN</a></p>
     </div>
 </section>
 
