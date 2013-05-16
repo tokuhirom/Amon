@@ -12,8 +12,8 @@ use Scalar::Util ();
 use Plack::Session;
 
 # -------------------------------------------------------------------------
-# hook points:
-# you can override these methods.
+# Hook points:
+# You can override these methods.
 sub create_request  { Amon2::Web::Request->new($_[1], $_[0]) }
 sub create_response { shift; Amon2::Web::Response->new(@_) }
 sub create_view     { die "This is abstract method: create_view" }
@@ -31,12 +31,12 @@ sub session {
 }
 
 # -------------------------------------------------------------------------
-# attributes
+# Attributes:
 sub request           { $_[0]->{request} }
 sub req               { $_[0]->{request} }
 
 # -------------------------------------------------------------------------
-# methods
+# Methods:
 
 sub redirect {
     my ($self, $location, $params) = @_;
@@ -214,7 +214,7 @@ sub render {
     );
 }
 
-# you can override this method on your application
+# You can override this method on your application.
 sub encode_html {
     my ($self, $html) = @_;
     return Encode::encode($self->encoding, $html);
@@ -277,7 +277,7 @@ You can override this method to change behavior.
 
 =item $c->req() : Plack::Request
 
-This is a accessor method to get request object in this context.
+This is a accessor method to get the request object in this context.
 
 =item $c->redirect($location : Str, \%parameters) : Plack::Response
 
@@ -291,15 +291,15 @@ is same as following(if base URL is http://localhost:5000/)
 
 =item $c->res_404()
 
-Create new response object has 404 status code.
+Create new response object which has 404 status code.
 
 =item $c->res_405()
 
-Create new response object has 405 status code.
+Create new response object which has 405 status code.
 
 =item MyApp->to_app() : CodeRef
 
-Create instance of PSGI application.
+Create an instance of PSGI application.
 
 =item $c->uri_for($path: Str, \%args) : Str
 
@@ -309,7 +309,7 @@ This method returns relative URI.
 
 =item $c->render($tmpl[, @args|%args]) : Plack::Web::Response
 
-This method render HTML.
+This method renders HTML.
 
 =item $c->encoding()
 
@@ -319,7 +319,7 @@ You can override this method to change behavior.
 
 =item $c->encode_html($html) : Str
 
-This method encode HTML from bytes.
+This method encodes HTML from bytes.
 
 You can override this method to change behavior.
 
