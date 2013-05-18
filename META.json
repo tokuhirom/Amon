@@ -1,0 +1,98 @@
+{
+   "abstract" : "lightweight web application framework",
+   "author" : [
+      "Tokuhiro Matsuno <tokuhirom@gmail.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Minilla/v0.4.3, CPAN::Meta::Converter version 2.130880",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Amon2",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "xt",
+         "inc",
+         "share",
+         "eg",
+         "examples",
+         "author"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "Test::More" : "0.98",
+            "Test::Requires" : "0.06"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "CPAN::Meta" : "0",
+            "CPAN::Meta::Prereqs" : "0",
+            "Module::Build" : "0.38"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Test::CPAN::Meta" : "0",
+            "Test::MinimumVersion" : "0.10108",
+            "Test::Pod" : "1.41",
+            "Test::Spellunker" : "v0.2.2"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Exporter" : "0",
+            "Plack" : "0.9982",
+            "Plack::Session" : "0",
+            "Router::Simple" : "0.14",
+            "Router::Simple::Sinatraish" : "0.02",
+            "Text::Xslate" : "1.6001",
+            "Try::Tiny" : "0.06",
+            "URI" : "1.54",
+            "parent" : "0.223",
+            "perl" : "5.008001"
+         }
+      }
+   },
+   "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/tokuhirom/Amon/issues"
+      },
+      "homepage" : "https://github.com/tokuhirom/Amon",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/tokuhirom/Amon.git",
+         "web" : "https://github.com/tokuhirom/Amon"
+      }
+   },
+   "version" : "3.80",
+   "x_contributors" : [
+      "noblejasper <nobjas@gmail.com>",
+      "noblejasper <jasper@main.noble-jasper.com>",
+      "hiratara <hiratara@cpan.org>",
+      "s-aska <s.aska.org@gmail.com>",
+      "Kentaro Kuribayashi <kentarok@gmail.com>",
+      "Yuki Ibe <yibe@yibe.org>",
+      "mattn <mattn.jp@gmail.com>",
+      "Syohei YOSHIDA <syohex@gmail.com>",
+      "Masahiro Nagano <kazeburo@gmail.com>",
+      "rightgo09 <skyarrow09@gmail.com>",
+      "karupanerura <karupa@cpan.org>",
+      "hatyuki <hatyuki29@gmail.com>",
+      "Keiji, Yoshimi <walf443@gmail.com>",
+      "Nishibayashi Takuji <takuji31@gmail.com>",
+      "dragon3 <ryuzo.yamamoto@gmail.com>",
+      "Fuji, Goro <g.psy.va@gmail.com>",
+      "issm <issmxx@gmail.com>",
+      "hisaichi5518 <hisada.kazuki@gmail.com>",
+      "Adrian <adrian@investometrica.com>"
+   ]
+}

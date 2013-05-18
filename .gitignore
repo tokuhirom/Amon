@@ -22,7 +22,13 @@ Build
 _build/
 xshelper.h
 tags
-META.json
 README
 ^inc/
 Amon2-*/
+/Amon2-*
+/.build
+/_build_params
+/Build
+!Build/
+!META.json
+!LICENSE
