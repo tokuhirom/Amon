@@ -363,19 +363,20 @@ $build->create_build_script();
 ...
 
     $self->write_file('cpanfile', <<'...', {deps => $deps});
-requires 'Amon2'                           => '<% $amon2_version %>';
-requires 'Text::Xslate'                    => '1.6001';
+requires 'perl', '5.008001';
+requires 'Amon2', '<% $amon2_version %>';
+requires 'Text::Xslate', '1.6001';
 <% FOR v IN deps.keys() -%>
-requires <% sprintf("%-33s", "'" _ v _ "'") %> => '<% deps[v] %>';
+requires <% sprintf("%-33s", "'" _ v _ "'") %>, '<% deps[v] %>';
 <% END -%>
 
 on 'configure' => sub {
-   requires 'Module::Build'     => '0.38';
-   requires 'Module::CPANfile' => '0.9010';
+   requires 'Module::Build', '0.38';
+   requires 'Module::CPANfile', '0.9010';
 };
 
 on 'test' => sub {
-   requires 'Test::More'     => '0.98';
+   requires 'Test::More', '0.98';
 };
 ...
 }
