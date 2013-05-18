@@ -215,11 +215,16 @@ sub fetch {
 
 sub run_bootstrap {
     my $files = {};
-    my $zip_url = 'http://twitter.github.com/bootstrap/assets/bootstrap.zip';
-    my $tmp = File::Temp->new(UNLINK => 1);
-    $ua->mirror($zip_url, $tmp->filename);
+    print "Fetching bootstrap\n";
+    my $zip_url = 'http://twitter.github.io/bootstrap/assets/bootstrap.zip';
+    my $tmpdir = File::Temp::tempdir(CLEANUP => 1);
+    my $tmp = "$tmpdir/bootstrap.zip";
+    print "Saving files to $tmp\n";
+    my $res = $ua->mirror($zip_url, $tmp);
+    $res->is_success or die $res->status_line;
+    -s $tmp > 0 or die 'File is too short';
     my $zip = Archive::Zip->new();
-    $zip->read($tmp->filename)==AZ_OK or die "Cannot read zip file";
+    $zip->read($tmp)==AZ_OK or die "Cannot read zip file";
     for my $member ($zip->members()) {
         next if $member->isDirectory;
         my $contents = $member->contents();
