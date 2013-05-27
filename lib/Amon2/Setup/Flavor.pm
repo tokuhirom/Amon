@@ -139,15 +139,15 @@ This class provides some useful methods to write setup script.
 
 =over 4
 
-=item $flavor->init()
+=item C<< $flavor->init() >>
 
 Hook point to initialize module directory.
 
-=item $flavor->mkpath($dir)
+=item C<< $flavor->mkpath($dir) >>
 
 same as C<< `mkdir -p $dir` >>.
 
-=item $flavor->write_file($fnametmpl, $template)
+=item C<< $flavor->write_file($fnametmpl, $template) >>
 
 C<< $fnametmpl >> will be replace with the parameters.
 
@@ -155,7 +155,7 @@ Generate file using L<Text::Xslate>.
 
 For more details, read the source Luke! Or please write docs...
 
-=item $flavor->write_file_raw($fname, $content)
+=item C<< $flavor->write_file_raw($fname, $content) >>
 
 Write C<< $content >> to the C<< $fname >>.
 

@@ -243,43 +243,43 @@ This is a web application base class.
 
 =over 4
 
-=item $c->create_request()
+=item C<< $c->create_request() >>
 
 Create new request object from C<< $c >>.
 
 You can override this method to change request object's class.
 
-=item $c->create_response($code, \@headers, \@body)
+=item C<< $c->create_response($code, \@headers, \@body) >>
 
 Create new response object.
 
 You can override this method to change response object's class.
 
-=item $c->create_view()
+=item C<< $c->create_view() >>
 
 Create new view object. View object should have C<< $view->render(@_) >> method.
 
 You can override this method to change view object's class.
 
-=item $c->dispatch() : Plack::Response
+=item C<< $c->dispatch() : Plack::Response >>
 
 Do dispatch request. This method must return instance of L<Plack::Response>.
 
 You can override this method to change behavior.
 
-=item $c->html_content_type() : Str
+=item C<< $c->html_content_type() : Str >>
 
 Returns default Content-Type value for the HTML response.
 
 You can override this method to change behavior.
 
-=item $c->request() : Plack::Request
+=item C<< $c->request() : Plack::Request >>
 
-=item $c->req() : Plack::Request
+=item C<< $c->req() : Plack::Request >>
 
 This is a accessor method to get the request object in this context.
 
-=item $c->redirect($location : Str, \%parameters) : Plack::Response
+=item C<< $c->redirect($location : Str, \%parameters) : Plack::Response >>
 
 Create a response object to redirect for C< $location > with C<< \%parameters >>.
 
@@ -289,35 +289,35 @@ is same as following(if base URL is http://localhost:5000/)
 
     $c->create_response(302, [Location => 'http://localhost:5000/foo?bar=3'])
 
-=item $c->res_404()
+=item C<< $c->res_404() >>
 
 Create new response object which has 404 status code.
 
-=item $c->res_405()
+=item C<< $c->res_405() >>
 
 Create new response object which has 405 status code.
 
-=item MyApp->to_app() : CodeRef
+=item C<< MyApp->to_app() : CodeRef >>
 
 Create an instance of PSGI application.
 
-=item $c->uri_for($path: Str, \%args) : Str
+=item C<< $c->uri_for($path: Str, \%args) : Str >>
 
 Create URI from C<< $path >> and C<< \%args >>.
 
 This method returns relative URI.
 
-=item $c->render($tmpl[, @args|%args]) : Plack::Web::Response
+=item C<< $c->render($tmpl[, @args|%args]) : Plack::Web::Response >>
 
 This method renders HTML.
 
-=item $c->encoding()
+=item C<< $c->encoding() >>
 
 Return a encoding object using C<< Encode::find_encoding() >>.
 
 You can override this method to change behavior.
 
-=item $c->encode_html($html) : Str
+=item C<< $c->encode_html($html) : Str >>
 
 This method encodes HTML from bytes.
 

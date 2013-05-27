@@ -45,7 +45,7 @@ Amon2 using configuration file in C<< "config/@{[ $c->mode_name ]}.pl" >>.
 
 =head1 HOW DO YOU USE YOUR OWN ENVIRONMENT VARIABLE FOR DETECTING CONFIGURATION FILE?
 
-If you want to use "config/$ENV{RUN_MODE}.pl" for the configuration file, you can write code as following:
+If you want to use C<< config/$ENV{RUN_MODE}.pl >> for the configuration file, you can write code as following:
 
     package MyApp;
     use Amon2::Config::Simple;

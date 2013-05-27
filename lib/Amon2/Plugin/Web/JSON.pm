@@ -110,7 +110,7 @@ You can use JSONP by using L<Plack::Middleware::JSONP>.
 
 This module escapes '<', '>', and '+' characters by "\uXXXX" form. Browser don't detects the JSON as HTML.
 
-And also this module outputs "X-Content-Type-Options: nosniff" header for IEs.
+And also this module outputs C<< X-Content-Type-Options: nosniff >> header for IEs.
 
 It's good enough, I hope.
 
@@ -120,7 +120,7 @@ Latest browsers doesn't have a JSON hijacking issue(I hope). __defineSetter__ or
 
 But Firefox<=3.0.x and Android phones have issue on Array constructor, see L<http://d.hatena.ne.jp/ockeghem/20110907/p1>.
 
-Firefox<=3.0.x was outdated. Web application developers doesn't need to add workaround for it, see L<http://en.wikipedia.org/wiki/Firefox#Version_release_table>.
+Firefox<=3.0.x was outdated. Web application developers doesn't need to add work-around for it, see L<http://en.wikipedia.org/wiki/Firefox#Version_release_table>.
 
 L<Amon2::Plugin::Web::JSON> have a JSON hijacking detection feature. Amon2::Plugin::Web::JSON returns "403 Forbidden" response if following pattern request.
 

@@ -57,11 +57,11 @@ __END__
 
 =head1 NAME
 
-Amon2::Web::WebSocket - websocket support for Amon2
+Amon2::Web::WebSocket - WebSocket support for Amon2
 
 =head1 DESCRIPTION
 
-This module is a helper class for websocket support for Amon2.
+This module is a helper class for WebSocket support for Amon2.
 
 see L<Amon2::Plugin::Web::WebSocket> for concrete usage.
 
@@ -69,11 +69,11 @@ see L<Amon2::Plugin::Web::WebSocket> for concrete usage.
 
 =over 4
 
-=item $ws->on_receive_message(\&code);
+=item C<< $ws->on_receive_message(\&code); >>
 
-=item $ws->on_eof(\&code);
+=item C<< $ws->on_eof(\&code); >>
 
-=item $ws->on_error(\&code);
+=item C<< $ws->on_error(\&code); >>
 
 set a callback function on received event.
 

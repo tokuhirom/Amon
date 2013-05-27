@@ -1,3 +1,14 @@
+{{$NEXT}}
+
+3.81 2013-05-27T22:46:13Z
+
+    - miyagawa-san suggests ',' instead of fat comma in cpanfile.
+      (tokuhirom)
+    - Use latest bootstrap, es5shim
+      (tokuhirom)
+    - Minor English corrections.
+      (Adrian)
+
 3.80 2013-04-21T16:08:07
 
     - re-packaging

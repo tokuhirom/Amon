@@ -81,7 +81,7 @@ __END__
 
 =head1 NAME
 
-Amon2::Plugin::Web::WebSocket - [EXPERIMENTAL]websocket plugin for Amon2
+Amon2::Plugin::Web::WebSocket - [EXPERIMENTAL]WebSocket plugin for Amon2
 
 =head1 SYNOPSIS
 
@@ -100,9 +100,9 @@ Amon2::Plugin::Web::WebSocket - [EXPERIMENTAL]websocket plugin for Amon2
 
 =head1 DESCRIPTION
 
-This plugin provides websocket feature for Amon2.
+This plugin provides WebSocket feature for Amon2.
 
-You can use websocket very easily with Amon2.
+You can use WebSocket very easily with Amon2.
 
 This plugin depended on AnyEvent. You can use this module on L<Twiggy> only.
 
@@ -110,7 +110,7 @@ This plugin depended on AnyEvent. You can use this module on L<Twiggy> only.
 
 =over 4
 
-=item $c->websocket(\&callback);
+=item C<< $c->websocket(\&callback); >>
 
 =back
 

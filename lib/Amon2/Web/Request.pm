@@ -164,7 +164,7 @@ Return value of C<< $req->param() >>, C<< $req->body_parameters >>, etc. is the 
 
 =over 4
 
-=item $req->uri_with($args, $behavior)
+=item C<< $req->uri_with($args, $behavior) >>
 
 Returns a rewritten URI object for the current request. Key/value pairs passed in will override existing parameters. You can remove an existing parameter by passing in an undef value. Unmodified pairs will be preserved.
 
@@ -172,17 +172,17 @@ You may also pass an optional second parameter that puts uri_with into append mo
 
   $req->uri_with( { key => 'value' }, { mode => 'append' } );
 
-=item $req->body_parameters_raw()
+=item C<< $req->body_parameters_raw() >>
 
-=item $req->query_parameters_raw()
+=item C<< $req->query_parameters_raw() >>
 
-=item $req->parameters_raw()
+=item C<< $req->parameters_raw() >>
 
-=item $req->param_raw()
+=item C<< $req->param_raw() >>
 
-=item $req->param_raw($key)
+=item C<< $req->param_raw($key) >>
 
-=item $req->param_raw($key => $val)
+=item C<< $req->param_raw($key => $val) >>
 
 These methods are the accessor to raw values. 'raw' means the value is not decoded.
 

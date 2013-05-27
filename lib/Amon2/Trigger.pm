@@ -69,9 +69,9 @@ This is a trigger system for Amon2. You can use this class for your class using 
 
 =over 4
 
-=item __PACKAGE__->add_trigger($name:Str, \&code:CodeRef)
+=item C<< __PACKAGE__->add_trigger($name:Str, \&code:CodeRef) >>
 
-=item $obj->add_trigger($name:Str, \&code:CodeRef)
+=item C<< $obj->add_trigger($name:Str, \&code:CodeRef) >>
 
 You can register the callback function for the class or object.
 
@@ -79,17 +79,17 @@ When you register callback code on object, the callback is only registered to ob
 
 I<Return Value>: Not defined.
 
-=item __PACKAGE__->call_trigger($name:Str);
+=item C<< __PACKAGE__->call_trigger($name:Str); >>
 
-=item $obj->call_trigger($name:Str);
+=item C<< $obj->call_trigger($name:Str); >>
 
 This method calls all callback code for $name.
 
 I<Return Value>: Not defined.
 
-=item __PACKAGE__->get_trigger_code($name:Str)
+=item C<< __PACKAGE__->get_trigger_code($name:Str) >>
 
-=item $obj->get_trigger_code($name:Str)
+=item C<< $obj->get_trigger_code($name:Str) >>
 
 You can get all of trigger code from the class and ancestors.
 
