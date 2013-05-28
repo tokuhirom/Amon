@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+3.82 2013-05-28T08:52:23Z
+
+    - cpanfile uses comma instead of fat comma
+      (syohex)
+
 3.81 2013-05-27T22:46:13Z
 
     - miyagawa-san suggests ',' instead of fat comma in cpanfile.
