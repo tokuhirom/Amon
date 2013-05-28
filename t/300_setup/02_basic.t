@@ -29,7 +29,7 @@ test_flavor(sub {
         };
     };
     is( scalar( my @files = glob('static/js/jquery-*.js') ), 1 );
-	like(slurp('cpanfile'), qr{'Amon2::DBI'\s+=>\s*'[0-9.]+'});
+	like(slurp('cpanfile'), qr{'Amon2::DBI'\s+,\s*'[0-9.]+'});
 }, 'Basic');
 
 done_testing;
