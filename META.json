@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.4.3, CPAN::Meta::Converter version 2.130880",
+   "generated_by" : "Minilla/v0.4.5, CPAN::Meta::Converter version 2.131490",
    "license" : [
       "perl_5"
    ],
@@ -49,6 +49,7 @@
       "runtime" : {
          "requires" : {
             "Exporter" : "0",
+            "MRO::Compat" : "0",
             "Plack" : "0.9982",
             "Plack::Session" : "0",
             "Router::Simple" : "0.14",

@@ -1,3 +1,5 @@
+requires 'perl', '5.008001';
+
 requires 'Exporter';
 requires 'Plack', '0.9982';
 requires 'Plack::Session';
@@ -7,7 +9,7 @@ requires 'Text::Xslate', '1.6001';
 requires 'Try::Tiny', '0.06';
 requires 'URI', '1.54';
 requires 'parent', '0.223';
-requires 'perl', '5.008001';
+requires 'MRO::Compat';
 
 on build => sub {
     requires 'Test::More', '0.98';
