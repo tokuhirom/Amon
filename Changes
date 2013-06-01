@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+3.83 2013-06-01T05:14:35Z
+
+    - fixed deps
+
 3.82 2013-05-28T08:52:23Z
 
     - cpanfile uses comma instead of fat comma
