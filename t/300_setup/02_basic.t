@@ -10,6 +10,7 @@ use Test::Requires +{
     'DBI'                             => 0,
     'Plack::Session'                  => '0.14',
     'Module::Functions'               => '0',
+    'HTML::FillInForm::Lite'          => 0,
 };
 
 test_flavor(sub {
