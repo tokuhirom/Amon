@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.4.5, CPAN::Meta::Converter version 2.131490",
+   "generated_by" : "Minilla/v0.4.9, CPAN::Meta::Converter version 2.130880",
    "license" : [
       "perl_5"
    ],
@@ -74,7 +74,7 @@
          "web" : "https://github.com/tokuhirom/Amon"
       }
    },
-   "version" : "3.83",
+   "version" : "3.84",
    "x_contributors" : [
       "noblejasper <nobjas@gmail.com>",
       "noblejasper <jasper@main.noble-jasper.com>",

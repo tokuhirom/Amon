@@ -25,7 +25,7 @@ my %args = (
 
     name            => 'Amon2',
     module_name     => 'Amon2',
-    allow_pure_perl => 0,
+    allow_pureperl => 0,
 
     script_files => [glob('script/*'), glob('bin/*')],
 
