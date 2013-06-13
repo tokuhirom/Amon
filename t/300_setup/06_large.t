@@ -13,6 +13,7 @@ use Test::Requires {
     'Module::Find'                    => '0.10',
     'Test::WWW::Mechanize::PSGI'      => 0,
     'Module::Functions'               => '0',
+    'HTML::FillInForm::Lite'          => 0,
 };
 
 test_flavor(sub {
