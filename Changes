@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+3.85 2013-06-13T00:17:18Z
+
+    - Fixed testing deps, again.
+
 3.84 2013-06-12T21:42:58Z
 
     - Fixed testing deps
