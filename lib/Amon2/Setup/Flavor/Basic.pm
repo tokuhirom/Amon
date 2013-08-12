@@ -419,7 +419,7 @@ use Test::Requires 'Text::SimpleTable';
 use File::Basename;
 
 plan skip_all => 'this test requires "jshint" command'
-  unless `jshint --version` =~ /\d/;
+  if system("jshint --version") != 0;
 
 my @files = (<static/*/*.js>, <static/*/*/*.js>, <static/*/*/*/*.js>);
 
