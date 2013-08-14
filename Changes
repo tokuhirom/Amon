@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+0 2013-08-14T03:05:37Z
+
+    - fixed circular deps introduced at 3.86
+      (reported by syohex++)
+
 3.86 2013-08-14T01:29:12Z
 
     - fix a test checking whether jshint(1) exists or not
