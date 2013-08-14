@@ -78,7 +78,6 @@
       },
       "test" : {
          "requires" : {
-            "Amon2::Lite" : "0",
             "Test::More" : "0.98",
             "Test::Requires" : "0.06"
          },

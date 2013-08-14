@@ -37,7 +37,6 @@ suggests 'Protocol::WebSocket::Handshake::Server';
 on test => sub {
     requires 'Test::More', '0.98';
     requires 'Test::Requires', '0.06';
-    requires 'Amon2::Lite';
 
     suggests 'AnyEvent';
     suggests 'AnyEvent::Socket';
