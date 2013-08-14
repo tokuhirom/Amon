@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.4.9, CPAN::Meta::Converter version 2.130880",
+   "generated_by" : "Minilla/v0.5.6, CPAN::Meta::Converter version 2.131560",
    "license" : [
       "perl_5"
    ],
@@ -25,12 +25,6 @@
       ]
    },
    "prereqs" : {
-      "build" : {
-         "requires" : {
-            "Test::More" : "0.98",
-            "Test::Requires" : "0.06"
-         }
-      },
       "configure" : {
          "requires" : {
             "CPAN::Meta" : "0",
@@ -48,17 +42,59 @@
       },
       "runtime" : {
          "requires" : {
+            "Encode" : "0",
             "Exporter" : "0",
+            "File::Temp" : "0",
+            "Getopt::Long" : "0",
+            "HTML::FillInForm::Lite" : "0",
+            "HTTP::Headers" : "0",
+            "Hash::MultiValue" : "0",
+            "JSON" : "2",
             "MRO::Compat" : "0",
             "Plack" : "0.9982",
+            "Plack::Request" : "0",
+            "Plack::Response" : "0",
             "Plack::Session" : "0",
+            "Plack::Util" : "0",
+            "Pod::Usage" : "0",
             "Router::Simple" : "0.14",
             "Router::Simple::Sinatraish" : "0.02",
+            "Scalar::Util" : "0",
             "Text::Xslate" : "1.6001",
             "Try::Tiny" : "0.06",
             "URI" : "1.54",
+            "URI::Escape" : "0",
+            "URI::QueryParam" : "0",
             "parent" : "0.223",
             "perl" : "5.008001"
+         },
+         "suggests" : {
+            "AnyEvent::Handle" : "0",
+            "HTTP::Session" : "0",
+            "Protocol::WebSocket" : "0.00906",
+            "Protocol::WebSocket::Frame" : "0",
+            "Protocol::WebSocket::Handshake::Server" : "0"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Amon2::Lite" : "0",
+            "Test::More" : "0.98",
+            "Test::Requires" : "0.06"
+         },
+         "suggests" : {
+            "AnyEvent" : "0",
+            "AnyEvent::Socket" : "0",
+            "App::Prove" : "0",
+            "HTTP::Request::Common" : "0",
+            "HTTP::Session::Store::OnMemory" : "0",
+            "Plack::Builder" : "0",
+            "Plack::Middleware::Lint" : "0",
+            "Plack::Middleware::Session" : "0",
+            "Plack::Test" : "0",
+            "Test::TCP" : "0",
+            "Tiffany" : "0",
+            "Twiggy::Server" : "0"
          }
       }
    },
