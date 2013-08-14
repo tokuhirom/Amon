@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+3.87 2013-08-14T05:34:45Z
+
+    - re-packaging
+
 0 2013-08-14T03:05:37Z
 
     - fixed circular deps introduced at 3.86
