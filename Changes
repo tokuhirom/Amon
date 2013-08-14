@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+3.86 2013-08-14T01:29:12Z
+
+    - fix a test checking whether jshint(1) exists or not
+      (gfx)
+
 3.85 2013-06-13T00:17:18Z
 
     - Fixed testing deps, again.

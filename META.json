@@ -110,7 +110,7 @@
          "web" : "https://github.com/tokuhirom/Amon"
       }
    },
-   "version" : "3.85",
+   "version" : "3.86",
    "x_contributors" : [
       "noblejasper <nobjas@gmail.com>",
       "noblejasper <jasper@main.noble-jasper.com>",
@@ -130,6 +130,7 @@
       "issm <issmxx@gmail.com>",
       "hisaichi5518 <hisada.kazuki@gmail.com>",
       "Adrian <adrian@investometrica.com>",
-      "Syohei YOSHIDA <syohex@gmail.com>"
+      "Syohei YOSHIDA <syohex@gmail.com>",
+      "Fuji, Goro <gfuji@cpan.org>"
    ]
 }
