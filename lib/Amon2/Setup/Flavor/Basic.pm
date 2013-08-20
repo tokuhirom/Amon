@@ -70,16 +70,16 @@ sub write_templates {
     <h1 style="text-align: center; font-size: 280%;">Battery Included?</h1>
 
     <div class="row">
-        <div class="span4">
-            <h2>CSS Library</h2>
+        <div class="col-lg-4">
+            <h2><i class="glyphicon glyphicon-ok"></i> CSS Library</h2>
             <div>
                 Current version of Amon2 using twitter's bootstrap.css as a default CSS library.<br />
                 If you want to learn it, please access to <a href="http://twitter.github.com/bootstrap/">twitter.github.com/bootstrap/</a>
             </div>
         </div>
 
-        <div class="span4">
-            <h2>JS Library</h2>
+        <div class="col-lg-4">
+            <h2><i class="glyphicon glyphicon-ok"></i> JS Library</h2>
             <div>
                 <a href="http://jquery.com/">jQuery</a> included.
                 <ul>
@@ -92,8 +92,8 @@ sub write_templates {
             </div>
         </div>
 
-        <div class="span4">
-            <h2>Template Engine</h2>
+        <div class="col-lg-4">
+            <h2><i class="glyphicon glyphicon-ok"></i> Template Engine</h2>
             <div>
                 Amon2 uses <B>Text::Xslate</B>(TTerse) as a primary template engine.<br />
                 But you can use any template engine easily.
@@ -102,8 +102,8 @@ sub write_templates {
     </div>
 
     <div class="row">
-        <div class="span4">
-            <h2>O/R Mapper?</h2>
+        <div class="col-lg-4">
+            <h2><i class="glyphicon glyphicon-ok"></i> O/R Mapper?</h2>
             <div>
                 There is no O/R Mapper support. But I recommend use Teng.<br />
                 You can integrate Teng very easily.<br />
@@ -117,7 +117,7 @@ sub write_templates {
 
 <div class="row">
     <h1 style="text-align: center;">Amon2 is right for you if ...</h1>
-    <div class="span24">
+    <div class="col-lg-24">
         <ul>
         <li>You need exceptional performance.</li>
         <li>You want a framework with a small footprint.</li>
@@ -129,7 +129,7 @@ sub write_templates {
 <hr />
 
 <section class="row">
-    <div class="span12">
+    <div class="col-lg-12">
         <h1>Documents?</h1>
         <p>Complete docs are available on <a href="http://amon.64p.org/">amon.64p.org</a></p>
         <p>And there are module specific docs on <a href="https://metacpan.org/release/Amon2">CPAN</a></p>
@@ -157,20 +157,20 @@ sub write_templates {
     <![endif]-->
 </head>
 <body[% IF bodyID %] id="[% bodyID %]"[% END %]>
-    <div class="navbar navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container">
-                <a class="brand" href="#"><% $dist %></a>
-                <div class="nav-collapse">
-                    <ul class="nav">
+    <div class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#"><% $dist %></a>
+                <div class="nav-collapse collapse">
+                    <ul class="nav navbar-nav">
                         <li class="active"><a href="#">Home</a></li>
                         <li><a href="#">Link</a></li>
                         <li><a href="#">Link</a></li>
                         <li><a href="#">Link</a></li>
                     </ul>
                 </div>
-            </div>
-        </div><!-- /.navbar-inner -->
+            </div><!-- /.navbar-inner -->
+        </div><!-- /.container -->
     </div><!-- /.navbar -->
     <div class="container">
         <div id="main">
