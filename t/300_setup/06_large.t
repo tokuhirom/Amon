@@ -7,7 +7,7 @@ use t::TestFlavor;
 use Test::Requires {
 	'String::CamelCase' => '0.02',
 	'Mouse'             => '0.95', # Mouse::Util
-	'Amon2::DBI'                      => '0.05',
+	'Teng'                            => '0.18',
 	'DBD::SQLite'                     => '1.33',
     'Plack::Session'                  => '0.14',
     'Module::Find'                    => '0.10',
@@ -21,6 +21,9 @@ test_flavor(sub {
     ok(!-e 'yyy');
     my @files = (<Amon2::*>);
     is(0+@files, 0);
+
+    system('sqlite3 db/test.db < sql/sqlite.sql');
+    system('sqlite3 db/development.db < sql/sqlite.sql');
 
     for my $dir (qw(tmpl/ tmpl/pc tmpl/admin/ static/pc static/admin)) {
         ok(-d $dir, $dir);

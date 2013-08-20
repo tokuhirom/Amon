@@ -40,6 +40,28 @@ sub run {
 
     $self->SUPER::run();
 
+    $self->write_file('sql/mysql.sql', <<'...');
+CREATE TABLE sessions (
+    id           CHAR(72) PRIMARY KEY,
+    session_data LONGBLOB
+);
+CREATE TABLE IF NOT EXISTS member (
+    id           INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name         VARCHAR(255)
+);
+...
+
+    $self->write_file('sql/sqlite.sql', <<'...');
+CREATE TABLE sessions (
+    id           CHAR(72) PRIMARY KEY,
+    session_data TEXT
+);
+CREATE TABLE IF NOT EXISTS member (
+    id           INTEGER NOT NULL PRIMARY KEY,
+    name         VARCHAR(255)
+);
+...
+
     $self->write_file('pc.psgi', <<'...', {header => $self->psgi_header});
 <% $header %>
 use <% $module %>::PC;
@@ -51,10 +73,6 @@ use DBI;
 
 my $basedir = File::Spec->rel2abs(dirname(__FILE__));
 my $db_config = <% $module %>->config->{DBI} || die "Missing configuration for DBI";
-{
-    my $c = <% $module %>->new();
-    $c->setup_schema();
-}
 builder {
     enable 'Plack::Middleware::Static',
         path => qr{^(?:/robots\.txt|/favicon\.ico)$},
@@ -97,10 +115,6 @@ use DBI;
 
 my $basedir = File::Spec->rel2abs(dirname(__FILE__));
 my $db_config = <% $module %>->config->{DBI} || die "Missing configuration for DBI";
-{
-    my $c = <% $module %>->new();
-    $c->setup_schema();
-}
 builder {
     enable 'Plack::Middleware::Auth::Basic',
         authenticator => sub { $_[0] eq 'admin' && $_[1] eq 'admin' };

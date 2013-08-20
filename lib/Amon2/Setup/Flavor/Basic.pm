@@ -342,7 +342,7 @@ sub db {
 !.gitignore
 ...
 
-    for my $env (qw(development deployment test)) {
+    for my $env (qw(development production test)) {
         $self->write_file("config/${env}.pl", <<'...', {env => $env});
 use File::Spec;
 use File::Basename qw(dirname);
