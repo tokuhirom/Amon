@@ -31,7 +31,6 @@ $(function () {
 
     $self->write_file("$base/css/main.css", <<'...');
 body {
-    margin-top: 50px;
 }
 
 footer {
