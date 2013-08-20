@@ -229,15 +229,13 @@ sub run {
 <% header %>
 use <% $module %>::Web;
 use <% $module %>;
-use Plack::Session::Store::DBI;
+use Plack::Session::Store::File;
 use Plack::Session::State::Cookie;
-use DBI;
+use URI::Escape;
+use File::Path ();
 
-{
-    my $c = <% $module %>->new();
-    $c->setup_schema();
-}
-my $db_config = <% $module %>->config->{DBI} || die "Missing configuration for DBI";
+my $session_dir = File::Spec->catdir(File::Spec->tmpdir, uri_escape("<% $module %>") . "-$<" );
+File::Path::mkpath($session_dir);
 builder {
     enable 'Plack::Middleware::Static',
         path => qr{^(?:/static/)},
@@ -246,18 +244,61 @@ builder {
         path => qr{^(?:/robots\.txt|/favicon\.ico)$},
         root => File::Spec->catdir(dirname(__FILE__), 'static');
     enable 'Plack::Middleware::ReverseProxy';
+
+    # If you want to run the app on multiple servers,
+    # you need to use Plack::Sesion::Store::DBI or ::Store::Cache.
     enable 'Plack::Middleware::Session',
-        store => Plack::Session::Store::DBI->new(
-            get_dbh => sub {
-                DBI->connect( @$db_config )
-                    or die $DBI::errstr;
-            }
+        store => Plack::Session::Store::File->new(
+            dir => $session_dir,
         ),
         state => Plack::Session::State::Cookie->new(
             httponly => 1,
         );
     <% $module %>::Web->to_app();
 };
+...
+
+    $self->write_file('lib/<<PATH>>/DB.pm', <<'...');
+package <% $module %>::DB;
+use strict;
+use warnings;
+use utf8;
+use parent qw(Teng);
+
+__PACKAGE__->load_plugin('Count');
+__PACKAGE__->load_plugin('Replace');
+__PACKAGE__->load_plugin('Pager');
+
+1;
+...
+
+    $self->write_file('lib/<<PATH>>/DB/Schema.pm', <<'...');
+package <% $module %>::DB::Schema;
+use strict;
+use warnings;
+use utf8;
+
+use Teng::Schema::Declare;
+
+base_row_class '<% $module %>::DB::Row';
+
+table {
+    name 'member';
+    pk 'id';
+    columns qw(id name);
+};
+
+1;
+...
+
+    $self->write_file('lib/<<PATH>>/DB/Row.pm', <<'...');
+package <% $module %>::DB::Row;
+use strict;
+use warnings;
+use utf8;
+use parent qw(Teng::Row);
+
+1;
 ...
 
     $self->write_file('lib/<<PATH>>.pm', <<'...');
@@ -268,22 +309,26 @@ use utf8;
 use parent qw/Amon2/;
 our $VERSION='3.87';
 use 5.008001;
+use <% $module %>::DB::Schema;
+use <% $module %>::DB;
 
-__PACKAGE__->load_plugin(qw/DBI/);
+my $schema = <% $module %>::DB::Schema->instance;
 
-# initialize database
-use DBI;
-sub setup_schema {
-    my $self = shift;
-    my $dbh = $self->dbh();
-    my $driver_name = $dbh->{Driver}->{Name};
-    my $fname = lc("sql/${driver_name}.sql");
-    open my $fh, '<:encoding(UTF-8)', $fname or die "$fname: $!";
-    my $source = do { local $/; <$fh> };
-    for my $stmt (split /;/, $source) {
-        next unless $stmt =~ /\S/;
-        $dbh->do($stmt) or die $dbh->errstr();
+sub db {
+    my $c = shift;
+    if (!exists $c->{db}) {
+        my $conf = $c->config->{DBI}
+            or die "Missing configuration about DBI";
+        $c->{db} = <% $module %>::DB->new(
+            schema       => $schema,
+            connect_info => [@$conf],
+            # I suggest to enable following lines if you are using mysql.
+            # on_connect_do => [
+            #     'SET SESSION sql_mode=STRICT_TRANS_TABLES;',
+            # ],
+        );
     }
+    $c->{db};
 }
 
 1;
@@ -315,15 +360,15 @@ my $dbpath = File::Spec->catfile($basedir, 'db', '<% $env %>.db');
     }
 
     $self->write_file("sql/mysql.sql", <<'...');
-CREATE TABLE IF NOT EXISTS sessions (
-    id           CHAR(72) PRIMARY KEY,
-    session_data TEXT
+CREATE TABLE IF NOT EXISTS member (
+    id           INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name         VARCHAR(255)
 );
 ...
     $self->write_file("sql/sqlite.sql", <<'...');
-CREATE TABLE IF NOT EXISTS sessions (
-    id           CHAR(72) PRIMARY KEY,
-    session_data TEXT
+CREATE TABLE IF NOT EXISTS member (
+    id           INTEGER NOT NULL PRIMARY KEY,
+    name         VARCHAR(255)
 );
 ...
 
@@ -628,7 +673,7 @@ sub create_makefile_pl {
             'Plack::Middleware::Session'      => 0,
             'Plack::Middleware::ReverseProxy' => '0.09',
             'JSON'                            => '2.50',
-            'Amon2::DBI'                      => '0.30',
+            'Teng'                            => '0.18',
             'DBD::SQLite'                     => '1.33',
             'Test::WWW::Mechanize::PSGI'      => 0,
         },
@@ -651,16 +696,14 @@ sub create_t_util_pm {
 sub slurp {
     my $fname = shift;
     open my $fh, '<:encoding(UTF-8)', $fname or die "$fname: $!";
-    do { local $/; <$fh> };
+    scalar do { local $/; <$fh> };
 }
 
 # initialize database
 use <% $module %>;
 {
     unlink 'db/test.db' if -f 'db/test.db';
-
-    my $c = <% $module %>->new();
-    $c->setup_schema();
+    system("sqlite3 db/test.db < sql/sqlite.sql");
 }
 ...
 }
