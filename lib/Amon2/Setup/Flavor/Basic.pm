@@ -306,7 +306,7 @@ use strict;
 use warnings;
 use utf8;
 use parent qw/Amon2/;
-our $VERSION='3.87';
+our $VERSION='3.99_01';
 use 5.008001;
 use <% $module %>::DB::Schema;
 use <% $module %>::DB;
@@ -377,12 +377,13 @@ use warnings;
 use utf8;
 use Test::More;
 
-use_ok $_ for qw(
-    <% $module %>
-    <% $module %>::Web
-    <% $module %>::Web::ViewFunctions
-    <% $module %>::Web::Dispatcher
-);
+use <% $module %>;
+use <% $module %>::Web;
+use <% $module %>::DB::Schema;
+use <% $module %>::Web::ViewFunctions;
+use <% $module %>::Web::Dispatcher;
+
+pass "All modules can load.";
 
 done_testing;
 ...

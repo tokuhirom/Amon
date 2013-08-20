@@ -25,6 +25,7 @@ sub test_flavor {
     my $dir = tempdir(CLEANUP => $ENV{DEBUG} ? 0 : 1);
     my $cwd = Cwd::getcwd();
     chdir($dir);
+    unshift @INC, "$dir/lib";
     note $dir;
 
     {
