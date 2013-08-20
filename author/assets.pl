@@ -216,7 +216,7 @@ sub fetch {
 sub run_bootstrap {
     my $files = {};
     print "Fetching bootstrap\n";
-    my $zip_url = 'http://twitter.github.io/bootstrap/assets/bootstrap.zip';
+    my $zip_url = 'https://github.com/twbs/bootstrap/archive/v3.0.0.zip';
     my $tmpdir = File::Temp::tempdir(CLEANUP => 1);
     my $tmp = "$tmpdir/bootstrap.zip";
     print "Saving files to $tmp\n";
@@ -228,7 +228,15 @@ sub run_bootstrap {
     for my $member ($zip->members()) {
         next if $member->isDirectory;
         my $contents = $member->contents();
-        $files->{$member->fileName} = $contents;
+        my $filename = $member->fileName;
+        my $basename = File::Basename::basename($filename);
+        next if $basename eq '.gitignore';
+        next if $basename eq '.travis.yml';
+        next if $filename =~ m{/examples/};
+        next if $filename =~ m{/tests/};
+        if ($filename =~ m{/dist/(.*)\z}) {
+            $files->{"bootstrap/$1"} = $contents;
+        }
     }
 
     local $Data::Dumper::Useqq = 1;
