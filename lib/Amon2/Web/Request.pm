@@ -108,8 +108,9 @@ sub uri_with {
         my %params = %{ $self->uri->query_form_hash };
         foreach my $key ( keys %{$args} ) {
             my $val = $args->{$key};
-            $key = "$key"; # shallow copy
-            utf8::encode($key) if utf8::is_utf8($key);
+            if (utf8::is_utf8($key)) {
+                $key = Encode::encode($self->_encoding(), $key);
+            }
             if ( defined($val) ) {
 
                 if ( $append && exists( $params{$key} ) ) {

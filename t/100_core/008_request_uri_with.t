@@ -1,8 +1,14 @@
 use strict;
 use warnings;
-use Amon2::Web::Request;
 use Test::More;
 use Encode;
+
+{
+    package MyApp;
+    use parent qw(Amon2 Amon2::Web);
+}
+
+my $c = MyApp->bootstrap;
 
 subtest 'normal' => sub {
     my $req = Amon2::Web::Request->new(
