@@ -14,7 +14,7 @@ use strict;
 use warnings;
 use utf8;
 use parent qw/Amon2/;
-our $VERSION='4.00';
+our $VERSION='4.01';
 use 5.008001;
 
 sub load_config {

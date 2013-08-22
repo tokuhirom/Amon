@@ -1,5 +1,12 @@
 {{$NEXT}}
 
+4.01 2013-08-22T03:23:21Z
+
+    - Fixed utf8 flag issue in uri_with().
+      Before this version, if the key was flagged, it makes MOJIBAKE.
+      https://github.com/tokuhirom/Amon/issues/63
+      (Reported by ichigotake++)
+
 4.00 2013-08-21T03:44:49Z
 
     - Bump to 4.00!
