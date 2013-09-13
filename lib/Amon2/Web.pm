@@ -10,6 +10,7 @@ use Amon2::Web::Request;
 use Amon2::Web::Response;
 use Scalar::Util ();
 use Plack::Session;
+use Plack::Util;
 
 # -------------------------------------------------------------------------
 # Hook points:
@@ -74,13 +75,16 @@ sub redirect {
     );
 }
 
-sub res_405 {
-    my ($self) = @_;
-    my $content = <<'...';
+sub create_simple_status_page {
+    my ($self, $code, $message) = @_;
+    my $codestr = Plack::Util::encode_html($code);
+       $message = Plack::Util::encode_html($message);
+    my $content = <<"...";
 <!doctype html>
 <html>
     <head>
         <meta charset=utf-8 />
+        <title>$codestr $message</title>
         <style type="text/css">
             body {
                 text-align: center;
@@ -99,13 +103,13 @@ sub res_405 {
         </style>
     </head>
     <body>
-        <div class="number">405</div>
-        <div class="message">Method Not Allowed</div>
+        <div class="number">$codestr</div>
+        <div class="message">$message</div>
     </body>
 </html>
 ...
     $self->create_response(
-        405,
+        $code,
         [
             'Content-Type' => 'text/html; charset=utf-8',
             'Content-Length' => length($content),
@@ -114,44 +118,19 @@ sub res_405 {
     );
 }
 
+sub res_403 {
+    my ($self) = @_;
+    return $self->create_simple_status_page(403, 'Forbidden');
+}
+
 sub res_404 {
     my ($self) = @_;
-    my $content = <<'...';
-<!doctype html>
-<html>
-    <head>
-        <meta charset=utf-8 />
-        <style type="text/css">
-            body {
-                text-align: center;
-                font-family: 'Menlo', 'Monaco', Courier, monospace;
-                background-color: whitesmoke;
-                padding-top: 10%;
-            }
-            .number {
-                font-size: 800%;
-                font-weight: bold;
-                margin-bottom: 40px;
-            }
-            .message {
-                font-size: 400%;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="number">404</div>
-        <div class="message">File Not Found</div>
-    </body>
-</html>
-...
-    $self->create_response(
-        404,
-        [
-            'Content-Type' => 'text/html; charset=utf-8',
-            'Content-Length' => length($content),
-        ],
-        [$content]
-    );
+    return $self->create_simple_status_page(404, 'File Not Found');
+}
+
+sub res_405 {
+    my ($self) = @_;
+    return $self->create_simple_status_page(405, 'Method Not Allowed');
 }
 
 sub to_app {
@@ -289,6 +268,10 @@ is same as following(if base URL is http://localhost:5000/)
 
     $c->create_response(302, [Location => 'http://localhost:5000/foo?bar=3'])
 
+=item C<< $c->res_403() >>
+
+Create new response object which has 403 status code.
+
 =item C<< $c->res_404() >>
 
 Create new response object which has 404 status code.
@@ -296,6 +279,10 @@ Create new response object which has 404 status code.
 =item C<< $c->res_405() >>
 
 Create new response object which has 405 status code.
+
+=item C<< $c->create_simple_status_page($code, $message) >>
+
+Create a new response object which represents specified status code.
 
 =item C<< MyApp->to_app() : CodeRef >>
 
