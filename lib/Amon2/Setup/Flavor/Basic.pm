@@ -104,9 +104,9 @@ sub write_templates {
         <div class="col-lg-4">
             <h2><i class="glyphicon glyphicon-ok"></i> O/R Mapper?</h2>
             <div>
-                There is no O/R Mapper support. But I recommend use Teng.<br />
-                You can integrate Teng very easily.<br />
-                Refer to <a href="http://amon.64p.org/database.html#teng">this page</a> for more details.
+                <b>Teng</b> is included as a simple DBI wrapper/ORM mapper.<br />
+                Alternatively (or on older releases,) you can use <b>Amon2::DBI</b>.<br />
+                Refer to <a href="http://amon.64p.org/database.html">this page</a> for more details.
             </div>
         </div>
     </div>
