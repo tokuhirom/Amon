@@ -25,6 +25,8 @@ requires 'URI', '1.54';
 requires 'URI::Escape';
 requires 'URI::QueryParam';
 
+recommends 'Teng', 0.18;
+
 # HTTPSession
 suggests 'HTTP::Session';
 
