@@ -1,5 +1,12 @@
 {{$NEXT}}
 
+4.02 2013-09-17T03:12:00Z
+
+    - Add Amon2::Web->create_simple_status_page().
+      (daylflower)
+    - Recommend to install Teng.
+      (Suggested by zakame)
+
 4.01 2013-08-22T03:23:21Z
 
     - Fixed utf8 flag issue in uri_with().
