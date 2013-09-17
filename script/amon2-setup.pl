@@ -71,6 +71,22 @@ sub main {
             $flavor_class->call_trigger('AFTER_VC');
         }
     }
+
+    print <<'...';
+--------------------------------------------------------------
+
+Setup script was done! You are ready to run the skelton.
+
+You need to install the dependencies by:
+
+    % cpanm --installdeps .
+
+And then, run your application server:
+
+    % plackup -Ilib app.psgi
+
+--------------------------------------------------------------
+...
 }
 
 sub load_flavor {
