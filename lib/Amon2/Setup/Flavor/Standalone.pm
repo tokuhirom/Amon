@@ -15,6 +15,9 @@ sub run {
 
     my $psgi_file = lc($self->{dist}) . '.pl';
 
+    $self->create_main_pm(make_local_context => 1);
+    $self->create_view_functions(context_class => $self->{module});
+
     $self->write_file($psgi_file, <<'...', {header => $self->psgi_header});
 <% header %>
 use <% $module %>::Web;

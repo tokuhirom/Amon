@@ -300,39 +300,7 @@ use parent qw(Teng::Row);
 1;
 ...
 
-    $self->write_file('lib/<<PATH>>.pm', <<'...');
-package <% $module %>;
-use strict;
-use warnings;
-use utf8;
-use parent qw/Amon2/;
-our $VERSION='4.03';
-use 5.008001;
-use <% $module %>::DB::Schema;
-use <% $module %>::DB;
-
-my $schema = <% $module %>::DB::Schema->instance;
-
-sub db {
-    my $c = shift;
-    if (!exists $c->{db}) {
-        my $conf = $c->config->{DBI}
-            or die "Missing configuration about DBI";
-        $c->{db} = <% $module %>::DB->new(
-            schema       => $schema,
-            connect_info => [@$conf],
-            # I suggest to enable following lines if you are using mysql.
-            # on_connect_do => [
-            #     'SET SESSION sql_mode=STRICT_TRANS_TABLES;',
-            # ],
-        );
-    }
-    $c->{db};
-}
-
-1;
-...
-
+    $self->create_main_pm();
     $self->create_web_pms();
     $self->create_view();
 
@@ -524,6 +492,50 @@ note $table->draw;
 done_testing;
 ...
 }
+
+sub create_main_pm {
+    my ($self, %args) = @_;
+
+    $self->write_file('lib/<<PATH>>.pm', <<'...', \%args);
+package <% $module %>;
+use strict;
+use warnings;
+use utf8;
+use parent qw/Amon2/;
+our $VERSION='4.03';
+use 5.008001;
+use <% $module %>::DB::Schema;
+use <% $module %>::DB;
+
+my $schema = <% $module %>::DB::Schema->instance;
+
+sub db {
+    my $c = shift;
+    if (!exists $c->{db}) {
+        my $conf = $c->config->{DBI}
+            or die "Missing configuration about DBI";
+        $c->{db} = <% $module %>::DB->new(
+            schema       => $schema,
+            connect_info => [@$conf],
+            # I suggest to enable following lines if you are using mysql.
+            # on_connect_do => [
+            #     'SET SESSION sql_mode=STRICT_TRANS_TABLES;',
+            # ],
+        );
+    }
+    $c->{db};
+}
+
+<% IF $make_local_context %>
+# Project local mode.
+__PACKAGE__->make_local_context();
+<% END %>
+
+1;
+...
+
+}
+
 
 sub create_t_03_assets_t {
     my ($self, %args) = @_;
