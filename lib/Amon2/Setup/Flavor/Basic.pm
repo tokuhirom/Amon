@@ -388,6 +388,8 @@ pass "All modules can load.";
 done_testing;
 ...
 
+    $self->create_t_03_assets_t();
+
     $self->write_file("xt/02_perlcritic.t", <<'...');
 use strict;
 use warnings;
@@ -460,37 +462,24 @@ MYMETA.yml
 /.carton/
 ...
 
-    $self->write_file('t/03_assets.t', <<'...');
-use strict;
-use warnings;
-use utf8;
-use t::Util;
-use Plack::Test;
-use Plack::Util;
-use Test::More;
-
-my $app = Plack::Util::load_psgi 'app.psgi';
-test_psgi
-    app => $app,
-    client => sub {
-        my $cb = shift;
-        for my $fname (qw(static/bootstrap/css/bootstrap.css robots.txt)) {
-            my $req = HTTP::Request->new(GET => "http://localhost/$fname");
-            my $res = $cb->($req);
-            is($res->code, 200, $fname) or diag $res->content;
-        }
-    };
-
-done_testing;
-...
-
     $self->write_file('.proverc', <<'...');
 -l
 -r t
 -Mt::Util
 ...
 
-    $self->write_file('t/06_jslint.t', <<'...');
+    $self->create_t_06_jshint_t();
+
+    for my $status (qw/404 500 502 503 504/) {
+        $self->write_status_file("static/$status.html", $status);
+    }
+}
+
+sub create_t_06_jshint_t {
+    my ($self, %args) = @_;
+
+    $args{static_dir} ||= 'static';
+    $self->write_file('t/06_jslint.t', <<'...', \%args);
 #!/usr/bin/perl
 use strict;
 use warnings;
@@ -501,7 +490,7 @@ use File::Basename;
 plan skip_all => 'this test requires "jshint" command'
   if system("jshint --version") != 0;
 
-my @files = (<static/*/*.js>, <static/*/*/*.js>, <static/*/*/*/*.js>);
+my @files = (<<% $static_dir %>/*/*.js>, <<% $static_dir %>/*/*/*.js>, <<% $static_dir %>/*/*/*/*.js>);
 
 my %WHITE_LIST = map { $_ => 1 } qw(
     bootstrap.js
@@ -534,10 +523,34 @@ note $table->draw;
 
 done_testing;
 ...
+}
 
-    for my $status (qw/404 500 502 503 504/) {
-        $self->write_status_file("static/$status.html", $status);
-    }
+sub create_t_03_assets_t {
+    my ($self, %args) = @_;
+
+    $self->write_file('t/03_assets.t', <<'...', \%args);
+use strict;
+use warnings;
+use utf8;
+use t::Util;
+use Plack::Test;
+use Plack::Util;
+use Test::More;
+
+my $app = Plack::Util::load_psgi '<% $psgi_file ? $psgi_file : "app.psgi" %>';
+test_psgi
+    app => $app,
+    client => sub {
+        my $cb = shift;
+        for my $fname (qw(static/bootstrap/css/bootstrap.css robots.txt)) {
+            my $req = HTTP::Request->new(GET => "http://localhost/$fname");
+            my $res = $cb->($req);
+            is($res->code, 200, $fname) or diag $res->content;
+        }
+    };
+
+done_testing;
+...
 }
 
 sub write_status_file {
@@ -681,9 +694,9 @@ sub create_makefile_pl {
 }
 
 sub create_t_02_mech_t {
-    my ($self, $more) = @_;
+    my ($self, $more, %args) = @_;
     $more ||= '';
-    $self->SUPER::create_t_02_mech_t(<<'...' . $more);
+    $self->SUPER::create_t_02_mech_t(<<'...' . $more, %args);
 ...
 }
 
