@@ -423,6 +423,24 @@ builder {
 ...
 }
 
+sub show_banner {
+    print <<'...';
+--------------------------------------------------------------
+
+Setup script was done! You are ready to run the skelton.
+
+You need to install the dependencies by:
+
+    % cpanm --installdeps .
+
+And then, run your application server:
+
+    % plackup -Ilib app.psgi
+
+--------------------------------------------------------------
+...
+}
+
 1;
 __END__
 

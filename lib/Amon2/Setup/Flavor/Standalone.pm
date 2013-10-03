@@ -6,6 +6,11 @@ package Amon2::Setup::Flavor::Standalone;
 use parent qw(Amon2::Setup::Flavor::Basic);
 use File::Copy::Recursive ();
 
+sub psgi_file {
+    my $self = shift;
+    return 'script/' . lc($self->{dist}) . '-server';
+}
+
 sub run {
     my $self = shift;
     $self->SUPER::run();
@@ -13,7 +18,7 @@ sub run {
     # regen view for moving template directory.
     $self->create_view(tmpl_path => 'share/tmpl/');
 
-    my $psgi_file = lc($self->{dist}) . '.pl';
+    my $psgi_file = $self->psgi_file;
 
     $self->create_main_pm(make_local_context => 1);
     $self->create_view_functions(context_class => $self->{module});
@@ -28,16 +33,17 @@ use URI::Escape;
 use File::Path ();
 use Getopt::Long;
 use Plack::Loader;
+use lib File::Spec->catdir(dirname(__FILE__), '..', 'lib');
 
 my $session_dir = File::Spec->catdir(File::Spec->tmpdir, uri_escape("<% $module %>") . "-$<" );
 File::Path::mkpath($session_dir);
 my $app = builder {
     enable 'Plack::Middleware::Static',
         path => qr{^(?:/static/)},
-        root => File::Spec->catdir(dirname(__FILE__), 'share');
+        root => File::Spec->catdir(dirname(__FILE__), '..', 'share');
     enable 'Plack::Middleware::Static',
         path => qr{^(?:/robots\.txt|/favicon\.ico)$},
-        root => File::Spec->catdir(dirname(__FILE__), 'share', 'static');
+        root => File::Spec->catdir(dirname(__FILE__), '..', 'share', 'static');
     enable 'Plack::Middleware::ReverseProxy';
 
     # If you want to run the app on multiple servers,
@@ -92,6 +98,26 @@ return $app;
 
     # remove app.psgi
     unlink 'app.psgi';
+}
+
+sub show_banner {
+    my $self = shift;
+
+    printf <<'...', $self->psgi_file;
+--------------------------------------------------------------
+
+Setup script was done! You are ready to run the skelton.
+
+You need to install the dependencies by:
+
+    %% cpanm --installdeps .
+
+And then, run your application server:
+
+    %% perl -Ilib %s
+
+--------------------------------------------------------------
+...
 }
 
 1;

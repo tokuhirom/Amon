@@ -17,7 +17,8 @@ test_flavor(sub {
     ok !-d 'static';
     ok !-d 'tmpl';
     ok !-f 'app.psgi';
-    ok -f 'my-app.pl';
+    ok -f 'script/my-app-server';
+    ok -f 'share/static/bootstrap/css/bootstrap.css';
 
     ok(-f 'Build.PL', 'Build.PL');
 	like(slurp('cpanfile'), qr{Plack::Session});
@@ -27,15 +28,9 @@ test_flavor(sub {
 		is(ref($conf), 'HASH');
 	}
     ok(-f 'lib/My/App.pm', 'lib/My/App.pm exists');
-    ok((do 'lib/My/App.pm'), 'lib/My/App.pm is valid') or do {
-        diag $@;
-        diag do {
-            open my $fh, '<', 'lib/My/App.pm' or die;
-            local $/; <$fh>;
-        };
-    };
     is( scalar( my @files = glob('share/static/js/jquery-*.js') ), 1 );
 	like(slurp('cpanfile'), qr{'Teng'\s+,\s*'[0-9.]+'});
+    isa_ok Plack::Util::load_psgi('script/my-app-server'), 'CODE';
 }, 'Standalone');
 
 done_testing;

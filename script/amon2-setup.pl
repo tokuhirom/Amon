@@ -46,6 +46,7 @@ sub main {
     chdir $dist or die $!;
 
     my @flavor_classes;
+    my @flavor_instances;
     for my $flavor (@flavors) {
         my $flavor_class = load_flavor($flavor);
         push @flavor_classes, $flavor_class;
@@ -56,6 +57,7 @@ sub main {
             {
                 my $flavor = $flavor_class->new(module => $module);
                    $flavor->run;
+                push @flavor_instances, $flavor;
             }
         chdir($cwd);
     }
@@ -72,21 +74,11 @@ sub main {
         }
     }
 
-    print <<'...';
---------------------------------------------------------------
-
-Setup script was done! You are ready to run the skelton.
-
-You need to install the dependencies by:
-
-    % cpanm --installdeps .
-
-And then, run your application server:
-
-    % plackup -Ilib app.psgi
-
---------------------------------------------------------------
-...
+    for my $flavor (@flavor_instances) {
+        if ($flavor->can('show_banner')) {
+            $flavor->show_banner();
+        }
+    }
 }
 
 sub load_flavor {
@@ -159,9 +151,10 @@ amon2-setup.pl - setup script for amon2
 
     % amon2-setup.pl MyApp
 
-        --flavor=Basic   basic flavour (default)
-        --flavor=Lite    Amon2::Lite flavour (need to install)
-        --flavor=Minimum minimalistic flavour for benchmarking
+        --flavor=Basic      basic flavour (default)
+        --flavor=Lite       Amon2::Lite flavour (need to install)
+        --flavor=Minimum    minimalistic flavour for benchmarking
+        --flavor=Standalone CPAN uploadable web application(EXPERIMENTAL)
 
         --vc=Git         setup the git repository (default)
 
