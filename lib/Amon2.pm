@@ -218,7 +218,7 @@ This module makes the context to project local.
 
 It means, normally context class using Amon2 use C<$Amon2::CONTEXT> in each project, but context class using L</PROJECT LOCAL MODE> use C<$MyApp::CONTEXT>.
 
-B<It means you can't use code depend C<<Amon2->context>> and C<<Amon2->context>> under this mode.>
+B<<< It means you can't use code depend C<<Amon2->context>> and C<<Amon2->context>> under this mode. >>>>
 
 =head2 NOTES ABOUT create_request
 
@@ -235,6 +235,12 @@ If you want to use L</PROJECT LOCAL MODE>, you need to pass class name of contex
         my ($class, $env) = @_;
         Amon2::Web::Request->new($env, $class);
     }
+
+=head2 HOW DO I ENABLE PROJECT LOCAL MODE?
+
+C< MyApp->make_local_context() > turns on the project local mode.
+
+There is no way to revert it, thanks.
 
 =head2 METHODS
 

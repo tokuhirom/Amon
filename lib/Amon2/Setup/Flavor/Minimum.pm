@@ -52,7 +52,24 @@ use_ok $_ for qw(
 done_testing;
 ...
 
-    $self->write_file('t/01_root.t', <<'...');
+    $self->create_t_01_root_t();
+
+    $self->create_t_02_mech_t();
+
+    $self->create_t_util_pm();
+
+    $self->write_file('xt/01_pod.t', <<'...');
+use Test::More;
+eval "use Test::Pod 1.00";
+plan skip_all => "Test::Pod 1.00 required for testing POD" if $@;
+all_pod_files_ok();
+...
+}
+
+sub create_t_01_root_t {
+    my ($self, %args) = @_;
+
+    $self->write_file('t/01_root.t', <<'...', \%args);
 use strict;
 use warnings;
 use utf8;
@@ -61,7 +78,7 @@ use Plack::Test;
 use Plack::Util;
 use Test::More;
 
-my $app = Plack::Util::load_psgi 'app.psgi';
+my $app = Plack::Util::load_psgi '<% $psgi_file ? $psgi_file : "app.psgi" %>';
 test_psgi
     app => $app,
     client => sub {
@@ -75,16 +92,6 @@ test_psgi
 done_testing;
 ...
 
-    $self->create_t_02_mech_t();
-
-    $self->create_t_util_pm();
-
-    $self->write_file('xt/01_pod.t', <<'...');
-use Test::More;
-eval "use Test::Pod 1.00";
-plan skip_all => "Test::Pod 1.00 required for testing POD" if $@;
-all_pod_files_ok();
-...
 }
 
 sub create_web_pms {
@@ -125,10 +132,10 @@ __PACKAGE__->add_trigger(
 }
 
 sub create_t_02_mech_t {
-    my ($self, $more) = @_;
+    my ($self, $more, %args) = @_;
     $more ||= '';
 
-    $self->write_file('t/02_mech.t', <<'...' . $more . "\ndone_testing();\n");
+    $self->write_file('t/02_mech.t', <<'...' . $more . "\ndone_testing();\n", \%args);
 use strict;
 use warnings;
 use utf8;
@@ -138,7 +145,7 @@ use Plack::Util;
 use Test::More;
 use Test::Requires 'Test::WWW::Mechanize::PSGI';
 
-my $app = Plack::Util::load_psgi 'app.psgi';
+my $app = Plack::Util::load_psgi '<% $psgi_file ? $psgi_file : "app.psgi" %>';
 
 my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
 $mech->get_ok('/');
@@ -199,6 +206,7 @@ sub create_view_functions {
 
     my $path = $args{path} || 'lib/<<PATH>>/Web/ViewFunctions.pm';
     $args{package} ||= "$self->{module}::Web::ViewFunctions";
+    $args{context_class} ||= 'Amon2';
     $self->write_file($path, <<'...', \%args);
 package <% $package %>;
 use strict;
@@ -216,15 +224,15 @@ sub commify {
     return $_;
 }
 
-sub c { Amon2->context() }
-sub uri_with { Amon2->context()->req->uri_with(@_) }
-sub uri_for { Amon2->context()->uri_for(@_) }
+sub c { <% $context_class %>->context() }
+sub uri_with { <% $context_class %>->context()->req->uri_with(@_) }
+sub uri_for { <% $context_class %>->context()->uri_for(@_) }
 
 {
     my %static_file_cache;
     sub static_file {
         my $fname = shift;
-        my $c = Amon2->context;
+        my $c = <% $context_class %>->context;
         if (not exists $static_file_cache{$fname}) {
             my $fullpath = File::Spec->catfile($c->base_dir(), $fname);
             $static_file_cache{$fname} = (stat $fullpath)[9];
@@ -412,6 +420,24 @@ builder {
         root => File::Spec->catdir(dirname(__FILE__), 'static');
     <% $module %>::Web->to_app();
 };
+...
+}
+
+sub show_banner {
+    print <<'...';
+--------------------------------------------------------------
+
+Setup script was done! You are ready to run the skelton.
+
+You need to install the dependencies by:
+
+    % cpanm --installdeps .
+
+And then, run your application server:
+
+    % plackup -Ilib app.psgi
+
+--------------------------------------------------------------
 ...
 }
 
