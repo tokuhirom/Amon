@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+4.05 2013-10-03T22:26:32Z
+
+    - Fixed @INC settings created by Standalone flavor.
+      (tokuhirom)
+
 4.04 2013-10-03T06:39:40Z
 
     - Added EXPERIMENTAL Standalone flavor.
