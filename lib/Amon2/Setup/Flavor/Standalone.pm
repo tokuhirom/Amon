@@ -25,6 +25,7 @@ sub run {
 
     $self->write_file($psgi_file, <<'...', {header => $self->psgi_header});
 <% header %>
+use lib File::Spec->catdir(dirname(__FILE__), '..', 'lib');
 use <% $module %>::Web;
 use <% $module %>;
 use Plack::Session::Store::File;
@@ -33,7 +34,6 @@ use URI::Escape;
 use File::Path ();
 use Getopt::Long;
 use Plack::Loader;
-use lib File::Spec->catdir(dirname(__FILE__), '..', 'lib');
 
 my $session_dir = File::Spec->catdir(File::Spec->tmpdir, uri_escape("<% $module %>") . "-$<" );
 File::Path::mkpath($session_dir);
