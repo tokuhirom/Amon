@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.6.5, CPAN::Meta::Converter version 2.132510",
+   "generated_by" : "Minilla/v0.7.0, CPAN::Meta::Converter version 2.132510",
    "license" : [
       "perl_5"
    ],
@@ -47,6 +47,7 @@
          "requires" : {
             "Encode" : "0",
             "Exporter" : "0",
+            "File::Copy::Recursive" : "0",
             "File::Temp" : "0",
             "Getopt::Long" : "0",
             "HTML::FillInForm::Lite" : "0",
@@ -112,7 +113,7 @@
          "web" : "https://github.com/tokuhirom/Amon"
       }
    },
-   "version" : "4.03",
+   "version" : "4.04",
    "x_contributors" : [
       "noblejasper <nobjas@gmail.com>",
       "noblejasper <jasper@main.noble-jasper.com>",

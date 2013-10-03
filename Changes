@@ -1,5 +1,11 @@
 {{$NEXT}}
 
+4.04 2013-10-03T06:39:40Z
+
+    - Added EXPERIMENTAL Standalone flavor.
+      It makes easier to create CPAN uploadable web application.
+      (tokuhirom)
+
 4.03 2013-09-17T03:21:53Z
 
     - Show banner after run setup script.

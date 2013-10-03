@@ -98,7 +98,7 @@ This module makes the context to project local.
 
 It means, normally context class using Amon2 use `$Amon2::CONTEXT` in each project, but context class using ["PROJECT LOCAL MODE"](#PROJECT LOCAL MODE) use `$MyApp::CONTEXT`.
 
-__It means you can't use code depend `<Amon2-`context__\> and `<Amon2-`context>> under this mode.>
+__It means you can't use code depend `<Amon2-`context>> and `<Amon2-`context>> under this mode.__\>
 
 ## NOTES ABOUT create\_request
 
@@ -115,6 +115,12 @@ If you want to use ["PROJECT LOCAL MODE"](#PROJECT LOCAL MODE), you need to pass
         my ($class, $env) = @_;
         Amon2::Web::Request->new($env, $class);
     }
+
+## HOW DO I ENABLE PROJECT LOCAL MODE?
+
+` MyApp-`make\_local\_context() > turns on the project local mode.
+
+There is no way to revert it, thanks.
 
 ## METHODS
 
