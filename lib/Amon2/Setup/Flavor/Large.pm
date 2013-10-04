@@ -150,54 +150,61 @@ sub logout {
 1;
 ...
 
-    $self->write_file('tmpl/admin/error.tt', <<'...');
-[% WRAPPER 'include/layout.tt' %]
+    $self->write_file('tmpl/admin/error.tx', <<'...');
+: cascade "include/layout.tx"
+
+: override content -> {
 
 <div class="alert-message error">
-    An error occurred : [% message %]
+    An error occurred : <: $message :>
 </div>
 
-[% END %]
+: }
 ...
 
-    $self->write_file('tmpl/pc/error.tt', <<'...');
-[% WRAPPER 'include/layout.tt' %]
+    $self->write_file('tmpl/pc/error.tx', <<'...');
+: cascade "include/layout.tx"
+
+: override content -> {
+
 
 <div class="alert-message error">
-    An error occurred : [% message %]
+    An error occurred : <: $message :>
 </div>
 
-[% END %]
+: }
 ...
 
-    $self->write_file('tmpl/admin/index.tt', <<'...');
-[% WRAPPER 'include/layout.tt' %]
+    $self->write_file('tmpl/admin/index.tx', <<'...');
+: cascade "include/layout.tx"
+
+: override content -> {
 
 <section>
     <h1>This is a <% $dist %>'s admin site</h1>
 </section>
 
-[% END %]
+: }
 ...
 
-    $self->write_file('tmpl/admin/include/layout.tt', <<'...');
+    $self->write_file('tmpl/admin/include/layout.tx', <<'...');
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>[% title || '<%= $dist %>' %]</title>
+    <title><: $title || '<%= $dist %>' :></title>
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <meta http-equiv="Content-Script-Type" content="text/javascript" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0"]]>
     <meta name="format-detection" content="telephone=no" />
     <% $tags %>
-    <link href="[% static_file('/static/css/admin.css') %]" rel="stylesheet" type="text/css" media="screen" />
-    <script src="[% static_file('/static/js/main.js') %]"></script>
+    <link href="<: static_file('/static/css/admin.css') :>" rel="stylesheet" type="text/css" media="screen" />
+    <script src="<: static_file('/static/js/main.js') :>"></script>
     <!--[if lt IE 9]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 </head>
-<body[% IF bodyID %] id="[% bodyID %]"[% END %]>
+<body>
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
@@ -208,10 +215,10 @@ sub logout {
     </div>
     <div class="container-fluid">
         <div class="col-md-4">
-                [% INCLUDE "include/sidebar.tt" %]
+                <: include "include/sidebar.tx" :>
         </div>
         <div class="col-md-8">
-            [% content %]
+            <: block content -> { } :>
         </div>
     </div>
     <footer class="footer">
@@ -257,9 +264,9 @@ footer {
 }
 ...
 
-    $self->write_file('tmpl/admin/include/sidebar.tt', <<'...');
+    $self->write_file('tmpl/admin/include/sidebar.tx', <<'...');
 <ul>
-    <li><a href="[% uri_for('/') %]">Home</a></li>
+    <li><a href="<: uri_for('/') :>">Home</a></li>
 </ul>
 ...
 
@@ -404,7 +411,7 @@ __PACKAGE__->load_plugins(
 
 sub show_error {
     my ( $c, $msg, $code ) = @_;
-    my $res = $c->render( 'error.tt', { message => $msg } );
+    my $res = $c->render( 'error.tx', { message => $msg } );
     $res->code( $code || 500 );
     return $res;
 }
@@ -486,7 +493,7 @@ use utf8;
 
 sub index {
     my ($class, $c) = @_;
-    $c->render('index.tt');
+    $c->render('index.tx');
 }
 
 1;

@@ -28,10 +28,10 @@ test_flavor(sub {
     for my $dir (qw(tmpl/ tmpl/pc tmpl/admin/ static/pc static/admin)) {
         ok(-d $dir, $dir);
     }
-	for my $file (qw(Build.PL lib/My/App.pm t/Util.pm .proverc tmpl/pc/error.tt tmpl/admin/error.tt)) {
+	for my $file (qw(Build.PL lib/My/App.pm t/Util.pm .proverc tmpl/pc/error.tx tmpl/admin/error.tx)) {
 		ok(-f $file, "$file exists");
 	}
-    for my $f (qw(lib/My/App/Web.pm lib/My/App/Web/ tmpl/index.tt)) {
+    for my $f (qw(lib/My/App/Web.pm lib/My/App/Web/ tmpl/index.tx)) {
         ok(!-e $f, "There is no $f");
     }
 
@@ -94,7 +94,7 @@ sub error {
         like($res->content, qr{Oops});
     };
 
-    like(slurp('tmpl/pc/include/layout.tt'), qr{jquery}, 'loads jquery');
+    like(slurp('tmpl/pc/include/layout.tx'), qr{jquery}, 'loads jquery');
 }, 'Large');
 
 done_testing;

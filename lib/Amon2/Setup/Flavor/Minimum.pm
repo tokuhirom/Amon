@@ -108,7 +108,7 @@ use File::Spec;
 sub dispatch {
     my ($c) = @_;
 
-    $c->render('index.tt');
+    $c->render('index.tx');
 }
 
 # setup view
@@ -180,7 +180,7 @@ sub make_instance {
         $view_conf->{path} = [ File::Spec->catdir($context->base_dir(), '<% $tmpl_path ? $tmpl_path : 'tmpl' %>') ];
     }
     my $view = Text::Xslate->new(+{
-        'syntax'   => 'TTerse',
+        'syntax'   => 'Kolon',
         'module'   => [
             'Text::Xslate::Bridge::Star',
             '<% $view_functions_package %>',
@@ -392,7 +392,7 @@ sub write_templates {
     my ($self, $base) = @_;
     $base ||= 'tmpl';
 
-    $self->write_file("$base/index.tt", <<'...');
+    $self->write_file("$base/index.tx", <<'...');
 <!doctype html>
 <html>
 <head>

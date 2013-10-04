@@ -53,8 +53,10 @@ sub write_templates {
     my ($self, $base) = @_;
     $base ||= 'tmpl';
 
-    $self->write_file("$base/index.tt", <<'...');
-[% WRAPPER 'include/layout.tt' %]
+    $self->write_file("$base/index.tx", <<'...');
+: cascade "include/layout.tx"
+
+: override content -> {
 
 <h1 style="padding: 70px; text-align: center; font-size: 80px; line-height: 1; letter-spacing: -2px;">Hello, Amon2 world!</h1>
 
@@ -94,7 +96,7 @@ sub write_templates {
         <div class="col-lg-4">
             <h2><i class="glyphicon glyphicon-ok"></i> Template Engine</h2>
             <div>
-                Amon2 uses <B>Text::Xslate</B>(TTerse) as a primary template engine.<br />
+                Amon2 uses <B>Text::Xslate</B>(Kolon) as a primary template engine.<br />
                 But you can use any template engine easily.
             </div>
         </div>
@@ -135,27 +137,27 @@ sub write_templates {
     </div>
 </section>
 
-[% END %]
+: }
 ...
 
-    $self->write_file("$base/include/layout.tt", <<'...');
+    $self->write_file("$base/include/layout.tx", <<'...');
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>[% title || '<%= $dist %>' %]</title>
+    <title><: $title || '<%= $dist %>' :></title>
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <meta http-equiv="Content-Script-Type" content="text/javascript" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
     <meta name="format-detection" content="telephone=no" />
 <% $tags -%>
-    <link href="[% static_file('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
-    <script src="[% static_file('/static/js/main.js') %]"></script>
+    <link href="<: static_file('/static/css/main.css') :>" rel="stylesheet" type="text/css" media="screen" />
+    <script src="<: static_file('/static/js/main.js') :>"></script>
     <!--[if lt IE 9]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 </head>
-<body[% IF bodyID %] id="[% bodyID %]"[% END %]>
+<body>
     <div class="navbar navbar-default">
         <div class="container">
             <div class="navbar-header">
@@ -173,7 +175,7 @@ sub write_templates {
     </div><!-- /.navbar -->
     <div class="container">
         <div id="main">
-            [% content %]
+            <: block content -> { } :>
         </div>
         <footer class="footer">
             Powered by <a href="http://amon.64p.org/">Amon2</a>
@@ -183,33 +185,33 @@ sub write_templates {
 </html>
 ...
 
-    $self->write_file("$base/include/pager.tt", <<'...');
-[% IF pager %]
+    $self->write_file("$base/include/pager.tx", <<'...');
+: if ($pager) {
     <div class="pagination">
         <ul>
-            [% IF pager.previous_page %]
-                <li class="prev"><a href="[% uri_with({page => pager.previous_page}) %]" rel="previous">&larr; Back</a><li>
-            [% ELSE %]
+            <: if (pager.previous_page) { :>
+                <li class="prev"><a href="<: uri_with({page => pager.previous_page}) :>" rel="previous">&larr; Back</a><li>
+            <: } else { :>
                 <li class="prev disabled"><a href="#">&larr; Back</a><li>
-            [% END %]
+            <: } :>
 
-            [% IF pager.can('pages_in_navigation') %]
-                [% # IF Data::Page::Navigation is loaded %]
-                [% FOR p IN pager.pages_in_navigation(5) %]
-                    <li [% IF p==pager.current_page %]class="active"[% END %]><a href="[% uri_with({page => p}) %]">[% p %]</a></li>
-                [% END %]
-            [% ELSE %]
-                <li><a href="#">[% pager.current_page %]</a></li>
-            [% END %]
+            <: if ($pager.can('pages_in_navigation')) { :>
+                <: # IF Data::Page::Navigation is loaded  :>
+                <: for $pager.pages_in_navigation(5) -> $p { :>
+                    <li <: if ($pager.current_page() == $p) { :>class="active"<: } :>><a href="<: uri_with({page => $p}) :>"><: $p :></a></li>
+                <: } :>
+            <: } else { :>
+                <li><a href="#"><: $pager.current_page() :></a></li>
+            <: } :>
 
-            [% IF pager.next_page %]
-                <li class="next"><a href="[% uri_with({page => pager.next_page}) %]" rel="next">Next &rarr;</a><li>
-            [% ELSE %]
+            <: if ($pager.next_page()) { :>
+                <li class="next"><a href="<: uri_with({page => $pager.next_page()}) :>" rel="next">Next &rarr;</a><li>
+            <: } else { :>
                 <li class="next disabled"><a href="#">Next &rarr;</a><li>
-            [% END %]
+            <: } :>
         </ul>
     </div>
-[% END %]
+: }
 ...
 }
 
@@ -673,7 +675,7 @@ use Amon2::Web::Dispatcher::Lite;
 
 any '/' => sub {
     my ($c) = @_;
-    return $c->render('index.tt');
+    return $c->render('index.tx');
 };
 
 post '/account/logout' => sub {
