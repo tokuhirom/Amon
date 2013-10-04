@@ -11,6 +11,17 @@ sub psgi_file {
     return 'script/' . lc($self->{dist}) . '-server';
 }
 
+sub create_makefile_pl {
+    my ($self, $prereq_pm) = @_;
+
+    $self->SUPER::create_makefile_pl(
+        +{
+            %{ $prereq_pm || {} },
+            'Starlet' => '0.19',
+        },
+    );
+}
+
 sub run {
     my $self = shift;
     $self->SUPER::run();
