@@ -548,6 +548,28 @@ done_testing();
 ...
 }
 
+sub show_banner {
+    print <<'...';
+--------------------------------------------------------------
+
+Setup script was done! You are ready to run the skelton.
+
+You need to install the dependencies by:
+
+    % cpanm --installdeps .
+
+Setup the SQLite3 database:
+
+    % sqlite3 db/development.db < sql/sqlite.sql
+
+And then, run your application server:
+
+    % plackup -Ilib app.psgi
+
+--------------------------------------------------------------
+...
+}
+
 1;
 
 __END__
