@@ -5,7 +5,7 @@ use warnings;
 
 sub tags {
     <<',,,';
-    <script src="[% uri_for('/static/js/jquery-1.10.0.min.js') %]"></script>
+    <script src="<: uri_for('/static/js/jquery-1.10.0.min.js') :>"></script>
 ,,,
 }
 
