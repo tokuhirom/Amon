@@ -502,7 +502,7 @@ use strict;
 use warnings;
 use utf8;
 use parent qw/Amon2/;
-our $VERSION='4.05';
+our $VERSION='4.06';
 use 5.008001;
 use <% $module %>::DB::Schema;
 use <% $module %>::DB;

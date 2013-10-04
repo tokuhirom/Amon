@@ -1,5 +1,14 @@
 {{$NEXT}}
 
+4.06 2013-10-04T05:40:15Z
+
+    - Make Starlet a dependency for the Standalone flavor.
+      (Geraud)
+    - Flavor::Standalone: Show start up banner.
+      (tokuhirom)
+    - Flavor::Standalone: Enabled AccessLog middleware by default.
+      (tokuhirom)
+
 4.05 2013-10-03T22:26:32Z
 
     - Fixed @INC settings created by Standalone flavor.

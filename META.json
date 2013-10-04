@@ -113,7 +113,7 @@
          "web" : "https://github.com/tokuhirom/Amon"
       }
    },
-   "version" : "4.05",
+   "version" : "4.06",
    "x_contributors" : [
       "noblejasper <nobjas@gmail.com>",
       "noblejasper <jasper@main.noble-jasper.com>",
@@ -135,6 +135,7 @@
       "Adrian <adrian@investometrica.com>",
       "Syohei YOSHIDA <syohex@gmail.com>",
       "Fuji, Goro <gfuji@cpan.org>",
-      "ITO Nobuaki <daydream.trippers@gmail.com>"
+      "ITO Nobuaki <daydream.trippers@gmail.com>",
+      "Geraud CONTINSOUZAS <geraud@hyaku.nijuu.nana>"
    ]
 }
