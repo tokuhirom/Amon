@@ -38,6 +38,7 @@ use Plack::Loader;
 my $session_dir = File::Spec->catdir(File::Spec->tmpdir, uri_escape("<% $module %>") . "-$<" );
 File::Path::mkpath($session_dir);
 my $app = builder {
+    enable 'Plack::Middleware::AccessLog';
     enable 'Plack::Middleware::Static',
         path => qr{^(?:/static/)},
         root => File::Spec->catdir(dirname(__FILE__), '..', 'share');
