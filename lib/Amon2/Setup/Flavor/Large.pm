@@ -207,10 +207,10 @@ sub logout {
         </div><!-- /.navbar -->
     </div>
     <div class="container-fluid">
-        <div class="span4">
+        <div class="col-md-4">
                 [% INCLUDE "include/sidebar.tt" %]
         </div>
-        <div class="span8">
+        <div class="col-md-8">
             [% content %]
         </div>
     </div>
