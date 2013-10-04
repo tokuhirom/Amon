@@ -78,6 +78,8 @@ unless (caller) {
         exit 0;
     }
 
+    print "<% $module %>: http://${host}:${port}/\n";
+
     my $loader = Plack::Loader->load('Starlet',
         port        => $port,
         host        => $host,
