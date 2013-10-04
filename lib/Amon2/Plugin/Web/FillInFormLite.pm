@@ -60,7 +60,7 @@ Amon2::Plugin::Web::FillInFormLite - HTML::FillInForm::Lite
 
 =head1 DESCRIPTION
 
-HTML::FillInForm::Lite version of L<Amon2::Plugin::FillInForm>
+HTML::FillInForm::Lite version of L<Amon2::Plugin::Web::FillInForm>
 
 =head1 SEE ALSO
 
