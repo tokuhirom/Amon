@@ -13,10 +13,11 @@ use Carp ();
 use Amon2::Trigger;
 
 my $xslate = Text::Xslate->new(
-    syntax => 'TTerse',
+    syntax => 'Kolon',
     type   => 'text',
     tag_start => '<%',
     tag_end   => '%>',
+    line_start => undef,
     'module'   => [ 'Text::Xslate::Bridge::Star' ],
 );
 

@@ -227,7 +227,7 @@ sub run {
     $self->write_static_files();
 
     $self->write_file('app.psgi', <<'...', {header => $self->psgi_header});
-<% header %>
+<% $header %>
 use <% $module %>::Web;
 use <% $module %>;
 use Plack::Session::Store::File;
@@ -528,10 +528,10 @@ sub db {
     $c->{db};
 }
 
-<% IF $make_local_context %>
+<% if ($make_local_context) { %>
 # Project local mode.
 __PACKAGE__->make_local_context();
-<% END %>
+<% } %>
 
 1;
 ...

@@ -35,7 +35,7 @@ sub run {
     $self->create_view_functions(context_class => $self->{module});
 
     $self->write_file($psgi_file, <<'...', {header => $self->psgi_header});
-<% header %>
+<% $header %>
 use lib File::Spec->catdir(dirname(__FILE__), '..', 'lib');
 use <% $module %>::Web;
 use <% $module %>;

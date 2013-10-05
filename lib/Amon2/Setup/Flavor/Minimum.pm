@@ -282,7 +282,7 @@ use lib File::Spec->rel2abs(File::Spec->catdir(dirname(__FILE__), '..', 'lib'));
 use parent qw/Exporter/;
 use Test::More 0.98;
 
-our @EXPORT = qw(<% exports.join(' ') %>);
+our @EXPORT = qw(<% $exports.join(' ') %>);
 
 {
     # utf8 hack.
@@ -373,9 +373,9 @@ $build->create_build_script();
 requires 'perl', '5.008001';
 requires 'Amon2', '<% $amon2_version %>';
 requires 'Text::Xslate', '1.6001';
-<% FOR v IN deps.keys() -%>
-requires <% sprintf("%-33s", "'" _ v _ "'") %>, '<% deps[v] %>';
-<% END -%>
+<% for $deps.keys() -> $v { -%>
+requires <% sprintf("%-33s", "'" ~ $v ~ "'") %>, '<% $deps[$v] %>';
+<% } -%>
 
 on 'configure' => sub {
    requires 'Module::Build', '0.38';
@@ -407,7 +407,7 @@ sub write_templates {
 ...
 
     $self->write_file('app.psgi', <<'...', {header => $self->psgi_header});
-<% header %>
+<% $header %>
 use <% $module %>::Web;
 
 builder {
