@@ -55,4 +55,5 @@ on test => sub {
     suggests 'Test::TCP';
     suggests 'Tiffany';
     suggests 'Twiggy::Server';
+    suggests 'Test::WWW::Mechanize';
 };
