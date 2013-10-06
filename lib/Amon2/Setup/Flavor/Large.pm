@@ -151,6 +151,8 @@ sub run {
 }
 
 sub show_banner {
+    my $self = shift;
+
     print <<'...', $self->web_script, $self->admin_script;
 --------------------------------------------------------------
 
