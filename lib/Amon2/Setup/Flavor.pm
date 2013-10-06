@@ -11,14 +11,8 @@ use Amon2;
 use Plack::Util ();
 use Carp ();
 use Amon2::Trigger;
-
-my $xslate = Text::Xslate->new(
-    syntax => 'TTerse',
-    type   => 'text',
-    tag_start => '<%',
-    tag_end   => '%>',
-    'module'   => [ 'Text::Xslate::Bridge::Star' ],
-);
+use MRO::Compat;
+use File::ShareDir ();
 
 sub infof {
     my $caller = do {
@@ -52,7 +46,24 @@ sub new {
     my @pkg  = split /::/, $args{module};
     $args{dist} = join "-", @pkg;
     $args{path} = join "/", @pkg;
-    bless { %args }, $class;
+    my $self = bless { %args }, $class;
+    $self->{xslate} = $self->_build_xslate();
+    $self;
+}
+
+sub _build_xslate {
+    my $self = shift;
+
+    my $xslate = Text::Xslate->new(
+        syntax => 'Kolon',
+        type   => 'text',
+        tag_start => '<%',
+        tag_end   => '%>',
+        line_start => '%%',
+        'module'   => [ 'Text::Xslate::Bridge::Star' ],
+        path => [ File::Spec->catdir(File::ShareDir::dist_dir('Amon2'), 'flavor') ],
+    );
+    $xslate;
 }
 
 sub run { die "This is abstract base method" }
@@ -68,7 +79,16 @@ sub render_string {
     my $self = shift;
     my $template = shift;
     my %args = @_==1 ? %{$_[0]} : @_;
-    return $xslate->render_string($template, {%$self, %args});
+    return $self->{xslate}->render_string($template, {%$self, %args});
+}
+
+sub render_file {
+    my ($self, $dstname, $filename, $params) = @_;
+    Carp::croak("filename should not be reference") if ref $filename;
+    $dstname =~ s/<<([^>]+)>>/$self->{lc($1)} or die "$1 is not defined. But you want to use $1 in filename."/ge;
+
+    my $content = $self->{xslate}->render($filename, {%$self, $params ? %$params : () });
+    $self->write_file_raw($dstname, $content);
 }
 
 sub write_file {

@@ -25,6 +25,7 @@ requires 'URI', '1.54';
 requires 'URI::Escape';
 requires 'URI::QueryParam';
 requires 'File::Copy::Recursive'; # setup script
+requires 'File::ShareDir';
 
 recommends 'Teng', 0.18;
 
@@ -41,6 +42,7 @@ on test => sub {
     requires 'Test::More', '0.98';
     requires 'Test::Requires', '0.06';
 
+    suggests 'File::pushd';
     suggests 'AnyEvent';
     suggests 'AnyEvent::Socket';
     suggests 'App::Prove';
@@ -53,4 +55,5 @@ on test => sub {
     suggests 'Test::TCP';
     suggests 'Tiffany';
     suggests 'Twiggy::Server';
+    suggests 'Test::WWW::Mechanize';
 };

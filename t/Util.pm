@@ -6,7 +6,6 @@ use File::Spec;
 use FindBin;
 use File::Basename;
 use File::Spec;
-use lib File::Spec->rel2abs(File::Spec->catfile(dirname(__FILE__), '..', 'lib'));
 use Test::More;
 use App::Prove;
 use File::Basename;
