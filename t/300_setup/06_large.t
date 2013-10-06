@@ -25,17 +25,17 @@ test_flavor(sub {
     system('sqlite3 db/test.db < sql/sqlite.sql');
     system('sqlite3 db/development.db < sql/sqlite.sql');
 
-    for my $dir (qw(tmpl/ tmpl/pc tmpl/admin/ static/pc static/admin)) {
+    for my $dir (qw(tmpl/ tmpl/web tmpl/admin/ static/web static/admin)) {
         ok(-d $dir, $dir);
     }
-	for my $file (qw(Build.PL lib/My/App.pm t/Util.pm .proverc tmpl/pc/error.tx tmpl/admin/error.tx)) {
+	for my $file (qw(Build.PL lib/My/App.pm t/Util.pm .proverc tmpl/web/error.tx tmpl/admin/error.tx)) {
 		ok(-f $file, "$file exists");
 	}
-    for my $f (qw(lib/My/App/Web.pm lib/My/App/Web/ tmpl/index.tx)) {
+    for my $f (qw(lib/My/App/PC.pm lib/My/App/PC/ tmpl/index.tx)) {
         ok(!-e $f, "There is no $f");
     }
 
-    for my $type (qw(PC Admin)) {
+    for my $type (qw(Web Admin)) {
         open my $pfh, '>', "lib/My/App/$type/C/Error.pm" or die "$type: $!";
         print $pfh sprintf(<<'...', $type);
 package My::App::%s::C::Error;
@@ -51,8 +51,20 @@ sub error {
         close $pfh;
     }
 
-    for my $type (qw(pc admin)) {
-        my $f = "${type}.psgi";
+    {
+        no warnings 'once';
+        local *My::App::setup_schema;
+        ok((do 'lib/My/App.pm'), 'lib/My/App.pm is valid') or do {
+            diag $@;
+            diag do {
+                open my $fh, '<', 'lib/My/App.pm' or die;
+                local $/; <$fh>;
+            };
+        };
+    }
+
+    for my $type (qw(web admin)) {
+        my $f = "script/my-app-${type}-server";
         my $buff = << "...";
 \$SIG{__WARN__} = sub { die 'Warned! ' . shift };
 @{[slurp($f)]}
@@ -62,27 +74,34 @@ sub error {
         close $fh;
     }
 
-    my $app = Plack::Util::load_psgi('app.psgi');
-    my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
-    {
-        my $res = $mech->get('http://localhost/error/error');
-        is($res->code, 500);
-        like($res->content, qr{An error});
-        like($res->content, qr{Oops});
-    }
-    {
-        my $res = $mech->get('http://localhost/admin/error/error');
-        is($res->code, 401);
-    }
-    {
-        $mech->credentials('admin', 'admin');
-        my $res = $mech->get('http://localhost/admin/error/error');
-        is($res->code, 500);
-        like($res->content, qr{An error});
-        like($res->content, qr{Oops});
+    subtest 'test web' => sub {
+        my $app = Plack::Util::load_psgi("script/my-app-web-server");
+        my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
+        {
+            my $res = $mech->get('http://localhost/error/error');
+            is($res->code, 500);
+            like($res->content, qr{An error});
+            like($res->content, qr{Oops});
+        }
     };
 
-    like(slurp('tmpl/pc/include/layout.tx'), qr{jquery}, 'loads jquery');
+    subtest 'admin' => sub {
+        my $app = Plack::Util::load_psgi("script/my-app-admin-server");
+        my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
+        {
+            my $res = $mech->get('http://localhost/error/error');
+            is($res->code, 401);
+        }
+        {
+            $mech->credentials('admin', 'admin');
+            my $res = $mech->get('http://localhost/error/error');
+            is($res->code, 500);
+            like($res->content, qr{An error});
+            like($res->content, qr{Oops});
+        };
+    };
+
+    like(slurp('tmpl/web/include/layout.tx'), qr{jquery}, 'loads jquery');
 }, 'Large');
 
 done_testing;

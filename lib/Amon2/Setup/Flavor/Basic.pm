@@ -22,14 +22,9 @@ sub run {
     $self->render_file( 'lib/<<PATH>>/DB/Schema.pm',         'Basic/lib/__PATH__/DB/Schema.pm' );
     $self->render_file( 'lib/<<PATH>>/DB/Row.pm',            'Basic/lib/__PATH__/DB/Row.pm' );
 
-    $self->render_file( 'app.psgi', 'Basic/app.psgi' );
+    $self->render_file( $self->psgi_file, 'Basic/script/server.pl' );
     $self->render_file( 'Build.PL', 'Minimum/Build.PL' );
 
-    $self->render_file( 't/Util.pm',      'Basic/t/Util.pm' );
-    $self->render_file( 't/00_compile.t', 'Minimum/t/00_compile.t' );
-    $self->render_file( 't/01_root.t',    'Minimum/t/01_root.t' );
-    $self->render_file( 't/02_mech.t',    'Minimum/t/02_mech.t' );
-    $self->render_file( 'xt/01_pod.t',    'Minimum/xt/01_pod.t' );
 
     $self->create_cpanfile();
 
@@ -60,10 +55,20 @@ sub run {
     $self->render_file( 'sql/mysql.sql',  'Basic/sql/mysql.sql' );
     $self->render_file( 'sql/sqlite.sql', 'Basic/sql/sqlite.sql' );
 
+    $self->render_file( 't/Util.pm',      'Basic/t/Util.pm' );
     $self->render_file( 't/00_compile.t',     'Basic/t/00_compile.t' );
-    $self->render_file( 'xt/02_perlcritic.t', 'Basic/xt/02_perlcritic.t' );
-    $self->render_file( 't/03_assets.t',      'Basic/t/03_assets.t' );
+    $self->render_file( 't/01_root.t',    'Minimum/t/01_root.t', {
+        psgi_file => $self->psgi_file,
+    });
+    $self->render_file( 't/02_mech.t',    'Minimum/t/02_mech.t', {
+        psgi_file => $self->psgi_file,
+    });
+    $self->render_file( 't/03_assets.t',      'Basic/t/03_assets.t', {
+        psgi_file => $self->psgi_file,
+    });
     $self->render_file( 't/06_jshint.t',      'Basic/t/06_jshint.t' );
+    $self->render_file( 'xt/01_pod.t',    'Minimum/xt/01_pod.t' );
+    $self->render_file( 'xt/02_perlcritic.t', 'Basic/xt/02_perlcritic.t' );
 
     $self->render_file('.gitignore', 'Basic/dot.gitignore');
     $self->render_file('.proverc', 'Basic/dot.proverc');

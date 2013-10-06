@@ -22,8 +22,11 @@ sub create_cpanfile {
 sub run {
     my $self = shift;
 
+    my $admin_script = 'script/' . lc($self->{dist}) . '-admin-server';
+    my $web_script   = 'script/' . lc($self->{dist}) . '-web-server';
+
     # write code.
-    for my $moniker (qw(pc admin)) {
+    for my $moniker (qw(web admin)) {
         # static files
         my @assets = qw(
             jQuery Bootstrap ES5Shim MicroTemplateJS StrftimeJS SprintfJS
@@ -46,7 +49,7 @@ sub run {
         $self->render_file("static/${moniker}/css/main.css", "Basic/static/css/main.css");
     }
     $self->render_file('tmpl/admin/error.tx', 'Large/tmpl/admin/error.tx');
-    $self->render_file('tmpl/pc/error.tx', 'Large/tmpl/pc/error.tx');
+    $self->render_file('tmpl/web/error.tx', 'Large/tmpl/web/error.tx');
     $self->render_file('tmpl/admin/index.tx', 'Large/tmpl/admin/index.tx');
 
     $self->render_file('tmpl/admin/include/layout.tx', 'Large/tmpl/admin/include/layout.tx');
@@ -69,12 +72,22 @@ sub run {
     $self->render_file( 'sql/sqlite.sql', 'Large/sql/sqlite.sql' );
 
     $self->render_file( 't/00_compile.t',     'Large/t/00_compile.t' );
-    $self->render_file( 't/01_root.t',        'Minimum/t/01_root.t' );
-    $self->render_file( 't/02_mech.t',        'Minimum/t/02_mech.t' );
-    $self->render_file( 't/03_assets.t',      'Basic/t/03_assets.t' );
-    $self->render_file( 't/04_admin.t',       'Large/t/04_admin.t' );
+    $self->render_file( 't/web/01_root.t',        'Minimum/t/01_root.t', {
+        psgi_file => $web_script,
+    });
+    $self->render_file( 't/02_mech.t',        'Minimum/t/02_mech.t', {
+        psgi_file => $web_script,
+    });
+    $self->render_file( 't/03_assets.t',      'Basic/t/03_assets.t', {
+        psgi_file => $web_script,
+    });
+    $self->render_file( 't/04_admin.t',       'Large/t/04_admin.t', {
+        psgi_file => $admin_script,
+    });
     $self->render_file( 't/06_jshint.t',      'Basic/t/06_jshint.t' );
-    $self->render_file( 't/07_mech_links.t',  'Large/t/07_mech_links.t' );
+    $self->render_file( 't/07_mech_links.t',  'Large/t/07_mech_links.t', {
+        psgi_file => $web_script,
+    });
     $self->render_file( 't/Util.pm',          'Basic/t/Util.pm' );
     $self->render_file( 'xt/01_pod.t',        'Minimum/xt/01_pod.t' );
     $self->render_file( 'xt/02_perlcritic.t', 'Basic/xt/02_perlcritic.t' );
@@ -107,8 +120,8 @@ sub run {
     $self->render_file( 'lib/<<PATH>>/DB/Schema.pm',         'Basic/lib/__PATH__/DB/Schema.pm' );
     $self->render_file( 'lib/<<PATH>>/DB/Row.pm',            'Basic/lib/__PATH__/DB/Row.pm' );
 
-    $self->render_file("lib/<<PATH>>/PC/C/Account.pm", 'Large/lib/__PATH__/PC/C/Account.pm');
-    for my $moniker (qw(PC Admin)) {
+    $self->render_file("lib/<<PATH>>/Web/C/Account.pm", 'Large/lib/__PATH__/Web/C/Account.pm');
+    for my $moniker (qw(Web Admin)) {
         $self->render_file("lib/<<PATH>>/$moniker.pm", 'Large/lib/__PATH__/__MONIKER__.pm', {moniker => $moniker});
         $self->render_file("lib/<<PATH>>/$moniker/Dispatcher.pm", 'Large/lib/__PATH__/__MONIKER__/Dispatcher.pm', {moniker => $moniker});
         $self->render_file("lib/<<PATH>>/$moniker/C/Root.pm", 'Large/lib/__PATH__/__MONIKER__/C/Root.pm', {moniker => $moniker});
@@ -123,27 +136,8 @@ sub run {
     }
 
 
-    $self->render_file( 'admin.psgi',     'Large/admin.psgi' );
-    $self->render_file( 'pc.psgi',     'Large/pc.psgi' );
-
-    $self->write_file('app.psgi', <<'...');
-use strict;
-use utf8;
-use File::Spec;
-use File::Basename;
-use lib File::Spec->catdir(dirname(__FILE__), 'lib');
-use Plack::Builder;
-
-use <% $module %>::PC;
-use Plack::Util;
-use Plack::Builder;
-
-builder {
-    mount '/admin/' => Plack::Util::load_psgi('admin.psgi');
-    mount '/' => Plack::Util::load_psgi('pc.psgi');
-};
-...
-
+    $self->render_file( $admin_script,     'Large/script/admin.pl' );
+    $self->render_file( $web_script,       'Large/script/web.pl' );
 }
 
 sub show_banner {

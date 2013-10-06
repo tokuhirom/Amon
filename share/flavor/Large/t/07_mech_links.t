@@ -27,18 +27,17 @@ sub _extract_links {
     return grep { m{^/} } @links;
 }
 
-for (qw(app.psgi:/ admin.psgi:/ app.psgi:/admin/)) {
-    my ( $psgi, $root ) = split /:/, $_;
+for my $psgi (glob('script/*-server')) {
     subtest $psgi => sub {
         my $app = Plack::Util::load_psgi($psgi);
 
         my $mech = Test::WWW::Mechanize::PSGI->new( app => $app );
         $mech->credentials( 'admin', 'admin' );
-        $mech->get_ok($root);
+        $mech->get_ok('/');
 
         my @links = _extract_links($mech);
         for (@links) {
-            $mech->get($root);
+            $mech->get('/');
             $mech->get_ok($_);
         }
     };

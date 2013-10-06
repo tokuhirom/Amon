@@ -1,26 +1,24 @@
-use strict;
-use utf8;
-use File::Spec;
-use File::Basename;
-use lib File::Spec->catdir(dirname(__FILE__), 'lib');
-use Plack::Builder;
+%% cascade "Minimum/script/server.pl"
 
+%% override load_modules -> {
 use <% $module %>::Web;
 use <% $module %>;
 use Plack::Session::Store::File;
 use Plack::Session::State::Cookie;
 use URI::Escape;
 use File::Path ();
+%% }
 
+%% override app -> {
 my $session_dir = File::Spec->catdir(File::Spec->tmpdir, uri_escape("<% $module %>") . "-$<" );
 File::Path::mkpath($session_dir);
-builder {
+my $app = builder {
     enable 'Plack::Middleware::Static',
         path => qr{^(?:/static/)},
-        root => File::Spec->catdir(dirname(__FILE__));
+        root => File::Spec->catdir(dirname(__FILE__), '..');
     enable 'Plack::Middleware::Static',
         path => qr{^(?:/robots\.txt|/favicon\.ico)$},
-        root => File::Spec->catdir(dirname(__FILE__), 'static');
+        root => File::Spec->catdir(dirname(__FILE__), '..', 'static');
     enable 'Plack::Middleware::ReverseProxy';
 
     # If you want to run the app on multiple servers,
@@ -34,3 +32,4 @@ builder {
         );
     <% $module %>::Web->to_app();
 };
+%% }

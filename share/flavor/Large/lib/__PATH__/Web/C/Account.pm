@@ -1,4 +1,4 @@
-package <% $module %>::PC::C::Account;
+package <% $module %>::Web::C::Account;
 use strict;
 use warnings;
 use utf8;

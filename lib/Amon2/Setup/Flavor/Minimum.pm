@@ -9,7 +9,7 @@ sub run {
 
     $self->render_file('lib/<<PATH>>.pm',                   'Minimum/lib/__PATH__.pm');
     $self->render_file("tmpl/index.tx",                     'Minimum/tmpl/index.tx');
-    $self->render_file('app.psgi',                          'Minimum/app.psgi');
+    $self->render_file($self->psgi_file,                    'Minimum/script/server.pl');
     $self->render_file('lib/<<PATH>>/Web.pm',               'Minimum/lib/__PATH__/Web.pm');
     $self->render_file('lib/<<PATH>>/Web/View.pm',          'Minimum/lib/__PATH__/Web/View.pm');
     $self->render_file('lib/<<PATH>>/Web/ViewFunctions.pm', 'Minimum/lib/__PATH__/Web/ViewFunctions.pm', {
@@ -17,9 +17,15 @@ sub run {
     });
     $self->render_file('Build.PL', 'Minimum/Build.PL');
     $self->render_file('t/Util.pm', 'Minimum/t/Util.pm');
-    $self->render_file('t/00_compile.t', 'Minimum/t/00_compile.t');
-    $self->render_file('t/01_root.t', 'Minimum/t/01_root.t');
-    $self->render_file('t/02_mech.t', 'Minimum/t/02_mech.t');
+    $self->render_file('t/00_compile.t', 'Minimum/t/00_compile.t', {
+        psgi_file => $self->psgi_file,
+    });
+    $self->render_file('t/01_root.t', 'Minimum/t/01_root.t', {
+        psgi_file => $self->psgi_file,
+    });
+    $self->render_file('t/02_mech.t', 'Minimum/t/02_mech.t', {
+        psgi_file => $self->psgi_file,
+    });
     $self->render_file('xt/01_pod.t', 'Minimum/xt/01_pod.t');
 
     $self->create_cpanfile();
@@ -33,6 +39,7 @@ sub create_cpanfile {
 requires 'perl', '5.008001';
 requires 'Amon2', '<% $amon2_version %>';
 requires 'Text::Xslate', '1.6001';
+requires 'Starlet', '0.20';
 <% for $deps.keys() -> $v { -%>
 requires <% sprintf("%-33s", "'" ~ $v ~ "'") %>, '<% $deps[$v] %>';
 <% } -%>
@@ -48,19 +55,26 @@ on 'test' => sub {
 ...
 }
 
+sub psgi_file {
+    my $self = shift;
+    'script/' . lc($self->{module}) . '-server';
+}
+
 sub show_banner {
-    print <<'...';
+    my $self = shift;
+
+    printf <<'...', $self->psgi_file;
 --------------------------------------------------------------
 
 Setup script was done! You are ready to run the skelton.
 
 You need to install the dependencies by:
 
-    % cpanm --installdeps .
+    %% cpanm --installdeps .
 
 And then, run your application server:
 
-    % plackup -Ilib app.psgi
+    %% carton exec perl -Ilib %s
 
 --------------------------------------------------------------
 ...
