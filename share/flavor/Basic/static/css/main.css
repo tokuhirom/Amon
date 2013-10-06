@@ -1,0 +1,16 @@
+body {
+}
+
+footer {
+    text-align: right;
+    padding-right: 10px;
+    padding-top: 2px; }
+    footer a {
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+    }
+
+/* smart phones */
+@media screen and (max-device-width: 480px) {
+}

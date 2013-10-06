@@ -1,0 +1,3 @@
+<ul>
+    <li><a href="<: uri_for('/') :>">Home</a></li>
+</ul>
