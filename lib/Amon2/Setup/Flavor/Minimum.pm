@@ -70,11 +70,11 @@ Setup script was done! You are ready to run the skelton.
 
 You need to install the dependencies by:
 
-    %% cpanm --installdeps .
+    > carton install
 
 And then, run your application server:
 
-    %% carton exec perl -Ilib %s
+    > carton exec perl -Ilib %s
 
 --------------------------------------------------------------
 ...

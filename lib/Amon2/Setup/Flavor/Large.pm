@@ -19,11 +19,21 @@ sub create_cpanfile {
     );
 }
 
+sub admin_script {
+    my $self = shift;
+    my $admin_script = 'script/' . lc($self->{dist}) . '-admin-server';
+}
+
+sub web_script {
+    my $self = shift;
+    my $web_script = 'script/' . lc($self->{dist}) . '-web-server';
+}
+
 sub run {
     my $self = shift;
 
-    my $admin_script = 'script/' . lc($self->{dist}) . '-admin-server';
-    my $web_script   = 'script/' . lc($self->{dist}) . '-web-server';
+    my $admin_script = $self->admin_script;
+    my $web_script = $self->web_script;
 
     # write code.
     for my $moniker (qw(web admin)) {
@@ -141,22 +151,26 @@ sub run {
 }
 
 sub show_banner {
-    print <<'...';
+    print <<'...', $self->web_script, $self->admin_script;
 --------------------------------------------------------------
 
 Setup script was done! You are ready to run the skelton.
 
 You need to install the dependencies by:
 
-    % cpanm --installdeps .
+    > carton install
 
 Setup the SQLite3 database:
 
-    % sqlite3 db/development.db < sql/sqlite.sql
+    > sqlite3 db/development.db < sql/sqlite.sql
 
 And then, run your application server:
 
-    % plackup -Ilib app.psgi
+    > carton exec perl -Ilib %s
+
+You can run the admin sites by following:
+
+    > carton exec perl -Ilib %s
 
 --------------------------------------------------------------
 ...
