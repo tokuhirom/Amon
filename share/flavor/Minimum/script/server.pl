@@ -27,11 +27,12 @@ unless (caller) {
     my $max_workers = 4;
 
     require Getopt::Long;
+    require Plack::Loader;
     my $p = Getopt::Long::Parser->new(
         config => [qw(posix_default no_ignore_case auto_help)]
     );
     $p->getoptions(
-        'port=i'      => \$port,
+        'p|port=i'      => \$port,
         'host=s'      => \$host,
         'max-workers' => \$max_workers,
         'version!'    => \my $version,

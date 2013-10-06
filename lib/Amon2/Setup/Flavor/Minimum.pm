@@ -57,7 +57,7 @@ on 'test' => sub {
 
 sub psgi_file {
     my $self = shift;
-    'script/' . lc($self->{module}) . '-server';
+    'script/' . lc($self->{dist}) . '-server';
 }
 
 sub show_banner {

@@ -42,6 +42,7 @@ on test => sub {
     requires 'Test::More', '0.98';
     requires 'Test::Requires', '0.06';
 
+    suggests 'File::pushd';
     suggests 'AnyEvent';
     suggests 'AnyEvent::Socket';
     suggests 'App::Prove';
