@@ -5,7 +5,7 @@ use warnings;
 
 sub tags {
     <<',,,';
-    <script src="[% uri_for('/static/js/es5-shim.min.js') %]"></script>
+    <script src="<: uri_for('/static/js/es5-shim.min.js') :>"></script>
 ,,,
 }
 

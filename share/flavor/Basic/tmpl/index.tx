@@ -1,0 +1,84 @@
+: cascade "include/layout.tx"
+
+: override content -> {
+
+<h1 style="padding: 70px; text-align: center; font-size: 80px; line-height: 1; letter-spacing: -2px;">Hello, Amon2 world!</h1>
+
+<hr />
+
+<style>
+    .marketing .row {
+        margin-top: 20px;
+    }
+</style>
+<div class="marketing">
+    <h1 style="text-align: center; font-size: 280%;">Battery Included?</h1>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <h2><i class="glyphicon glyphicon-ok"></i> CSS Library</h2>
+            <div>
+                Current version of Amon2 using twitter's bootstrap.css as a default CSS library.<br />
+                If you want to learn it, please access to <a href="http://twitter.github.com/bootstrap/">twitter.github.com/bootstrap/</a>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <h2><i class="glyphicon glyphicon-ok"></i> JS Library</h2>
+            <div>
+                <a href="http://jquery.com/">jQuery</a> included.
+                <ul>
+                    <li>es5-shim.min.js</li>
+                    <li>micro-location.js</li>
+                    <li>micro_template.js</li>
+                    <li>sprintf-0.7-beta1.js</li>
+                    <li>strftime.js</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <h2><i class="glyphicon glyphicon-ok"></i> Template Engine</h2>
+            <div>
+                Amon2 uses <B>Text::Xslate</B>(Kolon) as a primary template engine.<br />
+                But you can use any template engine easily.
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <h2><i class="glyphicon glyphicon-ok"></i> O/R Mapper?</h2>
+            <div>
+                There is no O/R Mapper support. But I recommend use Teng.<br />
+                You can integrate Teng very easily.<br />
+                Refer to <a href="http://amon.64p.org/database.html#teng">this page</a> for more details.
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<div class="row">
+    <h1 style="text-align: center;">Amon2 is right for you if ...</h1>
+    <div class="col-lg-24">
+        <ul>
+        <li>You need exceptional performance.</li>
+        <li>You want a framework with a small footprint.</li>
+        <li>You want a framework that requires nearly zero configuration.</li>
+        </ul>
+    </div>
+</div>
+
+<hr />
+
+<section class="row">
+    <div class="col-lg-12">
+        <h1>Documents?</h1>
+        <p>Complete docs are available on <a href="http://amon.64p.org/">amon.64p.org</a></p>
+        <p>And there are module specific docs on <a href="https://metacpan.org/release/Amon2">CPAN</a></p>
+    </div>
+</section>
+
+: }

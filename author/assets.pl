@@ -122,7 +122,7 @@ use warnings;
 
 sub tags {
     <<',,,';
-    <script src="[% uri_for('/static/js/<% basename %>') %]"></script>
+    <script src="<: uri_for('/static/js/<% basename %>') :>"></script>
 ,,,
 }
 
@@ -156,7 +156,7 @@ use warnings;
 
 sub tags {
     <<',,,';
-    <script src="[% uri_for('/static/js/<% basename %>') %]"></script>
+    <script src="<: uri_for('/static/js/<% basename %>') :>"></script>
 ,,,
 }
 
@@ -171,7 +171,7 @@ sub files {
 }
 
 sub run_jquery {
-    my $url = 'http://code.jquery.com/jquery-1.10.0.min.js';
+    my $url = 'http://code.jquery.com/jquery-2.0.3.min.js';
     my $res = $ua->get($url);
     $res->is_success or die "Cannot fetch $url: " . $res->status_line;
 
@@ -185,7 +185,7 @@ use warnings;
 
 sub tags {
     <<',,,';
-    <script src="[% uri_for('/static/js/<% basename %>') %]"></script>
+    <script src="<: uri_for('/static/js/<% basename %>') :>"></script>
 ,,,
 }
 
@@ -249,8 +249,8 @@ use warnings;
 
 sub tags {
     <<',,,';
-    <link href="[% uri_for('/static/bootstrap/css/bootstrap.css') %]" rel="stylesheet" type="text/css" />
-    <script src="[% uri_for('/static/bootstrap/js/bootstrap.js') %]"></script>
+    <link href="<: uri_for('/static/bootstrap/css/bootstrap.css') :>" rel="stylesheet" type="text/css" />
+    <script src="<: uri_for('/static/bootstrap/js/bootstrap.js') :>"></script>
 ,,,
 }
 
