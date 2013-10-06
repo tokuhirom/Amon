@@ -1,0 +1,9 @@
+: cascade "include/layout.tx"
+
+: override content -> {
+
+<section>
+    <h1>This is a <% $dist %>'s admin site</h1>
+</section>
+
+: }

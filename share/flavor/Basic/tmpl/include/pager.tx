@@ -1,0 +1,26 @@
+: if ($pager) {
+    <div class="pagination">
+        <ul>
+            <: if (pager.previous_page) { :>
+                <li class="prev"><a href="<: uri_with({page => pager.previous_page}) :>" rel="previous">&larr; Back</a><li>
+            <: } else { :>
+                <li class="prev disabled"><a href="#">&larr; Back</a><li>
+            <: } :>
+
+            <: if ($pager.can('pages_in_navigation')) { :>
+                <: # IF Data::Page::Navigation is loaded  :>
+                <: for $pager.pages_in_navigation(5) -> $p { :>
+                    <li <: if ($pager.current_page() == $p) { :>class="active"<: } :>><a href="<: uri_with({page => $p}) :>"><: $p :></a></li>
+                <: } :>
+            <: } else { :>
+                <li><a href="#"><: $pager.current_page() :></a></li>
+            <: } :>
+
+            <: if ($pager.next_page()) { :>
+                <li class="next"><a href="<: uri_with({page => $pager.next_page()}) :>" rel="next">Next &rarr;</a><li>
+            <: } else { :>
+                <li class="next disabled"><a href="#">Next &rarr;</a><li>
+            <: } :>
+        </ul>
+    </div>
+: }

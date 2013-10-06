@@ -51,18 +51,6 @@ sub error {
         close $pfh;
     }
 
-    {
-        no warnings 'once';
-        local *My::App::setup_schema;
-        ok((do 'lib/My/App.pm'), 'lib/My/App.pm is valid') or do {
-            diag $@;
-            diag do {
-                open my $fh, '<', 'lib/My/App.pm' or die;
-                local $/; <$fh>;
-            };
-        };
-    }
-
     for my $type (qw(pc admin)) {
         my $f = "${type}.psgi";
         my $buff = << "...";

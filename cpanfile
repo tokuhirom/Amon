@@ -25,6 +25,7 @@ requires 'URI', '1.54';
 requires 'URI::Escape';
 requires 'URI::QueryParam';
 requires 'File::Copy::Recursive'; # setup script
+requires 'File::ShareDir';
 
 recommends 'Teng', 0.18;
 
