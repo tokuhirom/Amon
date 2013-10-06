@@ -6,29 +6,21 @@ use Module::CPANfile;
 my $file = Module::CPANfile->load("cpanfile");
 my $prereq = $file->prereq_specs;
 
-my $build = Module::Build->subclass(
-    code => q{
-        sub ACTION_install {
-            die "Do not install web application.\n";
-        }
-
-        # do not make blib.
-        sub ACTION_code {
-            my $self = shift;
-            $self->depends_on('config_data');
-        }
-
-        # run prove
-        sub ACTION_test {
-            my $self = shift;
-            my $tests = $self->find_test_files;
-
-            require App::Prove;
-            my $prove = App::Prove->new();
-            $prove->process_args('-l', @$tests);
-            $prove->run();
+my $build = Module::Build->subclass(code => <<'...'
+    # Module:::Build's share_dir handling is not good for me.
+    # We need to install 'tmpl' directories to '$DIST_DIR/tmpl'. But M::B doesn't support it.
+    sub process_asset_files {
+        my $self = shift;
+        my $share_prefix = File::Spec->catdir($self->blib, qw/lib auto share dist/, '<% $dist %>');
+        for my $src (@{$self->rscan_dir('tmpl')}, @{$self->rscan_dir('static')}) {
+            next if -d $src;
+            $self->copy_if_modified(
+                from => $src,
+                to_dir => File::Spec->catfile( $share_prefix )
+            );
         }
     }
+...
 )->new(
     license              => 'unknown',
     dynamic_config       => 0,
@@ -44,6 +36,7 @@ my $build = Module::Build->subclass(
         perl => '5.008001',
         %{$prereq->{runtime}->{requires}},
     },
+    script_files => [glob('script/*'), glob('bin/*')],
 
     no_index    => { 'directory' => [ 'inc' ] },
     name        => '<% $module %>',
@@ -57,4 +50,5 @@ my $build = Module::Build->subclass(
     create_readme  => 0,
     create_license => 0,
 );
+$build->add_build_element('asset');
 $build->create_build_script();

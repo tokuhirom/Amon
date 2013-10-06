@@ -56,4 +56,6 @@ on test => sub {
     suggests 'Tiffany';
     suggests 'Twiggy::Server';
     suggests 'Test::WWW::Mechanize';
+    suggests 'App::cpanminus';
+    suggests 'File::Which';
 };
