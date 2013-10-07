@@ -30,6 +30,7 @@ my $app = builder {
         state => Plack::Session::State::Cookie->new(
             httponly => 1,
         );
+
     <% $module %>::Web->to_app();
 };
 %% }

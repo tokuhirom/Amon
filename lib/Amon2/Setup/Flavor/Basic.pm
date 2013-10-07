@@ -24,6 +24,8 @@ sub run {
 
     $self->render_file( $self->psgi_file, 'Basic/script/server.pl' );
     $self->render_file( 'Build.PL', 'Minimum/Build.PL' );
+    $self->render_file( 'minil.toml', 'Minimum/minil.toml' );
+    $self->render_file( 'builder/MyBuilder.pm', 'Minimum/builder/MyBuilder.pm' );
 
 
     $self->create_cpanfile();

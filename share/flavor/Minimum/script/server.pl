@@ -36,10 +36,21 @@ unless (caller) {
         'host=s'      => \$host,
         'max-workers' => \$max_workers,
         'version!'    => \my $version,
+        'c|config=s'  => \my $config_file,
     );
     if ($version) {
         print "<% $module %>: $<% $module %>::VERSION\n";
         exit 0;
+    }
+    if ($config_file) {
+        my $config = do $config_file;
+        Carp::croak("$config_file: $@") if $@;
+        Carp::croak("$config_file: $!") unless defined $config;
+        unless ( ref($config) eq 'HASH' ) {
+            Carp::croak("$config_file does not return HashRef.");
+        }
+        no warnings 'redefine';
+        *<% $module %>::load_config = sub { $config }
     }
 
     print "<% $module %>: http://${host}:${port}/\n";

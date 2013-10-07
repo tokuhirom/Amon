@@ -22,8 +22,13 @@ __PACKAGE__->load_plugins(
 # setup view
 use <% $module %>::Web::View;
 {
-    my $view = <% $module %>::Web::View->make_instance(__PACKAGE__);
-    sub create_view { $view }
+    sub create_view {
+        my $view = <% $module %>::Web::View->make_instance(__PACKAGE__);
+        no warnings 'redefine';
+        no strict 'refs';
+        *{__PACKAGE__ . "\::config"} = sub { $view }; # Class cache.
+        $view
+    }
 }
 
 # for your security
