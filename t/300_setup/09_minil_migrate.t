@@ -6,24 +6,32 @@ use Test::Requires 'File::Which', 'File::Temp', 'File::pushd', 'Furl';
 use File::Temp;
 use Amon2::Setup::Flavor::Minimum;
 use Test::TCP;
+use File::Spec::Functions;
 
 my $cpanm = which('cpanm');
+my $minil = which('minil');
+my $git   = which('git');
 plan skip_all => 'Missing cpanm' unless $cpanm;
+plan skip_all => 'Missing minil' unless $minil;
+plan skip_all => 'Missing git'   unless $git;
 plan skip_all => 'AUTHOR_TESTING and TRAVIS_CI only.' unless $ENV{AUTHOR_TESTING} || $ENV{TRAVIS};
 
 my $tmpdir = File::Temp::tempdir( CLEANUP => 1 );
 my $libdir = File::Temp::tempdir( CLEANUP => 1 );
+my $workdir = catdir($tmpdir, 'My-App');
 {
-    my $guard = pushd($tmpdir);
+    mkdir $workdir;
+    my $guard = pushd($workdir);
 
     my $flavor = Amon2::Setup::Flavor::Minimum->new(module => 'My::App');
     $flavor->run;
-    system("$^X Build.PL");
-    system("./Build");
-    note `tree .`;
+    is system($git, 'init'), 0;
+    is system($git, 'add', '.'), 0;
+    is system($git, 'commit', '-m', 'initial import'), 0;
+    is system($^X, '--', $minil, 'migrate'), 0;
 }
-is system($^X, '--', $cpanm, '--installdeps', '-l', $libdir, $tmpdir), 0;
-is system($^X, '--', $cpanm, '--verbose', '--no-interactive', '-l', $libdir, $tmpdir), 0;
+is system($^X, '--', $cpanm, '--verbose', '--no-interactive', '--installdeps', '-l', $libdir, $workdir), 0;
+is system($^X, '--', $cpanm, '--verbose', '--no-interactive', '-l', $libdir, $workdir), 0;
 note `tree $libdir`;
 
 test_tcp(

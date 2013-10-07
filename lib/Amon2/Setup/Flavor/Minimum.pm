@@ -16,6 +16,8 @@ sub run {
         'context_class' => 'Amon2',
     });
     $self->render_file('Build.PL', 'Minimum/Build.PL');
+    $self->render_file('minil.toml', 'Minimum/minil.toml');
+    $self->render_file('builder/MyBuilder.pm', 'Minimum/builder/MyBuilder.pm');
     $self->render_file('t/Util.pm', 'Minimum/t/Util.pm');
     $self->render_file('t/00_compile.t', 'Minimum/t/00_compile.t', {
         psgi_file => $self->psgi_file,
