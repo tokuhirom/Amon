@@ -14,8 +14,12 @@ sub dispatch {
 # setup view
 use <% $module %>::<% $moniker %>::View;
 {
-    my $view = <% $module %>::<% $moniker %>::View->make_instance(__PACKAGE__);
-    sub create_view { $view }
+    sub create_view {
+        my $view = <% $module %>::<% $moniker %>::View->make_instance(__PACKAGE__);
+        no warnings 'redefine';
+        *<% $module %>::<% $moniker %>::create_view = sub { $view }; # Class cache.
+        $view
+    }
 }
 
 # load plugins

@@ -26,7 +26,7 @@ use <% $module %>::Web::View;
         my $view = <% $module %>::Web::View->make_instance(__PACKAGE__);
         no warnings 'redefine';
         no strict 'refs';
-        *{__PACKAGE__ . "\::config"} = sub { $view }; # Class cache.
+        *<% $module %>::Web::create_view = sub { $view }; # Class cache.
         $view
     }
 }

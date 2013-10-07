@@ -8,8 +8,9 @@ use DBI;
 %% }
 
 %% override app -> {
+use 5.010_001;
+
 my $basedir = File::Spec->rel2abs(dirname(__FILE__));
-my $db_config = <% $module %>->config->{DBI} || die "Missing configuration for DBI";
 my $app = builder {
     enable 'Plack::Middleware::Auth::Basic',
         authenticator => sub { $_[0] eq 'admin' && $_[1] eq 'admin' };
@@ -20,6 +21,7 @@ my $app = builder {
     enable 'Plack::Middleware::Session',
         store => Plack::Session::Store::DBI->new(
             get_dbh => sub {
+                state $db_config = <% $module %>->config->{DBI} || die "Missing configuration for DBI";
                 DBI->connect( @$db_config )
                     or die $DBI::errstr;
             }
