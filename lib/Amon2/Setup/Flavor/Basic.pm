@@ -100,6 +100,26 @@ sub psgi_file {
     'script/' . lc($self->{dist}) . '-server';
 }
 
+sub show_banner {
+    my $self = shift;
+
+    printf <<'...', $self->psgi_file;
+--------------------------------------------------------------
+
+Setup script was done! You are ready to run the skelton.
+
+You need to install the dependencies by:
+
+    > carton install
+
+And then, run your application server:
+
+    > carton exec perl -Ilib %s
+
+--------------------------------------------------------------
+...
+}
+
 1;
 __END__
 
