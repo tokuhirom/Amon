@@ -33,30 +33,6 @@ sub run {
     $self->create_cpanfile();
 }
 
-sub create_cpanfile {
-    my ($self, $deps) = @_;
-    $deps->{'Module::Functions'} ||= 2;
-
-    $self->write_file('cpanfile', <<'...', {deps => $deps});
-requires 'perl', '5.008001';
-requires 'Amon2', '<% $amon2_version %>';
-requires 'Text::Xslate', '1.6001';
-requires 'Starlet', '0.20';
-<% for $deps.keys() -> $v { -%>
-requires <% sprintf("%-33s", "'" ~ $v ~ "'") %>, '<% $deps[$v] %>';
-<% } -%>
-
-on 'configure' => sub {
-   requires 'Module::Build', '0.38';
-   requires 'Module::CPANfile', '0.9010';
-};
-
-on 'test' => sub {
-   requires 'Test::More', '0.98';
-};
-...
-}
-
 sub psgi_file {
     my $self = shift;
     'script/' . lc($self->{dist}) . '-server';

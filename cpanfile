@@ -26,6 +26,7 @@ requires 'URI::Escape';
 requires 'URI::QueryParam';
 requires 'File::Copy::Recursive'; # setup script
 requires 'File::ShareDir';
+requires 'Module::CPANfile', '0.9020';
 
 recommends 'Teng', 0.18;
 

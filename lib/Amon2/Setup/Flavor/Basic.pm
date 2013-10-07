@@ -3,7 +3,7 @@ use warnings FATAL => 'all';
 use utf8;
 
 package Amon2::Setup::Flavor::Basic;
-use parent qw(Amon2::Setup::Flavor::Minimum);
+use parent qw(Amon2::Setup::Flavor);
 
 sub run {
     my $self = shift;
@@ -28,18 +28,20 @@ sub run {
     $self->render_file( 'builder/MyBuilder.pm', 'Minimum/builder/MyBuilder.pm' );
 
 
-    $self->create_cpanfile();
+    $self->create_cpanfile({
+        'HTML::FillInForm::Lite'          => '1.11',
+        'Time::Piece'                     => '1.20',
+        'Plack::Session'                  => '0.14',
+        'Plack::Middleware::Session'      => 0,
+        'Plack::Middleware::ReverseProxy' => '0.09',
+        'JSON'                            => '2.50',
+        'Teng'                            => '0.18',
+        'DBD::SQLite'                     => '1.33',
+        'Test::WWW::Mechanize::PSGI'      => 0,
+    });
 
     # static files
-    my @assets = qw(
-        jQuery Bootstrap ES5Shim MicroTemplateJS StrftimeJS SprintfJS
-        MicroLocationJS MicroDispatcherJS
-    );
-
-    for my $asset (@assets) {
-        $self->load_asset($asset);
-        $self->write_asset($asset, 'static');
-    }
+    $self->write_assets();
 
     $self->write_file("static/img/.gitignore", '');
     $self->write_file("static/robots.txt", '');
@@ -93,23 +95,9 @@ sub run {
     }
 }
 
-sub create_cpanfile {
-    my ($self, $prereq_pm) = @_;
-
-    $self->SUPER::create_cpanfile(
-        +{
-            %{ $prereq_pm || {} },
-            'HTML::FillInForm::Lite'          => '1.11',
-            'Time::Piece'                     => '1.20',
-            'Plack::Session'                  => '0.14',
-            'Plack::Middleware::Session'      => 0,
-            'Plack::Middleware::ReverseProxy' => '0.09',
-            'JSON'                            => '2.50',
-            'Teng'                            => '0.18',
-            'DBD::SQLite'                     => '1.33',
-            'Test::WWW::Mechanize::PSGI'      => 0,
-        },
-    );
+sub psgi_file {
+    my $self = shift;
+    'script/' . lc($self->{dist}) . '-server';
 }
 
 1;

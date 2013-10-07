@@ -48,6 +48,7 @@
             "Encode" : "0",
             "Exporter" : "0",
             "File::Copy::Recursive" : "0",
+            "File::ShareDir" : "0",
             "File::Temp" : "0",
             "Getopt::Long" : "0",
             "HTML::FillInForm::Lite" : "0",
@@ -55,6 +56,7 @@
             "Hash::MultiValue" : "0",
             "JSON" : "2",
             "MRO::Compat" : "0",
+            "Module::CPANfile" : "0.9020",
             "Plack" : "0.9982",
             "Plack::Request" : "0",
             "Plack::Response" : "0",
@@ -89,6 +91,9 @@
             "AnyEvent" : "0",
             "AnyEvent::Socket" : "0",
             "App::Prove" : "0",
+            "App::cpanminus" : "0",
+            "File::Which" : "0",
+            "File::pushd" : "0",
             "HTTP::Request::Common" : "0",
             "HTTP::Session::Store::OnMemory" : "0",
             "Plack::Builder" : "0",
@@ -96,6 +101,7 @@
             "Plack::Middleware::Session" : "0",
             "Plack::Test" : "0",
             "Test::TCP" : "0",
+            "Test::WWW::Mechanize" : "0",
             "Tiffany" : "0",
             "Twiggy::Server" : "0"
          }

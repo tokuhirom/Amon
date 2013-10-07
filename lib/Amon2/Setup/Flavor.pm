@@ -13,6 +13,17 @@ use Carp ();
 use Amon2::Trigger;
 use MRO::Compat;
 use File::ShareDir ();
+use Module::CPANfile 0.9020;
+
+sub assets {
+    my $self = shift;
+
+    my @assets = qw(
+        jQuery Bootstrap ES5Shim MicroTemplateJS StrftimeJS SprintfJS
+        MicroLocationJS MicroDispatcherJS
+    );
+    @assets;
+}
 
 sub infof {
     my $caller = do {
@@ -48,6 +59,7 @@ sub new {
     $args{path} = join "/", @pkg;
     my $self = bless { %args }, $class;
     $self->{xslate} = $self->_build_xslate();
+    $self->load_assets();
     $self;
 }
 
@@ -116,6 +128,13 @@ sub write_file_raw {
     close $ofh;
 }
 
+sub load_assets {
+    my ($self) = @_;
+    for my $asset ($self->assets) {
+        $self->load_asset($asset);
+    }
+}
+
 sub load_asset {
     my ($self, $asset) = @_;
     infof("Loading asset: $asset");
@@ -138,6 +157,46 @@ sub write_asset {
     while (my ($fname, $content) = each %$files) {
         $self->write_file_raw("$base/$fname", $content, '>:raw');
     }
+}
+
+sub write_assets {
+    my ($self, $dst) = @_;
+
+    for my $asset ($self->assets) {
+        $self->write_asset($asset, $dst);
+    }
+}
+
+sub create_cpanfile {
+    my ($self, $runtime_deps) = @_;
+    $runtime_deps ||= +{};
+
+    my $cpanfile = Module::CPANfile->from_prereqs(
+        {
+            runtime => {
+                requires => {
+                    'perl'              => '5.010_001',
+                    'Amon2'             => $Amon2::VERSION,
+                    'Text::Xslate'      => '2.0009',
+                    'Starlet'           => '0.20',
+                    'Module::Functions' => 2,
+                    %$runtime_deps,
+                },
+            },
+            configure => {
+                requires => {
+                    'Module::Build'    => '0.38',
+                    'Module::CPANfile' => '0.9010',
+                },
+            },
+            test => {
+                requires => {
+                    'Test::More' => '0.98',
+                },
+            },
+        }
+    );
+    $self->write_file('cpanfile', $cpanfile->to_string());
 }
 
 1;

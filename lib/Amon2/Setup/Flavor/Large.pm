@@ -3,21 +3,8 @@ use warnings FATAL => 'all';
 use utf8;
 
 package Amon2::Setup::Flavor::Large;
-use parent qw(Amon2::Setup::Flavor::Basic);
+use parent qw(Amon2::Setup::Flavor);
 use File::Path ();
-
-sub create_cpanfile {
-    my ($self, $prereq_pm) = @_;
-
-    $self->SUPER::create_cpanfile(
-        +{
-            %{ $prereq_pm || {} },
-            'String::CamelCase' => '0.02',
-            'Module::Find'      => 0, # load controllers
-            'Module::Functions' => 2, # Dispatcher
-        },
-    );
-}
 
 sub admin_script {
     my $self = shift;
@@ -38,15 +25,7 @@ sub run {
     # write code.
     for my $moniker (qw(web admin)) {
         # static files
-        my @assets = qw(
-            jQuery Bootstrap ES5Shim MicroTemplateJS StrftimeJS SprintfJS
-            MicroLocationJS MicroDispatcherJS
-        );
-
-        for my $asset (@assets) {
-            $self->load_asset($asset);
-            $self->write_asset($asset, "static/${moniker}");
-        }
+        $self->write_assets("static/${moniker}");
 
         $self->render_file( "tmpl/${moniker}/index.tx",          "Basic/tmpl/index.tx" );
         $self->render_file( "tmpl/${moniker}/include/layout.tx", "Basic/tmpl/include/layout.tx" );
@@ -106,7 +85,13 @@ sub run {
     $self->render_file( 'xt/02_perlcritic.t', 'Basic/xt/02_perlcritic.t' );
 
 
-    $self->create_cpanfile();
+    $self->create_cpanfile(
+        {
+            'String::CamelCase' => '0.02',
+            'Module::Find'      => 0, # load controllers
+            'Module::Functions' => 2, # Dispatcher
+        }
+    );
 
     $self->render_file('.gitignore', 'Basic/dot.gitignore');
     $self->render_file('.proverc', 'Basic/dot.proverc');
