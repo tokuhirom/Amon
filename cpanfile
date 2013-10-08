@@ -19,7 +19,7 @@ requires 'Pod::Usage';
 requires 'Router::Simple', '0.14';
 requires 'Router::Simple::Sinatraish', '0.02';
 requires 'Scalar::Util';
-requires 'Text::Xslate', '1.6001';
+requires 'Text::Xslate', '2.0010';
 requires 'Try::Tiny', '0.06';
 requires 'URI', '1.54';
 requires 'URI::Escape';
