@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+5.01 2013-10-09T04:11:26Z
+
+    - Fixed indexing issue.
+      (tokuhirom)
+
 5.00 2013-10-09T03:44:43Z
 
     - Default jQuery version is updated to 2.0
