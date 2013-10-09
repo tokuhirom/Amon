@@ -5,7 +5,7 @@ use warnings;
 
 sub tags {
     <<',,,';
-    <script src="[% uri_for('/static/js/strftime.js') %]"></script>
+    <script src="<: uri_for('/static/js/strftime.js') :>"></script>
 ,,,
 }
 

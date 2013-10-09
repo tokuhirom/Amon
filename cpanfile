@@ -19,12 +19,14 @@ requires 'Pod::Usage';
 requires 'Router::Simple', '0.14';
 requires 'Router::Simple::Sinatraish', '0.02';
 requires 'Scalar::Util';
-requires 'Text::Xslate', '1.6001';
+requires 'Text::Xslate', '2.0010';
 requires 'Try::Tiny', '0.06';
 requires 'URI', '1.54';
 requires 'URI::Escape';
 requires 'URI::QueryParam';
 requires 'File::Copy::Recursive'; # setup script
+requires 'File::ShareDir';
+requires 'Module::CPANfile', '0.9020';
 
 recommends 'Teng', 0.18;
 
@@ -41,6 +43,7 @@ on test => sub {
     requires 'Test::More', '0.98';
     requires 'Test::Requires', '0.06';
 
+    suggests 'File::pushd';
     suggests 'AnyEvent';
     suggests 'AnyEvent::Socket';
     suggests 'App::Prove';
@@ -53,4 +56,7 @@ on test => sub {
     suggests 'Test::TCP';
     suggests 'Tiffany';
     suggests 'Twiggy::Server';
+    suggests 'Test::WWW::Mechanize';
+    suggests 'App::cpanminus';
+    suggests 'File::Which';
 };

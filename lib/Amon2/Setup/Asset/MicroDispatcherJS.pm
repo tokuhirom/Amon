@@ -5,7 +5,7 @@ use warnings;
 
 sub tags {
     <<',,,';
-    <script src="[% uri_for('/static/js/micro_dispatcher.js') %]"></script>
+    <script src="<: uri_for('/static/js/micro_dispatcher.js') :>"></script>
 ,,,
 }
 

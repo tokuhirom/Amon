@@ -11,14 +11,19 @@ use Amon2;
 use Plack::Util ();
 use Carp ();
 use Amon2::Trigger;
+use MRO::Compat;
+use File::ShareDir ();
+use Module::CPANfile 0.9020;
 
-my $xslate = Text::Xslate->new(
-    syntax => 'TTerse',
-    type   => 'text',
-    tag_start => '<%',
-    tag_end   => '%>',
-    'module'   => [ 'Text::Xslate::Bridge::Star' ],
-);
+sub assets {
+    my $self = shift;
+
+    my @assets = qw(
+        jQuery Bootstrap ES5Shim MicroTemplateJS StrftimeJS SprintfJS
+        MicroLocationJS MicroDispatcherJS
+    );
+    @assets;
+}
 
 sub infof {
     my $caller = do {
@@ -52,7 +57,25 @@ sub new {
     my @pkg  = split /::/, $args{module};
     $args{dist} = join "-", @pkg;
     $args{path} = join "/", @pkg;
-    bless { %args }, $class;
+    my $self = bless { %args }, $class;
+    $self->{xslate} = $self->_build_xslate();
+    $self->load_assets();
+    $self;
+}
+
+sub _build_xslate {
+    my $self = shift;
+
+    my $xslate = Text::Xslate->new(
+        syntax => 'Kolon',
+        type   => 'text',
+        tag_start => '<%',
+        tag_end   => '%>',
+        line_start => '%%',
+        'module'   => [ 'Text::Xslate::Bridge::Star' ],
+        path => [ File::Spec->catdir(File::ShareDir::dist_dir('Amon2'), 'flavor') ],
+    );
+    $xslate;
 }
 
 sub run { die "This is abstract base method" }
@@ -68,7 +91,16 @@ sub render_string {
     my $self = shift;
     my $template = shift;
     my %args = @_==1 ? %{$_[0]} : @_;
-    return $xslate->render_string($template, {%$self, %args});
+    return $self->{xslate}->render_string($template, {%$self, %args});
+}
+
+sub render_file {
+    my ($self, $dstname, $filename, $params) = @_;
+    Carp::croak("filename should not be reference") if ref $filename;
+    $dstname =~ s/<<([^>]+)>>/$self->{lc($1)} or die "$1 is not defined. But you want to use $1 in filename."/ge;
+
+    my $content = $self->{xslate}->render($filename, {%$self, $params ? %$params : () });
+    $self->write_file_raw($dstname, $content);
 }
 
 sub write_file {
@@ -96,6 +128,13 @@ sub write_file_raw {
     close $ofh;
 }
 
+sub load_assets {
+    my ($self) = @_;
+    for my $asset ($self->assets) {
+        $self->load_asset($asset);
+    }
+}
+
 sub load_asset {
     my ($self, $asset) = @_;
     infof("Loading asset: $asset");
@@ -118,6 +157,46 @@ sub write_asset {
     while (my ($fname, $content) = each %$files) {
         $self->write_file_raw("$base/$fname", $content, '>:raw');
     }
+}
+
+sub write_assets {
+    my ($self, $dst) = @_;
+
+    for my $asset ($self->assets) {
+        $self->write_asset($asset, $dst);
+    }
+}
+
+sub create_cpanfile {
+    my ($self, $runtime_deps) = @_;
+    $runtime_deps ||= +{};
+
+    my $cpanfile = Module::CPANfile->from_prereqs(
+        {
+            runtime => {
+                requires => {
+                    'perl'              => '5.010_001',
+                    'Amon2'             => $Amon2::VERSION,
+                    'Text::Xslate'      => '2.0009',
+                    'Starlet'           => '0.20',
+                    'Module::Functions' => 2,
+                    %$runtime_deps,
+                },
+            },
+            configure => {
+                requires => {
+                    'Module::Build'    => '0.38',
+                    'Module::CPANfile' => '0.9010',
+                },
+            },
+            test => {
+                requires => {
+                    'Test::More' => '0.98',
+                },
+            },
+        }
+    );
+    $self->write_file('cpanfile', $cpanfile->to_string());
 }
 
 1;

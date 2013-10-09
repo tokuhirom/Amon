@@ -5,8 +5,8 @@ use warnings;
 
 sub tags {
     <<',,,';
-    <link href="[% uri_for('/static/bootstrap/css/bootstrap.css') %]" rel="stylesheet" type="text/css" />
-    <script src="[% uri_for('/static/bootstrap/js/bootstrap.js') %]"></script>
+    <link href="<: uri_for('/static/bootstrap/css/bootstrap.css') :>" rel="stylesheet" type="text/css" />
+    <script src="<: uri_for('/static/bootstrap/js/bootstrap.js') :>"></script>
 ,,,
 }
 

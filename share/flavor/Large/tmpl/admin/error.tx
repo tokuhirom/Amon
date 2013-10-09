@@ -1,0 +1,9 @@
+: cascade "include/layout.tx"
+
+: override content -> {
+
+<div class="alert-message error">
+    An error occurred : <: $message :>
+</div>
+
+: }
