@@ -1,5 +1,17 @@
 {{$NEXT}}
 
+5.00 2013-10-09T03:44:43Z
+
+    - Default jQuery version is updated to 2.0
+      (tokuhirom)
+    - Default template engine syntax was switched to Kolon!!!
+      (tokuhirom)
+    - Every flavores are CPAN upload ready.
+      (tokuhirom)
+    - Flavores no longer create app.psgi.
+      Create script/${app}-server instead.
+      (tokuhirom)
+
 4.06 2013-10-04T05:40:15Z
 
     - Make Starlet a dependency for the Standalone flavor.

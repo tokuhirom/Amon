@@ -2,7 +2,7 @@ package Hello;
 use strict;
 use warnings;
 use parent qw/Amon2/;
-our $VERSION='4.06';
+our $VERSION='5.00';
 
 use Amon2::Config::Simple;
 sub load_config { Amon2::Config::Simple->load(shift) }
