@@ -6,6 +6,8 @@ package Amon2::Setup::Flavor::Large;
 use parent qw(Amon2::Setup::Flavor);
 use File::Path ();
 
+our $VERSION = '5.00';
+
 sub admin_script {
     my $self = shift;
     my $admin_script = 'script/' . lc($self->{dist}) . '-admin-server';
