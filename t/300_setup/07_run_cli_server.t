@@ -5,7 +5,7 @@ use Test::More;
 use Test::TCP;
 use Amon2::Setup::Flavor::Minimum;
 use File::Temp;
-use Test::Requires 'File::pushd', 'Furl';
+use Test::Requires 'File::pushd', 'Furl', 'Module::Functions', 'Starlet';
 
 my $tmpdir = File::Temp::tempdir( CLEANUP => 1 );
 {
