@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+5.02 2013-10-10T04:20:37Z
+
+    - Fixed dependencies
+      (syohex)
+
 5.01 2013-10-09T04:11:26Z
 
     - Fixed indexing issue.
