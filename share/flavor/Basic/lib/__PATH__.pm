@@ -2,7 +2,7 @@ package <% $module %>;
 use strict;
 use warnings;
 use utf8;
-our $VERSION='5.02';
+our $VERSION='5.03';
 use 5.008001;
 use <% $module %>::DB::Schema;
 use <% $module %>::DB;
