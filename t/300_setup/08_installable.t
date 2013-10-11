@@ -9,7 +9,7 @@ use Test::TCP;
 
 my $cpanm = which('cpanm');
 plan skip_all => 'Missing cpanm' unless $cpanm;
-plan skip_all => 'AUTHOR_TESTING and TRAVIS_CI only.' unless $ENV{AUTHOR_TESTING} || $ENV{TRAVIS};
+plan skip_all => 'AUTHOR_TESTING and TRAVIS only.' unless $ENV{AUTHOR_TESTING} || $ENV{TRAVIS};
 
 my $tmpdir = File::Temp::tempdir( CLEANUP => 1 );
 my $libdir = File::Temp::tempdir( CLEANUP => 1 );
