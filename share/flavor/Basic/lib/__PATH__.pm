@@ -31,3 +31,17 @@ sub db {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+<% $module %> - <% $module %>
+
+=head1 DESCRIPTION
+
+This is a main context class for <% $module %>
+
+=head1 AUTHOR
+
+<% $module %> authors.
+

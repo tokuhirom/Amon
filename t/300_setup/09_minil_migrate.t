@@ -46,9 +46,12 @@ sub run_tests {
             is system($git, 'add', '.'), 0;
             is system($git, 'commit', '-m', 'initial import'), 0;
             is system($^X, '--', $minil, 'migrate'), 0;
+            ok -f 'META.json', 'Generated META.json';
         }
-        is system($^X, '--', $cpanm, '--verbose', '--no-interactive', '--installdeps', '-l', $libdir, $workdir), 0;
-        is system($^X, '--', $cpanm, '--verbose', '--no-interactive', '-l', $libdir, $workdir), 0;
+        my @opts = ();
+        # my @opts = ('--verbose', '--no-interactive');
+        is system($^X, '--', $cpanm, @opts, '--installdeps', '-l', $libdir, $workdir), 0;
+        is system($^X, '--', $cpanm, @opts, '-l', $libdir, $workdir), 0;
 
         if (-f "$workdir/sql/sqlite.sql") {
             diag "Installing sql";
