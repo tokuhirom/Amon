@@ -5,7 +5,6 @@ use Test::More;
 use t::Util;
 use t::TestFlavor;
 use Test::Requires {
-	'String::CamelCase' => '0.02',
 	'Mouse'             => '0.95', # Mouse::Util
 	'Teng'                            => '0.18',
 	'DBD::SQLite'                     => '1.33',
@@ -14,6 +13,7 @@ use Test::Requires {
     'Test::WWW::Mechanize::PSGI'      => 0,
     'Module::Functions'               => '0',
     'HTML::FillInForm::Lite'          => 0,
+    'Router::Boom'                    => '0.03',
 };
 
 test_flavor(sub {
