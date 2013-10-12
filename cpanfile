@@ -16,7 +16,7 @@ requires 'Plack::Response';
 requires 'Plack::Session';
 requires 'Plack::Util';
 requires 'Pod::Usage';
-requires 'Router::Boom', '0.03';
+requires 'Router::Boom', '0.04';
 requires 'Scalar::Util';
 requires 'Text::Xslate', '2.0010';
 requires 'Try::Tiny', '0.06';
