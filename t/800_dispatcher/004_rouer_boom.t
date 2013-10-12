@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use Test::More;
-use Test::Requires 'Test::WWW::Mechanize::PSGI', 'Router::Simple';
+use Test::Requires 'Test::WWW::Mechanize::PSGI';
 
 {
     package MyApp;
@@ -37,16 +37,15 @@ use Test::Requires 'Test::WWW::Mechanize::PSGI', 'Router::Simple';
     sub login { $_[1]->create_response(200, [], 'login') }
 
     package MyApp::Web::Dispatcher;
-    use Amon2::Web::Dispatcher::RouterSimple;
+    use Amon2::Web::Dispatcher::RouterBoom;
 
-    ::isa_ok __PACKAGE__->router(), 'Router::Simple';
+    ::isa_ok __PACKAGE__->router(), 'Router::Boom';
 
-    connect '/', {controller => 'Root', action => 'index'};
-    connect '/my/foo', 'My#foo';
-    connect '/bar/:action', 'Bar';
-    connect '/blog/{year}/{month}', {controller => 'Blog', action => 'monthly'};
-    submapper('/account/', {controller => 'Account'})
-        ->connect('login', {action => 'login'});
+    get '/',        'Root#index';
+    get '/my/foo', 'My#foo';
+    get '/bar/:action', 'Bar';
+    get '/blog/{year}/{month}', 'Blog#monthly';
+    get '/account/login', 'Account#login';
 }
 
 my $app = MyApp::Web->to_app();
