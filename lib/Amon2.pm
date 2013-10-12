@@ -280,6 +280,34 @@ More complicated documents are available on L<http://amon.64p.org/>
 
 Tokuhiro Matsuno E<lt>tokuhirom@gmail.comE<gt>
 
+=head1 CONTRIBUTORS
+
+=over 4
+
+=item noblejasper
+=item hiratara
+=item s-aska
+=item Kentaro Kuribayashi
+=item Yuki Ibe
+=item mattn
+=item Masahiro Nagano
+=item rightgo09
+=item karupanerura
+=item hatyuki
+=item Keiji, Yoshimi
+=item Nishibayashi Takuji
+=item dragon3
+=item Fuji, Goro
+=item issm
+=item hisaichi5518
+=item Adrian
+=item Fuji, Goro
+=item ITO Nobuaki
+=item Geraud CONTINSOUZAS
+=item Syohei YOSHIDA
+
+=back
+
 =head1 LICENSE
 
 This library is free software; you can redistribute it and/or modify it under the same terms as Perl itself.

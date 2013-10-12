@@ -89,9 +89,9 @@ sub run {
 
     $self->create_cpanfile(
         {
-            'String::CamelCase' => '0.02',
             'Module::Find'      => 0, # load controllers
             'Module::Functions' => 2, # Dispatcher
+            'Router::Boom'      => '0.03',
         }
     );
 

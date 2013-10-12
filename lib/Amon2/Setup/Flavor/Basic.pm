@@ -40,6 +40,7 @@ sub run {
         'Teng'                            => '0.18',
         'DBD::SQLite'                     => '1.33',
         'Test::WWW::Mechanize::PSGI'      => 0,
+        'Router::Boom'                    => '0.03',
     });
 
     # static files

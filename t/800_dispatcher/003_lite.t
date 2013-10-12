@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 use Test::More tests => 4;
+use Test::Requires 'Router::Simple';
 
 {
     package MyApp;

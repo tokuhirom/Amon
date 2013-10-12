@@ -133,6 +133,11 @@ sub res_405 {
     return $self->create_simple_status_page(405, 'Method Not Allowed');
 }
 
+sub res_500 {
+    my ($self) = @_;
+    return $self->create_simple_status_page(500, 'Internal Server Error');
+}
+
 sub to_app {
     my ($class, ) = @_;
     return sub { $class->handle_request(shift) };
