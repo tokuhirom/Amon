@@ -72,7 +72,6 @@ sub _build_xslate {
         tag_start => '<%',
         tag_end   => '%>',
         line_start => '%%',
-        'module'   => [ 'Text::Xslate::Bridge::Star' ],
         path => [ File::Spec->catdir(File::ShareDir::dist_dir('Amon2'), 'flavor') ],
     );
     $xslate;
