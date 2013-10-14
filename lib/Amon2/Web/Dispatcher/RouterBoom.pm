@@ -91,12 +91,12 @@ Amon2::Web::Dispatcher::RouterBoom - Router::Boom bindings
 
 =head1 SYNOPSIS
 
-    package MyApp::Web::Dispatcher;
+    package MyApp2::Web::Dispatcher;
     use Amon2::Web::Dispatcher::RouterBoom;
 
     get '/' => 'Foo#bar';
 
-    finalize( base => 'MyApp::Web::C' );
+    base 'MyApp::Web::C';
 
 =head1 DESCRIPTION
 
