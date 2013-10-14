@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.7.0, CPAN::Meta::Converter version 2.132510",
+   "generated_by" : "Minilla/v0.7.5, CPAN::Meta::Converter version 2.132510",
    "license" : [
       "perl_5"
    ],
@@ -21,7 +21,8 @@
          "share",
          "eg",
          "examples",
-         "author"
+         "author",
+         "builder"
       ]
    },
    "prereqs" : {
@@ -63,8 +64,7 @@
             "Plack::Session" : "0",
             "Plack::Util" : "0",
             "Pod::Usage" : "0",
-            "Router::Simple" : "0.14",
-            "Router::Simple::Sinatraish" : "0.02",
+            "Router::Boom" : "0.04",
             "Scalar::Util" : "0",
             "Text::Xslate" : "2.0010",
             "Try::Tiny" : "0.06",
