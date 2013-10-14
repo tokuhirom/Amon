@@ -3,7 +3,7 @@ use warnings;
 use Test::More;
 use Plack::Request;
 use Plack::Test;
-use Test::Requires 'Test::WWW::Mechanize::PSGI', 'HTTP::Session::Store::OnMemory', 'Plack::Session';
+use Test::Requires 'Test::WWW::Mechanize::PSGI', 'HTTP::Session::Store::OnMemory', 'Plack::Session', 'Amon2::Plugin::Web::CSRFDefender';
 use Plack::Builder;
 
 my $COMMIT;

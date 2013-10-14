@@ -5,7 +5,7 @@ use Plack::Request;
 use Plack::Test;
 use Test::Requires 'Test::WWW::Mechanize::PSGI',
   'HTTP::Session::Store::OnMemory', 'Plack::Session', 'Data::Section::Simple',
-  'Amon2::Lite';
+  'Amon2::Lite', 'Amon2::Plugin::Web::CSRFDefender';
 use Plack::Builder;
 
 our $COMMIT;

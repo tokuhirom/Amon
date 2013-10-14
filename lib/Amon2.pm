@@ -177,7 +177,7 @@ This method loads the plugin for the application.
 
 I<$module_name> package name of the plugin. You can write it as two form like L<DBIx::Class>:
 
-    __PACKAGE__->load_plugin("Web::HTTPSession");    # => loads Amon2::Plugin::Web::HTTPSession
+    __PACKAGE__->load_plugin("Web::CSRFDefender");    # => loads Amon2::Plugin::Web::CSRFDefender
 
 If you want to load a plugin in your own name space, use the '+' character before a package name, like following:
     __PACKAGE__->load_plugin("+MyApp::Plugin::Foo"); # => loads MyApp::Plugin::Foo
