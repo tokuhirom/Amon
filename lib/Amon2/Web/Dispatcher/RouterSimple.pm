@@ -72,6 +72,9 @@ Amon2::Web::Dispatcher::RouterSimple - Router::Simple binding for Amon2
 
 L<Router::Simple> binding for Amon2.
 
+B<We will split this module from Amon2 core distribution.>
+You need to list this class to your cpanfile.
+
 =head1 AUTHOR
 
 Tokuhiro Matsuno

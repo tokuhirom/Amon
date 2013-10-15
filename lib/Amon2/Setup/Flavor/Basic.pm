@@ -5,7 +5,7 @@ use utf8;
 package Amon2::Setup::Flavor::Basic;
 use parent qw(Amon2::Setup::Flavor);
 
-our $VERSION = '5.03';
+our $VERSION = '5.04';
 
 sub run {
     my $self = shift;
@@ -40,7 +40,7 @@ sub run {
         'Teng'                            => '0.18',
         'DBD::SQLite'                     => '1.33',
         'Test::WWW::Mechanize::PSGI'      => 0,
-        'Router::Boom'                    => '0.03',
+        'Router::Boom'                    => '0.06',
     });
 
     # static files

@@ -56,3 +56,6 @@ Amon2::Web::Dispatcher::Lite - Sinatra like dispatcher for Amon2
 
 B<It's in alpha quality>
 
+B<We will split this module from Amon2 core distribution.>
+You need to list this class to your cpanfile.
+

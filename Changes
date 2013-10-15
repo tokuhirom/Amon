@@ -1,5 +1,16 @@
 {{$NEXT}}
 
+5.04 2013-10-15T23:50:37Z
+
+    - Make Router::Boom as a default routing engine.
+      (tokuhirom)
+    - Removed Amon2::Plugin::Web::HTTPSession from core dist.
+      (tokuhirom)
+    - Fixed version number in flavor files
+      (tokuhirom)
+    - Make Basic flavor as minil migratable
+      (tokuhirom)
+
 5.03 2013-10-10T04:27:45Z
 
     - Fixed dependencies
