@@ -21,6 +21,7 @@ use Test::Requires 'Test::WWW::Mechanize::PSGI';
 
     package MyApp::Web::C::Root;
     sub index { Amon2->context->create_response(200, [], 'top') }
+    sub post_index { Amon2->context->create_response(200, [], 'post_top') }
 
     package MyApp::Web::C::Blog;
     sub monthly {
@@ -36,11 +37,12 @@ use Test::Requires 'Test::WWW::Mechanize::PSGI';
     package MyApp::Web::Dispatcher;
     use Amon2::Web::Dispatcher::RouterBoom;
 
-    ::isa_ok __PACKAGE__->router(), 'Router::Boom';
+    ::isa_ok __PACKAGE__->router(), 'Router::Boom::Method';
 
     base 'MyApp::Web::C';
 
     get '/',        'Root#index';
+    post '/',        'Root#post_index';
     get '/my/foo', 'My#foo';
     get '/blog/{year}/{month}', 'Blog#monthly';
     get '/account/login', 'Account#login';
@@ -51,6 +53,8 @@ my $app = MyApp::Web->to_app();
 my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
 $mech->get_ok('/');
 $mech->content_is('top');
+$mech->post_ok('/');
+$mech->content_is('post_top');
 $mech->get_ok('/my/foo');
 $mech->content_is('foo');
 $mech->get_ok('/blog/2010/04');

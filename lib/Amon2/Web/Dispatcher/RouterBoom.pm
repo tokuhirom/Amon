@@ -3,14 +3,14 @@ use strict;
 use warnings;
 use utf8;
 use 5.008_001;
-use Router::Boom;
+use Router::Boom::Method;
 
 sub import {
     my $class = shift;
     my %args = @_;
     my $caller = caller(0);
 
-    my $router = Router::Boom->new();
+    my $router = Router::Boom::Method->new();
 
     my $base;
 
@@ -38,12 +38,13 @@ sub import {
                 $dest{class}      = $base ? "${base}::${controller}" : $controller;
                 $dest{method}     = $method if defined $method;
             }
+            my $http_method;
             if ($method eq 'get') {
-                $dest{http_method} = 'GET';
+                $http_method = 'GET';
             } elsif ($method eq 'post') {
-                $dest{http_method} = 'POST';
+                $http_method = 'POST';
             }
-            $router->add($path, \%dest);
+            $router->add($http_method, $path, \%dest);
         };
     }
 
@@ -54,29 +55,29 @@ sub import {
         my ($class, $c) = @_;
 
         my $env = $c->request->env;
-        if (my ($dest, $captured) = $class->router->match($env->{PATH_INFO})) {
-            if ((!defined $dest->{http_method}) || $dest->{http_method} eq $env->{REQUEST_METHOD}) {
-                my $res = eval {
-                    if ($dest->{code}) {
-                        return $dest->{code}->($c, $captured);
-                    } else {
-                        my $method = $dest->{method};
-                        $c->{args} = $captured;
-                        return $dest->{class}->$method($c, $captured);
-                    }
-                };
-                if ($@) {
-                    if ($class->can('handle_exception')) {
-                        return $class->handle_exception($c, $@);
-                    } else {
-                        print STDERR "$env->{REQUEST_METHOD} $env->{PATH_INFO} [$env->{HTTP_USER_AGENT}]: $@";
-                        return $c->res_500();
-                    }
-                }
-                return $res;
-            } else {
+        if (my ($dest, $captured, $method_not_allowed) = $class->router->match($env->{REQUEST_METHOD}, $env->{PATH_INFO})) {
+            if ($method_not_allowed) {
                 return $c->res_405();
             }
+
+            my $res = eval {
+                if ($dest->{code}) {
+                    return $dest->{code}->($c, $captured);
+                } else {
+                    my $method = $dest->{method};
+                    $c->{args} = $captured;
+                    return $dest->{class}->$method($c, $captured);
+                }
+            };
+            if ($@) {
+                if ($class->can('handle_exception')) {
+                    return $class->handle_exception($c, $@);
+                } else {
+                    print STDERR "$env->{REQUEST_METHOD} $env->{PATH_INFO} [$env->{HTTP_USER_AGENT}]: $@";
+                    return $c->res_500();
+                }
+            }
+            return $res;
         } else {
             return $c->res_404();
         }
