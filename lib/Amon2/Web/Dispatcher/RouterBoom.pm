@@ -12,10 +12,12 @@ sub import {
 
     my $router = Router::Boom->new();
 
-    my $base =   $caller;
-       $base =~ s!::Dispatcher\z!::C!;
+    my $base;
 
     no strict 'refs';
+
+    *{"${caller}::base"} = sub { $base = $_[0] };
+
     # functions
     #
     # get( '/path', 'Controller#action')
@@ -32,19 +34,18 @@ sub import {
             if (ref $dest eq 'CODE') {
                 $dest{code} = $dest;
             } else {
-                my ($controller, $action) = split('#', $dest);
-                $dest{controller} = $controller;
-                $dest{action}     = $action if defined $action;
+                my ($controller, $method) = split('#', $dest);
+                $dest{class}      = $base ? "${base}::${controller}" : $controller;
+                $dest{method}     = $method if defined $method;
             }
             if ($method eq 'get') {
-                $dest{method} = 'GET';
+                $dest{http_method} = 'GET';
             } elsif ($method eq 'post') {
-                $dest{method} = 'POST';
+                $dest{http_method} = 'POST';
             }
             $router->add($path, \%dest);
         };
     }
-    *{"${caller}::base"} = sub { $base = $_[0] };
 
     # class methods
     *{"${caller}::router"} = sub { $router };
@@ -54,14 +55,14 @@ sub import {
 
         my $env = $c->request->env;
         if (my ($dest, $captured) = $class->router->match($env->{PATH_INFO})) {
-            if ((!defined $dest->{method}) || $dest->{method} eq $env->{REQUEST_METHOD}) {
+            if ((!defined $dest->{http_method}) || $dest->{http_method} eq $env->{REQUEST_METHOD}) {
                 my $res = eval {
                     if ($dest->{code}) {
                         return $dest->{code}->($c, $captured);
                     } else {
-                        my $action = $captured->{action} || $dest->{action};
+                        my $method = $dest->{method};
                         $c->{args} = $captured;
-                        return "${base}::$dest->{controller}"->$action($c, $captured);
+                        return $dest->{class}->$method($c, $captured);
                     }
                 };
                 if ($@) {
@@ -94,9 +95,11 @@ Amon2::Web::Dispatcher::RouterBoom - Router::Boom bindings
     package MyApp2::Web::Dispatcher;
     use Amon2::Web::Dispatcher::RouterBoom;
 
+    base 'MyApp::Web::C';
+
     get '/' => 'Foo#bar';
 
-    base 'MyApp::Web::C';
+    1;
 
 =head1 DESCRIPTION
 

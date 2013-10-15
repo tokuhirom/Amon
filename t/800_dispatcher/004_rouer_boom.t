@@ -19,9 +19,6 @@ use Test::Requires 'Test::WWW::Mechanize::PSGI';
     package MyApp::Web::C::My;
     sub foo { Amon2->context->create_response(200, [], 'foo') }
 
-    package MyApp::Web::C::Bar;
-    sub poo { Amon2->context->create_response(200, [], 'poo') }
-
     package MyApp::Web::C::Root;
     sub index { Amon2->context->create_response(200, [], 'top') }
 
@@ -41,9 +38,10 @@ use Test::Requires 'Test::WWW::Mechanize::PSGI';
 
     ::isa_ok __PACKAGE__->router(), 'Router::Boom';
 
+    base 'MyApp::Web::C';
+
     get '/',        'Root#index';
     get '/my/foo', 'My#foo';
-    get '/bar/:action', 'Bar';
     get '/blog/{year}/{month}', 'Blog#monthly';
     get '/account/login', 'Account#login';
 }
@@ -55,8 +53,6 @@ $mech->get_ok('/');
 $mech->content_is('top');
 $mech->get_ok('/my/foo');
 $mech->content_is('foo');
-$mech->get_ok('/bar/poo');
-$mech->content_is('poo');
 $mech->get_ok('/blog/2010/04');
 $mech->content_is("blog: 2010, 04");
 $mech->get_ok('/account/login');
