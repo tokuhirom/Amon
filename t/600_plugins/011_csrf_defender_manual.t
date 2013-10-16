@@ -3,23 +3,18 @@ use warnings;
 use Test::More;
 use Plack::Request;
 use Plack::Test;
-use Test::Requires 'Test::WWW::Mechanize::PSGI', 'HTTP::Session::Store::OnMemory', 'Plack::Session', 'Data::Section::Simple', 'Amon2::Lite', 'Amon2::Plugin::Web::CSRFDefender', 'Amon2::Plugin::Web::HTTPSession';
+use Test::Requires 'Test::WWW::Mechanize::PSGI', 'Plack::Session', 'Data::Section::Simple', 'Amon2::Lite', 'Amon2::Plugin::Web::CSRFDefender';
 use Plack::Builder;
 
 our $COMMIT;
 
-my $app = do {
+{
     package MyApp::Web;
     use Amon2::Lite;
 
     sub load_config { +{} }
 
-    my $session = HTTP::Session::Store::OnMemory->new();
     __PACKAGE__->load_plugins(
-        'Web::HTTPSession' => {
-            state => 'Cookie',
-            store => sub { $session },
-        },
         'Web::CSRFDefender', {no_validate_hook => 1}
     );
 
@@ -47,8 +42,11 @@ my $app = do {
         my $c = shift;
         $c->create_response(200, [], [$c->get_csrf_defender_token()]);
     };
+}
 
-    __PACKAGE__->to_app;
+my $app = builder {
+    enable 'Session';
+    MyApp::Web->to_app();
 };
 
 subtest 'success case' => sub {
