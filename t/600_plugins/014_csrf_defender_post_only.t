@@ -4,25 +4,19 @@ use Test::More;
 use Plack::Request;
 use Plack::Test;
 use Test::Requires 'Test::WWW::Mechanize::PSGI',
-  'HTTP::Session::Store::OnMemory', 'Plack::Session', 'Data::Section::Simple',
-  'Amon2::Lite', 'Amon2::Plugin::Web::CSRFDefender', 'Amon2::Plugin::Web::HTTPSession';
+  'Plack::Session', 'Data::Section::Simple',
+  'Amon2::Lite', 'Amon2::Plugin::Web::CSRFDefender';
 use Plack::Builder;
 
 our $COMMIT;
 
-my $app = do {
-
+{
     package MyApp::Web;
     use Amon2::Lite;
 
     sub load_config { +{} }
 
-    my $session = HTTP::Session::Store::OnMemory->new();
     __PACKAGE__->load_plugins(
-        'Web::HTTPSession' => {
-            state => 'Cookie',
-            store => sub { $session },
-        },
         'Web::CSRFDefender',
         { post_only => 1 }
     );
@@ -56,8 +50,11 @@ my $app = do {
     get '/finished' => sub {
         Plack::Response->new( 200, [], ['Finished'] );
     };
+}
 
-    __PACKAGE__->to_app;
+my $app = builder {
+    enable 'Session';
+    MyApp::Web->to_app();
 };
 
 subtest 'post method' => sub {
