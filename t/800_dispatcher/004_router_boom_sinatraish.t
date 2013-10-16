@@ -57,6 +57,7 @@ my $app = MyApp::Web->to_app();
 my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
 $mech->get_ok('/');
 $mech->content_is('top');
+$mech->head_ok('/');
 $mech->post_ok('/');
 $mech->content_is('post_top');
 $mech->get_ok('/my/foo');

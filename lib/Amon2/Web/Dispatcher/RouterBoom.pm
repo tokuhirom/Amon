@@ -40,7 +40,7 @@ sub import {
             }
             my $http_method;
             if ($method eq 'get') {
-                $http_method = 'GET';
+                $http_method = ['GET','HEAD'];
             } elsif ($method eq 'post') {
                 $http_method = 'POST';
             }
@@ -112,7 +112,9 @@ This is a router class for Amon2. It's based on Router::Boom.
 
 =item C<< get($path:Str, $destnation:Str) >>
 
+
 =item C<< post($path:Str, $destnation:Str) >>
+
 
 =item C<< any($path:Str, $destnation:Str) >>
 
@@ -125,6 +127,10 @@ Add routes by DSL. First argument is the path pattern in Path::Boom rules.
 Second argument is the destination method path.
 
 Destination method pass is C<${class}#${method}> form.
+
+The path declared with get() accepts GET and HEAD.
+The path declared with post() accepts POST method.
+The path declared with any() accepts any methods.
 
 =item C<< base($klass:Str) >>
 
