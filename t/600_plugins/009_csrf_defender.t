@@ -81,6 +81,21 @@ subtest 'MyApp::Web::PlackSession' => sub {
     };
 
     $COMMIT = 0;
+    subtest 'success case with header' => sub {
+        my $mech = Test::WWW::Mechanize::PSGI->new(
+            app => $app,
+        );
+        $mech->max_redirect(0);
+        $mech->get_ok('http://localhost/form');
+        ok($mech->content() =~ qr[<input type="hidden" name="csrf_token" value="([a-zA-Z0-9_]{32})" />]);
+        my $csrf_token = $1;
+        $mech->default_headers->push_header('X-CSRF-Token' => $csrf_token);
+        $mech->post('/do', { body => 'yay' });
+        is $mech->response->code, 302;
+        is $COMMIT, 1;
+    };
+
+    $COMMIT = 0;
     subtest 'deny' => sub {
         test_psgi
             app => $app,

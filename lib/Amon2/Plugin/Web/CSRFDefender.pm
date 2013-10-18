@@ -69,7 +69,7 @@ sub validate_csrf {
     my $self = shift;
 
     if ( $self->req->method eq 'POST' ) {
-        my $r_token       = $self->req->param('csrf_token');
+        my $r_token       = $self->req->param('csrf_token') || $self->req->header('x-csrf-token');
         my $session_token = $self->session->get('csrf_token');
         if ( !$r_token || !$session_token || ( $r_token ne $session_token ) ) {
             return 0; # bad
