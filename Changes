@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+5.08 2013-10-18T06:31:43Z
+
+    - CSRFDefender: Take CSRF token from X-CSRF-Token header.
+      (Suggested by @yappo++)
+
 5.07 2013-10-18T05:31:19Z
 
     - Fixed dependency issues and minor tweaks.
