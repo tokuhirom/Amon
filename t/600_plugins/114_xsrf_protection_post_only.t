@@ -5,7 +5,7 @@ use Plack::Request;
 use Plack::Test;
 use Test::Requires 'Test::WWW::Mechanize::PSGI',
   'Data::Section::Simple',
-  'Amon2::Lite', 'Amon2::Plugin::Web::CSRFDefender';
+  'Amon2::Lite', 'Amon2::Plugin::Web::XSRFProtection';
 use Plack::Builder;
 
 our $COMMIT;
@@ -17,7 +17,7 @@ our $COMMIT;
     sub load_config { +{} }
 
     __PACKAGE__->load_plugins(
-        'Web::CSRFDefender2'
+        'Web::XSRFProtection'
     );
 
     get '/form' => sub {
@@ -60,7 +60,7 @@ subtest 'post method' => sub {
     my $mech = Test::WWW::Mechanize::PSGI->new( app => $app, );
     $mech->get_ok('http://localhost/form');
     $mech->content_like(
-        qr[<input type="hidden" name="csrf_token" value="[a-zA-Z0-9_]{32}" />]);
+        qr[<input type="hidden" name="xsrf_token" value="[a-zA-Z0-9_]{32}" />]);
     $mech->submit_form( form_number => 1, fields => { body => 'yay' } );
     is $mech->base, 'http://localhost/finished';
     is $COMMIT, 1;
@@ -83,7 +83,7 @@ subtest 'get method' => sub {
     my $mech = Test::WWW::Mechanize::PSGI->new( app => $app, );
     $mech->get_ok('http://localhost/form_get');
     $mech->content_unlike(
-        qr[<input type="hidden" name="csrf_token" value="[a-zA-Z0-9_]{32}" />]);
+        qr[<input type="hidden" name="xsrf_token" value="[a-zA-Z0-9_]{32}" />]);
     $mech->submit_form( form_number => 1, fields => { body => 'yay' } );
     is $mech->base, 'http://localhost/finished';
     is $COMMIT, 1;
@@ -94,7 +94,7 @@ subtest 'no method' => sub {
     my $mech = Test::WWW::Mechanize::PSGI->new( app => $app, );
     $mech->get_ok('http://localhost/form_no_method');
     $mech->content_unlike(
-        qr[<input type="hidden" name="csrf_token" value="[a-zA-Z0-9_]{32}" />]);
+        qr[<input type="hidden" name="xsrf_token" value="[a-zA-Z0-9_]{32}" />]);
     $mech->submit_form( form_number => 1, fields => { body => 'yay' } );
     is $mech->base, 'http://localhost/finished';
     is $COMMIT, 1;
@@ -104,14 +104,14 @@ subtest 'multi form' => sub {
     my $mech = Test::WWW::Mechanize::PSGI->new( app => $app, );
     $mech->get_ok('http://localhost/form_multi');
     $mech->content_like(
-        qr[<form action="/do" method="post" id="f1">\n<input type="hidden" name="csrf_token" value="[a-zA-Z0-9_]{32}" />]m);
+        qr[<form action="/do" method="post" id="f1">\n<input type="hidden" name="xsrf_token" value="[a-zA-Z0-9_]{32}" />]m);
     $mech->content_like(
-        qr[<form action="/do" method='POST' id="f2">\n<input type="hidden" name="csrf_token" value="[a-zA-Z0-9_]{32}" />]m);
+        qr[<form action="/do" method='POST' id="f2">\n<input type="hidden" name="xsrf_token" value="[a-zA-Z0-9_]{32}" />]m);
     $mech->content_like(
-        qr[<form action="/do" method=POST id="f3">\n<input type="hidden" name="csrf_token" value="[a-zA-Z0-9_]{32}" />]m);
+        qr[<form action="/do" method=POST id="f3">\n<input type="hidden" name="xsrf_token" value="[a-zA-Z0-9_]{32}" />]m);
 
     $mech->content_unlike(
-        qr[<form action="/do" id="f4">\n<input type="hidden" name="csrf_token" value="[a-zA-Z0-9_]{32}" />]m);
+        qr[<form action="/do" id="f4">\n<input type="hidden" name="xsrf_token" value="[a-zA-Z0-9_]{32}" />]m);
 };
 
 done_testing;

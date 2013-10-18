@@ -3,7 +3,7 @@ use warnings;
 use Test::More;
 use Plack::Request;
 use Plack::Test;
-use Test::Requires 'Test::WWW::Mechanize::PSGI', 'Amon2::Plugin::Web::CSRFDefender2';
+use Test::Requires 'Test::WWW::Mechanize::PSGI', 'Amon2::Plugin::Web::XSRFProtection';
 use Plack::Builder;
 
 my $COMMIT;
@@ -35,7 +35,7 @@ my $COMMIT;
     sub create_view { MyApp::Web::View->new() }
     sub dispatch {
         my $c = shift;
-        ::like $c->get_csrf_defender_token(), qr{^[a-zA-Z0-9_]{32}$};
+        ::like $c->xsrf_token(), qr{^[a-zA-Z0-9_]{32}$};
         if ($c->req->path_info eq '/form') {
             return $c->render('form.mt');
         } elsif ($c->req->path_info eq '/do' && $c->req->method eq 'POST') {
@@ -45,13 +45,13 @@ my $COMMIT;
         } elsif ($c->req->path_info eq '/finished') {
             return $c->create_response(200, [], ['OK']);
         } elsif ($c->req->path_info eq '/get_csrf_defender_token') {
-            return $c->create_response(200, [], [$c->get_csrf_defender_token]);
+            return $c->create_response(200, [], [$c->xsrf_token]);
         } else {
             return $c->create_response(404, [], []);
         }
     }
     __PACKAGE__->load_plugins(
-        'Web::CSRFDefender2',
+        'Web::XSRFProtection',
     );
 }
 
@@ -65,7 +65,7 @@ subtest 'MyApp::Web' => sub {
             app => $app,
         );
         $mech->get_ok('http://localhost/form');
-        $mech->content_like(qr[<input type="hidden" name="csrf_token" value="[a-zA-Z0-9_]{32}" />]);
+        $mech->content_like(qr[<input type="hidden" name="xsrf_token" value="[a-zA-Z0-9_]{32}" />]);
         $mech->submit_form(form_number => 1, fields => {body => 'yay'});
         is $mech->base, 'http://localhost/finished';
         is $COMMIT, 1;
@@ -83,7 +83,7 @@ subtest 'MyApp::Web' => sub {
             };
     };
 
-    subtest 'get_csrf_defender_token' => sub {
+    subtest 'xsrf_token' => sub {
         test_psgi
             app => $app,
             client => sub {
