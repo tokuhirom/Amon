@@ -164,9 +164,21 @@ This specifies httponly flag. I don't suggest to disable this value.
 
 =item cookie_name: Str
 
-Default: C<'csrf_token'>
+Default: C<'XSRF-TOKEN'>
 
 You can customize the cookie name.
+
+=item header_name: Str
+
+Default: C<'X-XSRF-TOKEN'>
+
+XSRFProtection can reads token from a HTTP header.
+
+=item param_name: Str
+
+Default: C<'xsrf_token'>
+
+Parameter name for query string/body parameter.
 
 =item cookie_secure: Bool
 
