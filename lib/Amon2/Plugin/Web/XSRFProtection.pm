@@ -125,7 +125,7 @@ Methods are same. Configuration variable and default value is different.
 
 =head2 AngularJS friendly
 
-Default value is AngularJS compatible.
+Default key names are AngularJS compatible.
 
 =head1 CONFIGURATION VARIABLE
 
