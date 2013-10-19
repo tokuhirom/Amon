@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+5.09 2013-10-19T01:45:17Z
+
+    - WebSocket: Fixed connection leaks after EOF.
+      (Reported by Yoshio Suzuki++)
+
 5.08 2013-10-18T06:31:43Z
 
     - CSRFDefender: Take CSRF token from X-CSRF-Token header.
