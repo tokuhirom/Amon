@@ -4,6 +4,8 @@ use utf8;
 use Amon2::Lite;
 use Digest::MD5 ();
 
+print "PID: $$\n";
+
 get '/' => sub {
     my $c = shift;
     return $c->render('index.tt');
@@ -55,18 +57,18 @@ __DATA__
     <title>WS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 </head>
 <body data-host_port="[% c().req.uri.host_port %]">
     <div class="container">
         <header><h1>WS</h1></header>
-        <section class="row">
+        <div class="row">
             <form id="form">
                 <input type="text" name="message" id="message">
                 <input type="submit" class="btn">
             </form>
             <pre id="log"></pre>
-        </section>
+        </div>
         <footer>Powered by <a href="http://amon.64p.org/">Amon2::Lite</a></footer>
     </div>
     <script type="text/javascript">
