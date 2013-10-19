@@ -64,6 +64,7 @@ sub _websocket {
                 $h->on_eof(
                     sub {
                         $ws->call_eof($c);
+                        close $fh;
                     }
                 );
             };
