@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/tokuhirom/Amon.png?branch=master)](https://travis-ci.org/tokuhirom/Amon)
 # NAME
 
 Amon2 - lightweight web application framework
