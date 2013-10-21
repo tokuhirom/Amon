@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use Test::More tests => 4;
-use Test::Requires 'Router::Simple';
+use Test::Requires 'Router::Simple', 'Router::Simple::Sinatraish';
 
 {
     package MyApp;
