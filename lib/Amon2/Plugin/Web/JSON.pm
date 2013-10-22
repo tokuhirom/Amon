@@ -43,12 +43,6 @@ sub _render_json {
     my $encoding = $c->encoding();
     $encoding = lc($encoding->mime_name) if ref $encoding;
     $res->content_type("application/json; charset=$encoding");
-
-    # add UTF-8 BOM if the client is Safari
-    if ( $user_agent =~ m/Safari/ and $encoding eq 'utf-8' ) {
-        $output = "\xEF\xBB\xBF" . $output;
-    }
-
     $res->header( 'X-Content-Type-Options' => 'nosniff' ); # defense from XSS
     $res->content_length(length($output));
     $res->body($output);
