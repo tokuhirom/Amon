@@ -44,7 +44,7 @@ my $ua_chrome = 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534
     my $res = $c->render_json(+{"foo"=>"bar"});
     is $res->status, 200;
     is $res->header('Content-Type'), 'application/json; charset=utf-8';
-    is $res->content, "\xEF\xBB\xBF" . '{"foo":"bar"}';
+    is $res->content, '{"foo":"bar"}';
 }
 {
     my $c = MyApp::Web->new(request => Amon2::Web::Request->new(+{
@@ -53,7 +53,7 @@ my $ua_chrome = 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534
     my $res = $c->render_json(+{"foo"=>"bar"});
     is $res->status, 200;
     is $res->header('Content-Type'), 'application/json; charset=utf-8';
-    is $res->content, "\xEF\xBB\xBF" . '{"foo":"bar"}';
+    is $res->content, '{"foo":"bar"}';
 }
 {
     my $c = MyApp::Web->new(request => Amon2::Web::Request->new(+{
@@ -63,7 +63,7 @@ my $ua_chrome = 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534
     my $res = $c->render_json(+{"foo"=>"bar"});
     is $res->status, 200;
     is $res->header('Content-Type'), 'application/json; charset=utf-8';
-    is $res->content, "\xEF\xBB\xBF" . '{"foo":"bar"}';
+    is $res->content, '{"foo":"bar"}';
 }
 done_testing;
 

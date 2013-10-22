@@ -44,7 +44,7 @@ subtest 'with X-Requested-With header' => sub {
     );
     my $res = $app->render_json({});
     is($res->code, 200);
-    is($res->content, "\xEF\xBB\xBF{}");
+    is($res->content, "{}");
 };
 
 done_testing;
