@@ -1,5 +1,12 @@
 {{$NEXT}}
 
+5.11 2013-10-22T03:25:03Z
+
+    - Remove Safari UTF-8 BOM hack.
+      (tokuhirom)
+    - Fixed testing deps
+      (magnolia++)
+
 5.10 2013-10-20T10:01:00Z
 
     - Fixed testing issue

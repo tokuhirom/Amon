@@ -119,7 +119,7 @@
          "web" : "https://github.com/tokuhirom/Amon"
       }
    },
-   "version" : "5.10",
+   "version" : "5.11",
    "x_contributors" : [
       "noblejasper <nobjas@gmail.com>",
       "noblejasper <jasper@main.noble-jasper.com>",
@@ -144,6 +144,7 @@
       "Geraud CONTINSOUZAS <geraud@hyaku.nijuu.nana>",
       "Syohei YOSHIDA <syohex@gmail.com>",
       "Geraud CONTINSOUZAS <geraud@scsi.nc>",
-      "Geraud <geraud@genta.nealab.net>"
+      "Geraud <geraud@genta.nealab.net>",
+      "magnolia <magnolia.k@me.com>"
    ]
 }

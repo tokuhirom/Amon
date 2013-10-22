@@ -180,6 +180,7 @@ Tokuhiro Matsuno <tokuhirom@gmail.com>
 =item ITO Nobuaki
 =item Geraud CONTINSOUZAS
 =item Syohei YOSHIDA
+=item magnolia
 
 # LICENSE
 
