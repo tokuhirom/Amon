@@ -20,7 +20,8 @@ sub assets {
 
     my @assets = qw(
         jQuery Bootstrap ES5Shim MicroTemplateJS StrftimeJS SprintfJS
-        MicroLocationJS MicroDispatcherJS
+        MicroLocationJS MicroDispatcherJS JSON2
+        AngularJS AngularResourceJS
     );
     @assets;
 }
@@ -58,9 +59,17 @@ sub new {
     $args{dist} = join "-", @pkg;
     $args{path} = join "/", @pkg;
     my $self = bless { %args }, $class;
+    $self->{app} = $self->_build_app();
     $self->{xslate} = $self->_build_xslate();
     $self->load_assets();
     $self;
+}
+
+sub _build_app {
+    my $self = shift;
+    my $app = join('', split /::/, $self->{module});
+    $app =~ s/\A(.)/lc($1)/e;
+    $app . 'App';
 }
 
 sub _build_xslate {

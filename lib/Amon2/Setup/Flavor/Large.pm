@@ -36,7 +36,7 @@ sub run {
         $self->write_file("static/${moniker}/img/.gitignore", '');
         $self->write_file("static/${moniker}/robots.txt", '');
 
-        $self->render_file("static/${moniker}/js/main.js",   "Basic/static/js/main.js");
+        $self->render_file("static/${moniker}/js/app.js",   "Basic/static/js/app.js");
         $self->render_file("static/${moniker}/css/main.css", "Basic/static/css/main.css");
     }
     $self->render_file('tmpl/admin/error.tx', 'Large/tmpl/admin/error.tx');

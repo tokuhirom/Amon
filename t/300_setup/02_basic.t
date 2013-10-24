@@ -30,6 +30,8 @@ test_flavor(sub {
         };
     };
     is( scalar( my @files = glob('static/js/jquery-*.js') ), 1 );
+    like slurp('tmpl/include/layout.tx'), qr{ng-app="myApp"};
+    like slurp('tmpl/include/layout.tx'), qr{json2.js}, 'loaded json2.js';
 	like(slurp('cpanfile'), qr{'Teng'\s*,\s*'[0-9.]+'});
 }, 'Basic');
 
