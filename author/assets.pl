@@ -27,6 +27,11 @@ __PACKAGE__->register_js(
     'ES5Shim',
 );
 __PACKAGE__->register_js(
+    'run_json2',
+    'http://cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.js',
+    'JSON2',
+);
+__PACKAGE__->register_js(
     'run_strftimejs',
     'https://raw.github.com/tokuhirom/strftime-js/master/strftime.js',
     'StrftimeJS',
@@ -61,6 +66,7 @@ sub main {
         run_bootstrap();
 
         run_es5shim();
+        run_json2();
         run_strftimejs();
         run_micro_template_js();
         run_sprintf_js();
@@ -170,6 +176,7 @@ sub files {
     };
 }
 
+# jQuery 2.x does not support Internet Explorer 6, 7, or 8
 sub run_jquery {
     my $url = 'http://code.jquery.com/jquery-2.0.3.min.js';
     my $res = $ua->get($url);
