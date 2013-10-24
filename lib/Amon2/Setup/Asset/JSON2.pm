@@ -5,7 +5,9 @@ use warnings;
 
 sub tags {
     <<',,,';
-    <script src="<: uri_for('/static/js/json2.js') :>"></script>
+    <!--[if lte IE 8]>
+        <script src="<: uri_for('/static/js/json2.js') :>"></script>
+    <![endif]-->
 ,,,
 }
 
