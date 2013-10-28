@@ -49,7 +49,7 @@ sub run {
     $self->write_file("static/img/.gitignore", '');
     $self->write_file("static/robots.txt", '');
 
-    $self->render_file("static/js/main.js",   "Basic/static/js/main.js");
+    $self->render_file("static/js/app.js",   "Basic/static/js/app.js");
     $self->render_file("static/css/main.css", "Basic/static/css/main.css");
 
     $self->render_file('db/.gitignore', 'Basic/db/dot.gitignore');

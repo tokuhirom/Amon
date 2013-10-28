@@ -81,4 +81,18 @@
     </div>
 </section>
 
+<hr />
+
+<div class="row">
+    <h1>amon2delta</h1>
+
+    <h2>Amon2 6.00</h2>
+
+    <h3>Amon2 meets AngularJS.</h3>
+    <p>
+        <form><input ng-model="xxx"></form>
+        Name: {{xxx}}
+    </p>
+</div>
+
 : }

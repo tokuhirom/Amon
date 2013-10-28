@@ -15,6 +15,7 @@ my %WHITE_LIST = map { $_ => 1 } qw(
     es5-shim.min.js
     micro-location.js
     micro_template.js
+    json2.js
 );
 
 my $table = Text::SimpleTable->new( 25, 5 );
