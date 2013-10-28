@@ -13,7 +13,6 @@ requires 'parent', '0.223';
 requires 'Plack', '0.9982';
 requires 'Plack::Request';
 requires 'Plack::Response';
-requires 'Plack::Session';
 requires 'Plack::Util';
 requires 'Pod::Usage';
 requires 'Router::Boom', '0.07';
@@ -26,11 +25,10 @@ requires 'URI::QueryParam';
 requires 'File::Copy::Recursive'; # setup script
 requires 'File::ShareDir';
 requires 'Module::CPANfile', '0.9020';
+requires 'Class::Accessor::Lite::Lazy';
+requires 'HTTP::Session2';
 
 recommends 'Teng', 0.18;
-
-# HTTPSession
-suggests 'HTTP::Session';
 
 # Websocket support
 suggests 'AnyEvent::Handle';

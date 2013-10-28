@@ -5,6 +5,10 @@ use utf8;
 use parent qw(<% $module %> Amon2::Web);
 use File::Spec;
 
+use Class::Accessor::Lite::Lazy (
+    ro_lazy => [qw(session)],
+);
+
 # dispatcher
 use <% $module %>::<% $moniker %>::Dispatcher;
 sub dispatch {
@@ -25,9 +29,6 @@ use <% $module %>::<% $moniker %>::View;
 # load plugins
 __PACKAGE__->load_plugins(
     'Web::FillInFormLite',
-    'Web::CSRFDefender' => {
-        post_only => 1,
-    },
 );
 
 sub show_error {
@@ -35,6 +36,17 @@ sub show_error {
     my $res = $c->render( 'error.tx', { message => $msg } );
     $res->code( $code || 500 );
     return $res;
+}
+
+use HTTP::Session2::ClientStore;
+# Amon2 authors recommend to use HTTP::Session2::ServerStore, if you can do it.
+sub _build_session {
+    my $c = shift;
+
+    HTTP::Session2::ClientStore->new(
+        env  => $c->req->env(),
+        salt => <: random_string() :>
+    );
 }
 
 # for your security
@@ -50,6 +62,11 @@ __PACKAGE__->add_trigger(
 
         # Cache control.
         $res->header( 'Cache-Control' => 'private' );
+
+        # Finalize session if session object was loaded.
+        if ($c->{session}) {
+            $c->{session}->finalize_plack_response($res);
+        }
     },
 );
 

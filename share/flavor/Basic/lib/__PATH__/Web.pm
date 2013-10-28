@@ -5,6 +5,10 @@ use utf8;
 use parent qw/<% $module %> Amon2::Web/;
 use File::Spec;
 
+use Class::Accessor::Lite::Lazy (
+    ro_lazy => [qw(session)],
+);
+
 # dispatcher
 use <% $module %>::Web::Dispatcher;
 sub dispatch {
@@ -15,10 +19,8 @@ sub dispatch {
 __PACKAGE__->load_plugins(
     'Web::FillInFormLite',
     'Web::JSON',
-    'Web::CSRFDefender' => {
-        post_only => 1,
-    },
 );
+
 
 # setup view
 use <% $module %>::Web::View;
@@ -30,6 +32,36 @@ use <% $module %>::Web::View;
         $view
     }
 }
+
+use HTTP::Session2::ClientStore;
+# Amon2 authors recommend to use HTTP::Session2::ServerStore, if you can do it.
+sub _build_session {
+    my $c = shift;
+
+    HTTP::Session2::ClientStore->new(
+        env  => $c->req->env(),
+        salt => <: random_string() :>
+    );
+}
+
+__PACKAGE__->add_trigger(
+    BEFORE_DISPATCH => sub {
+        my ( $c ) = @_;
+
+        # Validate XSRF token
+        if ($c->req->method ne 'GET' && $c->req->method ne 'HEAD') {
+            my $xsrf_token = $c->req->header('X-XSRF-TOKEN') || $c->req->param('XSRF-TOKEN');
+            unless ($c->session->validate_xsrf_token($xsrf_token)) {
+                return $c->create_simple_status_page(
+                    403,
+                    'Missing XSRF token'
+                );
+            }
+        }
+
+        return;
+    },
+);
 
 # for your security
 __PACKAGE__->add_trigger(
@@ -44,14 +76,11 @@ __PACKAGE__->add_trigger(
 
         # Cache control.
         $res->header( 'Cache-Control' => 'private' );
-    },
-);
 
-__PACKAGE__->add_trigger(
-    BEFORE_DISPATCH => sub {
-        my ( $c ) = @_;
-        # ...
-        return;
+        # Finalize session if session object was loaded.
+        if ($c->{session}) {
+            $c->{session}->finalize_plack_response($res);
+        }
     },
 );
 
