@@ -5,8 +5,6 @@
     <title><: $title || '<%= $dist %>' :></title>
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <meta http-equiv="Content-Script-Type" content="text/javascript" />
-    <meta name="csrf-token" content="<: c().get_csrf_defender_token() :>">
-    <meta name="csrf-param" content="csrf_token">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0"]]>
     <meta name="format-detection" content="telephone=no" />
     <% $tags %>
