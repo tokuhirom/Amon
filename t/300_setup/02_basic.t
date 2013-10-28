@@ -15,7 +15,7 @@ use Test::Requires +{
 
 test_flavor(sub {
     ok(-f 'Build.PL', 'Build.PL');
-	like(slurp('cpanfile'), qr{Plack::Session});
+	like(slurp('cpanfile'), qr{HTTP::Session2});
 	for my $env (qw(development production test)) {
 		ok(-f "config/${env}.pl");
 		my $conf = do "config/${env}.pl";

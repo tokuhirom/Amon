@@ -9,7 +9,6 @@ use URI::Escape ();
 use Amon2::Web::Request;
 use Amon2::Web::Response;
 use Scalar::Util ();
-use Plack::Session;
 use Plack::Util;
 
 # -------------------------------------------------------------------------
@@ -26,9 +25,22 @@ BEGIN {
     sub encoding          { $encoding }
 }
 
+# AMON3 TODO: Remove this.
 sub session {
 	my $self = shift;
-	$self->{session} ||= Plack::Session->new($self->request->env);
+
+    require Plack::Session;
+    # lazy load
+    {
+        my $klass = ref $self || $self;
+        no strict 'refs';
+        *{"${klass}::session"} = sub {
+            my $self = shift;
+            $self->{session} ||= Plack::Session->new($self->request->env);
+        };
+    }
+    # Run the code, for now.
+    $self->{session} ||= Plack::Session->new($self->request->env);
 }
 
 # -------------------------------------------------------------------------
