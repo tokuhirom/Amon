@@ -160,27 +160,27 @@ Tokuhiro Matsuno <tokuhirom@gmail.com>
 # CONTRIBUTORS
 
 - noblejasper
-=item hiratara
-=item s-aska
-=item Kentaro Kuribayashi
-=item Yuki Ibe
-=item mattn
-=item Masahiro Nagano
-=item rightgo09
-=item karupanerura
-=item hatyuki
-=item Keiji, Yoshimi
-=item Nishibayashi Takuji
-=item dragon3
-=item Fuji, Goro
-=item issm
-=item hisaichi5518
-=item Adrian
-=item Fuji, Goro
-=item ITO Nobuaki
-=item Geraud CONTINSOUZAS
-=item Syohei YOSHIDA
-=item magnolia
+- hiratara
+- s-aska
+- Kentaro Kuribayashi
+- Yuki Ibe
+- mattn
+- Masahiro Nagano
+- rightgo09
+- karupanerura
+- hatyuki
+- Keiji, Yoshimi
+- Nishibayashi Takuji
+- dragon3
+- Fuji, Goro
+- issm
+- hisaichi5518
+- Adrian
+- Fuji, Goro
+- ITO Nobuaki
+- Geraud CONTINSOUZAS
+- Syohei YOSHIDA
+- magnolia
 
 # LICENSE
 

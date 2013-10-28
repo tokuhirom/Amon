@@ -1,5 +1,12 @@
 {{$NEXT}}
 
+5.12 2013-10-28T06:55:00Z
+
+    - Trivial setup script changes.
+      (tokuhirom)
+    - POD fix
+      (magnolia)
+
 5.11 2013-10-22T03:25:03Z
 
     - Remove Safari UTF-8 BOM hack.
