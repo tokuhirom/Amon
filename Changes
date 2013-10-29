@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+5.13 2013-10-29T02:10:40Z
+
+    - Web::Disptacher::RouterBoom supports DELETE method.
+      (tokuhirom)
+
 5.12 2013-10-28T06:55:00Z
 
     - Trivial setup script changes.

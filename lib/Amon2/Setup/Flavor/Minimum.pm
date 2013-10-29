@@ -4,7 +4,7 @@ use warnings FATAL => 'all';
 use utf8;
 use parent qw(Amon2::Setup::Flavor);
 
-our $VERSION = '5.12';
+our $VERSION = '5.13';
 
 sub run {
     my ($self) = @_;
