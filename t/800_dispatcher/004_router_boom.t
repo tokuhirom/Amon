@@ -22,6 +22,7 @@ use Test::Requires 'Test::WWW::Mechanize::PSGI';
     package MyApp::Web::C::Root;
     sub index { Amon2->context->create_response(200, [], 'top') }
     sub post_index { Amon2->context->create_response(200, [], 'post_top') }
+    sub remove_index { Amon2->context->create_response(200, [], 'remove_top') }
 
     package MyApp::Web::C::Blog;
     sub monthly {
@@ -43,6 +44,7 @@ use Test::Requires 'Test::WWW::Mechanize::PSGI';
 
     get '/',        'Root#index';
     post '/',        'Root#post_index';
+    delete_ '/',        'Root#remove_index';
     get '/my/foo', 'My#foo';
     get '/blog/{year}/{month}', 'Blog#monthly';
     get '/account/login', 'Account#login';
@@ -50,11 +52,20 @@ use Test::Requires 'Test::WWW::Mechanize::PSGI';
 
 my $app = MyApp::Web->to_app();
 
+sub Test::WWW::Mechanize::PSGI::delete_ok {
+    my ($self, $url) = @_;
+    my $request = HTTP::Request->new(DELETE => $url);
+    my $res = $self->request($request);
+    ::ok($res->code =~ /\A2..\z/, "DELETE $url");
+}
+
 my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
 $mech->get_ok('/');
 $mech->content_is('top');
 $mech->post_ok('/');
 $mech->content_is('post_top');
+$mech->delete_ok('/');
+$mech->content_is('remove_top');
 $mech->get_ok('/my/foo');
 $mech->content_is('foo');
 $mech->get_ok('/blog/2010/04');

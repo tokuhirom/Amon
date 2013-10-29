@@ -22,11 +22,13 @@ sub import {
     #
     # get( '/path', 'Controller#action')
     # post('/path', 'Controller#action')
+    # delete_('/path', 'Controller#action')
     # any( '/path', 'Controller#action')
     # get( '/path', sub { })
     # post('/path', sub { })
+    # delete_('/path', sub { })
     # any( '/path', sub { })
-    for my $method (qw(get post any)) {
+    for my $method (qw(get post delete_ any)) {
         *{"${caller}::${method}"} = sub {
             my ($path, $dest) = @_;
 
@@ -38,12 +40,16 @@ sub import {
                 $dest{class}      = $base ? "${base}::${controller}" : $controller;
                 $dest{method}     = $method if defined $method;
             }
+
             my $http_method;
             if ($method eq 'get') {
                 $http_method = ['GET','HEAD'];
             } elsif ($method eq 'post') {
                 $http_method = 'POST';
+            } elsif ($method eq 'delete_') {
+                $http_method = 'DELETE';
             }
+
             $router->add($http_method, $path, \%dest);
         };
     }
@@ -112,9 +118,9 @@ This is a router class for Amon2. It's based on Router::Boom.
 
 =item C<< get($path:Str, $destnation:Str) >>
 
-
 =item C<< post($path:Str, $destnation:Str) >>
 
+=item C<< delete_($path:Str, $destnation:Str) >>
 
 =item C<< any($path:Str, $destnation:Str) >>
 
@@ -122,6 +128,7 @@ This is a router class for Amon2. It's based on Router::Boom.
     get  '/:user' => 'User#show';
     any  '/:user/update' => 'User#update';
     post '/:user/blog/post' => 'Blog#post';
+    delete_ '/:user/blog/:id' => 'Blog#remove';
 
 Add routes by DSL. First argument is the path pattern in Path::Boom rules.
 Second argument is the destination method path.
@@ -130,6 +137,7 @@ Destination method pass is C<${class}#${method}> form.
 
 The path declared with get() accepts GET and HEAD.
 The path declared with post() accepts POST method.
+The path declared with delete_() accepts DELETE method.
 The path declared with any() accepts any methods.
 
 =item C<< base($klass:Str) >>
@@ -146,6 +154,8 @@ If you are write your dispatcher in following code, then the method for '/' is C
 =item C<< get($path:Str, $destnation:CodeRef) >>
 
 =item C<< post($path:Str, $destnation:CodeRef) >>
+
+=item C<< delete_($path:Str, $destnation:CodeRef) >>
 
 =item C<< any($path:Str, $destnation:CodeRef) >>
 
