@@ -5,7 +5,7 @@ use utf8;
 package Amon2::Setup::Flavor::Basic;
 use parent qw(Amon2::Setup::Flavor);
 
-our $VERSION = '5.14';
+our $VERSION = '5.15';
 
 sub run {
     my $self = shift;

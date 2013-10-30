@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+5.15 2013-10-30T23:44:03Z
+
+    - Upgrade Twitter bootstrap 3.0.0 to 3.0.1.
+      (tokuhirom)
+
 5.14 2013-10-30T11:15:10Z
 
     - CSRFDefender: Added `no_html_filter` parameter.
