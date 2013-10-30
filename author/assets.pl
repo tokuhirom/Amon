@@ -216,7 +216,7 @@ sub fetch {
 sub run_bootstrap {
     my $files = {};
     print "Fetching bootstrap\n";
-    my $zip_url = 'https://github.com/twbs/bootstrap/archive/v3.0.0.zip';
+    my $zip_url = 'https://github.com/twbs/bootstrap/archive/v3.0.1.zip';
     my $tmpdir = File::Temp::tempdir(CLEANUP => 1);
     my $tmp = "$tmpdir/bootstrap.zip";
     print "Saving files to $tmp\n";
