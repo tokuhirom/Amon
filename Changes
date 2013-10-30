@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+5.14 2013-10-30T11:15:10Z
+
+    - CSRFDefender: Added `no_html_filter` parameter.
+      (tokuhirom)
+
 5.13 2013-10-29T02:10:40Z
 
     - Web::Disptacher::RouterBoom supports DELETE method.

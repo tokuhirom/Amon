@@ -83,6 +83,8 @@ sub validate_csrf {
 1;
 __END__
 
+=for stopwords CSRFDefender
+
 =head1 NAME
 
 Amon2::Plugin::Web::CSRFDefender - Anti CSRF filter
