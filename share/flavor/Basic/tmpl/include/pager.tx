@@ -1,8 +1,8 @@
 : if ($pager) {
     <div class="pagination">
         <ul>
-            <: if (pager.previous_page) { :>
-                <li class="prev"><a href="<: uri_with({page => pager.previous_page}) :>" rel="previous">&larr; Back</a><li>
+            <: if ($pager.previous_page) { :>
+                <li class="prev"><a href="<: uri_with({page => $pager.previous_page}) :>" rel="previous">&larr; Back</a><li>
             <: } else { :>
                 <li class="prev disabled"><a href="#">&larr; Back</a><li>
             <: } :>
