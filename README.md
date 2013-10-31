@@ -181,6 +181,7 @@ Tokuhiro Matsuno <tokuhirom@gmail.com>
 - Geraud CONTINSOUZAS
 - Syohei YOSHIDA
 - magnolia
+- Katsuhiro Konishi
 
 # LICENSE
 

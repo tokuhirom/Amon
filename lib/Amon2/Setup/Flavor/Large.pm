@@ -6,7 +6,7 @@ package Amon2::Setup::Flavor::Large;
 use parent qw(Amon2::Setup::Flavor);
 use File::Path ();
 
-our $VERSION = '5.15';
+our $VERSION = '5.16';
 
 sub admin_script {
     my $self = shift;

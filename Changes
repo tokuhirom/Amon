@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+5.16 2013-10-31T23:20:48Z
+
+    - Fixed pager.tx bug. It's broken from 5.00.
+      (Katsuhiro Konishi)
+
 5.15 2013-10-30T23:44:03Z
 
     - Upgrade Twitter bootstrap 3.0.0 to 3.0.1.
