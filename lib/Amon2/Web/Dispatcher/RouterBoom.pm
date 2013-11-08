@@ -217,7 +217,7 @@ You can customize the exception handler. You can define the special named method
         my ($class, $c, $e) = @_;
 
         if (UNIVERSAL::isa($e, 'My::Exception::Validation')) {
-            return $self->create_simple_status_page(400, 'Bad Request');
+            return $c->create_simple_status_page(400, 'Bad Request');
         } else {
             return $c->res_500();
         }
