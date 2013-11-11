@@ -80,7 +80,7 @@ This is a JSON plugin.
 
 =over 4
 
-=item $c->render_json(\%dat);
+=item C<< $c->render_json(\%dat); >>
 
 Generate JSON data from C<< \%dat >> and returns instance of L<Plack::Response>.
 
