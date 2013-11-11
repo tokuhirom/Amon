@@ -144,7 +144,7 @@ sub run {
 sub show_banner {
     my $self = shift;
 
-    print <<'...', $self->web_script, $self->admin_script;
+    printf <<'...', $self->web_script, $self->admin_script;
 --------------------------------------------------------------
 
 Setup script was done! You are ready to run the skelton.
