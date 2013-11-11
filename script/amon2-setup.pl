@@ -21,6 +21,7 @@ GetOptions(
 ) or pod2usage(0);
 if ($version) {
     require Amon2;
+    print "Perl: $]\n";
     print "Amon2: $Amon2::VERSION\n";
     exit(0);
 }
