@@ -33,14 +33,13 @@ sub run {
     $self->create_cpanfile({
         'HTML::FillInForm::Lite'          => '1.11',
         'Time::Piece'                     => '1.20',
-        'Plack::Session'                  => '0.14',
-        'Plack::Middleware::Session'      => 0,
         'Plack::Middleware::ReverseProxy' => '0.09',
         'JSON'                            => '2.50',
         'Teng'                            => '0.18',
         'DBD::SQLite'                     => '1.33',
         'Test::WWW::Mechanize::PSGI'      => 0,
         'Router::Boom'                    => '0.06',
+        'HTTP::Session2'                  => '0.04',
     });
 
     # static files

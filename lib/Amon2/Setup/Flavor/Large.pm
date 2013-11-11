@@ -92,6 +92,7 @@ sub run {
             'Module::Find'      => 0, # load controllers
             'Module::Functions' => 2, # Dispatcher
             'Router::Boom'      => '0.06',
+            'HTTP::Session2'    => 0,
         }
     );
 

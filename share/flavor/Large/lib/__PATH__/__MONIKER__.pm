@@ -53,4 +53,26 @@ __PACKAGE__->add_trigger(
     },
 );
 
+sub session {
+    my $self = shift;
+
+    if (!exists $self->{session}) {
+        $self->{session} = HTTP::Session2::ClientStore->new(
+            env => $self->req->env,
+            secret => '<: random_string(32) :>',
+        );
+    }
+    return $self->{session};
+}
+
+__PACKAGE__->add_trigger(
+    AFTER_DISPATCH => sub {
+        my ( $c, $res ) = @_;
+        if ($c->{session} && $res->can('cookies')) {
+            $c->{session}->finalize_plack_response($res);
+        }
+        return;
+    },
+);
+
 1;

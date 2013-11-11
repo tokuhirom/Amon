@@ -100,6 +100,12 @@ Amon2::Plugin::Web::CSRFDefender - Anti CSRF filter
 
 This plugin denies CSRF request.
 
+Do not use this with L<HTTP::Session2>. Because L<HTTP::Session2> has XSRF token management function by itself.
+
+=head1 WARNINGS
+
+This module will split from Amon2 core distribution. You need to list this module in your cpanfile.
+
 =head1 METHODS
 
 =over 4
