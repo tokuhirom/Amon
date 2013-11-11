@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.8.3, CPAN::Meta::Converter version 2.132830",
+   "generated_by" : "Minilla/v0.8.4, CPAN::Meta::Converter version 2.132830",
    "license" : [
       "perl_5"
    ],
@@ -110,6 +110,7 @@
             "Plack::Middleware::ReverseProxy" : "0",
             "Plack::Middleware::Session" : "0",
             "Plack::Test" : "0",
+            "Router::Simple::Sinatraish" : "0",
             "Starlet" : "0",
             "Test::TCP" : "0",
             "Test::WWW::Mechanize" : "0",

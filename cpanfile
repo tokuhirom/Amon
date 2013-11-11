@@ -71,5 +71,6 @@ on test => sub {
     suggests 'Amon2::Plugin::Web::HTTPSession';
     suggests 'Plack::Middleware::ReverseProxy';
     suggests 'Starlet';
+    suggests 'Router::Simple::Sinatraish';
 };
 
