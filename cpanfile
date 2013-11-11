@@ -73,5 +73,6 @@ on test => sub {
     suggests 'Plack::Middleware::ReverseProxy';
     suggests 'Starlet';
     suggests 'Router::Simple::Sinatraish';
+    suggests 'Amon2::DBI';
 };
 
