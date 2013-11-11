@@ -16,9 +16,6 @@ sub dispatch {
 __PACKAGE__->load_plugins(
     'Web::FillInFormLite',
     'Web::JSON',
-    'Web::CSRFDefender' => {
-        post_only => 1,
-    },
 );
 
 # setup view
