@@ -58,4 +58,13 @@ on test => sub {
     suggests 'Test::WWW::Mechanize';
     suggests 'App::cpanminus';
     suggests 'File::Which';
+    suggests 'DBD::SQLite';
+    suggests 'Furl';
+    suggests 'Module::Functions';
+    suggests 'HTTP::MobileAgent';
+    suggests 'Text::MicroTemplate::Extended';
+    suggests 'Module::Find';
+    suggests 'Amon2::Plugin::LogDispatch';
+    suggests 'HTML::StickyQuery';
+    suggests 'Amon2::Plugin::Web::MobileAgent';
 };
