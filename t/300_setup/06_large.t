@@ -14,6 +14,7 @@ use Test::Requires {
     'Module::Functions'               => '0',
     'HTML::FillInForm::Lite'          => 0,
     'Router::Boom'                    => '0.03',
+    'Plack::Middleware::ReverseProxy' => 0,
 };
 
 test_flavor(sub {
