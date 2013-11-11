@@ -81,4 +81,15 @@
     </div>
 </section>
 
+<hr>
+
+<h2>Session counter demo</h2>
+
+<p>You seen this page <: $counter :> times.</p>
+
+<form method="post" action="/reset_counter">
+    <input type="submit" name="Reset counter." class="btn btn-default">
+</form>
+     
+
 : }

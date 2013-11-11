@@ -11,6 +11,7 @@ useall('<% $module %>::<% $moniker %>::C');
 base '<% $module %>::<% $moniker %>::C';
 
 get '/' => 'Root#index';
+post '/reset_counter' => 'Root#reset_counter';
 
 
 1;

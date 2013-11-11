@@ -73,6 +73,9 @@ sub _build_xslate {
         tag_end   => '%>',
         line_start => '%%',
         path => [ File::Spec->catdir(File::ShareDir::dist_dir('Amon2'), 'flavor') ],
+        module => [
+            'Amon2::Util' => ['random_string'],
+        ],
     );
     $xslate;
 }

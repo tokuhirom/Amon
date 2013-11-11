@@ -4,7 +4,6 @@ use warnings;
 use utf8;
 use parent qw/<% $module %> Amon2::Web/;
 use File::Spec;
-use HTTP::Session2;
 
 # dispatcher
 use <% $module %>::Web::Dispatcher;
@@ -45,6 +44,8 @@ __PACKAGE__->add_trigger(
     },
 );
 
+use HTTP::Session2::ClientStore;
+
 __PACKAGE__->add_trigger(
     BEFORE_DISPATCH => sub {
         my ( $c ) = @_;
@@ -66,7 +67,7 @@ sub session {
     if (!exists $self->{session}) {
         $self->{session} = HTTP::Session2::ClientStore->new(
             env => $self->req->env,
-            secret => '<: random_string(32) :>',
+            secret => '<% random_string(32) %>',
         );
     }
     return $self->{session};
