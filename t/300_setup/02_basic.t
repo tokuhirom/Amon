@@ -11,6 +11,7 @@ use Test::Requires +{
     'Plack::Session'                  => '0.14',
     'Module::Functions'               => '0',
     'HTML::FillInForm::Lite'          => 0,
+    'Plack::Middleware::ReverseProxy' => 0,
 };
 
 test_flavor(sub {

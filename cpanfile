@@ -67,4 +67,6 @@ on test => sub {
     suggests 'Amon2::Plugin::LogDispatch';
     suggests 'HTML::StickyQuery';
     suggests 'Amon2::Plugin::Web::MobileAgent';
+    suggests 'Test::WWW::Mechanize::PSGI';
+    suggests 'Amon2::Plugin::Web::HTTPSession';
 };
