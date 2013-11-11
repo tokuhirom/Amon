@@ -129,6 +129,9 @@ sub run {
         $self->render_file( "lib/<<PATH>>/${moniker}/ViewFunctions.pm", 'Minimum/lib/__PATH__/Web/ViewFunctions.pm', {
             package => "$self->{module}::${moniker}::ViewFunctions",
         });
+        $self->render_file( "lib/<<PATH>>/${moniker}/Plugin/Session.pm", 'Basic/lib/__PATH__/Web/Plugin/Session.pm', {
+            package => "$self->{module}::${moniker}::Plugin::Session",
+        });
         $self->render_file( "lib/<<PATH>>/${moniker}/View.pm", 'Minimum/lib/__PATH__/Web/View.pm', {
             package   => "$self->{module}::${moniker}::View",
             tmpl_path => "tmpl/" . lc($moniker),

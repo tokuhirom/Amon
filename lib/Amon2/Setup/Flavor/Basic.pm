@@ -17,6 +17,7 @@ sub run {
 
     $self->render_file( 'lib/<<PATH>>.pm',                   'Basic/lib/__PATH__.pm' );
     $self->render_file( 'lib/<<PATH>>/Web.pm',               'Basic/lib/__PATH__/Web.pm' );
+    $self->render_file( 'lib/<<PATH>>/Web/Plugin/Session.pm','Basic/lib/__PATH__/Web/Plugin/Session.pm' );
     $self->render_file( 'lib/<<PATH>>/Web/Dispatcher.pm',    'Basic/lib/__PATH__/Web/Dispatcher.pm' );
     $self->render_file( 'lib/<<PATH>>/Web/View.pm',          'Minimum/lib/__PATH__/Web/View.pm' );
     $self->render_file( 'lib/<<PATH>>/Web/ViewFunctions.pm', 'Minimum/lib/__PATH__/Web/ViewFunctions.pm' );

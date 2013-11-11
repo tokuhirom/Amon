@@ -15,6 +15,7 @@ sub dispatch {
 __PACKAGE__->load_plugins(
     'Web::FillInFormLite',
     'Web::JSON',
+    '+<% $module %>::Web::Plugin::Session',
 );
 
 # setup view
@@ -41,45 +42,6 @@ __PACKAGE__->add_trigger(
 
         # Cache control.
         $res->header( 'Cache-Control' => 'private' );
-    },
-);
-
-use HTTP::Session2::ClientStore;
-
-__PACKAGE__->add_trigger(
-    BEFORE_DISPATCH => sub {
-        my ( $c ) = @_;
-        if ($c->req->method ne 'GET' && $c->req->method ne 'HEAD') {
-            my $token = $c->req->header('X-XSRF-TOKEN') || $c->req->param('XSRF-TOKEN');
-            unless ($c->session->validate_xsrf_token($token)) {
-                return $c->create_simple_status_page(
-                    403, 'XSRF detected.'
-                );
-            }
-        }
-        return;
-    },
-);
-
-sub session {
-    my $self = shift;
-
-    if (!exists $self->{session}) {
-        $self->{session} = HTTP::Session2::ClientStore->new(
-            env => $self->req->env,
-            secret => '<% random_string(32) %>',
-        );
-    }
-    return $self->{session};
-}
-
-__PACKAGE__->add_trigger(
-    AFTER_DISPATCH => sub {
-        my ( $c, $res ) = @_;
-        if ($c->{session} && $res->can('cookies')) {
-            $c->{session}->finalize_plack_response($res);
-        }
-        return;
     },
 );
 
