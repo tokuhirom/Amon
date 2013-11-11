@@ -20,7 +20,7 @@ sub assets {
 
     my @assets = qw(
         jQuery Bootstrap ES5Shim MicroTemplateJS StrftimeJS SprintfJS
-        MicroLocationJS MicroDispatcherJS
+        MicroLocationJS MicroDispatcherJS XSRFTokenJS
     );
     @assets;
 }

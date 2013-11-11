@@ -46,6 +46,11 @@ __PACKAGE__->register_js(
     'https://raw.github.com/tokuhirom/micro_dispatcher.js/master/micro_dispatcher.js',
     'MicroDispatcherJS',
 );
+__PACKAGE__->register_js(
+    'run_xsrf_token_js',
+    'https://raw.github.com/tokuhirom/HTTP-Session2/master/js/xsrf-token.js',
+    'XSRFTokenJS',
+);
 
 &main;exit;
 
@@ -66,6 +71,7 @@ sub main {
         run_sprintf_js();
         run_micro_location_js();
         run_micro_dispatcher_js();
+        run_xsrf_token_js();
     }
 }
 
