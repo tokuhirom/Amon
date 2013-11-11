@@ -1,4 +1,7 @@
 language: perl
+before_script:
+  - "git config --global user.email 'you@example.com'"
+  - "git config --global user.name 'Your Name'"
 install: cpanm --with-recommends --with-suggests --installdeps --notest .
 perl:
   - "5.14"
