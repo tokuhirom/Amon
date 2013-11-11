@@ -22,6 +22,7 @@ test_flavor(sub {
 		is(ref($conf), 'HASH');
 	}
     ok(-f 'lib/My/App.pm', 'lib/My/App.pm exists');
+    like(slurp('lib/My/App/Web.pm'), qr{secret => '.+'});
     ok((do 'lib/My/App.pm'), 'lib/My/App.pm is valid') or do {
         diag $@;
         diag do {
