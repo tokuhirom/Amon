@@ -89,10 +89,25 @@ sub run {
 
     $self->create_cpanfile(
         {
-            'Module::Find'      => 0, # load controllers
-            'Module::Functions' => 2, # Dispatcher
-            'Router::Boom'      => '0.06',
-            'HTTP::Session2'    => 0,
+            'Amon2::Util'                        => 0,
+            'Amon2::Web'                         => 0,
+            'Amon2::Web::Dispatcher::RouterBoom' => 0,
+            'DBI'                                => 0,
+            'File::ShareDir'                     => 0,
+            'Getopt::Long'                       => 0,
+            'HTTP::Session2::ClientStore'        => 0,
+            'Module::Build'                      => 0,
+            'Module::Find'                       => 0,        # load controllers
+            'Module::Functions'                  => 2,        # Dispatcher
+            'Plack::App::File'                   => 0,
+            'Plack::Builder'                     => 0,
+            'Plack::Loader'                      => 0,
+            'Plack::Session::Store::DBI'         => 0,
+            'Router::Boom'                       => '0.06',
+            'Teng'                               => 0,
+            'Teng::Row'                          => 0,
+            'Teng::Schema::Declare'              => 0,
+            'parent'                             => 0,
         }
     );
 
