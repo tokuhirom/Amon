@@ -15,9 +15,7 @@ sub dispatch {
 __PACKAGE__->load_plugins(
     'Web::FillInFormLite',
     'Web::JSON',
-    'Web::CSRFDefender' => {
-        post_only => 1,
-    },
+    '+<% $module %>::Web::Plugin::Session',
 );
 
 # setup view
@@ -44,14 +42,6 @@ __PACKAGE__->add_trigger(
 
         # Cache control.
         $res->header( 'Cache-Control' => 'private' );
-    },
-);
-
-__PACKAGE__->add_trigger(
-    BEFORE_DISPATCH => sub {
-        my ( $c ) = @_;
-        # ...
-        return;
     },
 );
 

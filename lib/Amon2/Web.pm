@@ -9,7 +9,6 @@ use URI::Escape ();
 use Amon2::Web::Request;
 use Amon2::Web::Response;
 use Scalar::Util ();
-use Plack::Session;
 use Plack::Util;
 
 # -------------------------------------------------------------------------
@@ -27,8 +26,17 @@ BEGIN {
 }
 
 sub session {
-	my $self = shift;
-	$self->{session} ||= Plack::Session->new($self->request->env);
+    my $self = shift;
+    my $klass = ref $self || $self;
+
+    require Plack::Session;
+    no strict 'refs';
+    *{"${klass}::session"} = sub {
+        my $self = shift;
+        $self->{session} ||= Plack::Session->new($self->request->env);
+    };
+
+    return $self->session();
 }
 
 # -------------------------------------------------------------------------

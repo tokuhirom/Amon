@@ -26,6 +26,7 @@ requires 'URI::QueryParam';
 requires 'File::Copy::Recursive'; # setup script
 requires 'File::ShareDir';
 requires 'Module::CPANfile', '0.9020';
+requires 'HTTP::Session2';
 
 recommends 'Teng', 0.18;
 
@@ -71,5 +72,7 @@ on test => sub {
     suggests 'Amon2::Plugin::Web::HTTPSession';
     suggests 'Plack::Middleware::ReverseProxy';
     suggests 'Starlet';
+    suggests 'Router::Simple::Sinatraish';
+    suggests 'Amon2::DBI';
 };
 

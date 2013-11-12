@@ -92,6 +92,7 @@ sub run {
             'Module::Find'      => 0, # load controllers
             'Module::Functions' => 2, # Dispatcher
             'Router::Boom'      => '0.06',
+            'HTTP::Session2'    => 0,
         }
     );
 
@@ -128,6 +129,9 @@ sub run {
         $self->render_file( "lib/<<PATH>>/${moniker}/ViewFunctions.pm", 'Minimum/lib/__PATH__/Web/ViewFunctions.pm', {
             package => "$self->{module}::${moniker}::ViewFunctions",
         });
+        $self->render_file( "lib/<<PATH>>/${moniker}/Plugin/Session.pm", 'Basic/lib/__PATH__/Web/Plugin/Session.pm', {
+            package => "$self->{module}::${moniker}::Plugin::Session",
+        });
         $self->render_file( "lib/<<PATH>>/${moniker}/View.pm", 'Minimum/lib/__PATH__/Web/View.pm', {
             package   => "$self->{module}::${moniker}::View",
             tmpl_path => "tmpl/" . lc($moniker),
@@ -143,7 +147,7 @@ sub run {
 sub show_banner {
     my $self = shift;
 
-    print <<'...', $self->web_script, $self->admin_script;
+    printf <<'...', $self->web_script, $self->admin_script;
 --------------------------------------------------------------
 
 Setup script was done! You are ready to run the skelton.

@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.8.3, CPAN::Meta::Converter version 2.132830",
+   "generated_by" : "Minilla/v0.8.4, CPAN::Meta::Converter version 2.132830",
    "license" : [
       "perl_5"
    ],
@@ -54,6 +54,7 @@
             "Getopt::Long" : "0",
             "HTML::FillInForm::Lite" : "0",
             "HTTP::Headers" : "0",
+            "HTTP::Session2" : "0",
             "Hash::MultiValue" : "0",
             "JSON" : "2",
             "MRO::Compat" : "0",
@@ -88,6 +89,7 @@
             "Test::Requires" : "0.06"
          },
          "suggests" : {
+            "Amon2::DBI" : "0",
             "Amon2::Plugin::LogDispatch" : "0",
             "Amon2::Plugin::Web::HTTPSession" : "0",
             "Amon2::Plugin::Web::MobileAgent" : "0",
@@ -110,6 +112,7 @@
             "Plack::Middleware::ReverseProxy" : "0",
             "Plack::Middleware::Session" : "0",
             "Plack::Test" : "0",
+            "Router::Simple::Sinatraish" : "0",
             "Starlet" : "0",
             "Test::TCP" : "0",
             "Test::WWW::Mechanize" : "0",

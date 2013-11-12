@@ -17,6 +17,7 @@ sub run {
 
     $self->render_file( 'lib/<<PATH>>.pm',                   'Basic/lib/__PATH__.pm' );
     $self->render_file( 'lib/<<PATH>>/Web.pm',               'Basic/lib/__PATH__/Web.pm' );
+    $self->render_file( 'lib/<<PATH>>/Web/Plugin/Session.pm','Basic/lib/__PATH__/Web/Plugin/Session.pm' );
     $self->render_file( 'lib/<<PATH>>/Web/Dispatcher.pm',    'Basic/lib/__PATH__/Web/Dispatcher.pm' );
     $self->render_file( 'lib/<<PATH>>/Web/View.pm',          'Minimum/lib/__PATH__/Web/View.pm' );
     $self->render_file( 'lib/<<PATH>>/Web/ViewFunctions.pm', 'Minimum/lib/__PATH__/Web/ViewFunctions.pm' );
@@ -33,14 +34,13 @@ sub run {
     $self->create_cpanfile({
         'HTML::FillInForm::Lite'          => '1.11',
         'Time::Piece'                     => '1.20',
-        'Plack::Session'                  => '0.14',
-        'Plack::Middleware::Session'      => 0,
         'Plack::Middleware::ReverseProxy' => '0.09',
         'JSON'                            => '2.50',
         'Teng'                            => '0.18',
         'DBD::SQLite'                     => '1.33',
         'Test::WWW::Mechanize::PSGI'      => 0,
         'Router::Boom'                    => '0.06',
+        'HTTP::Session2'                  => '0.04',
     });
 
     # static files

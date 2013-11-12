@@ -20,7 +20,7 @@ sub assets {
 
     my @assets = qw(
         jQuery Bootstrap ES5Shim MicroTemplateJS StrftimeJS SprintfJS
-        MicroLocationJS MicroDispatcherJS
+        MicroLocationJS MicroDispatcherJS XSRFTokenJS
     );
     @assets;
 }
@@ -73,6 +73,9 @@ sub _build_xslate {
         tag_end   => '%>',
         line_start => '%%',
         path => [ File::Spec->catdir(File::ShareDir::dist_dir('Amon2'), 'flavor') ],
+        module => [
+            'Amon2::Util' => ['random_string'],
+        ],
     );
     $xslate;
 }
@@ -154,7 +157,8 @@ sub write_asset {
     my $klass = Plack::Util::load_class($asset, 'Amon2::Setup::Asset');
     my $files = $klass->files;
     while (my ($fname, $content) = each %$files) {
-        $self->write_file_raw("$base/$fname", $content, '>:raw');
+        my $layer = $fname =~ /\.js\z/ ? '>:encoding(utf-8)' : '>:raw';
+        $self->write_file_raw("$base/$fname", $content, $layer);
     }
 }
 
