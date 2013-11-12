@@ -1,5 +1,16 @@
 {{$NEXT}}
 
+6.00 2013-11-12T03:50:56Z
+
+    - Default session library is HTTP::Session2.
+      (tokuhirom)
+    - Split some deprecated modules from core dist.
+      Amon2::Plugin::Web::NoCache
+      Amon2::Plugin::Web::PlackSession
+      Amon2::Web::Dispatcher::Lite
+      Amon2::Web::Dispatcher::RouterSimple
+      (tokuhirom)
+
 5.16 2013-10-31T23:20:48Z
 
     - Fixed pager.tx bug. It's broken from 5.00.
