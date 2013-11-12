@@ -10,8 +10,9 @@ sub create_request  { Extended::Web::Request->new($_[1]) }
 
 use Extended::Web::Dispatcher;
 sub dispatch {
-    return Extended::Web::Dispatcher->dispatch( $_[0] )
-      or die "response is not generated";
+    my $ret = Extended::Web::Dispatcher->dispatch( $_[0] );
+    $ret or die "response is not generated";
+    $ret;
 }
 
 # setup view class
