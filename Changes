@@ -1,3 +1,5 @@
+Revision history for Perl module Amon2
+
 {{$NEXT}}
 
 6.00 2013-11-12T03:50:56Z
@@ -269,259 +271,150 @@
     [All flavors]
     - added ViewFunctions class for more clean code
 
-3.68
+3.68 2013-02-04
 
     - upgrade to jQuery 1.9.1
 
-3.67
-
-    - eg/realtime-chat/chat.psgi: fix a destination to connect via web socket.(reported by shoutm)
+    [3.67 not released]
+    - eg/realtime-chat/chat.psgi: fix a destination to connect via web socket.
+      (reported by shoutm)
     - upgrade to jQuery 1.9.0
 
-3.66
+3.66 2012-12-14
 
     - fixed testing issue
 
-3.65
+3.65 2012-12-11
 
     - [Setup] include all files from twitter-bootstrap. closed #53
     - [Setup] move view class generator to ::View class.
 
-3.64
+3.64 2012-12-04
 
-    commit b0d08628c8524bb9d8f40eb1c94ad64d1d0a4b97
-    Author: tokuhirom <tokuhirom@gmail.com>
-    Date:   Wed Dec 5 11:19:46 2012 +0900
+    - upgrade es5shim to latest
+    - upgrade deps for fine version of HTML::FillInForm::Lite and Xslate
+    - Merge branch 'master' of github.com:tokuhirom/Amon
+    - testing memory leaks
+    - support method not allowed on Flavor::Large
+    - added Amon2->debug_mode()
+    - added warn_handler for default flavor
+    - upgrade assets. jquery 1.8.3, and latest bootstrap.
+    - support method not allowed on Flavor::Large
+    - added Amon2->debug_mode()
+    - added warn_handler for default flavor
 
-        upgrade es5shim to latest
+    [from Keiji, Yoshimi <walf443@gmail.com>]
+    - Update lib/Amon2/Plugin/Web/JSON.pm
+    - fix hijacking message.
 
-    lib/Amon2/Setup/Asset/ES5Shim.pm |   31 ++++++++++++++++---------------
-    1 file changed, 16 insertions(+), 15 deletions(-)
-
-    commit f45060d80915a39c8e2c42d721ef9ad2777317a8
-    Author: tokuhirom <tokuhirom@gmail.com>
-    Date:   Wed Dec 5 11:18:06 2012 +0900
-
-        upgrade deps for fine version of HTML::FillInForm::Lite and Xslate
-
-    Build.PL                          |    2 +-
-    lib/Amon2/Setup/Flavor/Basic.pm   |    2 +-
-    lib/Amon2/Setup/Flavor/Minimum.pm |    2 +-
-    3 files changed, 3 insertions(+), 3 deletions(-)
-
-    commit 1dfe3b55cf9b218d835986a49682c9530d366e37
-    Merge: 3f3eebe 9d3dc1c
-    Author: tokuhirom <tokuhirom@gmail.com>
-    Date:   Mon Dec 3 11:19:50 2012 +0900
-
-        Merge branch 'master' of github.com:tokuhirom/Amon
-
-    commit 3f3eebe6ed005487dee18a58c34aa791aae544b3
-    Author: tokuhirom <tokuhirom@gmail.com>
-    Date:   Mon Dec 3 11:17:15 2012 +0900
-
-        testing memory leaks
-
-    t/100_core/004_web_to_app_leak.t |   51 ++++++++++++++++++++++++++++++++++++++
-    1 file changed, 51 insertions(+)
-
-    commit 9d3dc1c54ea81d94956c924a7b29578f21e3fcd4
-    Merge: 208c5b2 d63d6fe
-    Author: Tokuhiro Matsuno <tokuhirom@gmail.com>
-    Date:   Thu Nov 29 13:31:01 2012 -0800
-
-
-        Merge pull request #51 from walf443/patch-1
-
-        Update lib/Amon2/Plugin/Web/JSON.pm
-
-    commit d63d6fe1bf0b4a6a1d431dcb637116b55b4c4f34
-    Author: Keiji, Yoshimi <walf443@gmail.com>
-    Date:   Thu Nov 29 21:26:13 2012 +0900
-
-        Update lib/Amon2/Plugin/Web/JSON.pm
-
-        fix hijacking message.
-
-    lib/Amon2/Plugin/Web/JSON.pm |    2 +-
-    1 file changed, 1 insertion(+), 1 deletion(-)
-
-    commit 208c5b291d24c41c6e772dade8eb046257c55bc8
-    Author: tokuhirom <tokuhirom@gmail.com>
-    Date:   Wed Nov 28 18:41:48 2012 +0900
-
-        support method not allowed on Flavor::Large
-
-    lib/Amon2/Setup/Flavor/Large.pm |    5 ++++-
-    1 file changed, 4 insertions(+), 1 deletion(-)
-
-    commit e3ccffb50ce688a610ca2b78ec05af82e3017d98
-    Author: tokuhirom <tokuhirom@gmail.com>
-    Date:   Wed Nov 28 06:08:56 2012 +0900
-
-        - added Amon2->debug_mode()
-        - added warn_handler for default flavor
-
-    lib/Amon2.pm                      |   10 ++++++++++
-    lib/Amon2/Setup/Flavor/Minimum.pm |    7 ++++++-
-    t/100_core/015_debug_mode.t       |   18 ++++++++++++++++++
-    3 files changed, 34 insertions(+), 1 deletion(-)
-
-    commit 3b30c17292c24db1e03897479cda8e9cebac10cd
-    Author: tokuhirom <tokuhirom@gmail.com>
-    Date:   Wed Nov 21 18:07:43 2012 +0900
-
-        upgrade assets. jquery 1.8.3, and latest bootstrap.
-
-    lib/Amon2/Plugin/Web/JSON.pm |    2 +-
-    1 file changed, 1 insertion(+), 1 deletion(-)
-
-    commit 208c5b291d24c41c6e772dade8eb046257c55bc8
-    Author: tokuhirom <tokuhirom@gmail.com>
-    Date:   Wed Nov 28 18:41:48 2012 +0900
-
-        support method not allowed on Flavor::Large
-
-    lib/Amon2/Setup/Flavor/Large.pm |    5 ++++-
-    1 file changed, 4 insertions(+), 1 deletion(-)
-
-    commit e3ccffb50ce688a610ca2b78ec05af82e3017d98
-    Author: tokuhirom <tokuhirom@gmail.com>
-    Date:   Wed Nov 28 06:08:56 2012 +0900
-
-        - added Amon2->debug_mode()
-        - added warn_handler for default flavor
-
-    lib/Amon2.pm                      |   10 ++++++++++
-    lib/Amon2/Setup/Flavor/Minimum.pm |    7 ++++++-
-    t/100_core/015_debug_mode.t       |   18 ++++++++++++++++++
-    3 files changed, 34 insertions(+), 1 deletion(-)
-
-    commit 3b30c17292c24db1e03897479cda8e9cebac10cd
-    Author: tokuhirom <tokuhirom@gmail.com>
-    Date:   Wed Nov 21 18:07:43 2012 +0900
-
-        upgrade assets. jquery 1.8.2, and latest bootstrap.
-
-    author/assets.pl                   |    2 +-
-    lib/Amon2/Setup/Asset/Bootstrap.pm |  679 +++++++++++++++++++++---------------
-    lib/Amon2/Setup/Asset/jQuery.pm    |    8 +-
-    3 files changed, 403 insertions(+), 286 deletions(-)
-
-3.63
+3.63 2012-11-20
 
     - Plugin::Web::JSON: micro optimization(cache user_agent value)
 
-3.62
+3.62 2012-11-12
 
     - switch to Module::Build.
 
-3.61
+3.61 2012-10-23
 
     - doc enhancements.
 
-3.60
+3.60 2012-10-20
 
     - depend to latest Amon2::DBI
       (latest Amon2::DBI have incompatible change. check it first.)
     - Dropped dotcloud support in setup script.
 
-3.57
+3.57 2012-10-16
 
     - upgrade es5shim.js to HEAD
     - [Plugin::Web::HTTPSession] do not use '__PACKAGE__' as a capsuling key.
       use +__PACKAGE__!
       (reported by anazawa++)
 
-3.56
+    [3.56 not released]
 
     - minor test fix(tokuhirom)
     - restrict return stmt in setup flavor(tokuhirom)
     - better startup page(tokuhirom)
 
-3.55
+3.55 2012-10-06
 
     - use jshint instead of jsl, for testing application.
       in setup script.
 
-3.54
+3.54 2012-10-05
 
     - jquery 1.8.0 => 1.8.2
     - bootstrap v2.0.4 => v2.1.1
     - add a context parameter ($c) to A::W::WebSocket::{on_error, on_eof}
       (hatyuki++)
 
-3.53
+3.53 2012-08-19
 
     - fixed testing issue
       (karupanerura)
     - added micro-location.js
 
-3.52
+3.52 2012-08-09
 
     - upgrade jQuery 1.7.2 to 1.8.0
 
-3.51
+3.51 2012-08-08
 
     - streaming support
 
-3.50
+3.50 2012-08-06
 
     - websocket support
 
-3.39
+3.39 2012-08-05
 
     - Bundled es5shim.js, sprintf.js, strftime.js, micro_template.js
 
-3.38
+3.38 2012-08-01
 
-    commit ec8e3998d3d57ad885115d3cabb9478687f76e17
-    Author: Masahiro Nagano <kazeburo@gmail.com>
-    Date:   Wed Aug 1 17:42:30 2012 +0900
+    - generate a token only when needed
+      (Masahiro Nagano <kazeburo@gmail.com>)
 
-        generate a token only when needed
-
-    lib/Amon2/Plugin/Web/CSRFDefender.pm |    3 +--
-    1 file changed, 1 insertion(+), 2 deletions(-)
-
-3.37
+3.37 2012-06-28
 
     - fixed typo(syohex++)
 
-3.36
+3.36 2012-06-25
 
     - upgrade bootstrap to 2.0.4
     - added AFTER_VC hook for flavors
 
-3.35
+3.35 2012-04-04
 
     - fixed error handler
 
-3.34
+3.34 2012-03-26
 
     - upgrade jquery 1.7.2 to 1.7.3
     - upgrade bootstrap 1.4.0 to 2.0.2
 
-3.33
+3.33 2012-03-23
 
     - fixed typo
 
-3.32
+3.32 2011-12-12
 
     - lib/Amon2/Setup/Flavor/Large.pm: fixed typo (reported by pochy++)
       https://github.com/tokuhirom/Amon/issues/39
 
-3.31
+3.31 2011-11-29
 
     - fixed testing deps
       (tokuhirom)
 
-3.30
+3.30 2011-11-27
 
     * Setup::Flavor::Large: added new show_error method.
       (tokuhirom)
 
-3.29
+3.29 2011-11-24
 
     [INCOMPATIBLE CHANGES/SECURITY ENHACEMENTS]
     * added JSON hijacking detection.
@@ -533,31 +426,34 @@
     * upgrade to jQuery 1.7.1 from jQuery 1.7
 
     [MINOR FIX]
-    * Plugin::Web::JSON: Remove workaround to set 'Content-Type: text/html' on Chrome.
-      This workaround is no longer needed.
+    * Plugin::Web::JSON: Remove workaround to set 'Content-Type: text/html'
+      on Chrome. This workaround is no longer needed.
 
-3.28
+3.28 2011-11-20
 
     * Setup::Basic, Setup::Large: fixed broken links to jQuery(broken at 3.26)
 
-3.27
+3.27 2011-11-16
 
     [MINOR ENHACEMENTS]
     * e2567f4 remove deps for File::Copy::Recursive
-    * 39a846d Setup::Flavor::Large: use Module::Pluggable::Object instead of Module::Find, for few deps.
+    * 39a846d Setup::Flavor::Large: use Module::Pluggable::Object
+      instead of Module::Find, for few deps.
     * 2d899ec Flavor::Basic: doesn't using String::CamelCase.
 
-3.26
+3.26 2011-11-16
 
     [MINOR FIX]
     * 5e8f1eb There is no reason to depended on Log::Minimal
 
     [BUG FIX]
     * 6fe10a5 Flavor::Large: fixed broken links to jQuery
-    * 481bc53 Setup::Large: Do not create lib/My/App/Web.pm, lib/My/App/Web/ in Large flavor.
-    * 2d10c86 Setup::Basic, Setup::Large: mysql throws exception with empty statements.
+    * 481bc53 Setup::Large: Do not create lib/My/App/Web.pm,
+      lib/My/App/Web/ in Large flavor.
+    * 2d10c86 Setup::Basic, Setup::Large: mysql throws exception
+      with empty statements.
 
-3.25
+3.25 2011-11-13
 
     [INCOMPATIBLE CHANGE]
     - remove Amon2::Lite from core dist. Amon2::Lite is now standalone dist.
@@ -567,68 +463,71 @@
     - do not use File::which for less deps
     - do not depend to Exporter
 
-3.24
+3.24 2011-11-13
 
     * ef0ffbc load_plugins handles arguments manually without Data::OptList.
     * 472ae1b Module::Find is no longer required by Amon2 core
     * 5a82099 remove deps for MRO::Compat on perl 5.10+
 
-3.23
+    [3.23 not released]
 
     - Text::Xslate::Bridge::TT2Like is no longer needed
       (switch to Text::Xslate::Bridge::Star)
     - HTTP::Date is no longer needed
 
-3.22
+3.22 2011-11-09
 
     - set Cache-Control: private header by default.
 
-3.21
+3.21 2011-11-09
 
-    - Setup::Flavor: set HttpOnly attribute for cookies by default for security reason.
+    - Setup::Flavor: set HttpOnly attribute for cookies by default for
+      security reason.
 
-3.20
+3.20 2011-11-09
 
     - Amon2::Setup::Flavor::DotCloud:
       [rt.cpan.org #72301] dotcloud.yml error.
       https://rt.cpan.org/Public/Bug/Display.html?id=72301
       (reported by hsksyusk)
 
-3.19
+3.19 2011-11-08
 
     - Setup::Flavor: Amon2 don't use Plugin::Web::NoCache by default.
 
-3.18
+3.18 2011-11-05
 
     - Setup::Flavor::Basic: s/Back/Next/ in html template... orz.
 
-3.17
+3.17 2011-11-05
 
     - upgrade binding libraries.
       jQuery 1.6.4 => 1.7.0
       Bootstrap 1.3.0 => 1.4.0
 
-3.16
+3.16 2011-11-03
 
     - Setup::Flavor::Basic: added tmpl/include/pager.tt
 
-3.15
+3.15 2011-11-02
 
-    * 97626d1 favicon.ico -> favicon\.ico (in regex literals)(yibe)
-    * 089c3c3 Fix fat comma alignment(yibe)
-    * aaaa36e Fix indentation in flavor files(yibe)
+    - 97626d1 favicon.ico -> favicon\.ico (in regex literals)(yibe)
+    - 089c3c3 Fix fat comma alignment(yibe)
+    - aaaa36e Fix indentation in flavor files(yibe)
 
-3.14
+3.14 2011-10-29
 
-    [BUG] Amon2::Web::Request decodes parameter automatically, but it breaks Amon2::Plugin::Web::HTTPSession
+    [BUG]
+    - Amon2::Web::Request decodes parameter automatically,
+      but it breaks Amon2::Plugin::Web::HTTPSession
       (This is not a critical, but P::M::Lint warns.)
 
-3.13
+3.13 2011-10-23
 
     [MINOR FIX]
     - Config::Simple: better diag for loading configuration file
 
-3.12
+3.12 2011-10-18
 
     [TESTING FIX]
     - fixed some testing issue(antipop)
@@ -636,68 +535,66 @@
     [DOC FIX]
     - tiny doc fix in amon2-setup.pl(reported by sugyan++)
 
-3.11
+3.11 2011-10-17
 
     [BUG FIX]
     - Win32 fix(mattn)
-    https://github.com/tokuhirom/Amon/issues/33
+      https://github.com/tokuhirom/Amon/issues/33
 
-3.10
+3.10 2011-10-16
 
     [FEATURE ENHANCEMENT]
     - Setup::VC::Git: initialize git repository automatically by default
 
-3.09
+3.09 2011-10-16
 
     [FEATURE ENHANCEMENT]
     - set "X-Frame-Options: DENY" by default
 
-3.08
+    [3.08 not released]
+    - Bug fix: Flavor: Added 'use utf8' to some of *.pm .
 
-    [BUG FIX]
-    - Flavor: Added 'use utf8' to some of *.pm .
-
-3.07
+3.07 2011-10-14
 
     [BUG FIX]
     - fixed testing issue
 
-3.06
+3.06 2011-10-13
 
     [BUG FIX]
     - fixed dependencies
 
-3.05
+3.05 2011-10-13
 
     [ENHANCEMENTS]
     - Flavor::Minimum: more minimalistic
     - Flavor::Basic: logout endpoint should be only accept post
 
-3.04
+3.04 2011-10-11
 
     [FEATURE ENHACEMENTS]
     * Flavor::Large: better div structure on admin page
     * a44b06f Flavor::Basic: added test case for jslint
     * 5334ef7 Asset::Bootstrap: generate bootstrap/bootstrap-twipsy.js.
 
-3.03
+3.03 2011-10-10
 
     [BUG FIX]
     - Flavor::Lite: Do not require HTTP::Session
 
-3.02
+3.02 2011-10-10
 
     [BUG FIX]
     - jquery assets was broken in 3.00
     - main.js is invalid from bootstrap support
 
-3.01
+3.01 2011-10-09
 
     [FEATURE ENHANCEMENTS]
     - Flavor::Large: make app.psgi as a router for *.psgi
     - Flavor::Large: better auto route generation
 
-3.00
+3.00 2011-10-08
 
     [FEATURE ENHANCEMENTS]
     - use Plack::Session by default
@@ -707,16 +604,16 @@
     [MISC]
     - depended on latest Text::Xslate::Bridge::TT2Like
 
-2.56
+2.56 2011-10-07
 
     [INCOMPATIBLE CHANGE]
-    * f895c31 use TTerse in setup script
+    - f895c31 use TTerse in setup script
       (This chanage does not break your application)
 
     [MISC]
-    * 2b2bcf4 make defaul admin page's top bar as green
+    - 2b2bcf4 make defaul admin page's top bar as green
 
-2.55
+2.55 2011-10-07
 
     [INCOMPATIBLE CHANGE]
     - flavor asset apis
@@ -725,126 +622,127 @@
     - added static_file() helper method
     - added EXPERIMENTAL Large flavor
 
-2.54
+2.54 2011-09-22
 
     - switch to twitter's bootstrap
     - rewrite Asset's architecture
 
-2.53
+2.53 2011-09-21
 
     - win32 fix on Amon2->base_dir(mattn)
 
-2.52
+2.52 2011-09-19
 
     - use jquery-1.6.4.min.js.
     - [BUG] fixed routing rule for robots.txt, favicon.ico
 
-2.51
-
+    [2.51 not released]
     - updated dependencies to fix issues from depended libraries.
 
-2.50
+2.50 2011-09-02
 
     - depend on Test::More 0.98
       (fixes $? issue on subtest)
     - bundle jquery 1.3.6
     - bundle blueprint 1.0.1
 
-2.49
+2.49 2011-07-26
 
-    - revert 2.48 changes. and Do not load config/$ENV{PLACK_ENV}.pl if the config/ directory does not exists.
+    - revert 2.48 changes. and Do not load config/$ENV{PLACK_ENV}.pl
+      if the config/ directory does not exists.
 
-2.48
+2.48 2011-07-26
 
     - fixed testing issue(reported by sugyan++)
 
-2.47
+2.47 2011-07-26
 
     - Template engine is now customizalbe on Amon2::Lite.
       (tokuhirom)
 
-2.46
+2.46 2011-07-21
 
     - fixed testing issue
     - etc.
 
-2.45
+2.45 2011-07-11
 
     - ->init() method was deprecated on Setup::Flavor.
     - test fix
     - minor tweaks around pod.
 
-2.44
+2.44 2011-07-10
 
     - doc fix(tokuhirom)
 
-2.43
+2.43 2011-07-10
 
     - documentation enhancements(tokuhirom).
 
-2.42
+2.42 2011-07-10
 
     - added configuration feature for Amon2::Lite
     - fixed testing issue on Amon2::Lite(reported by syohex++)
     - added docs for CSRFDefender
 
-2.41
+2.41 2011-07-10
 
     - fixed testing issue(maybe cpan-tester's issue)
     - added EXPERIMENTAL Amon2::Lite module for small web site.
 
-2.40
+2.40 2011-07-08
 
     - fix xslate related issue in setup script(reported by gfx++)
     - doc fix
 
-2.39
+2.39 2011-07-07
     
     - upgrade jquery to 1.6.2(tokuhirom)
 
-2.38
+2.38 2011-06-14
 
     - optimize directory structure for dotcloud(tokuhirom).
 
-2.37
+2.37 2011-06-06
 
     - escape JSON data for IE7's Content-Type vulnerability.
 
-2.36
+2.36 2011-05-30
 
     - generate (404|50[023]).html for dotcloud.
     - auto_include considered harmful
     - Text::MicroTemplate is no longer required by Amon2 core.
 
-2.35
+2.35 2011-05-14
 
     - fixed deps: JSON 2 is required.
     - suppress warnings on t/100_core/010_add_config.t
 
-2.34
+2.34 2011-05-13
 
-    - Switch to EU::MM from M::I at setup script. This is required for more easy installing.
+    - Switch to EU::MM from M::I at setup script.
+      This is required for more easy installing.
 
-2.33
+2.33 2011-05-13
 
     [INCOMPATIBLE CHANGE]
-    - split Plugin::LogDispatch, Plugin::Web::MobileAgent and Plugin::Web::MobileCharset
-      to independ dist. Since these modules are no longer used by maintainer.
+    - split Plugin::LogDispatch, Plugin::Web::MobileAgent and
+      Plugin::Web::MobileCharset to independent dist.
+      Since these modules are no longer used by maintainer.
 
-2.32
+2.32 2011-05-01
 
-    - Setup::Flavor::Basic:
-        - specify the correct Amon2 version for better deployment.
+    - Setup::Flavor::Basic: - specify the correct Amon2 version
+      for better deployment.
 
-2.31
+2.31 2011-04-30
 
-    some tweaks for dotcloud friendly
-    - Setup::Flavor::Basic:
-        - generate default deployment.yml
-        - configuration for Xslate is no longer required.
-        - default .psgi file name is app.psgi
+    [Setup::Flavor::Basic - tweaks to be more dotcloud friendly]
+    - generate default deployment.yml
+    - configuration for Xslate is no longer required.
+    - default .psgi file name is app.psgi
 
-2.30
+2.30 2011-03-08
 
     - Amon2->add_config() was now deprecated.
     - Implement default load_config()
@@ -852,28 +750,29 @@
     - Depend to latest Xslate.
     - fixed testing issue
 
-2.29
+2.29 2011-03-06
 
     - better 404 page
 
-2.28
+2.28 2011-03-05
 
     - added Amon2::Setup::Asset::Blueprint
     - remove Plugin::Web::FillinForm from core. It will release as other dist.
 
-2.27
+2.27 2011-03-02
 
-    do not create MyApp/Web/(Request|Response).pm by default. It's makes shourter skelton code.
+    - do not create MyApp/Web/(Request|Response).pm by default.
+      It's makes shourter skelton code.
 
-2.26
+2.26 2011-03-02
 
     - rewrite setup script
 
-2.25
+2.25 2011-02-27
 
     - fixed testing issues related Tiffany
 
-2.24
+2.24 2011-02-27
 
     [IMPROVEMENTS]
     - added Plugin::Web::PlackSession
@@ -881,52 +780,54 @@
     [MINOR FIX]
     - remove spelling test case from amon2-setup.pl
 
-2.23
+2.23 2011-02-26
 
-    *WARNINGS*
-    - remove Tiffany dependencies from core. It may break your application created by amon2-setup.pl < 2.23.
+    [WARNINGS]
+    - remove Tiffany dependencies from core.
+      It may break your application created by amon2-setup.pl < 2.23.
       You would write 'requires "Tiffany"' in your Makefile.PL manually.
 
     [IMPROVEMENTS]
     - remove DBI dependencies from core
     - BEFORE_DISPATCH does not dies if the callback function returns true
 
-2.22
+2.22 2011-02-25
 
     - make HTML5 template as default
 
-2.21
+2.21 2011-02-23
 
     - Plugin::JSON: remove Opera special casing
 
-2.20
+2.20 2011-02-22
 
     - fixed fucking missing deps on Carp::Clan.
 
-2.19
+2.19 2011-02-22
 
-    - script/amon2-setup.pl now provides more better perlcritic templates. It's more safe.
+    - script/amon2-setup.pl now provides more better perlcritic templates.
+      It's more safe.
       (tokuhirom)
 
-2.18
+2.18 2011-02-22
 
     - call ancestor's trigger code like Class::Trigger(tokuhirom)
 
-2.17
+2.17 2011-02-21
 
     - fixed broken deps for String::Random(reported by miyagawa++)
       Now Amon2::Util provides random_string() method.
     - fixed broken amon2-setup.pl
 
-2.16
+2.16 2011-02-21
 
-    amon2-setup.pl
+    [amon2-setup.pl]
     - remove skinny support
     - added DBI base class
     - link to amon.64p.org in skelton
     - remove experimental blueprint support
 
-2.15
+2.15 2011-02-16
 
     - setup session(store it to file) by default
     - enable fillinform by default
@@ -936,74 +837,78 @@
     - cluck the deprecated warnings
     - perl 5.008001+ is required by Amon2
 
-2.14
+2.14 2011-01-31
 
-    script/amon2-setup.pl enhancements
+    [script/amon2-setup.pl enhancements]
     - handle robots.txt and favicon.ico in .psgi
     - make Middleware::Static's path as absolute
       (reported by @makotoworld)
     - added experimental blueprint support for amon2-setup.pl
 
-2.13
+2.13 2011-01-27
 
     - fixed code depended on perl5.10
 
-2.12
+2.12 2011-01-02
 
     - Amon2::Web::Request: added accessor for raw value
     - removed dependency for local::lib.
 
-2.11
+2.11 2010-12-17
 
-    - fix  encoding mime_name is lower case, Safari add BOM bug, Chrome text/html(s-aska)
+    - fix encoding mime_name is lower case, Safari add BOM bug,
+      Chrome text/html(s-aska)
 
-2.10
+2.10 2010-12-16
 
     - fixed test case
 
-2.09
+2.09 2010-12-13
 
     - first release for CPAN
 
-2.08
+2.08 not released
 
     - Web::Dispatcher::RouterSimple: export 'router' method
 
-2.07
+2.07 not released
 
     - Plugin::Web::CSRFDefender: added get_csrf_defender_token method.
 
-2.06
+2.06 not released
 
-    - fixed csrfdefender for amon2 style(before this commit, it still amon1 style!)
+    - fixed csrfdefender for amon2 style(before this commit,
+      it still amon1 style!)
       (tokuhirom)
 
-2.05
+2.05 not released
 
-    - Plugin::Web::CSRFDefender: oops. older version does not works without Amon1
+    - Plugin::Web::CSRFDefender: oops. older version does not work
+      without Amon1
     - Plugin::Web::JSON: fix Encode::Encoding object to mime-name
       (s-aska)
-    - amon2-setup.pl: switch to DBIx::Inspector from DBIx::Skinny::Schema::Loader.
+    - amon2-setup.pl: switch to DBIx::Inspector
+      from DBIx::Skinny::Schema::Loader.
       (tokuhirom)
     - doc enhancement
       (tokuhirom)
 
-2.04
+2.04 not released
 
     - docs
     - rewrote tutorial
 
-2.03
+2.03 not released
 
     - new hook point: encode_html.
 
-2.02
+2.02 not released
 
     - Amon::add_config will be deprecate
     - Log::Dispatch is no longer default component
     - docs(hiratara)
 
-2.01
+2.01 not released
 
     - fixed test case
     - added second argument for: $c->redirect($location, \%params)
@@ -1011,73 +916,74 @@
     - added $c->fillin_form() method to Amon2;:Plugin::Web:FillInForm and
       Amon2::Plugin::Web::FillInForm.
 
-2.00
+2.00 not released
 
     - refactored
     - bug fixed
     - rewrote docs
 
-1.99_01
+1.99_01 not released
 
     - Full rewrote Amon.
     - This is RC of Amon 2.0
 
-1.03
+1.03 not released
 
     - added 'router' attribute for Dispatcher::Lite.
 
-1.02
+1.02 not released
 
     - bump up version
 
-1.01
+1.01 not released
 
     - more flexible interface for Plugin::CSRFDefender
 
-1.00
+1.00 not released
 
     - bump up version
 
-0.44
+0.44 not released
 
     - added Amon2::Plugin::FillInFormLite.
 
-0.43
+0.43 not released
 
-    * e657339 [BUG] Amon2::Util must not returns undef at 2nd time function call.
-    * 7cfef62 Plugin::FillInForm: adjust content-length after fill-in.
-    * updated docs
+    - e657339 [BUG] Amon2::Util must not returns undef
+      at 2nd time function call.
+    - 7cfef62 Plugin::FillInForm: adjust content-length after fill-in.
+    - updated docs
 
-0.42
+0.42 not released
 
     - added Text::Xslate support
     - fixed some issues
 
-0.41
+0.41 not released
 
     - added $req->uri_with() method.
     - added new option 'open_layer' to Amon2::V::MT.
 
-0.40
+0.40 not released
 
     - Amon2::Web::Dispatcher::HTTPxDispatcher was removed.
     - Amon2::Web::C was removed.
       use Amon2::Web::Declare instead.
 
-0.32
+0.32 not released
 
     - M::P::Object is no longer needed
     - ConfigLoader is enabled by default.
     - depend to latest Plack
     - Plugin::HTTPSesssion: pass $c to callback
 
-0.31
+0.31 not released
 
     - Amon2::Web::Dispatcher::HTTPxDispatcher will remove on 0.40
     - do not depend to Module::Pluggable::Object.
       New loader will die if one of controller has a syntax error.
 
-0.30
+0.30 not released
 
     [SOME INCOMPAT CHANGES]
     - added Amon2::ConfigLoader
@@ -1087,14 +993,14 @@
     - added Amon2::Web->render()
     - added Amon2::Web->render_partial()
 
-0.22
+0.22 not released
 
     - Factory class was deprecated.
     - DBIx::Skinny is no longer default ORM.
       (Amon2 should not select any ORM as default)
     - move uri_for to Amon2::Web
 
-0.21
+0.21 not released
 
     - fixed tests
     - Amon2::Sense::add_trigger should take multiple triggers.
@@ -1102,22 +1008,23 @@
     - fixed deps
     - move redirect method to Amon2::Web.
 
-0.20
+0.20 not released
 
     - added Web::Dispatcher::Lite
     - Web::Dispatcher::RouterSimple:
         enable stricture automatically
 
-0.19
+0.19 not released
 
     - make DBIx::Skinny as default
     - use Router::Simple.
     - fixed dependencies
 
-0.18
+0.18 not released
 
     - added logger support
 
-0.01
+0.01 not released
 
     - initial release
+
