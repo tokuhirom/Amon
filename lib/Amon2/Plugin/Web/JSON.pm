@@ -17,6 +17,10 @@ sub init {
     unless ($c->can('render_json')) {
         Amon2::Util::add_method($c, 'render_json', \&_render_json);
     }
+    unless ($c->can('render_json_status_code_field')) {
+        my $status_code_field = exists $conf->{status_code_field} ? $conf->{status_code_field} : 'status';
+        Amon2::Util::add_method($c, 'render_json_status_code_field', sub { $status_code_field });
+    }
 }
 
 sub _render_json {
@@ -46,6 +50,10 @@ sub _render_json {
     $res->header( 'X-Content-Type-Options' => 'nosniff' ); # defense from XSS
     $res->content_length(length($output));
     $res->body($output);
+
+    if (defined (my $status_code_field = $c->render_json_status_code_field)) {
+        $res->header( 'X-JSON-Status' => $stuff->{$status_code_field} ) if exists $stuff->{$status_code_field};
+    }
 
     return $res;
 }
@@ -83,6 +91,24 @@ This is a JSON plugin.
 =item C<< $c->render_json(\%dat); >>
 
 Generate JSON data from C<< \%dat >> and returns instance of L<Plack::Response>.
+
+=back
+
+=head1 PARAMETERS
+
+=over 4
+
+=item status_code_field
+
+It specify the field name of JSON to be embedded in the 'X-JSON-Status' header.
+Default is 'status'. If you set the C<< undef >> to disable this 'X-JSON-Status' header.
+
+    $c->render_json({ status => 200, message => 'ok' })
+    # send response header 'X-JSON-Status: 200'
+
+In general JSON API error code embed in a JSON by JSON API Response body.
+But can not be logging the error code of JSON for the access log of a general Web Servers.
+You can possible by using the 'X-JSON-Status' header.
 
 =back
 
