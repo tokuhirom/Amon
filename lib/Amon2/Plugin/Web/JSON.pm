@@ -15,7 +15,6 @@ my %_ESCAPE = (
 sub init {
     my ($class, $c, $conf) = @_;
     unless ($c->can('render_json')) {
-        my $status_code_field = exists $conf->{status_code_field} ? $conf->{status_code_field} : 'status';
         Amon2::Util::add_method($c, 'render_json', sub {
             my ($c, $stuff) = @_;
 
@@ -44,7 +43,7 @@ sub init {
             $res->content_length(length($output));
             $res->body($output);
 
-            if (defined $status_code_field) {
+            if (defined (my $status_code_field =  $conf->{status_code_field})) {
                 $res->header( 'X-JSON-Status' => $stuff->{$status_code_field} ) if exists $stuff->{$status_code_field};
             }
 
@@ -96,8 +95,12 @@ Generate JSON data from C<< \%dat >> and returns instance of L<Plack::Response>.
 =item status_code_field
 
 It specify the field name of JSON to be embedded in the 'X-JSON-Status' header.
-Default is 'status'. If you set the C<< undef >> to disable this 'X-JSON-Status' header.
+Default is C<< undef >>. If you set the C<< undef >> to disable this 'X-JSON-Status' header.
 
+    __PACKAGE__->load_plugins(
+        'Web::JSON' => { status_code_field => 'status' }
+    );
+    ...
     $c->render_json({ status => 200, message => 'ok' })
     # send response header 'X-JSON-Status: 200'
 

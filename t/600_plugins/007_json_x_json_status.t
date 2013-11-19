@@ -13,19 +13,10 @@ subtest 'default' => sub {
     };
     $app->{request} = Amon2::Web::Request->new(+{});
 
-    subtest 'not have a status_code_field' => sub {
-        my $res = $app->render_json({});
-        is($res->code, 200);
-        is($res->header('X-JSON-Status'), undef);
-        is $res->content, '{}';
-    };
-
-    subtest 'have a status_code_field' => sub {
-        my $res = $app->render_json({ status => 200 });
-        is($res->code, 200);
-        is($res->header('X-JSON-Status'), '200');
-        is $res->content, '{"status":200}';
-    };
+    my $res = $app->render_json({ status => 200 });
+    is($res->code, 200);
+    is($res->header('X-JSON-Status'), undef);
+    is $res->content, '{"status":200}';
 };
 
 subtest 'set status_code_field = undef' => sub {
@@ -39,19 +30,10 @@ subtest 'set status_code_field = undef' => sub {
     };
     $app->{request} = Amon2::Web::Request->new(+{});
 
-    subtest 'not have a status_code_field' => sub {
-        my $res = $app->render_json({});
-        is($res->code, 200);
-        is($res->header('X-JSON-Status'), undef);
-        is $res->content, '{}';
-    };
-
-    subtest 'have a default status_code_field' => sub {
-        my $res = $app->render_json({ status => 200 });
-        is($res->code, 200);
-        is($res->header('X-JSON-Status'), undef);
-        is $res->content, '{"status":200}';
-    };
+    my $res = $app->render_json({ status => 200 });
+    is($res->code, 200);
+    is($res->header('X-JSON-Status'), undef);
+    is $res->content, '{"status":200}';
 };
 
 subtest 'set status_code_field = "error"' => sub {
