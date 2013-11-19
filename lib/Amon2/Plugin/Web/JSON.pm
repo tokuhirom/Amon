@@ -15,47 +15,42 @@ my %_ESCAPE = (
 sub init {
     my ($class, $c, $conf) = @_;
     unless ($c->can('render_json')) {
-        Amon2::Util::add_method($c, 'render_json', \&_render_json);
-    }
-    unless ($c->can('render_json_status_code_field')) {
         my $status_code_field = exists $conf->{status_code_field} ? $conf->{status_code_field} : 'status';
-        Amon2::Util::add_method($c, 'render_json_status_code_field', sub { $status_code_field });
+        Amon2::Util::add_method($c, 'render_json', sub {
+            my ($c, $stuff) = @_;
+
+            # for IE7 JSON venularity.
+            # see http://www.atmarkit.co.jp/fcoding/articles/webapp/05/webapp05a.html
+            my $output = $_JSON->encode($stuff);
+            $output =~ s!([+<>])!$_ESCAPE{$1}!g;
+
+            my $user_agent = $c->req->user_agent || '';
+
+            # defense from JSON hijacking
+            if ((!$c->request->header('X-Requested-With')) && $user_agent =~ /android/i && defined $c->req->header('Cookie') && ($c->req->method||'GET') eq 'GET') {
+                my $res = $c->create_response(403);
+                $res->content_type('text/html; charset=utf-8');
+                $res->content("Your request may be JSON hijacking.\nIf you are not an attacker, please add 'X-Requested-With' header to each request.");
+                $res->content_length(length $res->content);
+                return $res;
+            }
+
+            my $res = $c->create_response(200);
+
+            my $encoding = $c->encoding();
+            $encoding = lc($encoding->mime_name) if ref $encoding;
+            $res->content_type("application/json; charset=$encoding");
+            $res->header( 'X-Content-Type-Options' => 'nosniff' ); # defense from XSS
+            $res->content_length(length($output));
+            $res->body($output);
+
+            if (defined $status_code_field) {
+                $res->header( 'X-JSON-Status' => $stuff->{$status_code_field} ) if exists $stuff->{$status_code_field};
+            }
+
+            return $res;
+        });
     }
-}
-
-sub _render_json {
-    my ($c, $stuff) = @_;
-
-    # for IE7 JSON venularity.
-    # see http://www.atmarkit.co.jp/fcoding/articles/webapp/05/webapp05a.html
-    my $output = $_JSON->encode($stuff);
-    $output =~ s!([+<>])!$_ESCAPE{$1}!g;
-
-    my $user_agent = $c->req->user_agent || '';
-
-    # defense from JSON hijacking
-    if ((!$c->request->header('X-Requested-With')) && $user_agent =~ /android/i && defined $c->req->header('Cookie') && ($c->req->method||'GET') eq 'GET') {
-        my $res = $c->create_response(403);
-        $res->content_type('text/html; charset=utf-8');
-        $res->content("Your request may be JSON hijacking.\nIf you are not an attacker, please add 'X-Requested-With' header to each request.");
-        $res->content_length(length $res->content);
-        return $res;
-    }
-
-    my $res = $c->create_response(200);
-
-    my $encoding = $c->encoding();
-    $encoding = lc($encoding->mime_name) if ref $encoding;
-    $res->content_type("application/json; charset=$encoding");
-    $res->header( 'X-Content-Type-Options' => 'nosniff' ); # defense from XSS
-    $res->content_length(length($output));
-    $res->body($output);
-
-    if (defined (my $status_code_field = $c->render_json_status_code_field)) {
-        $res->header( 'X-JSON-Status' => $stuff->{$status_code_field} ) if exists $stuff->{$status_code_field};
-    }
-
-    return $res;
 }
 
 1;
