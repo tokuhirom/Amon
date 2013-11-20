@@ -15,7 +15,7 @@ subtest 'default' => sub {
 
     my $res = $app->render_json({ status => 200 });
     is($res->code, 200);
-    is($res->header('X-JSON-Status'), undef);
+    is($res->header('X-API-Status'), undef);
     is $res->content, '{"status":200}';
 };
 
@@ -32,7 +32,7 @@ subtest 'set status_code_field = undef' => sub {
 
     my $res = $app->render_json({ status => 200 });
     is($res->code, 200);
-    is($res->header('X-JSON-Status'), undef);
+    is($res->header('X-API-Status'), undef);
     is $res->content, '{"status":200}';
 };
 
@@ -50,14 +50,14 @@ subtest 'set status_code_field = "error"' => sub {
     subtest 'not have a status_code_field' => sub {
         my $res = $app->render_json({});
         is($res->code, 200);
-        is($res->header('X-JSON-Status'), undef);
+        is($res->header('X-API-Status'), undef);
         is $res->content, '{}';
     };
 
     subtest 'have a status_code_field' => sub {
         my $res = $app->render_json({ error => 402 });
         is($res->code, 200);
-        is($res->header('X-JSON-Status'), '402');
+        is($res->header('X-API-Status'), '402');
         is $res->content, '{"error":402}';
     };
 };
@@ -76,14 +76,14 @@ subtest 'set status_code_field = ""' => sub {
     subtest 'not have a status_code_field' => sub {
         my $res = $app->render_json({});
         is($res->code, 200);
-        is($res->header('X-JSON-Status'), undef);
+        is($res->header('X-API-Status'), undef);
         is $res->content, '{}';
     };
 
     subtest 'have a status_code_field' => sub {
         my $res = $app->render_json({ '' => 402 });
         is($res->code, 200);
-        is($res->header('X-JSON-Status'), '402');
+        is($res->header('X-API-Status'), '402');
         is $res->content, '{"":402}';
     };
 };
@@ -102,14 +102,14 @@ subtest 'set status_code_field = "0"' => sub {
     subtest 'not have a status_code_field' => sub {
         my $res = $app->render_json({});
         is($res->code, 200);
-        is($res->header('X-JSON-Status'), undef);
+        is($res->header('X-API-Status'), undef);
         is $res->content, '{}';
     };
 
     subtest 'have a status_code_field' => sub {
         my $res = $app->render_json({ '0' => 402 });
         is($res->code, 200);
-        is($res->header('X-JSON-Status'), '402');
+        is($res->header('X-API-Status'), '402');
         is $res->content, '{"0":402}';
     };
 };

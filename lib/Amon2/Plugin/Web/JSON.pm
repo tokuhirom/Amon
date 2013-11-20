@@ -44,7 +44,7 @@ sub init {
             $res->body($output);
 
             if (defined (my $status_code_field =  $conf->{status_code_field})) {
-                $res->header( 'X-JSON-Status' => $stuff->{$status_code_field} ) if exists $stuff->{$status_code_field};
+                $res->header( 'X-API-Status' => $stuff->{$status_code_field} ) if exists $stuff->{$status_code_field};
             }
 
             return $res;
@@ -94,19 +94,19 @@ Generate JSON data from C<< \%dat >> and returns instance of L<Plack::Response>.
 
 =item status_code_field
 
-It specify the field name of JSON to be embedded in the 'X-JSON-Status' header.
-Default is C<< undef >>. If you set the C<< undef >> to disable this 'X-JSON-Status' header.
+It specify the field name of JSON to be embedded in the 'X-API-Status' header.
+Default is C<< undef >>. If you set the C<< undef >> to disable this 'X-API-Status' header.
 
     __PACKAGE__->load_plugins(
         'Web::JSON' => { status_code_field => 'status' }
     );
     ...
     $c->render_json({ status => 200, message => 'ok' })
-    # send response header 'X-JSON-Status: 200'
+    # send response header 'X-API-Status: 200'
 
 In general JSON API error code embed in a JSON by JSON API Response body.
 But can not be logging the error code of JSON for the access log of a general Web Servers.
-You can possible by using the 'X-JSON-Status' header.
+You can possible by using the 'X-API-Status' header.
 
 =back
 
