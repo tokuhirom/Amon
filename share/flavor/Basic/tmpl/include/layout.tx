@@ -19,15 +19,15 @@
         <div class="container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#"><% $dist %></a>
-                <div class="nav-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
-                        <li><a href="#">Link</a></li>
-                        <li><a href="#">Link</a></li>
-                        <li><a href="#">Link</a></li>
-                    </ul>
-                </div>
-            </div><!-- /.navbar-inner -->
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">Link</a></li>
+                    <li><a href="#">Link</a></li>
+                    <li><a href="#">Link</a></li>
+                </ul>
+            </div>
         </div><!-- /.container -->
     </div><!-- /.navbar -->
     <div class="container">
