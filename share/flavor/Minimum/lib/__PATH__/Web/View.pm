@@ -12,7 +12,7 @@ use <% $view_functions_package // ($module ~ "::Web::ViewFunctions") %>;
 # setup view class
 sub make_instance {
     my ($class, $context) = @_;
-    Carp::croak("Usage: <% $module %>::View->make_instance(\$context_class)") if @_!=2;
+    Carp::croak("Usage: <% $module %>::Web::View->make_instance(\$context_class)") if @_!=2;
 
     my $view_conf = $context->config->{'Text::Xslate'} || +{};
     unless (exists $view_conf->{path}) {
