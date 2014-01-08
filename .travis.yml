@@ -3,7 +3,7 @@ before_script:
   - "git config --global user.email 'you@example.com'"
   - "git config --global user.name 'Your Name'"
 install:
-  - "cpanm --notest Module::Build"
+  - "cpanm --notest Module::Build ExtUtils::ParseXS"
   - "cpanm --with-recommends --with-suggests --installdeps --notest ."
 perl:
   - "5.14"
