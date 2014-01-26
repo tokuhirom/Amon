@@ -34,10 +34,10 @@ unless (caller) {
     );
     $p->getoptions(
         'p|port=i'      => \$port,
-        'host=s'      => \$host,
-        'max-workers' => \$max_workers,
-        'version!'    => \my $version,
-        'c|config=s'  => \my $config_file,
+        'host=s'        => \$host,
+        'max-workers=i' => \$max_workers,
+        'version!'      => \my $version,
+        'c|config=s'    => \my $config_file,
     );
     if ($version) {
         print "<% $module %>: $<% $module %>::VERSION\n";
