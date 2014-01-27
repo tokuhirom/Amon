@@ -2,6 +2,28 @@ Revision history for Perl module Amon2
 
 {{$NEXT}}
 
+6.01 2014-01-27T22:15:13Z
+
+    commit afa47f5604e7ee9585d9420bd755ff3728cfc736
+    Author: wata <w.nagasawa@gmail.com>
+    Date:   Sun Jan 26 18:00:11 2014 +0900
+
+        Fix server option max-workers
+
+    commit 3d37aa9fa45ab1674099d09704f9b356982a1c7b
+    Author: moznion <moznion@gmail.com>
+    Date:   Tue Jan 7 13:10:44 2014 +0900
+
+        Fix the usage of `make_instance`
+
+    commit 9417ef4c29627302f2168455c6451ef8d5d8c2e8
+    Author: Kazuhiro Osawa <yappo@shibuya.pl>
+    Date:   Wed Nov 20 13:49:41 2013 +0900
+
+        rename X-JSON-Status to X-API-status
+
+        It was considered at the time to provide an API at the same time the format of the other.
+
 6.00 2013-11-12T03:50:56Z
 
     - Default session library is HTTP::Session2.

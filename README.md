@@ -12,7 +12,7 @@ Amon2 - lightweight web application framework
 
 # DESCRIPTION
 
-Amon2 is simple, readable, extensible, __STABLE__, __FAST__ web application framework based on [Plack](http://search.cpan.org/perldoc?Plack).
+Amon2 is simple, readable, extensible, __STABLE__, __FAST__ web application framework based on [Plack](https://metacpan.org/pod/Plack).
 
 # METHODS
 
@@ -58,7 +58,7 @@ Amon2 is simple, readable, extensible, __STABLE__, __FAST__ web application fram
 
     This method loads the plugin for the application.
 
-    _$module\_name_ package name of the plugin. You can write it as two form like [DBIx::Class](http://search.cpan.org/perldoc?DBIx::Class):
+    _$module\_name_ package name of the plugin. You can write it as two form like [DBIx::Class](https://metacpan.org/pod/DBIx::Class):
 
         __PACKAGE__->load_plugin("Web::CSRFDefender");    # => loads Amon2::Plugin::Web::CSRFDefender
 
@@ -97,20 +97,20 @@ Normally, Amon2's context is stored in a global variable.
 
 This module makes the context to project local.
 
-It means, normally context class using Amon2 use `$Amon2::CONTEXT` in each project, but context class using ["PROJECT LOCAL MODE"](#PROJECT LOCAL MODE) use `$MyApp::CONTEXT`.
+It means, normally context class using Amon2 use `$Amon2::CONTEXT` in each project, but context class using ["PROJECT LOCAL MODE"](#project-local-mode) use `$MyApp::CONTEXT`.
 
 __It means you can't use code depend `<Amon2-`context>> and `<Amon2-`context>> under this mode.__\>
 
 ## NOTES ABOUT create\_request
 
-Older [Amon2::Web::Request](http://search.cpan.org/perldoc?Amon2::Web::Request) has only 1 argument like following, it uses `Amon2->context` to get encoding:
+Older [Amon2::Web::Request](https://metacpan.org/pod/Amon2::Web::Request) has only 1 argument like following, it uses `Amon2->context` to get encoding:
 
     sub create_request {
         my ($class, $env) = @_;
         Amon2::Web::Request->new($env);
     }
 
-If you want to use ["PROJECT LOCAL MODE"](#PROJECT LOCAL MODE), you need to pass class name of context class, as following:
+If you want to use ["PROJECT LOCAL MODE"](#project-local-mode), you need to pass class name of context class, as following:
 
     sub create_request {
         my ($class, $env) = @_;
