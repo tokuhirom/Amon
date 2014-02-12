@@ -1,5 +1,6 @@
 #!perl
 use strict;
+use warnings;
 use utf8;
 use File::Spec;
 use File::Basename;
@@ -51,6 +52,7 @@ unless (caller) {
             Carp::croak("$config_file does not return HashRef.");
         }
         no warnings 'redefine';
+        no warnings 'once';
         *<% $module %>::load_config = sub { $config }
     }
 
