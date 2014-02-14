@@ -11,7 +11,11 @@ sub tags {
 
 sub files {
     return {
-  'js/micro-location.js' => '// immutable object, should not assign a value to properties
+  'js/micro-location.js' => '/**
+ * https://github.com/cho45/micro-location.js
+ * (c) cho45 http://cho45.github.com/mit-license
+ */
+// immutable object, should not assign a value to properties
 function Location () { this.init.apply(this, arguments) }
 Location.prototype = {
 	init : function (protocol, host, hostname, port, pathname, search, hash) {
@@ -38,6 +42,7 @@ Location.prototype = {
 
 			var pairs = this.search.substring(1).split(/[;&]/);
 			for (var i = 0, len = pairs.length; i < len; i++) {
+				if (!pairs[i]) continue;
 				var pair = pairs[i].split(/=/);
 				var key  = decodeURIComponent(pair[0]);
 				var val  = decodeURIComponent(pair[1]);
@@ -92,7 +97,7 @@ Location.prototype = {
 };
 Location.regexp = new RegExp(\'^(?:(https?:)//(([^:/]+)(:[^/]+)?))?([^#?]*)(\\\\?[^#]*)?(#.*)?$\');
 Location.parse = function (string) {
-	var matched = string.match(this.regexp);
+	var matched = String(string).match(this.regexp);
 	var ret = new Location();
 	ret.init.apply(ret, matched.slice(1));
 	return ret;
