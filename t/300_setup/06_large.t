@@ -17,6 +17,9 @@ use Test::Requires {
     'Plack::Middleware::ReverseProxy' => 0,
 };
 
+plan skip_all => 'this test requires "sqlite3" command'
+  if system("sqlite3 -version") != 0;
+
 test_flavor(sub {
     ok(!-e 'xxx');
     ok(!-e 'yyy');
