@@ -1,6 +1,7 @@
 requires 'perl', '5.008001';
 
 requires 'Encode';
+requires 'Data::Recursive::Encode';
 requires 'Exporter';
 requires 'File::Temp';
 requires 'Getopt::Long';

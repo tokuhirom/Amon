@@ -1,7 +1,7 @@
 use strict;
 use warnings;
+use utf8;
 use Test::More;
-use Test::Requires 'JSON';
 
 {
     package MyApp;
@@ -64,6 +64,13 @@ my $ua_chrome = 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534
     is $res->status, 200;
     is $res->header('Content-Type'), 'application/json; charset=utf-8';
     is $res->content, '{"foo":"bar"}';
+}
+{
+    my $c = MyApp::Web->new(request => Amon2::Web::Request->new(+{}));
+    my $res = $c->render_json(+{"寿"=>"司"});
+    is $res->status, 200;
+    is $res->header('Content-Type'), 'application/json; charset=utf-8';
+    is $res->content, '{"\u5bff":"\u53f8"}';
 }
 done_testing;
 

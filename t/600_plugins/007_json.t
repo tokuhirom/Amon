@@ -1,7 +1,6 @@
 use strict;
 use warnings;
 use Test::More;
-use Test::Requires 'JSON';
 use JSON 2;
 
 {
