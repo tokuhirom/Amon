@@ -55,6 +55,7 @@ test_flavor(sub {
         my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
         my $res = $mech->get('http://localhost/');
         is($res->code, 200);
+        like($res->decoded_content,qr(static/css/main.css\?t=\d{10}),'fuction static_file success');
     };
 
     subtest 'admin' => sub {

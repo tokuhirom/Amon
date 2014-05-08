@@ -141,8 +141,9 @@ sub run {
         $self->render_file("lib/<<PATH>>/$moniker.pm", 'Large/lib/__PATH__/__MONIKER__.pm', {moniker => $moniker});
         $self->render_file("lib/<<PATH>>/$moniker/Dispatcher.pm", 'Large/lib/__PATH__/__MONIKER__/Dispatcher.pm', {moniker => $moniker});
         $self->render_file("lib/<<PATH>>/$moniker/C/Root.pm", 'Large/lib/__PATH__/__MONIKER__/C/Root.pm', {moniker => $moniker});
-        $self->render_file( "lib/<<PATH>>/${moniker}/ViewFunctions.pm", 'Minimum/lib/__PATH__/Web/ViewFunctions.pm', {
-            package => "$self->{module}::${moniker}::ViewFunctions",
+        $self->render_file( "lib/<<PATH>>/${moniker}/ViewFunctions.pm", 'Large/lib/__PATH__/__MONIKER__/ViewFunctions.pm', {
+            moniker => $moniker, 
+            lc_moniker => lc($moniker)
         });
         $self->render_file( "lib/<<PATH>>/${moniker}/Plugin/Session.pm", 'Basic/lib/__PATH__/Web/Plugin/Session.pm', {
             package => "$self->{module}::${moniker}::Plugin::Session",
