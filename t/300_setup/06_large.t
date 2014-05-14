@@ -17,6 +17,9 @@ use Test::Requires {
     'Plack::Middleware::ReverseProxy' => 0,
 };
 
+plan skip_all => 'this test requires "sqlite3" command'
+  if system("sqlite3 -version") != 0;
+
 test_flavor(sub {
     ok(!-e 'xxx');
     ok(!-e 'yyy');
@@ -52,6 +55,7 @@ test_flavor(sub {
         my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
         my $res = $mech->get('http://localhost/');
         is($res->code, 200);
+        like($res->decoded_content,qr(static/css/main.css\?t=\d{10}),'fuction static_file success');
     };
 
     subtest 'admin' => sub {
