@@ -72,6 +72,7 @@ sub import {
                 } else {
                     my $method = $dest->{method};
                     $c->{args} = $captured;
+                    eval "use @{[ $dest->{class} ]}";
                     return $dest->{class}->$method($c, $captured);
                 }
             };
@@ -101,8 +102,6 @@ Amon2::Web::Dispatcher::RouterBoom - Router::Boom bindings
 
     package MyApp2::Web::Dispatcher;
     use Amon2::Web::Dispatcher::RouterBoom;
-
-    use MyApp::Web::C::Foo;
 
     base 'MyApp::Web::C';
 
