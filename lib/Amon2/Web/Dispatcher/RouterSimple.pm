@@ -44,7 +44,7 @@ sub _dispatch {
     if (my $p = $class->match($req->env)) {
         my $action = $p->{action};
         $c->{args} = $p;
-        "@{[ ref Amon2->context ]}::C::$p->{controller}"->$action($c, $p);
+        "@{[ ref $c ]}::C::$p->{controller}"->$action($c, $p);
     } else {
         $c->res_404();
     }
