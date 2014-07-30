@@ -11,6 +11,7 @@ plan skip_all => "There is no MANIFEST file" unless -f 'MANIFEST';
 my $manifest = ExtUtils::Manifest::maniread();
 my @files =
   grep !m{^lib/Amon2/Setup/Flavor/.+\.pm$},
+  grep !m{^lib/Amon2/Web/Dispatcher/RouterBoom.pm$},
   grep !m{^lib/Amon2/Lite\.pm$},
   grep !m{^lib/Amon2/Web\.pm$},
   grep m!^lib/.*\.p(od|m)$!,

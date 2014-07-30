@@ -12,7 +12,7 @@ Amon2 - lightweight web application framework
 
 # DESCRIPTION
 
-Amon2 is simple, readable, extensible, __STABLE__, __FAST__ web application framework based on [Plack](https://metacpan.org/pod/Plack).
+Amon2 is simple, readable, extensible, **STABLE**, **FAST** web application framework based on [Plack](https://metacpan.org/pod/Plack).
 
 # METHODS
 
@@ -63,7 +63,7 @@ Amon2 is simple, readable, extensible, __STABLE__, __FAST__ web application fram
         __PACKAGE__->load_plugin("Web::CSRFDefender");    # => loads Amon2::Plugin::Web::CSRFDefender
 
     If you want to load a plugin in your own name space, use the '+' character before a package name, like following:
-        \_\_PACKAGE\_\_->load\_plugin("+MyApp::Plugin::Foo"); \# => loads MyApp::Plugin::Foo
+        \_\_PACKAGE\_\_->load\_plugin("+MyApp::Plugin::Foo"); # => loads MyApp::Plugin::Foo
 
 - `MyApp->load_plugins($module_name[, \%config ], ...)`
 
@@ -83,7 +83,7 @@ Amon2 is simple, readable, extensible, __STABLE__, __FAST__ web application fram
 
 - `MyApp->debug_mode()`
 
-    __((EXPERIMENTAL))__
+    **((EXPERIMENTAL))**
 
     This method returns a boolean value. It returns true when $ENV{AMON2\_DEBUG} is true value, false otherwise.
 
@@ -91,7 +91,7 @@ Amon2 is simple, readable, extensible, __STABLE__, __FAST__ web application fram
 
 # PROJECT LOCAL MODE
 
-__THIS MODE IS HIGHLY EXPERIMENTAL__
+**THIS MODE IS HIGHLY EXPERIMENTAL**
 
 Normally, Amon2's context is stored in a global variable.
 
@@ -99,7 +99,7 @@ This module makes the context to project local.
 
 It means, normally context class using Amon2 use `$Amon2::CONTEXT` in each project, but context class using ["PROJECT LOCAL MODE"](#project-local-mode) use `$MyApp::CONTEXT`.
 
-__It means you can't use code depend `<Amon2-`context>> and `<Amon2-`context>> under this mode.__\>
+**It means you can't use code depend `<Amon2-`context>> and `<Amon2-`context>> under this mode.**>
 
 ## NOTES ABOUT create\_request
 

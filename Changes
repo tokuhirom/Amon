@@ -2,6 +2,13 @@ Revision history for Perl module Amon2
 
 {{$NEXT}}
 
+6.03 2014-07-30T07:39:34Z
+
+    - Remove Amon2::Plugin::CSRFDefender from core dist.
+      If you still use it, you need to write following line in your cpanfile.
+
+      require 'Amon2::Plugin::CSRFDefender', 7.00;
+
 6.02 2014-02-14T01:45:48Z
 
     - jquery 2.0.3 -> 2.1.0, bootstrap 3.0.2 -> 3.1.1
