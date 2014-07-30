@@ -2,7 +2,6 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
-use Test::Requires 'JSON';
 
 subtest 'default' => sub {
     my $app = do {

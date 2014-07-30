@@ -1,7 +1,8 @@
 package Amon2::Plugin::Web::JSON;
 use strict;
 use warnings;
-use JSON 2 qw/encode_json/;
+use JSON 2 -no_export;
+use Data::Recursive::Encode;
 use Amon2::Util ();
 
 my $_JSON = JSON->new()->ascii(1);
@@ -20,7 +21,8 @@ sub init {
 
             # for IE7 JSON venularity.
             # see http://www.atmarkit.co.jp/fcoding/articles/webapp/05/webapp05a.html
-            my $output = $_JSON->encode($stuff);
+            my $encoding = $c->encoding();
+            my $output = $_JSON->encode( Data::Recursive::Encode->encode($encoding, $stuff) );
             $output =~ s!([+<>])!$_ESCAPE{$1}!g;
 
             my $user_agent = $c->req->user_agent || '';
@@ -36,9 +38,8 @@ sub init {
 
             my $res = $c->create_response(200);
 
-            my $encoding = $c->encoding();
-            $encoding = lc($encoding->mime_name) if ref $encoding;
-            $res->content_type("application/json; charset=$encoding");
+            my $mime_encoding = ref $encoding ? lc($encoding->mime_name) : $encoding;
+            $res->content_type("application/json; charset=$mime_encoding");
             $res->header( 'X-Content-Type-Options' => 'nosniff' ); # defense from XSS
             $res->content_length(length($output));
             $res->body($output);

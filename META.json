@@ -45,6 +45,7 @@
             "Teng" : "0.18"
          },
          "requires" : {
+            "Data::Recursive::Encode" : "0",
             "Encode" : "0",
             "Exporter" : "0",
             "File::Copy::Recursive" : "0",
