@@ -27,6 +27,9 @@ requires 'File::Copy::Recursive'; # setup script
 requires 'File::ShareDir';
 requires 'Module::CPANfile', '0.9020';
 requires 'HTTP::Session2';
+requires 'Digest::SHA';
+requires 'Time::HiRes';
+requires 'MIME::Base64';
 
 recommends 'Teng', 0.18;
 
