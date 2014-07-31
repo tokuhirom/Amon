@@ -45,6 +45,7 @@
             "Teng" : "0.18"
          },
          "requires" : {
+            "Digest::SHA" : "0",
             "Encode" : "0",
             "Exporter" : "0",
             "File::Copy::Recursive" : "0",
@@ -56,6 +57,7 @@
             "HTTP::Session2" : "0",
             "Hash::MultiValue" : "0",
             "JSON" : "2",
+            "MIME::Base64" : "0",
             "MRO::Compat" : "0",
             "Module::CPANfile" : "0.9020",
             "Plack" : "0.9982",
@@ -67,6 +69,7 @@
             "Router::Boom" : "0.07",
             "Scalar::Util" : "0",
             "Text::Xslate" : "2.0010",
+            "Time::HiRes" : "0",
             "Try::Tiny" : "0.06",
             "URI" : "1.54",
             "URI::Escape" : "0",
@@ -134,7 +137,7 @@
          "web" : "https://github.com/tokuhirom/Amon"
       }
    },
-   "version" : "6.03",
+   "version" : "6.04",
    "x_contributors" : [
       "noblejasper <nobjas@gmail.com>",
       "noblejasper <jasper@main.noble-jasper.com>",

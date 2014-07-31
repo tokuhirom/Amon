@@ -2,6 +2,10 @@ Revision history for Perl module Amon2
 
 {{$NEXT}}
 
+6.04 2014-07-31T21:40:18Z
+
+    - Make Amon2::Util::random_string() secure.
+
 6.03 2014-07-30T07:39:34Z
 
     - Remove Amon2::Plugin::CSRFDefender from core dist.
