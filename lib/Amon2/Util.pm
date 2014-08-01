@@ -7,6 +7,7 @@ use MIME::Base64 ();
 use Digest::SHA ();
 use Time::HiRes;
 use POSIX ();
+use Carp ();
 
 our @EXPORT_OK = qw/add_method random_string/;
 
@@ -40,6 +41,11 @@ open $URANDOM_FH, '<:raw', '/dev/urandom'
 sub random_string {
     my $len = shift;
 
+    # 27 is the sha1_base64() length.
+    if ($len < 27) {
+        Carp::cluck("Amon2::Util::random_string: Length too short. You should use 27+ bytes for security reason.");
+    }
+
     if ($URANDOM_FH) {
         my $src_len = POSIX::ceil($len/3.0*4.0);
         # Generate session id from /dev/urandom.
@@ -54,7 +60,9 @@ sub random_string {
         # It's weaker than above. But it's portable.
         my $out = '';
         while (length($out) < $len) {
-            $out .= Digest::SHA::sha1_hex(rand() . $$ . {} . Time::HiRes::time());
+            my $sha1 = Digest::SHA::sha1_base64(rand() . $$ . {} . Time::HiRes::time());
+            $sha1 =~ tr|+/=|\-_|d; # make it url safe
+            $out .= $sha1;
         }
         return substr($out, 0, $len);
     }
