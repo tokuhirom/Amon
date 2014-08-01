@@ -2,6 +2,16 @@ Revision history for Perl module Amon2
 
 {{$NEXT}}
 
+6.07 2014-08-01T19:32:01Z
+
+    [Amon2::Util::random_string()]
+    - Use Digest::SHA::sha1_base64() instead of sha1_hex.
+    - Show warnings if the required $length is too short.
+
+    [TESTING FIX]
+    - t/100_core/011_random_string.t was fixed.
+      broken at 6.04.
+
 6.06 2014-08-01T14:10:26Z
 
     [BUG FIX]
