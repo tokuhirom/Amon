@@ -40,7 +40,10 @@ sub run {
         'DBD::SQLite'                     => '1.33',
         'Test::WWW::Mechanize::PSGI'      => 0,
         'Router::Boom'                    => '0.06',
-        'HTTP::Session2'                  => '0.04',
+        'HTTP::Session2'                  => '1.03',
+        'Crypt::CBC'                      => '0',
+        'Crypt::DES'                      => '0',
+        'Crypt::Rijndael'                 => '0',
     });
 
     # static files
