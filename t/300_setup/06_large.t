@@ -15,6 +15,7 @@ use Test::Requires {
     'HTML::FillInForm::Lite'          => 0,
     'Router::Boom'                    => '0.03',
     'Plack::Middleware::ReverseProxy' => 0,
+    'Crypt::Rijndael' => 0,
 };
 
 plan skip_all => 'this test requires "sqlite3" command'
