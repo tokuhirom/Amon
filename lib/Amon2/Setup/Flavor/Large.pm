@@ -6,7 +6,7 @@ package Amon2::Setup::Flavor::Large;
 use parent qw(Amon2::Setup::Flavor);
 use File::Path ();
 
-our $VERSION = '6.04';
+our $VERSION = '6.05';
 
 sub admin_script {
     my $self = shift;
@@ -95,7 +95,9 @@ sub run {
             'DBI'                                => 0,
             'File::ShareDir'                     => 0,
             'Getopt::Long'                       => 0,
-            'HTTP::Session2::ClientStore'        => 0,
+            'HTTP::Session2::ClientStore2'       => 0,
+            'Crypt::CBC'                         => '0',
+            'Crypt::Rijndael'                    => '0',
             'Module::Build'                      => 0,
             'Module::Find'                       => 0,        # load controllers
             'Module::Functions'                  => 2,        # Dispatcher

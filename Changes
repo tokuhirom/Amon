@@ -2,6 +2,10 @@ Revision history for Perl module Amon2
 
 {{$NEXT}}
 
+6.05 2014-08-01T11:15:02Z
+
+    - Flavor uses HTTP::Session2::ClientStore2 by default.
+
 6.04 2014-07-31T21:40:18Z
 
     - Make Amon2::Util::random_string() secure.

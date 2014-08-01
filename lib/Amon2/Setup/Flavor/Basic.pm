@@ -5,7 +5,7 @@ use utf8;
 package Amon2::Setup::Flavor::Basic;
 use parent qw(Amon2::Setup::Flavor);
 
-our $VERSION = '6.04';
+our $VERSION = '6.05';
 
 sub run {
     my $self = shift;
@@ -42,7 +42,6 @@ sub run {
         'Router::Boom'                    => '0.06',
         'HTTP::Session2'                  => '1.03',
         'Crypt::CBC'                      => '0',
-        'Crypt::DES'                      => '0',
         'Crypt::Rijndael'                 => '0',
     });
 

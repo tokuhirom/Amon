@@ -43,6 +43,7 @@ sub init {
 # $c->session() accessor.
 my $cipher = Crypt::CBC->new({
     key => '<% random_string(32) %>',
+    cipher => 'Rijndael',
 });
 sub _session {
     my $self = shift;
