@@ -2,6 +2,10 @@ Revision history for Perl module Amon2
 
 {{$NEXT}}
 
+6.08 2014-08-04T03:54:13Z
+
+    - Fixed test case
+
 6.07 2014-08-01T19:32:01Z
 
     [Amon2::Util::random_string()]
