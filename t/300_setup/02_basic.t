@@ -11,6 +11,8 @@ use Test::Requires +{
     'Module::Functions'               => '0',
     'HTML::FillInForm::Lite'          => 0,
     'Plack::Middleware::ReverseProxy' => 0,
+    'Crypt::CBC'                      => 0,
+    'HTTP::Session2::ClientStore2'    => 0,
     'Crypt::Rijndael' => 0,
 };
 
