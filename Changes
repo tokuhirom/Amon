@@ -2,6 +2,10 @@ Revision history for Perl module Amon2
 
 {{$NEXT}}
 
+6.09 2014-08-06T05:35:15Z
+
+    - Do not allow invalid charracter in Plugin::Web::Streaming.
+
 6.08 2014-08-04T03:54:13Z
 
     - Fixed test case
