@@ -50,7 +50,7 @@ sub req               { $_[0]->{request} }
 sub redirect {
     my ($self, $location, $params) = @_;
     my $url = do {
-        if ($location =~ m{^https?://}) {
+        if ($location =~ m{^https?://}i) {
             $location;
         } else {
             my $url = $self->request->base;
