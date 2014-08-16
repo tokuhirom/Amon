@@ -4,7 +4,8 @@ use warnings;
 use utf8;
 
 use Amon2::Util;
-use HTTP::Session2::ClientStore;
+use HTTP::Session2::ClientStore2;
+use Crypt::CBC;
 
 sub init {
     my ($class, $c) = @_;
@@ -40,13 +41,18 @@ sub init {
 }
 
 # $c->session() accessor.
+my $cipher = Crypt::CBC->new({
+    key => '<% random_string(32) %>',
+    cipher => 'Rijndael',
+});
 sub _session {
     my $self = shift;
 
     if (!exists $self->{session}) {
-        $self->{session} = HTTP::Session2::ClientStore->new(
+        $self->{session} = HTTP::Session2::ClientStore2->new(
             env => $self->req->env,
             secret => '<% random_string(32) %>',
+            cipher => $cipher,
         );
     }
     return $self->{session};

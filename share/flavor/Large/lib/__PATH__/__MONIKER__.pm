@@ -50,7 +50,9 @@ __PACKAGE__->add_trigger(
     },
 );
 
-use HTTP::Session2::ClientStore;
+use HTTP::Session2::ClientStore2;
+use Crypt::CBC;
+use Crypt::Rijndael;
 
 __PACKAGE__->add_trigger(
     BEFORE_DISPATCH => sub {
@@ -67,13 +69,18 @@ __PACKAGE__->add_trigger(
     },
 );
 
+my $cipher = Crypt::CBC->new({
+    key => '<% random_string(32) %>',
+    cipher => 'Rijndael',
+});
 sub session {
     my $self = shift;
 
     if (!exists $self->{session}) {
-        $self->{session} = HTTP::Session2::ClientStore->new(
+        $self->{session} = HTTP::Session2::ClientStore2->new(
             env => $self->req->env,
             secret => '<% random_string(32) %>',
+            cipher => $cipher,
         );
     }
     return $self->{session};

@@ -6,6 +6,7 @@ use Test::Requires 'Test::WWW::Mechanize::PSGI', 'Router::Simple';
 {
     package MyApp;
     use parent qw/Amon2/;
+	__PACKAGE__->make_local_context();
 }
 
 {
@@ -17,18 +18,18 @@ use Test::Requires 'Test::WWW::Mechanize::PSGI', 'Router::Simple';
 
 {
     package MyApp::Web::C::My;
-    sub foo { Amon2->context->create_response(200, [], 'foo') }
+    sub foo { $_[1]->create_response(200, [], 'foo') }
 
     package MyApp::Web::C::Bar;
-    sub poo { Amon2->context->create_response(200, [], 'poo') }
+    sub poo { $_[1]->create_response(200, [], 'poo') }
 
     package MyApp::Web::C::Root;
-    sub index { Amon2->context->create_response(200, [], 'top') }
+    sub index { $_[1]->create_response(200, [], 'top') }
 
     package MyApp::Web::C::Blog;
     sub monthly {
         my ($class, $c, $args) = @_;
-        Amon2->context->create_response(200, [], "blog: $args->{year}, $args->{month}")
+        $c->create_response(200, [], "blog: $args->{year}, $args->{month}")
     }
 
     package MyApp::Web::C::Account;
