@@ -23,7 +23,7 @@ my $ua = LWP::UserAgent->new();
 
 __PACKAGE__->register_js(
     'run_es5shim',
-    'https://raw.github.com/kriskowal/es5-shim/master/es5-shim.min.js',
+    'https://raw.github.com/es-shims/es5-shim/v4.0.3/es5-shim.min.js',
     'ES5Shim',
 );
 __PACKAGE__->register_js(
@@ -33,7 +33,7 @@ __PACKAGE__->register_js(
 );
 __PACKAGE__->register_js(
     'run_sprintf_js',
-    'http://sprintf.googlecode.com/files/sprintf-0.7-beta1.js',
+    'https://raw.github.com/alexei/sprintf.js/v0.7/src/sprintf.js',
     'SprintfJS',
 );
 __PACKAGE__->register_js(
@@ -177,7 +177,7 @@ sub files {
 }
 
 sub run_jquery {
-    my $url = 'http://code.jquery.com/jquery-2.1.0.min.js';
+    my $url = 'http://code.jquery.com/jquery-2.1.1.min.js';
     my $res = $ua->get($url);
     $res->is_success or die "Cannot fetch $url: " . $res->status_line;
 
@@ -222,7 +222,7 @@ sub fetch {
 sub run_bootstrap {
     my $files = {};
     print "Fetching bootstrap\n";
-    my $zip_url = 'https://github.com/twbs/bootstrap/archive/v3.1.1.zip';
+    my $zip_url = 'https://github.com/twbs/bootstrap/archive/v3.2.0.zip';
     my $tmpdir = File::Temp::tempdir(CLEANUP => 1);
     my $tmp = "$tmpdir/bootstrap.zip";
     print "Saving files to $tmp\n";
@@ -239,6 +239,7 @@ sub run_bootstrap {
         next if $basename eq '.gitignore';
         next if $basename eq '.travis.yml';
         next if $filename =~ m{/examples/};
+        next if $filename =~ m{/less/};
         next if $filename =~ m{/tests/};
         if ($filename =~ m{/dist/(.*)\z}) {
             $files->{"bootstrap/$1"} = $contents;
