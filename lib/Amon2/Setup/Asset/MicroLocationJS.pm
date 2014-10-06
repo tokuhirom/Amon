@@ -44,8 +44,8 @@ Location.prototype = {
 			for (var i = 0, len = pairs.length; i < len; i++) {
 				if (!pairs[i]) continue;
 				var pair = pairs[i].split(/=/);
-				var key  = decodeURIComponent(pair[0]);
-				var val  = decodeURIComponent(pair[1]);
+				var key  = decodeURIComponent(pair[0].replace(/\\+/g, \'%20\'));
+				var val  = decodeURIComponent(pair[1].replace(/\\+/g, \'%20\'));
 
 				if (!params[key]) params[key] = [];
 				params[key].push(val);
