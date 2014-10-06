@@ -5,13 +5,13 @@ use warnings;
 
 sub tags {
     <<',,,';
-    <script src="<: uri_for('/static/js/sprintf-0.7-beta1.js') :>"></script>
+    <script src="<: uri_for('/static/js/sprintf.js') :>"></script>
 ,,,
 }
 
 sub files {
     return {
-  'js/sprintf-0.7-beta1.js' => '/**
+  'js/sprintf.js' => '/**
 sprintf() for JavaScript 0.7-beta1
 http://www.diveintojavascript.com/projects/javascript-sprintf
 
