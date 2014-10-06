@@ -137,7 +137,7 @@
          "web" : "https://github.com/tokuhirom/Amon"
       }
    },
-   "version" : "6.09",
+   "version" : "6.10",
    "x_contributors" : [
       "noblejasper <nobjas@gmail.com>",
       "noblejasper <jasper@main.noble-jasper.com>",
@@ -160,7 +160,6 @@
       "Fuji, Goro <gfuji@cpan.org>",
       "ITO Nobuaki <daydream.trippers@gmail.com>",
       "Geraud CONTINSOUZAS <geraud@hyaku.nijuu.nana>",
-      "Geraud CONTINSOUZAS <geraud@scsi.nc>",
       "Geraud <geraud@genta.nealab.net>",
       "Katsuhiro Konishi <konishika@gmail.com>",
       "Neil Bowers <neil@bowers.com>",
@@ -171,6 +170,7 @@
       "magnolia <magnolia.k@me.com>",
       "Syohei YOSHIDA <syohex@gmail.com>",
       "Hiroyuki Akabane <hirobanex@gmail.com>",
-      "Ichito Nagata <i.nagata110@gmail.com>"
+      "Ichito Nagata <i.nagata110@gmail.com>",
+      "Geraud CONTINSOUZAS <geraud@scsi.nc>"
    ]
 }

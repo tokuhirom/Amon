@@ -2,6 +2,11 @@ Revision history for Perl module Amon2
 
 {{$NEXT}}
 
+6.10 2014-10-06T05:14:23Z
+
+    - Update static library deps
+      (GeJ++)
+
 6.09 2014-08-06T05:35:15Z
 
     - Do not allow invalid charracter in Plugin::Web::Streaming.
