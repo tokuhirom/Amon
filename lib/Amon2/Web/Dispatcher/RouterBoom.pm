@@ -22,13 +22,15 @@ sub import {
     #
     # get( '/path', 'Controller#action')
     # post('/path', 'Controller#action')
+    # put('/path', 'Controller#action')
     # delete_('/path', 'Controller#action')
     # any( '/path', 'Controller#action')
     # get( '/path', sub { })
     # post('/path', sub { })
+    # put('/path', sub { })
     # delete_('/path', sub { })
     # any( '/path', sub { })
-    for my $method (qw(get post delete_ any)) {
+    for my $method (qw(get post put delete_ any)) {
         *{"${caller}::${method}"} = sub {
             my ($path, $dest) = @_;
 
@@ -46,6 +48,8 @@ sub import {
                 $http_method = ['GET','HEAD'];
             } elsif ($method eq 'post') {
                 $http_method = 'POST';
+            } elsif ($method eq 'put') {
+                $http_method = 'PUT';
             } elsif ($method eq 'delete_') {
                 $http_method = 'DELETE';
             }
@@ -122,6 +126,8 @@ This is a router class for Amon2. It's based on Router::Boom.
 
 =item C<< post($path:Str, $destnation:Str) >>
 
+=item C<< put($path:Str, $destnation:Str) >>
+
 =item C<< delete_($path:Str, $destnation:Str) >>
 
 =item C<< any($path:Str, $destnation:Str) >>
@@ -130,6 +136,7 @@ This is a router class for Amon2. It's based on Router::Boom.
     get  '/:user' => 'User#show';
     any  '/:user/update' => 'User#update';
     post '/:user/blog/post' => 'Blog#post';
+    put  '/:user/blog/put'  => 'Blog#put';
     delete_ '/:user/blog/:id' => 'Blog#remove';
 
 Add routes by DSL. First argument is the path pattern in Path::Boom rules.
@@ -139,6 +146,7 @@ Destination method pass is C<${class}#${method}> form.
 
 The path declared with get() accepts GET and HEAD.
 The path declared with post() accepts POST method.
+The path declared with put() accepts PUT method.
 The path declared with delete_() accepts DELETE method.
 The path declared with any() accepts any methods.
 
@@ -156,6 +164,8 @@ If you are write your dispatcher in following code, then the method for '/' is C
 =item C<< get($path:Str, $destnation:CodeRef) >>
 
 =item C<< post($path:Str, $destnation:CodeRef) >>
+
+=item C<< put($path:Str, $destnation:CodeRef) >>
 
 =item C<< delete_($path:Str, $destnation:CodeRef) >>
 
