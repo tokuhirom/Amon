@@ -41,6 +41,8 @@ use Test::Requires 'Test::WWW::Mechanize::PSGI';
 
     get '/', sub { $_[0]->create_response(200, [], 'top') };
     post '/', sub { $_[0]->create_response(200, [], 'post_top') };
+    put '/', sub { $_[0]->create_response(200, [], 'put_top') };
+    delete_ '/', sub { $_[0]->create_response(200, [], 'delete_top') };
     get '/my/foo', sub { $_[0]->create_response(200, [], 'foo') };
     get '/blog/{year}/{month}', sub {
         my ($c, $captured) = @_;
@@ -52,6 +54,13 @@ use Test::Requires 'Test::WWW::Mechanize::PSGI';
     };
 }
 
+sub Test::WWW::Mechanize::PSGI::delete_ok {
+    my ($self, $url) = @_;
+    my $request = HTTP::Request->new(DELETE => $url);
+    my $res = $self->request($request);
+    ::ok($res->code =~ /\A2..\z/, "DELETE $url");
+}
+
 my $app = MyApp::Web->to_app();
 
 my $mech = Test::WWW::Mechanize::PSGI->new(app => $app);
@@ -60,6 +69,10 @@ $mech->content_is('top');
 $mech->head_ok('/');
 $mech->post_ok('/');
 $mech->content_is('post_top');
+$mech->put_ok('/');
+$mech->content_is('put_top');
+$mech->delete_ok('/');
+$mech->content_is('delete_top');
 $mech->get_ok('/my/foo');
 $mech->content_is('foo');
 $mech->get_ok('/blog/2010/04');
