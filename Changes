@@ -2,6 +2,14 @@ Revision history for Perl module Amon2
 
 {{$NEXT}}
 
+6.11 2014-12-15T11:21:26Z
+
+    commit 29179a2b7dd9c5fac6bc293d486256fd5ce39838
+    Author: karupanerura <karupa@cpan.org>
+    Date:   Mon Dec 15 17:00:02 2014 +0900
+
+        Amon2::Web::Dispatcher::RouterBoom allows PUT method.
+
 6.10 2014-10-06T05:14:23Z
 
     - Update static library deps

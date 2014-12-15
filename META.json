@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v2.1.1, CPAN::Meta::Converter version 2.141520",
+   "generated_by" : "Minilla/v2.2.0, CPAN::Meta::Converter version 2.141520",
    "license" : [
       "perl_5"
    ],
@@ -137,7 +137,7 @@
          "web" : "https://github.com/tokuhirom/Amon"
       }
    },
-   "version" : "6.10",
+   "version" : "6.11",
    "x_contributors" : [
       "noblejasper <nobjas@gmail.com>",
       "noblejasper <jasper@main.noble-jasper.com>",
@@ -148,7 +148,6 @@
       "mattn <mattn.jp@gmail.com>",
       "Masahiro Nagano <kazeburo@gmail.com>",
       "rightgo09 <skyarrow09@gmail.com>",
-      "karupanerura <karupa@cpan.org>",
       "hatyuki <hatyuki29@gmail.com>",
       "Keiji, Yoshimi <walf443@gmail.com>",
       "Nishibayashi Takuji <takuji31@gmail.com>",
@@ -171,6 +170,7 @@
       "Syohei YOSHIDA <syohex@gmail.com>",
       "Hiroyuki Akabane <hirobanex@gmail.com>",
       "Ichito Nagata <i.nagata110@gmail.com>",
-      "Geraud CONTINSOUZAS <geraud@scsi.nc>"
+      "Geraud CONTINSOUZAS <geraud@scsi.nc>",
+      "karupanerura <karupa@cpan.org>"
    ]
 }
