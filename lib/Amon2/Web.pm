@@ -191,7 +191,7 @@ sub render {
     my $html = $self->create_view()->render(@_);
 
     for my $code ($self->get_trigger_code('HTML_FILTER')) {
-        $html = $code->($self, $html);
+        $html = $code->($self, $html, @_);
     }
 
     $html = $self->encode_html($html);
