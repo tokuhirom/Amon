@@ -20,7 +20,7 @@ sub init {
 
             # for IE7 JSON venularity.
             # see http://www.atmarkit.co.jp/fcoding/articles/webapp/05/webapp05a.html
-            my $output = $_JSON->encode($stuff);
+            my $output = $_JSON->canonical( $conf->{canonical} ? 1 : 0 )->encode($stuff);
             $output =~ s!([+<>])!$_ESCAPE{$1}!g;
 
             my $user_agent = $c->req->user_agent || '';
@@ -107,6 +107,20 @@ Default is C<< undef >>. If you set the C<< undef >> to disable this 'X-API-Stat
 In general JSON API error code embed in a JSON by JSON API Response body.
 But can not be logging the error code of JSON for the access log of a general Web Servers.
 You can possible by using the 'X-API-Status' header.
+
+=back
+
+=item canonical
+
+If canonical parameter is true, then this plugin will output JSON objects by sorting their keys.
+This is adding a comparatively high overhead.
+
+    __PACKAGE__->load_plugins(
+        'Web::JSON' => { canonical => 1 }
+    );
+    ...
+    $c->render_json({ b => 1, c => 1, a => 1 });
+    # json response is '{ "a" : 1, "b" : 1, "c" : 1 }'
 
 =back
 
