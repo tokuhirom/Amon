@@ -2,6 +2,20 @@ Revision history for Perl module Amon2
 
 {{$NEXT}}
 
+6.12 2015-06-17T08:37:51Z
+
+    commit acc35c4631786cafe3a34af193329d392a6f384b
+    Author: Tokuhiro Matsuno <tokuhirom@gmail.com>
+    Date:   Wed Jun 17 13:44:42 2015 +0900
+
+        bundle bootstrap 3.3.5
+
+    commit 6fe673e924034d9b835d455cf6f049f37a9afa63
+    Author: tokubass <tokubass@cpan.org>
+    Date:   Mon May 18 22:06:28 2015 +0900
+
+        add canonical parameter to plugin-web-json
+
 6.11 2014-12-15T11:21:26Z
 
     commit 29179a2b7dd9c5fac6bc293d486256fd5ce39838
