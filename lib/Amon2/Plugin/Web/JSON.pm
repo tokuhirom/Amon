@@ -108,8 +108,6 @@ In general JSON API error code embed in a JSON by JSON API Response body.
 But can not be logging the error code of JSON for the access log of a general Web Servers.
 You can possible by using the 'X-API-Status' header.
 
-=back
-
 =item canonical
 
 If canonical parameter is true, then this plugin will output JSON objects by sorting their keys.
