@@ -2,6 +2,26 @@ Revision history for Perl module Amon2
 
 {{$NEXT}}
 
+	commit df41f39c3c6b2093e558dcd01add680a4b4eb4e6
+	Author: Koichi SATOH <r.sekia@gmail.com>
+	Date:   Fri Apr 8 13:58:57 2016 +0900
+
+	    Fix Amon2::Web::Response::Callback->finalize header validation.
+
+	commit b1e53f8ee8f2243c9a14ff5ffae69477a9bb029b
+	Author: clicktx <clicktx@gmail.com>
+	Date:   Fri Mar 4 18:29:22 2016 +0900
+
+	    fixed dependendcies
+
+	commit e607946ca8f795ed4f052ddeef28debaa79b986f
+	Author: Tokuhiro Matsuno <tokuhirom@gmail.com>
+	Date:   Sun Feb 28 12:30:48 2016 +0900
+
+	    Test::Synopsis hides private method named `extract_synopsis`. Close #119
+		Remove this test case.
+
+
 6.12 2015-06-17T08:37:51Z
 
     commit acc35c4631786cafe3a34af193329d392a6f384b
