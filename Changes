@@ -2,6 +2,8 @@ Revision history for Perl module Amon2
 
 {{$NEXT}}
 
+6.13 2016-04-08T09:57:09Z
+
 	commit df41f39c3c6b2093e558dcd01add680a4b4eb4e6
 	Author: Koichi SATOH <r.sekia@gmail.com>
 	Date:   Fri Apr 8 13:58:57 2016 +0900
