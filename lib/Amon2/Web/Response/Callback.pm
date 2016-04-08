@@ -30,7 +30,7 @@ sub finalize {
         $code->(
             sub {
                 my @copy = @{ $_[0]->[1] };
-                for (my ($key, $val) = splice(@copy, 0, 2)) {
+                while (my (undef, $val) = splice(@copy, 0, 2)) {
                     if ($val =~ /[\000-\037]/) {
                         die("Response headers MUST NOT contain characters below octal \037\n");
                     }
