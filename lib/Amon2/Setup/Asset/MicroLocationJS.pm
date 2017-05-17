@@ -103,7 +103,23 @@ Location.parse = function (string) {
 	return ret;
 };
 
-this.Location = Location;
+(function (root, factory) {
+	if (typeof module === "object" && module.exports) {
+		module.exports = { 
+			Location: factory()
+		};
+	} else if (typeof define === \'function\' && define.amd) {
+		define([], function () {
+			return {
+				Location: factory()
+			}
+		});
+	} else {
+		root.Location = factory();
+	}
+}(this, function () {
+	return Location;
+}));
 '
 }
 ;
