@@ -2,6 +2,8 @@ use strict;
 use warnings;
 use Module::Build;
 use Module::CPANfile;
+use FindBin;
+use lib $FindBin::Bin;
 use builder::MyBuilder;
 
 my $file = Module::CPANfile->load("cpanfile");
