@@ -23,7 +23,7 @@ my $ua = LWP::UserAgent->new();
 
 __PACKAGE__->register_js(
     'run_es5shim',
-    'https://raw.github.com/es-shims/es5-shim/v4.0.3/es5-shim.min.js',
+    'https://raw.github.com/es-shims/es5-shim/v4.5.1/es5-shim.min.js',
     'ES5Shim',
 );
 __PACKAGE__->register_js(
