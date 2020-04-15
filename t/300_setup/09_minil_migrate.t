@@ -9,6 +9,8 @@ use Amon2::Setup::Flavor::Basic;
 use Amon2::Setup::Flavor::Large;
 use Test::TCP;
 use File::Spec::Functions;
+use FindBin;
+use lib catdir($FindBin::Bin, '../..');
 use t::Util qw(slurp);
 
 my $cpanm   = which('cpanm');

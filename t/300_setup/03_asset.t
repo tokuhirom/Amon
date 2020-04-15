@@ -3,9 +3,10 @@ use warnings;
 use utf8;
 use Test::More;
 use File::Temp qw(tempdir);
-use t::Util;
 use FindBin;
-use lib File::Spec->catdir($FindBin::Bin, '../../lib/');
+use lib File::Spec->catdir($FindBin::Bin, '../..'),
+    File::Spec->catdir($FindBin::Bin, '../../lib/');
+use t::Util;
 
 use Amon2::Setup::Asset::jQuery;
 use Amon2::Setup::Flavor;

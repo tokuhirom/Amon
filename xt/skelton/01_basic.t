@@ -38,6 +38,6 @@ sub main_test {
     system "$^X Build.PL";
     system './Build';
     my $app = App::Prove->new();
-    $app->process_args('--norc', '--exec', "$^X -Ilib -I".File::Spec->catfile($FindBin::Bin, '..', '..', 'lib'), <t/*.t>, <xt/*.t>);
+    $app->process_args('--norc', '--exec', "$^X -I. -Ilib -I".File::Spec->catfile($FindBin::Bin, '..', '..', 'lib'), <t/*.t>, <xt/*.t>);
     ok($app->run);
 }

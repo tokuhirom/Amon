@@ -2,6 +2,9 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
+use File::Spec;
+use FindBin;
+use lib File::Spec->catdir($FindBin::Bin, '../..');
 use t::Util;
 use t::TestFlavor;
 use Test::Requires {

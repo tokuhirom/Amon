@@ -1,6 +1,9 @@
 use strict;
 use warnings;
 use Test::More;
+use File::Spec;
+use FindBin;
+use lib File::Spec->catdir($FindBin::Bin, '../..');
 use t::Util;
 use Test::Requires 'Text::MicroTemplate::Extended', 'Tiffany', 'Module::Find';
 
