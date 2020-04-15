@@ -8,7 +8,7 @@ use Carp ();
 use Amon2::Config::Simple;
 use Amon2::ContextGuard;
 
-our $VERSION = '6.13';
+our $VERSION = '6.14';
 {
     our $CONTEXT; # You can localize this variable in your application.
     sub context { $CONTEXT }

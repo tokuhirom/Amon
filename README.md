@@ -58,7 +58,7 @@ Amon2 is simple, readable, extensible, **STABLE**, **FAST** web application fram
 
     This method loads the plugin for the application.
 
-    _$module\_name_ package name of the plugin. You can write it as two form like [DBIx::Class](https://metacpan.org/pod/DBIx::Class):
+    _$module\_name_ package name of the plugin. You can write it as two form like [DBIx::Class](https://metacpan.org/pod/DBIx%3A%3AClass):
 
         __PACKAGE__->load_plugin("Web::CSRFDefender");    # => loads Amon2::Plugin::Web::CSRFDefender
 
@@ -103,7 +103,7 @@ It means, normally context class using Amon2 use `$Amon2::CONTEXT` in each proje
 
 ## NOTES ABOUT create\_request
 
-Older [Amon2::Web::Request](https://metacpan.org/pod/Amon2::Web::Request) has only 1 argument like following, it uses `Amon2->context` to get encoding:
+Older [Amon2::Web::Request](https://metacpan.org/pod/Amon2%3A%3AWeb%3A%3ARequest) has only 1 argument like following, it uses `Amon2->context` to get encoding:
 
     sub create_request {
         my ($class, $env) = @_;
