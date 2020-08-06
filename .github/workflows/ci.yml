@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: ['ubuntu-18.04', 'macOS-10.14', 'windows-2019']
+        perl: [ '5.30', '5.28' ]
+    name: Perl ${{ matrix.perl }}
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup perl
+      uses: shogo82148/actions-setup-perl@v1
+      with:
+        perl-version: ${{ matrix.perl }}
+    - run: perl -V
+    - run: cpanm --installdeps .
+    - run: prove -lvr t
