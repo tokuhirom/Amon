@@ -11,7 +11,7 @@ use Amon2;
 use Plack::Util ();
 use Carp ();
 use Amon2::Trigger;
-use MRO::Compat;
+use mro;
 use File::ShareDir ();
 use Module::CPANfile 0.9020;
 

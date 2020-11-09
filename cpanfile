@@ -1,4 +1,4 @@
-requires 'perl', '5.008001';
+requires 'perl', '5.010000';
 
 requires 'Encode';
 requires 'Exporter';
@@ -8,7 +8,7 @@ requires 'Hash::MultiValue';
 requires 'HTML::FillInForm::Lite';
 requires 'HTTP::Headers';
 requires 'JSON', '2';
-requires 'MRO::Compat';
+requires 'mro';
 requires 'parent', '0.223';
 requires 'Plack', '0.9982';
 requires 'Plack::Request';
