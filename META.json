@@ -58,7 +58,6 @@
             "Hash::MultiValue" : "0",
             "JSON" : "2",
             "MIME::Base64" : "0",
-            "MRO::Compat" : "0",
             "Module::CPANfile" : "0.9020",
             "Plack" : "0.9982",
             "Plack::Request" : "0",
@@ -74,8 +73,9 @@
             "URI" : "1.54",
             "URI::Escape" : "0",
             "URI::QueryParam" : "0",
+            "mro" : "0",
             "parent" : "0.223",
-            "perl" : "5.008001"
+            "perl" : "5.010000"
          },
          "suggests" : {
             "AnyEvent::Handle" : "0",
