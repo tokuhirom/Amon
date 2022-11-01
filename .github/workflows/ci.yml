@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        perl: [ '5.30', '5.28', '5.10' ]
+        perl: [ 'latest', '5.30', '5.28', '5.10' ]
     name: Perl ${{ matrix.perl }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
