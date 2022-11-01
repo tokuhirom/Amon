@@ -77,5 +77,6 @@ on test => sub {
     suggests 'Starlet';
     suggests 'Router::Simple::Sinatraish';
     suggests 'Amon2::DBI';
+    suggests 'Crypt::Rijndael';
 };
 
