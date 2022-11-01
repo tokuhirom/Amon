@@ -19,7 +19,7 @@ sub assets {
     my $self = shift;
 
     my @assets = qw(
-        jQuery Bootstrap ES5Shim MicroTemplateJS StrftimeJS SprintfJS
+        jQuery Bootstrap MicroTemplateJS StrftimeJS SprintfJS
         MicroLocationJS MicroDispatcherJS XSRFTokenJS
     );
     @assets;

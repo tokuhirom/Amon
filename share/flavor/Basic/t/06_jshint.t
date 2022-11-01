@@ -12,7 +12,6 @@ my @files = (<<% $static_dir // 'static' %>/*/*.js>, <<% $static_dir // 'static'
 my %WHITE_LIST = map { $_ => 1 } qw(
     bootstrap.js
     bootstrap.min.js
-    es5-shim.min.js
     micro-location.js
     micro_template.js
 );
