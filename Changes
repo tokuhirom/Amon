@@ -2,6 +2,11 @@ Revision history for Perl module Amon2
 
 {{$NEXT}}
 
+6.16 2022-11-01T19:17:29Z
+
+    - Drop ES5Shim in amon2-setup.pl
+    - Upgrade jQuery from 3.5.0 to 3.6.1
+
 6.15 2020-11-09T08:57:23Z
 
     - Drop perl 5.8 support.
