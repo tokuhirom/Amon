@@ -23,5 +23,4 @@ jobs:
         perl-version: ${{ matrix.perl }}
     - run: perl -V
     - run: cpanm --with-recommends --with-suggests --installdeps --notest .
-    - run: perl Build.PL
-    - run: ./Build test
+    - run: perl Build.PL && ./Build && ./Build test
