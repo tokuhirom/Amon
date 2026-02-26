@@ -36,7 +36,7 @@ test_flavor(sub {
             local $/; <$fh>;
         };
     };
-    is( scalar( my @files = glob('./static/js/jquery-*.js') ), 1 );
+    ok(-f './static/js/xsrf-token.js', 'xsrf-token.js exists');
 	like(slurp('./cpanfile'), qr{'Teng'\s*,\s*'[0-9.]+'});
 }, 'Basic');
 

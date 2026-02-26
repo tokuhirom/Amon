@@ -78,7 +78,7 @@ test_flavor(sub {
         };
     };
 
-    like(slurp('tmpl/web/include/layout.tx'), qr{jquery}, 'loads jquery');
+    like(slurp('tmpl/web/include/layout.tx'), qr{xsrf-token\.js}, 'loads xsrf-token.js');
 }, 'Large');
 
 done_testing;
