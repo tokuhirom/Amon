@@ -2,6 +2,7 @@ Revision history for Perl module Amon2
 
 {{$NEXT}}
 
+    - Bump minimum Perl version to 5.14 (IO::Socket::IP requires 5.14+)
     - Remove bundled JS libraries (jQuery, Bootstrap, etc.) from setup script
     - Rewrite XSRFTokenJS to vanilla JavaScript (no jQuery dependency)
     - Replace Bootstrap markup in templates with semantic HTML
