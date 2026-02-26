@@ -1,4 +1,4 @@
-requires 'perl', '5.010000';
+requires 'perl', '5.014000';
 
 requires 'Encode';
 requires 'Exporter';
