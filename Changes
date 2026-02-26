@@ -2,6 +2,11 @@ Revision history for Perl module Amon2
 
 {{$NEXT}}
 
+    - Remove bundled JS libraries (jQuery, Bootstrap, etc.) from setup script
+    - Rewrite XSRFTokenJS to vanilla JavaScript (no jQuery dependency)
+    - Replace Bootstrap markup in templates with semantic HTML
+    - Fix Crypt::CBC deprecation warning by specifying pbkdf => 'pbkdf2'
+
 6.16 2022-11-01T19:17:29Z
 
     - Drop ES5Shim in amon2-setup.pl

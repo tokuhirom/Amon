@@ -72,6 +72,7 @@ __PACKAGE__->add_trigger(
 my $cipher = Crypt::CBC->new({
     key => '<% random_string(32) %>',
     cipher => 'Rijndael',
+    pbkdf => 'pbkdf2',
 });
 sub session {
     my $self = shift;
