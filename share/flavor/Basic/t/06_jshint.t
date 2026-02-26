@@ -9,18 +9,9 @@ plan skip_all => 'this test requires "jshint" command'
 
 my @files = (<<% $static_dir // 'static' %>/*/*.js>, <<% $static_dir // 'static' %>/*/*/*.js>, <<% $static_dir // 'static' %>/*/*/*/*.js>);
 
-my %WHITE_LIST = map { $_ => 1 } qw(
-    bootstrap.js
-    bootstrap.min.js
-    micro-location.js
-    micro_template.js
-);
-
 my $table = Text::SimpleTable->new( 25, 5 );
 
 for my $file (@files) {
-    next if $WHITE_LIST{basename($file)};
-    next if basename($file) =~ /jquery-[0-9.]+.min.js$/;
 
     my $out = `jshint $file`;
     my $err = 0;

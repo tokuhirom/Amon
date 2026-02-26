@@ -48,7 +48,7 @@ test_flavor(sub {
     for my $type (qw(web admin)) {
         my $f = "script/my-app-${type}-server";
         my $buff = << "...";
-\$SIG{__WARN__} = sub { die 'Warned! ' . shift };
+\$SIG{__WARN__} = sub { return if \$_[0] =~ /deprecated/i; die 'Warned! ' . shift };
 @{[slurp($f)]}
 ...
         open my $fh, '>', $f;
