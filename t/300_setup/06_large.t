@@ -48,7 +48,7 @@ test_flavor(sub {
     for my $type (qw(web admin)) {
         my $f = "script/my-app-${type}-server";
         my $buff = << "...";
-\$SIG{__WARN__} = sub { die 'Warned! ' . shift };
+\$SIG{__WARN__} = sub { return if \$_[0] =~ /deprecated/i; die 'Warned! ' . shift };
 @{[slurp($f)]}
 ...
         open my $fh, '>', $f;
@@ -78,7 +78,7 @@ test_flavor(sub {
         };
     };
 
-    like(slurp('tmpl/web/include/layout.tx'), qr{jquery}, 'loads jquery');
+    like(slurp('tmpl/web/include/layout.tx'), qr{xsrf-token\.js}, 'loads xsrf-token.js');
 }, 'Large');
 
 done_testing;

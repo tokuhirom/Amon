@@ -44,6 +44,7 @@ sub init {
 my $cipher = Crypt::CBC->new({
     key => '<% random_string(32) %>',
     cipher => 'Rijndael',
+    pbkdf => 'pbkdf2',
 });
 sub _session {
     my $self = shift;
