@@ -65,12 +65,10 @@ on test => sub {
     suggests 'DBD::SQLite';
     suggests 'Furl';
     suggests 'Module::Functions';
-    suggests 'HTTP::MobileAgent';
     suggests 'Text::MicroTemplate::Extended';
     suggests 'Module::Find';
     suggests 'Amon2::Plugin::LogDispatch';
     suggests 'HTML::StickyQuery';
-    suggests 'Amon2::Plugin::Web::MobileAgent';
     suggests 'Test::WWW::Mechanize::PSGI';
     suggests 'Amon2::Plugin::Web::HTTPSession';
     suggests 'Plack::Middleware::ReverseProxy';
