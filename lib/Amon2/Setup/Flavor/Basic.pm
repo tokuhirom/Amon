@@ -5,7 +5,7 @@ use utf8;
 package Amon2::Setup::Flavor::Basic;
 use parent qw(Amon2::Setup::Flavor);
 
-our $VERSION = '6.16';
+our $VERSION = '6.17';
 
 sub run {
     my $self = shift;
@@ -75,7 +75,6 @@ sub run {
     $self->render_file( 't/03_assets.t',      'Basic/t/03_assets.t', {
         psgi_file => $self->psgi_file,
     });
-    $self->render_file( 't/06_jshint.t',      'Basic/t/06_jshint.t' );
     $self->render_file( 'xt/01_pod.t',    'Minimum/xt/01_pod.t' );
     $self->render_file( 'xt/02_perlcritic.t', 'Basic/xt/02_perlcritic.t' );
 
