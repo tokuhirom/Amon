@@ -6,7 +6,7 @@ package Amon2::Setup::Flavor::Large;
 use parent qw(Amon2::Setup::Flavor);
 use File::Path ();
 
-our $VERSION = '6.16';
+our $VERSION = '6.17';
 
 sub admin_script {
     my $self = shift;
@@ -78,7 +78,6 @@ sub run {
     $self->render_file( 't/04_admin.t',       'Large/t/04_admin.t', {
         psgi_file => $admin_script,
     });
-    $self->render_file( 't/06_jshint.t',      'Basic/t/06_jshint.t' );
     $self->render_file( 't/07_mech_links.t',  'Large/t/07_mech_links.t', {
         psgi_file => $web_script,
     });
