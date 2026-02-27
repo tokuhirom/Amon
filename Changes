@@ -2,6 +2,7 @@ Revision history for Perl module Amon2
 
 {{$NEXT}}
 
+    - Remove unused Try::Tiny dependency
     - Drop Amon2::Plugin::Web::MobileAgent references and Extended example app
     - Replace random_string implementation with Crypt::SysRandom
     - Bump minimum Perl version to 5.14 (IO::Socket::IP requires 5.14+)
