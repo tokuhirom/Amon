@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v3.1.19, CPAN::Meta::Converter version 2.150010",
+   "generated_by" : "Minilla/v3.1.29, CPAN::Meta::Converter version 2.150010",
    "license" : [
       "perl_5"
    ],
@@ -42,10 +42,11 @@
       },
       "runtime" : {
          "recommends" : {
+            "Crypt::SysRandom::XS" : "0",
             "Teng" : "0.18"
          },
          "requires" : {
-            "Digest::SHA" : "0",
+            "Crypt::SysRandom" : "0",
             "Encode" : "0",
             "Exporter" : "0",
             "File::Copy::Recursive" : "0",
@@ -68,14 +69,12 @@
             "Router::Boom" : "0.07",
             "Scalar::Util" : "0",
             "Text::Xslate" : "2.0010",
-            "Time::HiRes" : "0",
-            "Try::Tiny" : "0.06",
             "URI" : "1.54",
             "URI::Escape" : "0",
             "URI::QueryParam" : "0",
             "mro" : "0",
             "parent" : "0.223",
-            "perl" : "5.010000"
+            "perl" : "5.014000"
          },
          "suggests" : {
             "AnyEvent::Handle" : "0",
@@ -94,7 +93,6 @@
             "Amon2::DBI" : "0",
             "Amon2::Plugin::LogDispatch" : "0",
             "Amon2::Plugin::Web::HTTPSession" : "0",
-            "Amon2::Plugin::Web::MobileAgent" : "0",
             "AnyEvent" : "0",
             "AnyEvent::Socket" : "0",
             "App::Prove" : "0",
@@ -105,7 +103,6 @@
             "File::pushd" : "0",
             "Furl" : "0",
             "HTML::StickyQuery" : "0",
-            "HTTP::MobileAgent" : "0",
             "HTTP::Request::Common" : "0",
             "HTTP::Session::Store::OnMemory" : "0",
             "Module::Find" : "0",
@@ -138,7 +135,7 @@
          "web" : "https://github.com/tokuhirom/Amon"
       }
    },
-   "version" : "6.16",
+   "version" : "6.17",
    "x_contributors" : [
       "Adrian <adrian@investometrica.com>",
       "Fuji, Goro <g.psy.va@gmail.com>",
@@ -178,6 +175,6 @@
       "tokubass <tokubass@cpan.org>",
       "wata <w.nagasawa@gmail.com>"
    ],
-   "x_serialization_backend" : "JSON::PP version 4.07",
+   "x_serialization_backend" : "JSON::PP version 4.16",
    "x_static_install" : 1
 }

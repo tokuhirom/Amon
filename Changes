@@ -2,6 +2,8 @@ Revision history for Perl module Amon2
 
 {{$NEXT}}
 
+6.17 2026-02-27T01:13:57Z
+
     - Remove jshint test from generated projects
     - Remove unused Try::Tiny dependency
     - Drop Amon2::Plugin::Web::MobileAgent references and Extended example app
