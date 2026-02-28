@@ -2,6 +2,7 @@ Revision history for Perl module Amon2
 
 {{$NEXT}}
 
+    - Switch setup templates to use Plack::Middleware::Session with CSRF tests
     - Remove jshint test from generated projects
     - Remove unused Try::Tiny dependency
     - Drop Amon2::Plugin::Web::MobileAgent references and Extended example app
