@@ -18,9 +18,7 @@ use Test::Requires {
     'HTML::FillInForm::Lite'          => 0,
     'Router::Boom'                    => '0.03',
     'Plack::Middleware::ReverseProxy' => 0,
-    'HTTP::Session2::ClientStore2'    => 0,
-    'Crypt::CBC'                      => 0,
-    'Crypt::Rijndael' => 0,
+    'Plack::Middleware::Session'      => 0,
 };
 
 plan skip_all => 'this test requires "sqlite3" command'
@@ -82,4 +80,3 @@ test_flavor(sub {
 }, 'Large');
 
 done_testing;
-
