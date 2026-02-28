@@ -14,21 +14,21 @@ use Test::Requires +{
     'Module::Functions'               => '0',
     'HTML::FillInForm::Lite'          => 0,
     'Plack::Middleware::ReverseProxy' => 0,
-    'Crypt::CBC'                      => 0,
-    'HTTP::Session2::ClientStore2'    => 0,
-    'Crypt::Rijndael' => 0,
+    'Plack::Middleware::Session'      => 0,
+    'Plack::Session::Store::File'     => 0,
 };
 
 test_flavor(sub {
     ok(-f 'Build.PL', 'Build.PL');
-	like(slurp('cpanfile'), qr{HTTP::Session2});
+	like(slurp('cpanfile'), qr{Plack::Middleware::Session});
 	for my $env (qw(development production test)) {
 		ok(-f "./config/${env}.pl");
 		my $conf = do "./config/${env}.pl";
 		is(ref($conf), 'HASH');
 	}
     ok(-f './lib/My/App.pm', 'lib/My/App.pm exists');
-    like(slurp('./lib/My/App/Web/Plugin/Session.pm'), qr{secret => '.+'});
+    like(slurp('./lib/My/App/Web/Plugin/Session.pm'), qr{sub _validate_xsrf_token});
+    like(slurp('./script/my-app-server'), qr{Plack::Session::Store::File}, 'uses file session store');
     ok((do './lib/My/App.pm'), 'lib/My/App.pm is valid') or do {
         diag $@;
         diag do {
@@ -41,4 +41,3 @@ test_flavor(sub {
 }, 'Basic');
 
 done_testing;
-

@@ -40,9 +40,8 @@ sub run {
         'DBD::SQLite'                     => '1.33',
         'Test::WWW::Mechanize::PSGI'      => 0,
         'Router::Boom'                    => '0.06',
-        'HTTP::Session2'                  => '1.03',
-        'Crypt::CBC'                      => '0',
-        'Crypt::Rijndael'                 => '0',
+        'Plack::Middleware::Session'      => 0,
+        'Plack::Session::Store::File'     => 0,
     });
 
     # static files
@@ -73,6 +72,9 @@ sub run {
         psgi_file => $self->psgi_file,
     });
     $self->render_file( 't/03_assets.t',      'Basic/t/03_assets.t', {
+        psgi_file => $self->psgi_file,
+    });
+    $self->render_file( 't/04_csrf.t',        'Basic/t/04_csrf.t', {
         psgi_file => $self->psgi_file,
     });
     $self->render_file( 'xt/01_pod.t',    'Minimum/xt/01_pod.t' );

@@ -25,7 +25,6 @@ requires 'URI::QueryParam';
 requires 'File::Copy::Recursive'; # setup script
 requires 'File::ShareDir';
 requires 'Module::CPANfile', '0.9020';
-requires 'HTTP::Session2';
 requires 'Crypt::SysRandom';
 requires 'MIME::Base64';
 
@@ -76,4 +75,3 @@ on test => sub {
     suggests 'Amon2::DBI';
     suggests 'Crypt::Rijndael';
 };
-

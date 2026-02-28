@@ -78,6 +78,9 @@ sub run {
     $self->render_file( 't/04_admin.t',       'Large/t/04_admin.t', {
         psgi_file => $admin_script,
     });
+    $self->render_file( 't/05_csrf.t',        'Basic/t/04_csrf.t', {
+        psgi_file => $web_script,
+    });
     $self->render_file( 't/07_mech_links.t',  'Large/t/07_mech_links.t', {
         psgi_file => $web_script,
     });
@@ -95,15 +98,13 @@ sub run {
             'DBI'                                => 0,
             'File::ShareDir'                     => 0,
             'Getopt::Long'                       => 0,
-            'HTTP::Session2::ClientStore2'       => 0,
-            'Crypt::CBC'                         => '0',
-            'Crypt::Rijndael'                    => '0',
             'Module::Build'                      => 0,
             'Module::Find'                       => 0,        # load controllers
             'Module::Functions'                  => 2,        # Dispatcher
             'Plack::App::File'                   => 0,
             'Plack::Builder'                     => 0,
             'Plack::Loader'                      => 0,
+            'Plack::Middleware::Session'         => 0,
             'Plack::Middleware::ReverseProxy'    => 0,
             'Plack::Session::Store::DBI'         => 0,
             'Router::Boom'                       => '0.06',
@@ -202,4 +203,3 @@ Amon2::Setup::Flavor::Large - Flavor with admin pages
 =head1 DESCRIPTION
 
 This is an Amon2 flavor based on Amon2::Setup::Flavor::Basic.
-
